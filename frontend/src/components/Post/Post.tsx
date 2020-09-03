@@ -1,7 +1,8 @@
 import React from 'react'
 import { Box, Heading, StackDivider, Text, VStack } from '@chakra-ui/core'
+import { Post } from '../../generated/graphql'
 
-const PostComponent: React.FC<Post> = ({ post }) => {
+const PostComponent: React.FC<{ post: Post }> = ({ post }) => {
   return (
     <Box m="8">
       <VStack
