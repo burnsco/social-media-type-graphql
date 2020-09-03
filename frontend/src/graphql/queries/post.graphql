@@ -1,0 +1,31 @@
+query OnePost($postId: Float) {
+  post(postId: $postId) {
+    id
+    createdAt
+    updatedAt
+    title
+    author {
+      username
+    }
+    comments {
+      id
+      createdAt
+      updatedAt
+      body
+      createdBy {
+        username
+      }
+    }
+    category {
+      id
+      name
+    }
+    votes {
+      id
+      value
+      castBy {
+        username
+      }
+    }
+  }
+}

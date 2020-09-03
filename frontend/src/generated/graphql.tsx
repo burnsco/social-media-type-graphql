@@ -14,56 +14,62 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   categories?: Maybe<Array<Category>>;
+  post?: Maybe<Post>;
   posts?: Maybe<Array<Post>>;
   me?: Maybe<User>;
   users?: Maybe<Array<User>>;
 };
 
+
+export type QueryPostArgs = {
+  postId?: Maybe<Scalars['Float']>;
+};
+
 export type Category = {
   __typename?: 'Category';
-  id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  name: Scalars['String'];
+  id?: Maybe<Scalars['Float']>;
+  createdAt?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type Post = {
   __typename?: 'Post';
-  id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  title: Scalars['String'];
+  id?: Maybe<Scalars['Float']>;
+  createdAt?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   author: User;
-  category: Category;
-  votes: Array<Vote>;
-  comments: Array<Comment>;
+  category?: Maybe<Category>;
+  votes?: Maybe<Array<Vote>>;
+  comments?: Maybe<Array<Comment>>;
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  email: Scalars['String'];
-  username: Scalars['String'];
+  id?: Maybe<Scalars['Float']>;
+  createdAt?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
 };
 
 export type Vote = {
   __typename?: 'Vote';
-  id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  value: Scalars['Int'];
-  castBy: User;
+  id?: Maybe<Scalars['Float']>;
+  createdAt?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['Float']>;
+  castBy?: Maybe<User>;
 };
 
 export type Comment = {
   __typename?: 'Comment';
-  id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  body: Scalars['String'];
-  createdBy: User;
+  id?: Maybe<Scalars['Float']>;
+  createdAt?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']>;
+  createdBy?: Maybe<User>;
 };
 
 export type Mutation = {
@@ -147,6 +153,40 @@ export type MeQuery = (
   )> }
 );
 
+export type OnePostQueryVariables = Exact<{
+  postId?: Maybe<Scalars['Float']>;
+}>;
+
+
+export type OnePostQuery = (
+  { __typename?: 'Query' }
+  & { post?: Maybe<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ), comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+      & { createdBy?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      )> }
+    )>>, category?: Maybe<(
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
+    )>, votes?: Maybe<Array<(
+      { __typename?: 'Vote' }
+      & Pick<Vote, 'id' | 'value'>
+      & { castBy?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      )> }
+    )>> }
+  )> }
+);
+
 export type AllPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -158,24 +198,24 @@ export type AllPostsQuery = (
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'username'>
-    ), comments: Array<(
+    ), comments?: Maybe<Array<(
       { __typename?: 'Comment' }
       & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-      & { createdBy: (
+      & { createdBy?: Maybe<(
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      ) }
-    )>, category: (
+      )> }
+    )>>, category?: Maybe<(
       { __typename?: 'Category' }
       & Pick<Category, 'id' | 'name'>
-    ), votes: Array<(
+    )>, votes?: Maybe<Array<(
       { __typename?: 'Vote' }
       & Pick<Vote, 'id' | 'value'>
-      & { castBy: (
+      & { castBy?: Maybe<(
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      ) }
-    )> }
+      )> }
+    )>> }
   )>> }
 );
 
@@ -257,6 +297,65 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const OnePostDocument = gql`
+    query OnePost($postId: Float) {
+  post(postId: $postId) {
+    id
+    createdAt
+    updatedAt
+    title
+    author {
+      username
+    }
+    comments {
+      id
+      createdAt
+      updatedAt
+      body
+      createdBy {
+        username
+      }
+    }
+    category {
+      id
+      name
+    }
+    votes {
+      id
+      value
+      castBy {
+        username
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useOnePostQuery__
+ *
+ * To run a query within a React component, call `useOnePostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOnePostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnePostQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useOnePostQuery(baseOptions?: Apollo.QueryHookOptions<OnePostQuery, OnePostQueryVariables>) {
+        return Apollo.useQuery<OnePostQuery, OnePostQueryVariables>(OnePostDocument, baseOptions);
+      }
+export function useOnePostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OnePostQuery, OnePostQueryVariables>) {
+          return Apollo.useLazyQuery<OnePostQuery, OnePostQueryVariables>(OnePostDocument, baseOptions);
+        }
+export type OnePostQueryHookResult = ReturnType<typeof useOnePostQuery>;
+export type OnePostLazyQueryHookResult = ReturnType<typeof useOnePostLazyQuery>;
+export type OnePostQueryResult = Apollo.QueryResult<OnePostQuery, OnePostQueryVariables>;
 export const AllPostsDocument = gql`
     query AllPosts {
   posts {
