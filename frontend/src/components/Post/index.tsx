@@ -8,6 +8,7 @@ const PostComponent: React.FC<{ post: Post }> = ({ post }) => {
       <VStack
         divider={<StackDivider borderColor="gray.200" />}
         spacing={8}
+        minW="100%"
         align="stretch"
       >
         <Box p={5} shadow="md" borderWidth="1px">

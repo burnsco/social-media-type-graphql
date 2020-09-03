@@ -3,7 +3,7 @@ import React from 'react'
 import { useAllPostsQuery } from '../generated/graphql'
 import PostComponent from './Post'
 
-const PostsPageWithData: React.FC = () => {
+const PostsPage: React.FC = () => {
   const { loading, error, data } = useAllPostsQuery()
 
   if (error) {
@@ -25,4 +25,4 @@ const PostsPageWithData: React.FC = () => {
   }
 }
 
-export default PostsPageWithData
+export default PostsPage

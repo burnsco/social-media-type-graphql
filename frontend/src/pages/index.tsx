@@ -2,16 +2,16 @@ import { Box, HStack } from '@chakra-ui/core'
 import React from 'react'
 import Layout from '../components/Layout/Layout'
 import SideMenu from '../components/Layout/SideMenu'
-import { initializeApollo } from '../lib/apolloClient'
-import Posts from '../components/Posts'
+import PostsPage from '../components/PostsPage'
 import { AllPostsDocument } from '../generated/graphql'
+import { initializeApollo } from '../lib/apolloClient'
 
 const Index: React.FC = () => {
   return (
     <Layout>
       <HStack spacing={8}>
         <Box width="70%">
-          <Posts />
+          <PostsPage />
         </Box>
         <SideMenu />
       </HStack>

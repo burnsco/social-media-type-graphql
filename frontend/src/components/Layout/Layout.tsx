@@ -1,6 +1,6 @@
 import React from 'react'
+import { AllCategoriesDocument } from '../../generated/graphql'
 import { initializeApollo } from '../../lib/apolloClient'
-import { SubredditsDocument } from '../src/generated/graphql'
 import Header from './header'
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -16,7 +16,7 @@ export async function getStaticProps() {
   const apolloClient = initializeApollo()
 
   await apolloClient.query({
-    query: SubredditsDocument
+    query: AllCategoriesDocument
   })
 
   const test = apolloClient.cache.extract()

@@ -1,10 +1,10 @@
-import { Box, Link, List, ListIcon, ListItem, Skeleton } from "@chakra-ui/core"
-import NextLink from "next/link"
-import React from "react"
-import { useSubredditsQuery } from "../src/generated/graphql"
+import { Box, Link, List, ListIcon, ListItem, Skeleton } from '@chakra-ui/core'
+import NextLink from 'next/link'
+import React from 'react'
+import { useAllCategoriesQuery } from '../../generated/graphql'
 
 const SideMenu: React.FC = () => {
-  const { data, loading, error } = useSubredditsQuery()
+  const { data, loading, error } = useAllCategoriesQuery()
 
   if (error) return <div>Error loading subreddits.</div>
 
@@ -12,7 +12,7 @@ const SideMenu: React.FC = () => {
     <Skeleton isLoaded={!loading}>
       <Box>
         <List spacing={3}>
-          {data?.subreddits.map(subreddit => {
+          {data?.categories?.map(subreddit => {
             return (
               <ListItem key={`subreddit-${subreddit.id}`}>
                 <ListIcon color="green.500" />

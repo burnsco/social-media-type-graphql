@@ -2,44 +2,40 @@ import { Box, Button, useToast } from '@chakra-ui/core'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { InputField } from '../../components/shared/InputField'
-import { Wrapper } from '../../components/Layout/wrapper'
-import { toErrorMap } from '../../utils/toErrorMap'
-import {
-  MeDocument,
-  MeQuery,
-  useRegister_UserMutation
-} from '../generated/graphql'
+import { Wrapper } from '../components/Layout/wrapper'
+import { InputField } from '../components/shared/InputField'
+import { MeDocument, MeQuery, useRegisterMutation } from '../generated/graphql'
 
 const Register: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
-  const [register] = useRegister_UserMutation()
+  const [register] = useRegisterMutation()
 
   return (
     <Wrapper variant="small">
       <Formik
         initialValues={{ username: '', password: '', email: '' }}
-        onSubmit={async (values, { setErrors }) => {
+        onSubmit={async values => {
           const response = await register({
             variables: {
-              username: values.username,
-              password: values.password,
-              email: values.email
+              data: {
+                username: values.username,
+                password: values.password,
+                email: values.email
+              }
             },
             update: (cache, { data }) => {
               cache.writeQuery<MeQuery>({
                 query: MeDocument,
                 data: {
                   __typename: 'Query',
-                  me: data?.register.user
+                  me: data?.register?.username
                 }
               })
             }
           })
-          if (response.data?.register.errors) {
-            setErrors(toErrorMap(response.data.register.errors))
-          } else if (response.data?.register.user) {
+
+          if (response.data?.register?.username) {
             toast({
               title: 'Account created.',
               description: "We've created your account for you.",
