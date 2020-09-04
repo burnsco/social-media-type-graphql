@@ -1,4 +1,5 @@
 import { ObjectType, Field } from 'type-graphql'
+import { User } from '../../entities/User'
 
 @ObjectType()
 export class MutationResponse {
@@ -8,4 +9,10 @@ export class MutationResponse {
   message!: string
   @Field()
   success!: boolean
+}
+
+@ObjectType()
+export class RegisterResponse extends MutationResponse {
+  @Field()
+  user: User
 }

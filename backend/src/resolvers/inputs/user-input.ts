@@ -4,13 +4,13 @@ import { User } from '../../entities/User'
 @InputType()
 export class RegisterInput implements Partial<User> {
   @Field()
-  email: string
+  email!: string
 
   @Field()
-  username: string
+  username!: string
 
   @Field()
-  password: string
+  password!: string
 }
 
 @InputType()

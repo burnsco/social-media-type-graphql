@@ -1,0 +1,8 @@
+fragment RegisterUser on RegisterResponse {
+  code
+  message
+  success
+  user {
+    ...RegularUser
+  }
+}

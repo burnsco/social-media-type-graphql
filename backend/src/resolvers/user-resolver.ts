@@ -1,18 +1,18 @@
 import { ContextType } from '../types'
-import { Resolver, Query, Ctx, Mutation, Args } from 'type-graphql'
+import { Resolver, Query, Ctx, Mutation, Arg } from 'type-graphql'
 import { User } from '../entities/User'
 import argon2 from 'argon2'
 import { RegisterInput } from './inputs/user-input'
+import { RegisterResponse } from './response/mutation'
 
 @Resolver(() => User)
 export class UserResolver {
   @Query(() => User, { nullable: true })
-  async me(@Ctx() { req, em }: ContextType) {
+  me(@Ctx() { req, em }: ContextType) {
     if (!req.session.userId) {
       return null
     }
-    const user = await em.findOne(User, req.session.userId)
-    return user
+    return em.findOne(User, req.session.userId)
   }
 
   @Query(() => [User], { nullable: true })
@@ -20,18 +20,25 @@ export class UserResolver {
     return em.find(User, {})
   }
 
-  @Mutation(() => User)
+  @Mutation(() => RegisterResponse)
   async register(
-    @Args() { email, username, password }: RegisterInput,
+    @Arg('data') { email, username, password }: RegisterInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<User> {
+  ): Promise<RegisterResponse> {
     const user = em.create(User, {
       email: email,
       username: username,
       password: await argon2.hash(password)
     })
     await em.persistAndFlush(user)
+
     req.session!.userId = user.id
-    return user
+
+    return {
+      code: '200',
+      message: 'User successfully registered.',
+      success: true,
+      user
+    }
   }
 }

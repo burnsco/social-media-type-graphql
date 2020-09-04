@@ -1,4 +1,4 @@
-query OnePost($postId: Float) {
+query OnePost($postId: Float!) {
   post(postId: $postId) {
     id
     createdAt

@@ -7,7 +7,8 @@ import {
   Mutation,
   FieldResolver,
   Root,
-  Args
+  Arg,
+  Float
 } from 'type-graphql'
 import { PostInput } from './inputs/post-input'
 import { User } from '../entities/User'
@@ -16,27 +17,23 @@ import { Vote } from '../entities/Vote'
 import { Category } from '../entities/Category'
 import { CommentInput } from './inputs/comment-input'
 import { Comment } from '../entities/Comment'
-import { PostArgs } from './args/post-args'
 
 @Resolver(() => Post)
 export class PostResolver {
   @Query(() => Post, { nullable: true })
-  post(@Args() postId: number, @Ctx() { em }: ContextType) {
+  post(@Arg('postId', () => Float) postId: number, @Ctx() { em }: ContextType) {
     return em.findOne(Post, postId)
   }
 
   @Query(() => [Post], { nullable: true })
-  async posts(
-    @Args() { startIndex, endIndex }: PostArgs,
-    @Ctx() { em }: ContextType
-  ): Promise<Post[] | null> {
+  async posts(@Ctx() { em }: ContextType): Promise<Post[] | null> {
     const posts = await em.find(Post, {})
-    return posts.slice(startIndex, endIndex)
+    return posts
   }
 
   @Mutation(() => Post)
   async createPost(
-    @Args() { title, categoryId }: PostInput,
+    @Arg('data') { title, categoryId }: PostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<Post> {
     const post = em.create(Post, {
@@ -50,7 +47,7 @@ export class PostResolver {
 
   @Mutation(() => Post)
   async createComment(
-    @Args() { body, postId }: CommentInput,
+    @Arg('data') { body, postId }: CommentInput,
     @Ctx() { em, req }: ContextType
   ): Promise<Post> {
     const post = await em.findOne(Post, postId, {
@@ -71,7 +68,7 @@ export class PostResolver {
 
   @Mutation(() => Post)
   async vote(
-    @Args() { postId, value }: VoteInput,
+    @Arg('data') { postId, value }: VoteInput,
     @Ctx() { em, req }: ContextType
   ): Promise<Post> {
     const post = await em.findOne(Post, postId, {

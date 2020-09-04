@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import {
   Box,
   Heading,
@@ -10,10 +10,10 @@ import {
   MenuList,
   MenuItem,
   IconButton
-} from '@chakra-ui/core'
-import NextLink from 'next/link'
-import { useRouter } from 'next/router'
-import { useMeQuery } from '../../generated/graphql'
+} from "@chakra-ui/core"
+import NextLink from "next/link"
+import { useRouter } from "next/router"
+import { useMeQuery } from "../../generated/graphql"
 
 const Header: React.FC = () => {
   const router = useRouter()
@@ -41,22 +41,22 @@ const Header: React.FC = () => {
         <Menu>
           <MenuButton as={Button}>Actions</MenuButton>
           <MenuList>
-            <MenuItem onClick={() => router.push('/create-post')}>
+            <MenuItem onClick={() => router.push("/create-post")}>
               Create Post
             </MenuItem>
-            <MenuItem onClick={() => router.push('/create-subreddit')}>
+            <MenuItem onClick={() => router.push("/create-subreddit")}>
               Create Subreddit
             </MenuItem>
           </MenuList>
         </Menu>
         <Box
-          display={{ block: 'none', md: 'flex' }}
-          width={{ sm: 'full', md: 'auto' }}
+          display={{ block: "none", md: "flex" }}
+          width={{ sm: "full", md: "auto" }}
           alignItems="center"
           justifyContent="space-evenly"
           flexGrow={1}
         >
-          {data && data?.me?.username ? (
+          {data && data.me?.username ? (
             <Menu>
               <NextLink href="/profile">
                 <Link>{data.me.username}</Link>
