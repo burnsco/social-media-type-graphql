@@ -5,10 +5,8 @@ import SideMenu from '../components/Layout/SideMenu'
 import PostsPage from '../components/Post/PostsData'
 import { AllPostsDocument } from '../generated/graphql'
 import { initializeApollo } from '../lib/apolloClient'
-import { test } from '../utils/Schemas'
 
 const Index: React.FC = () => {
-  test()
   return (
     <Layout>
       <HStack border="2px solid blue">
