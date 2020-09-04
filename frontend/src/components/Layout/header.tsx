@@ -12,13 +12,17 @@ import {
 } from '@chakra-ui/core'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { useMeQuery } from '../../generated/graphql'
+import { useLogoutMutation, useMeQuery } from '../../generated/graphql'
 import { RedditLogoLarge } from '../../styles/redditLogos'
 
 const Header: React.FC = () => {
   const router = useRouter()
 
-  const { data, loading } = useMeQuery()
+  const { data, loading } = useMeQuery({
+    ssr: typeof window === 'undefined'
+  })
+
+  const [logout, { client, loading: fetchingLogout }] = useLogoutMutation()
 
   if (loading) return null
 
@@ -76,17 +80,17 @@ const Header: React.FC = () => {
                   </MenuList>
                 </Menu>
 
-                {/* <Button
-                color="red.500"
-                variant="link"
-                isLoading={logoutFetching}
-                onClick={async () => {
-                  await logout()
-                  await client.resetStore()
-                }}
-              >
-                Logout
-              </Button> */}
+                <Button
+                  color="red.500"
+                  variant="link"
+                  isLoading={fetchingLogout}
+                  onClick={async () => {
+                    await logout()
+                    await client.resetStore()
+                  }}
+                >
+                  Logout
+                </Button>
               </Menu>
             ) : (
               <Menu>

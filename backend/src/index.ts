@@ -31,7 +31,7 @@ const main = async () => {
   )
   app.use(
     session({
-      name: 'qid',
+      name: 'rdt',
       store: new redisStore({
         client: redisClient,
         disableTouch: true

@@ -4,7 +4,7 @@ import { User } from '../entities/User'
 import argon2 from 'argon2'
 import { RegisterInput } from './inputs/user-input'
 import { UserResponse } from './response/user-response'
-import { validateUser } from './validation/schemas'
+import { validateUser } from './validation/register-schema'
 
 @Resolver(() => User)
 export class UserResolver {
@@ -46,5 +46,20 @@ export class UserResolver {
     return {
       user
     }
+  }
+
+  @Mutation(() => Boolean)
+  logout(@Ctx() { req, res }: ContextType) {
+    return new Promise(resolve =>
+      req.session.destroy(err => {
+        res.clearCookie('rdt')
+        if (err) {
+          resolve(false)
+          return
+        }
+
+        resolve(true)
+      })
+    )
   }
 }
