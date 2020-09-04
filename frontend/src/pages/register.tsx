@@ -2,7 +2,7 @@ import { Box, Button, useToast } from '@chakra-ui/core'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { Wrapper } from '../components/Layout/wrapper'
+import { Wrapper } from '../components/Layout/Wrapper'
 import { InputField } from '../components/shared/InputField'
 import { MeDocument, MeQuery, useRegisterMutation } from '../generated/graphql'
 

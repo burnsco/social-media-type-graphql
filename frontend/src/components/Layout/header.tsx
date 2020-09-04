@@ -52,6 +52,7 @@ const Header: React.FC = () => {
             </MenuList>
           </Menu>
           <Box
+            ml={5}
             display={{ block: 'none', md: 'flex' }}
             width={{ sm: 'full', md: 'auto' }}
             alignItems="center"
@@ -60,11 +61,8 @@ const Header: React.FC = () => {
           >
             {data && data?.me?.username ? (
               <Menu>
-                <NextLink href="/profile">
-                  <Link>{data.me.username}</Link>
-                </NextLink>
                 <Menu>
-                  <MenuButton as={Button}>User Menu</MenuButton>
+                  <MenuButton as={Button}>{data.me.username}</MenuButton>
                   <MenuList>
                     <MenuItem onClick={() => router.push('/user/profile')}>
                       My Profile

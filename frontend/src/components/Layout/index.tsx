@@ -1,13 +1,14 @@
+import { Box } from '@chakra-ui/core'
 import React from 'react'
 import { AllCategoriesDocument } from '../../generated/graphql'
 import { initializeApollo } from '../../lib/apolloClient'
-import Header from './header'
+import Header from './Header'
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
       <Header />
-      {children}
+      <Box minW="100%">{children}</Box>
     </>
   )
 }

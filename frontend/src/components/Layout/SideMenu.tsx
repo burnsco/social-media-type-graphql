@@ -10,8 +10,13 @@ const SideMenu: React.FC = () => {
 
   return (
     <Skeleton isLoaded={!loading}>
-      <Box>
-        <List spacing={3}>
+      <Box minH="500px">
+        <List
+          border="1px solid #ebedf0"
+          backgroundColor="#fff"
+          minH="100%"
+          spacing={3}
+        >
           {data?.categories?.map(subreddit => {
             return (
               <ListItem key={`subreddit-${subreddit.id}`}>

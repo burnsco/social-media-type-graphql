@@ -1,0 +1,6 @@
+mutation createSubreddit($data: CategoryInput!) {
+  createCategory(data: $data) {
+    id
+    name
+  }
+}
