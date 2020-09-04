@@ -8,7 +8,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
       <Header />
-      <Box minW="100%">{children}</Box>
+      <Box maxWidth="1200px" mx={[2, 4, 6]}>
+        {children}
+      </Box>
     </>
   )
 }

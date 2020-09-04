@@ -3,7 +3,6 @@ import {
   Box,
   Heading,
   Flex,
-  Link,
   Button,
   Menu,
   MenuButton,
@@ -12,6 +11,7 @@ import {
 } from '@chakra-ui/core'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
+import { ColorModeToggle } from './ColorModeToggle'
 import { useLogoutMutation, useMeQuery } from '../../generated/graphql'
 import { RedditLogoLarge } from '../../styles/redditLogos'
 
@@ -27,15 +27,17 @@ const Header: React.FC = () => {
   if (loading) return null
 
   return (
-    <Box
+    <Flex
       as="header"
-      p={2}
-      backgroundColor="#fff"
-      boxShadow="0 4px 12px rgba(0, 0, 0, 0.05)"
-      borderBottom="1px solid #ebedf0"
+      justifyContent="space-between"
+      alignItems="center"
+      mb={8}
+      borderBottom="1px"
+      borderBottomStyle="solid"
+      borderBottomColor="gray.100"
       height="60px"
     >
-      <Flex w="100%" h="100%" as="nav" align="center" wrap="wrap">
+      <Flex w="100%" as="nav" justify="space-between" alignItems="center">
         <Flex mr={5}>
           <Heading as="h1" size="lg">
             <NextLink href="/">
@@ -44,27 +46,27 @@ const Header: React.FC = () => {
           </Heading>
         </Flex>
         <Flex justify="end">
-          <Menu>
-            <MenuButton as={Button}>Create</MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => router.push('/create-post')}>
-                Post
-              </MenuItem>
-              <MenuItem onClick={() => router.push('/create-subreddit')}>
-                Subreddit
-              </MenuItem>
-            </MenuList>
-          </Menu>
           <Box
             ml={5}
-            display={{ block: 'none', md: 'flex' }}
-            width={{ sm: 'full', md: 'auto' }}
+            display="flex"
+            width="auto"
             alignItems="center"
             justifyContent="space-evenly"
             flexGrow={1}
           >
             {data && data?.me?.username ? (
               <Menu>
+                <Menu>
+                  <MenuButton as={Button}>Create</MenuButton>
+                  <MenuList>
+                    <MenuItem onClick={() => router.push('/create-post')}>
+                      Post
+                    </MenuItem>
+                    <MenuItem onClick={() => router.push('/create-subreddit')}>
+                      Subreddit
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
                 <Menu>
                   <MenuButton as={Button}>{data.me.username}</MenuButton>
                   <MenuList>
@@ -81,6 +83,7 @@ const Header: React.FC = () => {
                 </Menu>
 
                 <Button
+                  mr={2}
                   color="red.500"
                   variant="link"
                   isLoading={fetchingLogout}
@@ -94,23 +97,28 @@ const Header: React.FC = () => {
               </Menu>
             ) : (
               <Menu>
-                <NextLink href="/register">
-                  <Link>Register</Link>
-                </NextLink>
-
-                <NextLink href="/login">
-                  <Link>Login</Link>
-                </NextLink>
-
-                <NextLink href="/posts">
-                  <Link>Posts</Link>
-                </NextLink>
+                <MenuButton
+                  variant="outline"
+                  mr={2}
+                  as={Button}
+                  onClick={() => router.push('/register')}
+                >
+                  Register
+                </MenuButton>
+                <MenuButton
+                  mr={2}
+                  as={Button}
+                  onClick={() => router.push('/login')}
+                >
+                  Login
+                </MenuButton>
+                <ColorModeToggle mr={2} />
               </Menu>
             )}
           </Box>
         </Flex>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 

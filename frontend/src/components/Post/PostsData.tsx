@@ -1,4 +1,4 @@
-import { Box, Skeleton, Spinner } from '@chakra-ui/core'
+import { Skeleton, Spinner, Stack } from '@chakra-ui/core'
 import React from 'react'
 import { useAllPostsQuery } from '../../generated/graphql'
 import PostComponent from '.'
@@ -12,13 +12,13 @@ const PostsPageWithData: React.FC = () => {
 
   if ((data && data.posts !== null) || 'undefined') {
     return (
-      <Box>
-        <Skeleton startColor="pink" endColor="orange" isLoaded={!loading}>
+      <Skeleton startColor="pink" endColor="orange" isLoaded={!loading}>
+        <Stack spacing={8}>
           {data?.posts?.map(post => (
             <PostComponent key={`post-${post.id}`} post={post} />
           ))}
-        </Skeleton>
-      </Box>
+        </Stack>
+      </Skeleton>
     )
   } else {
     return <Spinner />
