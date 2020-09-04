@@ -3,6 +3,8 @@ import { Resolver, Query, Ctx, Mutation, Arg } from 'type-graphql'
 import { User } from '../entities/User'
 import argon2 from 'argon2'
 import { RegisterInput } from './inputs/user-input'
+import { UserResponse } from './response/user-response'
+import { validateUser } from './validation/schemas'
 
 @Resolver(() => User)
 export class UserResolver {
@@ -20,18 +22,29 @@ export class UserResolver {
     return em.find(User, {})
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   async register(
-    @Arg('data') { email, username, password }: RegisterInput,
+    @Arg('data') data: RegisterInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<User> {
+  ): Promise<UserResponse> {
+    const errors = await validateUser(data)
+    if (errors !== null) {
+      return {
+        errors
+      }
+    }
+
     const user = em.create(User, {
-      email: email,
-      username: username,
-      password: await argon2.hash(password)
+      email: data.email,
+      username: data.username,
+      password: await argon2.hash(data.password)
     })
     await em.persistAndFlush(user)
+
     req.session!.userId = user.id
-    return user
+
+    return {
+      user
+    }
   }
 }

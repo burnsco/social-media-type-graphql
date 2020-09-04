@@ -1,5 +1,1 @@
-mutation createVote($data: VoteInput!) {
-  vote(data: $data) {
-    id
-  }
-}
+# 

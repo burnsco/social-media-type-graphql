@@ -22,7 +22,7 @@ export type Query = {
 
 
 export type QueryPostArgs = {
-  postId?: Maybe<Scalars['Float']>;
+  postId: Scalars['Float'];
 };
 
 export type Category = {
@@ -78,7 +78,7 @@ export type Mutation = {
   createPost: Post;
   createComment: Post;
   vote: Post;
-  register: User;
+  register: UserResponse;
 };
 
 
@@ -98,7 +98,7 @@ export type MutationCreateCommentArgs = {
 
 
 export type MutationVoteArgs = {
-  vote: VoteInput;
+  data: VoteInput;
 };
 
 
@@ -125,11 +125,55 @@ export type VoteInput = {
   value: Scalars['Int'];
 };
 
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type RegisterInput = {
   email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
 };
+
+export type ErrorDetailsFragment = (
+  { __typename?: 'FieldError' }
+  & Pick<FieldError, 'field' | 'message'>
+);
+
+export type ErrorsAndUserDetailsFragment = (
+  { __typename?: 'UserResponse' }
+  & { errors?: Maybe<Array<(
+    { __typename?: 'FieldError' }
+    & ErrorDetailsFragment
+  )>>, user?: Maybe<(
+    { __typename?: 'User' }
+    & UserDetailsFragment
+  )> }
+);
+
+export type UserDetailsFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username'>
+);
+
+export type UserMutationResponseFragment = (
+  { __typename?: 'UserResponse' }
+  & { errors?: Maybe<Array<(
+    { __typename?: 'FieldError' }
+    & ErrorDetailsFragment
+  )>>, user?: Maybe<(
+    { __typename?: 'User' }
+    & UserDetailsFragment
+  )> }
+);
 
 export type RegisterMutationVariables = Exact<{
   data: RegisterInput;
@@ -139,8 +183,8 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
+    { __typename?: 'UserResponse' }
+    & UserMutationResponseFragment
   ) }
 );
 
@@ -166,12 +210,12 @@ export type MeQuery = (
   )> }
 );
 
-export type OnePostQueryVariables = Exact<{
-  postId?: Maybe<Scalars['Float']>;
+export type SinglePostQueryVariables = Exact<{
+  postId: Scalars['Float'];
 }>;
 
 
-export type OnePostQuery = (
+export type SinglePostQuery = (
   { __typename?: 'Query' }
   & { post?: Maybe<(
     { __typename?: 'Post' }
@@ -243,15 +287,47 @@ export type AllUsersQuery = (
   )>> }
 );
 
-
+export const ErrorDetailsFragmentDoc = gql`
+    fragment ErrorDetails on FieldError {
+  field
+  message
+}
+    `;
+export const UserDetailsFragmentDoc = gql`
+    fragment UserDetails on User {
+  id
+  username
+}
+    `;
+export const ErrorsAndUserDetailsFragmentDoc = gql`
+    fragment ErrorsAndUserDetails on UserResponse {
+  errors {
+    ...ErrorDetails
+  }
+  user {
+    ...UserDetails
+  }
+}
+    ${ErrorDetailsFragmentDoc}
+${UserDetailsFragmentDoc}`;
+export const UserMutationResponseFragmentDoc = gql`
+    fragment UserMutationResponse on UserResponse {
+  errors {
+    ...ErrorDetails
+  }
+  user {
+    ...UserDetails
+  }
+}
+    ${ErrorDetailsFragmentDoc}
+${UserDetailsFragmentDoc}`;
 export const RegisterDocument = gql`
     mutation Register($data: RegisterInput!) {
   register(data: $data) {
-    id
-    username
+    ...UserMutationResponse
   }
 }
-    `;
+    ${UserMutationResponseFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -343,8 +419,8 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const OnePostDocument = gql`
-    query OnePost($postId: Float) {
+export const SinglePostDocument = gql`
+    query SinglePost($postId: Float!) {
   post(postId: $postId) {
     id
     createdAt
@@ -378,30 +454,30 @@ export const OnePostDocument = gql`
     `;
 
 /**
- * __useOnePostQuery__
+ * __useSinglePostQuery__
  *
- * To run a query within a React component, call `useOnePostQuery` and pass it any options that fit your needs.
- * When your component renders, `useOnePostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useSinglePostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSinglePostQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useOnePostQuery({
+ * const { data, loading, error } = useSinglePostQuery({
  *   variables: {
  *      postId: // value for 'postId'
  *   },
  * });
  */
-export function useOnePostQuery(baseOptions?: Apollo.QueryHookOptions<OnePostQuery, OnePostQueryVariables>) {
-        return Apollo.useQuery<OnePostQuery, OnePostQueryVariables>(OnePostDocument, baseOptions);
+export function useSinglePostQuery(baseOptions?: Apollo.QueryHookOptions<SinglePostQuery, SinglePostQueryVariables>) {
+        return Apollo.useQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, baseOptions);
       }
-export function useOnePostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OnePostQuery, OnePostQueryVariables>) {
-          return Apollo.useLazyQuery<OnePostQuery, OnePostQueryVariables>(OnePostDocument, baseOptions);
+export function useSinglePostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SinglePostQuery, SinglePostQueryVariables>) {
+          return Apollo.useLazyQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, baseOptions);
         }
-export type OnePostQueryHookResult = ReturnType<typeof useOnePostQuery>;
-export type OnePostLazyQueryHookResult = ReturnType<typeof useOnePostLazyQuery>;
-export type OnePostQueryResult = Apollo.QueryResult<OnePostQuery, OnePostQueryVariables>;
+export type SinglePostQueryHookResult = ReturnType<typeof useSinglePostQuery>;
+export type SinglePostLazyQueryHookResult = ReturnType<typeof useSinglePostLazyQuery>;
+export type SinglePostQueryResult = Apollo.QueryResult<SinglePostQuery, SinglePostQueryVariables>;
 export const AllPostsDocument = gql`
     query AllPosts {
   posts {

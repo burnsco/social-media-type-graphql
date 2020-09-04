@@ -20,7 +20,7 @@ import { Comment } from '../entities/Comment'
 @Resolver(() => Post)
 export class PostResolver {
   @Query(() => Post, { nullable: true })
-  post(@Arg('data') postId: number, @Ctx() { em }: ContextType) {
+  post(@Arg('postId') postId: number, @Ctx() { em }: ContextType) {
     return em.findOne(Post, postId)
   }
 

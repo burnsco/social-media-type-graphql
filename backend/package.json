@@ -20,6 +20,7 @@
     "@types/nodemailer": "^6.4.0",
     "@types/redis": "^2.8.27",
     "@types/uuid": "^8.3.0",
+    "@types/yup": "^0.29.6",
     "gen-env-types": "^1.0.3",
     "nodemon": "^2.0.4",
     "ts-node": "^9.0.0",
@@ -45,7 +46,8 @@
     "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.0.0",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "yup": "^0.29.3"
   },
   "mikro-orm": {
     "useTsNode": true,

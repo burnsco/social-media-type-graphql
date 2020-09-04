@@ -1,6 +1,5 @@
-mutation createSubreddit($data: CategoryInput!) {
-  createCategory(data: $data) {
-    id
-    name
-  }
-}
+# mutation createSubreddit($data: CategoryInput!) {
+#   createCategory(data: $data) {
+#     ...SubredditMutationResponse
+#   }
+# }

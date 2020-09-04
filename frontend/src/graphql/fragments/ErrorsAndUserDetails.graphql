@@ -1,0 +1,8 @@
+fragment ErrorsAndUserDetails on UserResponse {
+  errors {
+    ...ErrorDetails
+  }
+  user {
+    ...UserDetails
+  }
+}

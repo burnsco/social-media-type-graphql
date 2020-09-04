@@ -5,6 +5,7 @@ import React from 'react'
 import { Wrapper } from '../components/Layout/Wrapper'
 import { InputField } from '../components/shared/InputField'
 import { MeDocument, MeQuery, useRegisterMutation } from '../generated/graphql'
+import { RegisterSchema } from '../utils/Schemas'
 
 const Register: React.FC = () => {
   const toast = useToast()
@@ -15,6 +16,7 @@ const Register: React.FC = () => {
     <Wrapper variant="small">
       <Formik
         initialValues={{ username: '', password: '', email: '' }}
+        validationSchema={RegisterSchema}
         onSubmit={async values => {
           const response = await register({
             variables: {
@@ -29,13 +31,13 @@ const Register: React.FC = () => {
                 query: MeDocument,
                 data: {
                   __typename: 'Query',
-                  me: data?.register?.username
+                  me: data?.register.user
                 }
               })
             }
           })
 
-          if (response.data?.register?.username) {
+          if (response.data?.register?.user) {
             toast({
               title: 'Account created.',
               description: "We've created your account for you.",
@@ -44,6 +46,8 @@ const Register: React.FC = () => {
               isClosable: true
             })
             router.push('/')
+          } else if (response.data?.register.errors) {
+            console.log(response.data?.register.errors)
           }
         }}
       >

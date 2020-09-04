@@ -3,9 +3,9 @@ import { Button, Spinner } from '@chakra-ui/core'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { InputField } from '../../../components/InputField'
-import Layout from '../../../components/Layout'
-import { Wrapper } from '../../../components/wrapper'
+import Layout from '../components/Layout'
+import { Wrapper } from '../components/Layout/Wrapper'
+import { InputField } from '../components/shared/InputField'
 import { useCreatePostMutation, useMeQuery } from '../generated/graphql'
 
 const CreatePost: React.FC = () => {
@@ -31,8 +31,10 @@ const CreatePost: React.FC = () => {
             onSubmit={async values => {
               await createPost({
                 variables: {
-                  title: values.title,
-                  subredditId: 3
+                  data: {
+                    title: values.title,
+                    categoryId: 3
+                  }
                 },
                 update: (cache, { data }) => {
                   cache.modify({
