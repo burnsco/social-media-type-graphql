@@ -1,5 +1,4 @@
 import { theme as chakraTheme } from '@chakra-ui/core'
-import { headerIcons } from './headerIcons'
 
 const fonts = { ...chakraTheme.fonts, mono: `'Menlo', monospace` }
 
@@ -12,10 +11,7 @@ const theme = {
     black: '#16161D'
   },
   fonts,
-  breakpoints,
-  icons: {
-    ...headerIcons
-  }
+  breakpoints
 }
 
 export default theme

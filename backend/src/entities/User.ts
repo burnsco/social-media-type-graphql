@@ -2,14 +2,14 @@ import { Entity, Property } from '@mikro-orm/core'
 import { Field, ObjectType } from 'type-graphql'
 import { BaseEntity } from './BaseEntity'
 
-@ObjectType()
 @Entity()
+@ObjectType()
 export class User extends BaseEntity {
-  @Field()
+  @Field({ nullable: true })
   @Property({ unique: true })
   email: string
 
-  @Field()
+  @Field({ nullable: true })
   @Property({ unique: true })
   username: string
 

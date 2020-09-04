@@ -1,5 +1,6 @@
 query AllUsers {
   users {
-    ...RegularUser
+    id
+    username
   }
 }

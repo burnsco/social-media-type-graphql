@@ -2,7 +2,7 @@ import { Box, HStack } from '@chakra-ui/core'
 import React from 'react'
 import Layout from '../components/Layout/Layout'
 import SideMenu from '../components/Layout/SideMenu'
-import PostsPage from '../components/Post/PostsPage'
+import PostsPage from '../components/Posts/PostsData'
 import { AllPostsDocument } from '../generated/graphql'
 import { initializeApollo } from '../lib/apolloClient'
 

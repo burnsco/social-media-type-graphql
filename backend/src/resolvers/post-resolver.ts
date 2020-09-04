@@ -7,8 +7,7 @@ import {
   Mutation,
   FieldResolver,
   Root,
-  Arg,
-  Float
+  Arg
 } from 'type-graphql'
 import { PostInput } from './inputs/post-input'
 import { User } from '../entities/User'
@@ -21,7 +20,7 @@ import { Comment } from '../entities/Comment'
 @Resolver(() => Post)
 export class PostResolver {
   @Query(() => Post, { nullable: true })
-  post(@Arg('postId', () => Float) postId: number, @Ctx() { em }: ContextType) {
+  post(@Arg('data') postId: number, @Ctx() { em }: ContextType) {
     return em.findOne(Post, postId)
   }
 

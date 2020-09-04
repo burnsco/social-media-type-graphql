@@ -1,7 +1,7 @@
-import { Box, Link, List, ListIcon, ListItem, Skeleton } from "@chakra-ui/core"
-import NextLink from "next/link"
-import React from "react"
-import { useAllCategoriesQuery } from "../../generated/graphql"
+import { Box, Link, List, ListIcon, ListItem, Skeleton } from '@chakra-ui/core'
+import NextLink from 'next/link'
+import React from 'react'
+import { useAllCategoriesQuery } from '../../generated/graphql'
 
 const SideMenu: React.FC = () => {
   const { data, loading, error } = useAllCategoriesQuery()

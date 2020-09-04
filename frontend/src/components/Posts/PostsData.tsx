@@ -1,9 +1,9 @@
-import React from 'react'
 import { Box, Skeleton, Spinner } from '@chakra-ui/core'
+import React from 'react'
 import { useAllPostsQuery } from '../../generated/graphql'
-import PostComponent from './PostsPage'
+import PostComponent from '.'
 
-const PostsPage: React.FC = () => {
+const PostsPageWithData: React.FC = () => {
   const { loading, error, data } = useAllPostsQuery()
 
   if (error) {
@@ -25,4 +25,4 @@ const PostsPage: React.FC = () => {
   }
 }
 
-export default PostsPage
+export default PostsPageWithData

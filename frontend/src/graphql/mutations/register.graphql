@@ -1,5 +1,6 @@
 mutation Register($data: RegisterInput!) {
   register(data: $data) {
-    ...RegisterUser
+    id
+    username
   }
 }

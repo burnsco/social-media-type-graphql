@@ -22,7 +22,7 @@ export type Query = {
 
 
 export type QueryPostArgs = {
-  postId: Scalars['Float'];
+  postId?: Maybe<Scalars['Float']>;
 };
 
 export type Category = {
@@ -50,8 +50,8 @@ export type User = {
   id?: Maybe<Scalars['Float']>;
   createdAt?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['String']>;
-  email: Scalars['String'];
-  username: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
 };
 
 export type Vote = {
@@ -78,7 +78,7 @@ export type Mutation = {
   createPost: Post;
   createComment: Post;
   vote: Post;
-  register: RegisterResponse;
+  register: User;
 };
 
 
@@ -98,7 +98,7 @@ export type MutationCreateCommentArgs = {
 
 
 export type MutationVoteArgs = {
-  data: VoteInput;
+  vote: VoteInput;
 };
 
 
@@ -125,33 +125,11 @@ export type VoteInput = {
   value: Scalars['Int'];
 };
 
-export type RegisterResponse = {
-  __typename?: 'RegisterResponse';
-  code: Scalars['String'];
-  message: Scalars['String'];
-  success: Scalars['Boolean'];
-  user: User;
-};
-
 export type RegisterInput = {
   email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
 };
-
-export type RegisterUserFragment = (
-  { __typename?: 'RegisterResponse' }
-  & Pick<RegisterResponse, 'code' | 'message' | 'success'>
-  & { user: (
-    { __typename?: 'User' }
-    & RegularUserFragment
-  ) }
-);
-
-export type RegularUserFragment = (
-  { __typename?: 'User' }
-  & Pick<User, 'id' | 'username'>
-);
 
 export type RegisterMutationVariables = Exact<{
   data: RegisterInput;
@@ -161,8 +139,8 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register: (
-    { __typename?: 'RegisterResponse' }
-    & RegisterUserFragment
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
   ) }
 );
 
@@ -184,12 +162,12 @@ export type MeQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & RegularUserFragment
+    & Pick<User, 'id' | 'username'>
   )> }
 );
 
 export type OnePostQueryVariables = Exact<{
-  postId: Scalars['Float'];
+  postId?: Maybe<Scalars['Float']>;
 }>;
 
 
@@ -261,33 +239,19 @@ export type AllUsersQuery = (
   { __typename?: 'Query' }
   & { users?: Maybe<Array<(
     { __typename?: 'User' }
-    & RegularUserFragment
+    & Pick<User, 'id' | 'username'>
   )>> }
 );
 
-export const RegularUserFragmentDoc = gql`
-    fragment RegularUser on User {
-  id
-  username
-}
-    `;
-export const RegisterUserFragmentDoc = gql`
-    fragment RegisterUser on RegisterResponse {
-  code
-  message
-  success
-  user {
-    ...RegularUser
-  }
-}
-    ${RegularUserFragmentDoc}`;
+
 export const RegisterDocument = gql`
     mutation Register($data: RegisterInput!) {
   register(data: $data) {
-    ...RegisterUser
+    id
+    username
   }
 }
-    ${RegisterUserFragmentDoc}`;
+    `;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -349,10 +313,11 @@ export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, Al
 export const MeDocument = gql`
     query Me {
   me {
-    ...RegularUser
+    id
+    username
   }
 }
-    ${RegularUserFragmentDoc}`;
+    `;
 
 /**
  * __useMeQuery__
@@ -379,7 +344,7 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const OnePostDocument = gql`
-    query OnePost($postId: Float!) {
+    query OnePost($postId: Float) {
   post(postId: $postId) {
     id
     createdAt
@@ -498,10 +463,11 @@ export type AllPostsQueryResult = Apollo.QueryResult<AllPostsQuery, AllPostsQuer
 export const AllUsersDocument = gql`
     query AllUsers {
   users {
-    ...RegularUser
+    id
+    username
   }
 }
-    ${RegularUserFragmentDoc}`;
+    `;
 
 /**
  * __useAllUsersQuery__
