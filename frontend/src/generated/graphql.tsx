@@ -487,6 +487,9 @@ export function useAllCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type AllCategoriesQueryHookResult = ReturnType<typeof useAllCategoriesQuery>;
 export type AllCategoriesLazyQueryHookResult = ReturnType<typeof useAllCategoriesLazyQuery>;
 export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, AllCategoriesQueryVariables>;
+export function refetchAllCategoriesQuery(variables?: AllCategoriesQueryVariables) {
+      return { query: AllCategoriesDocument, variables: variables }
+    }
 export const MeDocument = gql`
     query Me {
   me {
@@ -520,6 +523,9 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export function refetchMeQuery(variables?: MeQueryVariables) {
+      return { query: MeDocument, variables: variables }
+    }
 export const SinglePostDocument = gql`
     query SinglePost($postId: Float!) {
   post(postId: $postId) {
@@ -579,6 +585,9 @@ export function useSinglePostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type SinglePostQueryHookResult = ReturnType<typeof useSinglePostQuery>;
 export type SinglePostLazyQueryHookResult = ReturnType<typeof useSinglePostLazyQuery>;
 export type SinglePostQueryResult = Apollo.QueryResult<SinglePostQuery, SinglePostQueryVariables>;
+export function refetchSinglePostQuery(variables?: SinglePostQueryVariables) {
+      return { query: SinglePostDocument, variables: variables }
+    }
 export const AllPostsDocument = gql`
     query AllPosts($offset: Int, $limit: Int) {
   posts(offset: $offset, limit: $limit) {
@@ -639,6 +648,9 @@ export function useAllPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<A
 export type AllPostsQueryHookResult = ReturnType<typeof useAllPostsQuery>;
 export type AllPostsLazyQueryHookResult = ReturnType<typeof useAllPostsLazyQuery>;
 export type AllPostsQueryResult = Apollo.QueryResult<AllPostsQuery, AllPostsQueryVariables>;
+export function refetchAllPostsQuery(variables?: AllPostsQueryVariables) {
+      return { query: AllPostsDocument, variables: variables }
+    }
 export const PostsByCategoryDocument = gql`
     query PostsByCategory($category: String!) {
   postsByCategory(category: $category) {
@@ -698,6 +710,9 @@ export function usePostsByCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type PostsByCategoryQueryHookResult = ReturnType<typeof usePostsByCategoryQuery>;
 export type PostsByCategoryLazyQueryHookResult = ReturnType<typeof usePostsByCategoryLazyQuery>;
 export type PostsByCategoryQueryResult = Apollo.QueryResult<PostsByCategoryQuery, PostsByCategoryQueryVariables>;
+export function refetchPostsByCategoryQuery(variables?: PostsByCategoryQueryVariables) {
+      return { query: PostsByCategoryDocument, variables: variables }
+    }
 export const AllUsersDocument = gql`
     query AllUsers {
   users {
@@ -731,3 +746,6 @@ export function useAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<A
 export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
 export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;
 export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQueryVariables>;
+export function refetchAllUsersQuery(variables?: AllUsersQueryVariables) {
+      return { query: AllUsersDocument, variables: variables }
+    }

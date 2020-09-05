@@ -1,33 +1,44 @@
-import { Skeleton, Spinner, Stack } from '@chakra-ui/core'
+import { Skeleton, Spinner } from '@chakra-ui/core'
 import React from 'react'
-import PostComponent from '.'
 import { useAllPostsQuery } from '../../generated/graphql'
+import PostsFeed from './PostsFeed'
 
 const PostsPageWithData: React.FC = () => {
-  const { loading, error, data } = useAllPostsQuery({
+  const { loading, error, data, fetchMore, networkStatus } = useAllPostsQuery({
     variables: {
       offset: 0,
       limit: 10
-    }
+    },
+    notifyOnNetworkStatusChange: true
   })
 
   if (error) {
     return <div>error loading posts</div>
   }
 
-  if ((data && data.posts !== null) || 'undefined') {
+  if (data && data.posts) {
     return (
       <Skeleton startColor="pink" endColor="orange" isLoaded={!loading}>
-        <Stack spacing={8}>
-          {data?.posts?.map(post => (
-            <PostComponent key={`post-${post.id}`} post={post} />
-          ))}
-        </Stack>
+        <PostsFeed
+          posts={data?.posts || []}
+          onLoadMore={() =>
+            fetchMore({
+              variables: {
+                offset: data?.posts?.length
+              },
+              updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev
+                return Object.assign({}, prev, {
+                  posts: [...prev.posts, ...fetchMoreResult.posts]
+                })
+              }
+            })
+          }
+        />
       </Skeleton>
     )
-  } else {
-    return <Spinner />
   }
+  return <Spinner />
 }
 
 export default PostsPageWithData

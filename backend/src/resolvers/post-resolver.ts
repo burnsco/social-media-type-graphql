@@ -33,11 +33,17 @@ export class PostResolver {
 
   @Query(() => [Post], { nullable: true })
   async posts(
-    @Args() { startIndex, endIndex }: PostArgs,
+    @Args() data: PostArgs,
     @Ctx() { em }: ContextType
   ): Promise<Post[]> {
-    const posts = await em.find(Post, {})
-    return posts.slice(startIndex, endIndex)
+    const [posts, count] = await em.findAndCount(
+      Post,
+      {},
+      { limit: data.limit, offset: data.offset }
+    )
+    console.log(posts.length)
+    console.log(count)
+    return posts
   }
 
   @Query(() => [Post], { nullable: true })

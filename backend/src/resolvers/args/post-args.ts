@@ -9,7 +9,7 @@ export class PostArgs {
 
   @Field(() => Int, { defaultValue: 5 })
   @Min(1)
-  @Max(50)
+  @Max(500)
   limit: number
 
   // helpers - index calculations
