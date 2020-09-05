@@ -1,5 +1,6 @@
 import {
   Arg,
+  Args,
   Ctx,
   FieldResolver,
   Mutation,
@@ -15,6 +16,7 @@ import { User } from '../entities/User'
 import { Vote } from '../entities/Vote'
 import { ContextType } from '../types'
 import { capitalizeFirstLetter } from '../utils/capitalize'
+import { PostArgs } from './args/post-args'
 import { CommentInput } from './inputs/comment-input'
 import { PostInput } from './inputs/post-input'
 import { VoteInput } from './inputs/vote-input'
@@ -25,17 +27,17 @@ import { VoteMutationResponse } from './response/vote-response'
 @Resolver(() => Post)
 export class PostResolver {
   @Query(() => Post, { nullable: true })
-  post(
-    @Arg('postId') postId: number,
-    @Ctx() { em }: ContextType
-  ): Promise<Post | null> {
+  post(@Arg('postId') postId: number, @Ctx() { em }: ContextType) {
     return em.findOne(Post, postId)
   }
 
   @Query(() => [Post], { nullable: true })
-  async posts(@Ctx() { em }: ContextType): Promise<Post[] | null> {
+  async posts(
+    @Args() { startIndex, endIndex }: PostArgs,
+    @Ctx() { em }: ContextType
+  ): Promise<Post[]> {
     const posts = await em.find(Post, {})
-    return posts
+    return posts.slice(startIndex, endIndex)
   }
 
   @Query(() => [Post], { nullable: true })

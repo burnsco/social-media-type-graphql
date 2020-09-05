@@ -1,11 +1,11 @@
-import { ContextType } from '../types'
-import { Resolver, Query, Ctx, Mutation, Arg } from 'type-graphql'
-import { User } from '../entities/User'
 import argon2 from 'argon2'
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { User } from '../entities/User'
+import { ContextType } from '../types'
 import { RegisterInput } from './inputs/user-input'
+import { LogoutMutationResponse } from './response/logout-response'
 import { UserMutationResponse } from './response/user-response'
 import { validateUser } from './validation/register-schema'
-import { LogoutMutationResponse } from './response/logout-response'
 
 @Resolver(() => User)
 export class UserResolver {

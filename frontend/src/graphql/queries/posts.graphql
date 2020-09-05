@@ -1,5 +1,5 @@
-query AllPosts {
-  posts {
+query AllPosts($offset: Int, $limit: Int) {
+  posts(offset: $offset, limit: $limit) {
     id
     createdAt
     updatedAt

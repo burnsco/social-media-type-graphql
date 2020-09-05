@@ -1,4 +1,4 @@
-import { ObjectType, Field } from 'type-graphql'
+import { Field, ObjectType } from 'type-graphql'
 import { Comment } from '../../entities/Comment'
 import { MutationResponse } from './mutation-response'
 

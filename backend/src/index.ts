@@ -1,10 +1,10 @@
-import path from 'path'
 import { MikroORM } from '@mikro-orm/core'
 import { ApolloServer } from 'apollo-server-express'
 import connectRedis from 'connect-redis'
 import cors from 'cors'
 import express from 'express'
 import session from 'express-session'
+import path from 'path'
 import redis from 'redis'
 import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
@@ -20,6 +20,7 @@ const main = async () => {
   const orm = await MikroORM.init(MikroConfig)
   await orm.getMigrator().up()
 
+  console.log('Starting express...')
   const app = express()
 
   console.log('Initializing redis store/client...')

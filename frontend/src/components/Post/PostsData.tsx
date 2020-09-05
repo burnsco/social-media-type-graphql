@@ -1,10 +1,15 @@
 import { Skeleton, Spinner, Stack } from '@chakra-ui/core'
 import React from 'react'
-import { useAllPostsQuery } from '../../generated/graphql'
 import PostComponent from '.'
+import { useAllPostsQuery } from '../../generated/graphql'
 
 const PostsPageWithData: React.FC = () => {
-  const { loading, error, data } = useAllPostsQuery()
+  const { loading, error, data } = useAllPostsQuery({
+    variables: {
+      offset: 0,
+      limit: 10
+    }
+  })
 
   if (error) {
     return <div>error loading posts</div>

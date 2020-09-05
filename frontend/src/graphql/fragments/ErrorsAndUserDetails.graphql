@@ -1,4 +1,4 @@
-fragment ErrorsAndUserDetails on UserResponse {
+fragment ErrorsAndUserDetails on UserMutationResponse {
   errors {
     ...ErrorDetails
   }

@@ -1,25 +1,22 @@
-import { Min, Max } from 'class-validator'
-import { Field, Int, ArgsType } from 'type-graphql'
+import { Max, Min } from 'class-validator'
+import { ArgsType, Field, Int } from 'type-graphql'
 
 @ArgsType()
 export class PostArgs {
-  @Field(() => Int, { nullable: true })
-  postId?: number
-
   @Field(() => Int, { defaultValue: 0 })
   @Min(0)
-  skip: number
+  offset: number
 
-  @Field(() => Int)
+  @Field(() => Int, { defaultValue: 5 })
   @Min(1)
   @Max(50)
-  take = 3
+  limit: number
 
   // helpers - index calculations
   get startIndex(): number {
-    return this.skip
+    return this.offset
   }
   get endIndex(): number {
-    return this.skip + this.take
+    return this.offset + this.limit
   }
 }

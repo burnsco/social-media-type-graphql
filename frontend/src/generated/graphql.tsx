@@ -27,65 +27,71 @@ export type QueryPostArgs = {
 };
 
 
+export type QueryPostsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
 export type QueryPostsByCategoryArgs = {
   category: Scalars['String'];
 };
 
 export type Category = {
   __typename?: 'Category';
-  id?: Maybe<Scalars['Float']>;
-  createdAt?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type Post = {
   __typename?: 'Post';
-  id?: Maybe<Scalars['Float']>;
-  createdAt?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  title: Scalars['String'];
   author: User;
-  category?: Maybe<Category>;
+  category: Category;
   votes?: Maybe<Array<Vote>>;
   comments?: Maybe<Array<Comment>>;
 };
 
 export type User = {
   __typename?: 'User';
-  id?: Maybe<Scalars['Float']>;
-  createdAt?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  email: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type Vote = {
   __typename?: 'Vote';
-  id?: Maybe<Scalars['Float']>;
-  createdAt?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['String']>;
-  value?: Maybe<Scalars['Float']>;
-  castBy?: Maybe<User>;
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  value: Scalars['Float'];
+  castBy: User;
 };
 
 export type Comment = {
   __typename?: 'Comment';
-  id?: Maybe<Scalars['Float']>;
-  createdAt?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['String']>;
-  body?: Maybe<Scalars['String']>;
-  createdBy?: Maybe<User>;
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  body: Scalars['String'];
+  createdBy: User;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createCategory: Category;
-  createPost: Post;
-  createComment: Post;
-  vote: Post;
-  register: UserResponse;
-  logout: Scalars['Boolean'];
+  createCategory: CategoryMutationResponse;
+  createPost: PostMutationResponse;
+  createComment: CommentMutationResponse;
+  vote: VoteMutationResponse;
+  register: UserMutationResponse;
+  logout: LogoutMutationResponse;
 };
 
 
@@ -113,29 +119,10 @@ export type MutationRegisterArgs = {
   data: RegisterInput;
 };
 
-export type CategoryInput = {
-  name: Scalars['String'];
-};
-
-export type PostInput = {
-  title: Scalars['String'];
-  categoryId: Scalars['Int'];
-};
-
-export type CommentInput = {
-  body: Scalars['String'];
-  postId: Scalars['Int'];
-};
-
-export type VoteInput = {
-  postId: Scalars['Int'];
-  value: Scalars['Int'];
-};
-
-export type UserResponse = {
-  __typename?: 'UserResponse';
+export type CategoryMutationResponse = {
+  __typename?: 'CategoryMutationResponse';
   errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<User>;
+  category?: Maybe<Category>;
 };
 
 export type FieldError = {
@@ -144,10 +131,59 @@ export type FieldError = {
   message: Scalars['String'];
 };
 
+export type CategoryInput = {
+  name: Scalars['String'];
+};
+
+export type PostMutationResponse = {
+  __typename?: 'PostMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  post?: Maybe<Post>;
+};
+
+export type PostInput = {
+  title: Scalars['String'];
+  categoryId: Scalars['Int'];
+};
+
+export type CommentMutationResponse = {
+  __typename?: 'CommentMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  comment?: Maybe<Comment>;
+};
+
+export type CommentInput = {
+  body: Scalars['String'];
+  postId: Scalars['Int'];
+};
+
+export type VoteMutationResponse = {
+  __typename?: 'VoteMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  vote?: Maybe<Vote>;
+};
+
+export type VoteInput = {
+  postId: Scalars['Int'];
+  value: Scalars['Int'];
+};
+
+export type UserMutationResponse = {
+  __typename?: 'UserMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
+
 export type RegisterInput = {
   email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type LogoutMutationResponse = {
+  __typename?: 'LogoutMutationResponse';
+  message: Scalars['String'];
+  success: Scalars['Boolean'];
 };
 
 export type ErrorDetailsFragment = (
@@ -156,7 +192,7 @@ export type ErrorDetailsFragment = (
 );
 
 export type ErrorsAndUserDetailsFragment = (
-  { __typename?: 'UserResponse' }
+  { __typename?: 'UserMutationResponse' }
   & { errors?: Maybe<Array<(
     { __typename?: 'FieldError' }
     & ErrorDetailsFragment
@@ -171,23 +207,15 @@ export type UserDetailsFragment = (
   & Pick<User, 'id' | 'username'>
 );
 
-export type UserMutationResponseFragment = (
-  { __typename?: 'UserResponse' }
-  & { errors?: Maybe<Array<(
-    { __typename?: 'FieldError' }
-    & ErrorDetailsFragment
-  )>>, user?: Maybe<(
-    { __typename?: 'User' }
-    & UserDetailsFragment
-  )> }
-);
-
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'logout'>
+  & { logout: (
+    { __typename?: 'LogoutMutationResponse' }
+    & Pick<LogoutMutationResponse, 'message' | 'success'>
+  ) }
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -198,8 +226,8 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register: (
-    { __typename?: 'UserResponse' }
-    & UserMutationResponseFragment
+    { __typename?: 'UserMutationResponse' }
+    & ErrorsAndUserDetailsFragment
   ) }
 );
 
@@ -241,25 +269,28 @@ export type SinglePostQuery = (
     ), comments?: Maybe<Array<(
       { __typename?: 'Comment' }
       & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-      & { createdBy?: Maybe<(
+      & { createdBy: (
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      )> }
-    )>>, category?: Maybe<(
+      ) }
+    )>>, category: (
       { __typename?: 'Category' }
       & Pick<Category, 'id' | 'name'>
-    )>, votes?: Maybe<Array<(
+    ), votes?: Maybe<Array<(
       { __typename?: 'Vote' }
       & Pick<Vote, 'id' | 'value'>
-      & { castBy?: Maybe<(
+      & { castBy: (
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      )> }
+      ) }
     )>> }
   )> }
 );
 
-export type AllPostsQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllPostsQueryVariables = Exact<{
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+}>;
 
 
 export type AllPostsQuery = (
@@ -273,20 +304,20 @@ export type AllPostsQuery = (
     ), comments?: Maybe<Array<(
       { __typename?: 'Comment' }
       & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-      & { createdBy?: Maybe<(
+      & { createdBy: (
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      )> }
-    )>>, category?: Maybe<(
+      ) }
+    )>>, category: (
       { __typename?: 'Category' }
       & Pick<Category, 'id' | 'name'>
-    )>, votes?: Maybe<Array<(
+    ), votes?: Maybe<Array<(
       { __typename?: 'Vote' }
       & Pick<Vote, 'id' | 'value'>
-      & { castBy?: Maybe<(
+      & { castBy: (
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      )> }
+      ) }
     )>> }
   )>> }
 );
@@ -307,20 +338,20 @@ export type PostsByCategoryQuery = (
     ), comments?: Maybe<Array<(
       { __typename?: 'Comment' }
       & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-      & { createdBy?: Maybe<(
+      & { createdBy: (
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      )> }
-    )>>, category?: Maybe<(
+      ) }
+    )>>, category: (
       { __typename?: 'Category' }
       & Pick<Category, 'id' | 'name'>
-    )>, votes?: Maybe<Array<(
+    ), votes?: Maybe<Array<(
       { __typename?: 'Vote' }
       & Pick<Vote, 'id' | 'value'>
-      & { castBy?: Maybe<(
+      & { castBy: (
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      )> }
+      ) }
     )>> }
   )>> }
 );
@@ -349,18 +380,7 @@ export const UserDetailsFragmentDoc = gql`
 }
     `;
 export const ErrorsAndUserDetailsFragmentDoc = gql`
-    fragment ErrorsAndUserDetails on UserResponse {
-  errors {
-    ...ErrorDetails
-  }
-  user {
-    ...UserDetails
-  }
-}
-    ${ErrorDetailsFragmentDoc}
-${UserDetailsFragmentDoc}`;
-export const UserMutationResponseFragmentDoc = gql`
-    fragment UserMutationResponse on UserResponse {
+    fragment ErrorsAndUserDetails on UserMutationResponse {
   errors {
     ...ErrorDetails
   }
@@ -372,7 +392,10 @@ export const UserMutationResponseFragmentDoc = gql`
 ${UserDetailsFragmentDoc}`;
 export const LogoutDocument = gql`
     mutation Logout {
-  logout
+  logout {
+    message
+    success
+  }
 }
     `;
 export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
@@ -402,10 +425,10 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, L
 export const RegisterDocument = gql`
     mutation Register($data: RegisterInput!) {
   register(data: $data) {
-    ...UserMutationResponse
+    ...ErrorsAndUserDetails
   }
 }
-    ${UserMutationResponseFragmentDoc}`;
+    ${ErrorsAndUserDetailsFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -557,8 +580,8 @@ export type SinglePostQueryHookResult = ReturnType<typeof useSinglePostQuery>;
 export type SinglePostLazyQueryHookResult = ReturnType<typeof useSinglePostLazyQuery>;
 export type SinglePostQueryResult = Apollo.QueryResult<SinglePostQuery, SinglePostQueryVariables>;
 export const AllPostsDocument = gql`
-    query AllPosts {
-  posts {
+    query AllPosts($offset: Int, $limit: Int) {
+  posts(offset: $offset, limit: $limit) {
     id
     createdAt
     updatedAt
@@ -602,6 +625,8 @@ export const AllPostsDocument = gql`
  * @example
  * const { data, loading, error } = useAllPostsQuery({
  *   variables: {
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
  *   },
  * });
  */

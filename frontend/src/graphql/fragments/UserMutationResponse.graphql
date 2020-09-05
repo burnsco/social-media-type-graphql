@@ -1,8 +1,0 @@
-fragment UserMutationResponse on UserResponse {
-  errors {
-    ...ErrorDetails
-  }
-  user {
-    ...UserDetails
-  }
-}

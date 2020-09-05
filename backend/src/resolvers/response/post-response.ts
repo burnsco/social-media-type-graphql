@@ -1,4 +1,4 @@
-import { ObjectType, Field } from 'type-graphql'
+import { Field, ObjectType } from 'type-graphql'
 import { Post } from '../../entities/Post'
 import { MutationResponse } from './mutation-response'
 

@@ -7,11 +7,11 @@ import {
 } from '@mikro-orm/core'
 import { ObjectType } from 'type-graphql'
 import { Field } from 'type-graphql/dist/decorators/Field'
-import { User } from './User'
 import { BaseEntity } from './BaseEntity'
-import { Vote } from './Vote'
 import { Category } from './Category'
 import { Comment } from './Comment'
+import { User } from './User'
+import { Vote } from './Vote'
 
 @Entity()
 @ObjectType()
