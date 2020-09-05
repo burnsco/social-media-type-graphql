@@ -16,6 +16,7 @@ import { Vote } from '../entities/Vote'
 import { Category } from '../entities/Category'
 import { CommentInput } from './inputs/comment-input'
 import { Comment } from '../entities/Comment'
+import { capitalizeFirstLetter } from '../utils/capitalize'
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -27,6 +28,17 @@ export class PostResolver {
   @Query(() => [Post], { nullable: true })
   async posts(@Ctx() { em }: ContextType): Promise<Post[] | null> {
     const posts = await em.find(Post, {})
+    return posts
+  }
+
+  @Query(() => [Post], { nullable: true })
+  async postsByCategory(
+    @Ctx() { em }: ContextType,
+    @Arg('category') category: string
+  ): Promise<Post[] | null> {
+    const posts = await em.find(Post, {
+      category: { name: capitalizeFirstLetter(category) }
+    })
     return posts
   }
 

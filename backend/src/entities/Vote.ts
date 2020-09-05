@@ -9,12 +9,12 @@ import { Post } from './Post'
 export class Vote extends BaseEntity {
   @Field({ nullable: true })
   @Property({ type: 'smallint' })
-  value: number
+  value!: number
 
   @Field(() => User, { nullable: true })
   @ManyToOne(() => User)
-  castBy: User
+  castBy!: User
 
   @ManyToOne(() => Post)
-  post: Post
+  post!: Post
 }

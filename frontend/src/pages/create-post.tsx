@@ -3,10 +3,10 @@ import { Button, Spinner } from '@chakra-ui/core'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import Layout from '../components/Layout'
-import { Wrapper } from '../components/Layout/Wrapper'
+import Layout from '../components/layout'
+import { Wrapper } from '../components/layout/Wrapper'
 import { InputField } from '../components/shared/InputField'
-import { useCreatePostMutation, useMeQuery } from '../generated/graphql'
+import { useMeQuery } from '../generated/graphql'
 
 const CreatePost: React.FC = () => {
   const router = useRouter()
@@ -20,7 +20,7 @@ const CreatePost: React.FC = () => {
     }
   }, [shouldRedirect])
 
-  const [createPost] = useCreatePostMutation()
+  const [createPost] = useCreate
 
   if (user) {
     return (

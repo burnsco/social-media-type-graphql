@@ -8,7 +8,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
       <Header />
-      <Box maxWidth="1200px" mx={[2, 4, 6]}>
+      <Box maxW="1200px" minH="100vh" mx={[2, 4, 6]}>
         {children}
       </Box>
     </>
@@ -21,9 +21,6 @@ export async function getStaticProps() {
   await apolloClient.query({
     query: AllCategoriesDocument
   })
-
-  const test = apolloClient.cache.extract()
-  console.log(test)
 
   return {
     props: {

@@ -7,12 +7,12 @@ import { BaseEntity } from './BaseEntity'
 export class User extends BaseEntity {
   @Field({ nullable: true })
   @Property({ unique: true })
-  email: string
+  email!: string
 
   @Field({ nullable: true })
   @Property({ unique: true })
-  username: string
+  username!: string
 
   @Property()
-  password: string
+  password!: string
 }

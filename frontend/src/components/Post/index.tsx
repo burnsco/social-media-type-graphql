@@ -4,8 +4,8 @@ import { Post } from '../../generated/graphql'
 
 const PostComponent: React.FC<{ post: Post }> = ({ post }) => {
   return (
-    <Flex>
-      <Box p={5} shadow="md" borderWidth="1px" minW="100%">
+    <Flex p={5} shadow="md" borderWidth="1px" minW="100%">
+      <Box >
         <Heading fontSize="xl">Title - {post?.title}</Heading>
         <Text>Category - {post?.category?.name}</Text>
         <Text>CreatedBy - {post?.author?.username}</Text>

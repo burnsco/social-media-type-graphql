@@ -5,7 +5,7 @@ import { BaseEntity } from './BaseEntity'
 @Entity()
 @ObjectType()
 export class Category extends BaseEntity {
-  @Field(() => String, { nullable: true})
+  @Field(() => String, { nullable: true })
   @Property({ unique: true })
-  name: string
+  name!: string
 }

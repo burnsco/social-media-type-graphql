@@ -7,7 +7,7 @@ import { InputField } from '../components/shared/InputField'
 import { MeDocument, MeQuery, useRegisterMutation } from '../generated/graphql'
 import { RegisterSchema } from '../utils/Schemas'
 
-const RegisterPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
   const [register] = useRegisterMutation()
@@ -84,4 +84,4 @@ const RegisterPage: React.FC = () => {
   )
 }
 
-export default Register
+export default LoginPage

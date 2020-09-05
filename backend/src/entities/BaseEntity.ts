@@ -6,7 +6,7 @@ import { Field, Float, ObjectType } from 'type-graphql'
 export abstract class BaseEntity {
   @Field(() => Float, { nullable: true })
   @PrimaryKey()
-  id: number
+  id!: number
 
   @Field(() => String, { nullable: true })
   @Property({ type: 'date' })

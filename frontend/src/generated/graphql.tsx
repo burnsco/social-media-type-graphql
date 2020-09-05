@@ -16,6 +16,7 @@ export type Query = {
   categories?: Maybe<Array<Category>>;
   post?: Maybe<Post>;
   posts?: Maybe<Array<Post>>;
+  postsByCategory?: Maybe<Array<Post>>;
   me?: Maybe<User>;
   users?: Maybe<Array<User>>;
 };
@@ -23,6 +24,11 @@ export type Query = {
 
 export type QueryPostArgs = {
   postId: Scalars['Float'];
+};
+
+
+export type QueryPostsByCategoryArgs = {
+  category: Scalars['String'];
 };
 
 export type Category = {
@@ -259,6 +265,40 @@ export type AllPostsQueryVariables = Exact<{ [key: string]: never; }>;
 export type AllPostsQuery = (
   { __typename?: 'Query' }
   & { posts?: Maybe<Array<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ), comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+      & { createdBy?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      )> }
+    )>>, category?: Maybe<(
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
+    )>, votes?: Maybe<Array<(
+      { __typename?: 'Vote' }
+      & Pick<Vote, 'id' | 'value'>
+      & { castBy?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      )> }
+    )>> }
+  )>> }
+);
+
+export type PostsByCategoryQueryVariables = Exact<{
+  category: Scalars['String'];
+}>;
+
+
+export type PostsByCategoryQuery = (
+  { __typename?: 'Query' }
+  & { postsByCategory?: Maybe<Array<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
     & { author: (
@@ -574,6 +614,65 @@ export function useAllPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<A
 export type AllPostsQueryHookResult = ReturnType<typeof useAllPostsQuery>;
 export type AllPostsLazyQueryHookResult = ReturnType<typeof useAllPostsLazyQuery>;
 export type AllPostsQueryResult = Apollo.QueryResult<AllPostsQuery, AllPostsQueryVariables>;
+export const PostsByCategoryDocument = gql`
+    query PostsByCategory($category: String!) {
+  postsByCategory(category: $category) {
+    id
+    createdAt
+    updatedAt
+    title
+    author {
+      username
+    }
+    comments {
+      id
+      createdAt
+      updatedAt
+      body
+      createdBy {
+        username
+      }
+    }
+    category {
+      id
+      name
+    }
+    votes {
+      id
+      value
+      castBy {
+        username
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePostsByCategoryQuery__
+ *
+ * To run a query within a React component, call `usePostsByCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostsByCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostsByCategoryQuery({
+ *   variables: {
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function usePostsByCategoryQuery(baseOptions?: Apollo.QueryHookOptions<PostsByCategoryQuery, PostsByCategoryQueryVariables>) {
+        return Apollo.useQuery<PostsByCategoryQuery, PostsByCategoryQueryVariables>(PostsByCategoryDocument, baseOptions);
+      }
+export function usePostsByCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsByCategoryQuery, PostsByCategoryQueryVariables>) {
+          return Apollo.useLazyQuery<PostsByCategoryQuery, PostsByCategoryQueryVariables>(PostsByCategoryDocument, baseOptions);
+        }
+export type PostsByCategoryQueryHookResult = ReturnType<typeof usePostsByCategoryQuery>;
+export type PostsByCategoryLazyQueryHookResult = ReturnType<typeof usePostsByCategoryLazyQuery>;
+export type PostsByCategoryQueryResult = Apollo.QueryResult<PostsByCategoryQuery, PostsByCategoryQueryVariables>;
 export const AllUsersDocument = gql`
     query AllUsers {
   users {
