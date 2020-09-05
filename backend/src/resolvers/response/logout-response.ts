@@ -1,9 +1,7 @@
 import { ObjectType, Field } from 'type-graphql'
 
 @ObjectType()
-export class QueryResponse {
-  @Field()
-  code!: string
+export class LogoutMutationResponse {
   @Field()
   message!: string
   @Field()

@@ -16,15 +16,19 @@ import { Comment } from './Comment'
 @Entity()
 @ObjectType()
 export class Post extends BaseEntity {
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @Property()
   title!: string
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  text?: string
 
   @Field(() => User)
   @ManyToOne(() => User)
   author!: User
 
-  @Field(() => Category, { nullable: true })
+  @Field(() => Category)
   @ManyToOne(() => Category)
   category!: Category
 

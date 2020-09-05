@@ -1,18 +1,18 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core'
-import { Field, Float, ObjectType } from 'type-graphql'
+import { Field, Int, ObjectType } from 'type-graphql'
 
 @Entity()
 @ObjectType()
 export abstract class BaseEntity {
-  @Field(() => Float, { nullable: true })
+  @Field(() => Int)
   @PrimaryKey()
   id!: number
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @Property({ type: 'date' })
   createdAt = new Date()
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @Property({ type: 'date', onUpdate: () => new Date() })
   updatedAt = new Date()
 }

@@ -1,27 +1,33 @@
-import { Post } from '../entities/Post'
-import { ContextType } from '../types'
 import {
-  Resolver,
-  Query,
+  Arg,
   Ctx,
-  Mutation,
   FieldResolver,
-  Root,
-  Arg
+  Mutation,
+  Query,
+  Resolver,
+  Root
 } from 'type-graphql'
-import { PostInput } from './inputs/post-input'
-import { User } from '../entities/User'
-import { VoteInput } from './inputs/vote-input'
-import { Vote } from '../entities/Vote'
 import { Category } from '../entities/Category'
-import { CommentInput } from './inputs/comment-input'
 import { Comment } from '../entities/Comment'
+import { Post } from '../entities/Post'
+import { User } from '../entities/User'
+import { Vote } from '../entities/Vote'
+import { ContextType } from '../types'
 import { capitalizeFirstLetter } from '../utils/capitalize'
+import { CommentInput } from './inputs/comment-input'
+import { PostInput } from './inputs/post-input'
+import { VoteInput } from './inputs/vote-input'
+import { CommentMutationResponse } from './response/comment-response'
+import { PostMutationResponse } from './response/post-response'
+import { VoteMutationResponse } from './response/vote-response'
 
 @Resolver(() => Post)
 export class PostResolver {
   @Query(() => Post, { nullable: true })
-  post(@Arg('postId') postId: number, @Ctx() { em }: ContextType) {
+  post(
+    @Arg('postId') postId: number,
+    @Ctx() { em }: ContextType
+  ): Promise<Post | null> {
     return em.findOne(Post, postId)
   }
 
@@ -42,76 +48,99 @@ export class PostResolver {
     return posts
   }
 
-  @Mutation(() => Post)
+  @Mutation(() => PostMutationResponse)
   async createPost(
     @Arg('data') { title, categoryId }: PostInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<Post> {
+  ): Promise<PostMutationResponse> {
     const post = em.create(Post, {
       title,
       author: em.getReference(User, req.session.userId),
       category: em.getReference(Category, categoryId)
     })
+
     await em.persistAndFlush(post)
-    return post
+
+    return {
+      post
+    }
   }
 
-  @Mutation(() => Post)
+  @Mutation(() => CommentMutationResponse)
   async createComment(
     @Arg('data') { body, postId }: CommentInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<Post> {
+  ): Promise<CommentMutationResponse> {
     const post = await em.findOne(Post, postId, {
       populate: ['comments']
     })
+
     if (!post) {
       throw new Error('Invalid post ID')
     }
-    const newComment = em.create(Comment, {
+
+    const comment = em.create(Comment, {
       post,
       body: body,
       createdBy: em.getReference(User, req.session.userId)
     })
-    post.comments.add(newComment)
+    post.comments.add(comment)
+
     await em.persistAndFlush(post)
-    return post
+
+    return {
+      comment
+    }
   }
 
-  @Mutation(() => Post)
+  @Mutation(() => VoteMutationResponse)
   async vote(
     @Arg('data') { postId, value }: VoteInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<Post> {
+  ): Promise<VoteMutationResponse> {
     const post = await em.findOne(Post, postId, {
       populate: ['votes']
     })
+
     if (!post) {
       throw new Error('Invalid post ID')
     }
-    const newVote = em.create(Vote, {
+
+    const vote = em.create(Vote, {
       post,
       value,
       castBy: em.getReference(User, req.session.userId)
     })
-    post.votes.add(newVote)
+
+    post.votes.add(vote)
+
     await em.persistAndFlush(post)
-    return post
+
+    return {
+      vote
+    }
   }
 
   @FieldResolver({ nullable: true })
-  comments(@Root() post: Post, @Ctx() { em }: ContextType) {
-    return em.find(Comment, { post: { id: post.id } })
+  async comments(@Root() post: Post, @Ctx() { em }: ContextType) {
+    return await em.find(Comment, { post: { id: post.id } })
   }
   @FieldResolver({ nullable: true })
-  votes(@Root() post: Post, @Ctx() { em }: ContextType) {
-    return em.find(Vote, { post: { id: post.id } })
+  async votes(@Root() post: Post, @Ctx() { em }: ContextType) {
+    return await em.find(Vote, { post: { id: post.id } })
   }
   @FieldResolver({ nullable: true })
-  author(@Root() post: Post, @Ctx() { em }: ContextType): Promise<User> {
-    return em.findOneOrFail(User, post.author.id)
+  async author(
+    @Root() post: Post,
+    @Ctx() { em }: ContextType
+  ): Promise<User | null> {
+    return await em.findOneOrFail(User, post.author.id)
   }
   @FieldResolver({ nullable: true })
-  category(@Root() post: Post, @Ctx() { em }: ContextType): Promise<Category> {
-    return em.findOneOrFail(Category, post.category.id)
+  async category(
+    @Root() post: Post,
+    @Ctx() { em }: ContextType
+  ): Promise<Category | null> {
+    return await em.findOneOrFail(Category, post.category.id)
   }
 }

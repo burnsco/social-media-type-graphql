@@ -3,8 +3,9 @@ import { Resolver, Query, Ctx, Mutation, Arg } from 'type-graphql'
 import { User } from '../entities/User'
 import argon2 from 'argon2'
 import { RegisterInput } from './inputs/user-input'
-import { UserResponse } from './response/user-response'
+import { UserMutationResponse } from './response/user-response'
 import { validateUser } from './validation/register-schema'
+import { LogoutMutationResponse } from './response/logout-response'
 
 @Resolver(() => User)
 export class UserResolver {
@@ -18,15 +19,15 @@ export class UserResolver {
   }
 
   @Query(() => [User], { nullable: true })
-  users(@Ctx() { em }: ContextType): Promise<User[]> {
+  users(@Ctx() { em }: ContextType): Promise<User[] | null> {
     return em.find(User, {})
   }
 
-  @Mutation(() => UserResponse)
+  @Mutation(() => UserMutationResponse)
   async register(
     @Arg('data') data: RegisterInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<UserResponse> {
+  ): Promise<UserMutationResponse> {
     const errors = await validateUser(data)
     if (errors !== null) {
       return {
@@ -48,17 +49,23 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => LogoutMutationResponse)
   logout(@Ctx() { req, res }: ContextType) {
     return new Promise(resolve =>
       req.session.destroy(err => {
         res.clearCookie('rdt')
         if (err) {
           resolve(false)
-          return
+          return {
+            message: err,
+            code: false
+          }
         }
-
         resolve(true)
+        return {
+          message: 'user logged out successfully',
+          code: true
+        }
       })
     )
   }

@@ -7,11 +7,11 @@ import { Post } from './Post'
 @Entity()
 @ObjectType()
 export class Comment extends BaseEntity {
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @Property()
   body!: string
 
-  @Field(() => User, { nullable: true })
+  @Field(() => User)
   @ManyToOne(() => User)
   createdBy!: User
 
