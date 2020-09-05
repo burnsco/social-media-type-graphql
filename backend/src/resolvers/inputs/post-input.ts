@@ -4,8 +4,8 @@ import { Post } from '../../entities/Post'
 @InputType()
 export class PostInput implements Partial<Post> {
   @Field()
-  title: string
+  title!: string
 
   @Field(() => Int)
-  categoryId: number
+  categoryId!: number
 }

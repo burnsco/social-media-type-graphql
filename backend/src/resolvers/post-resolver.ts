@@ -7,6 +7,7 @@ import {
   Resolver,
   Root
 } from 'type-graphql'
+import { invalidPostOrId } from '../constants'
 import { Category } from '../entities/Category'
 import { Comment } from '../entities/Comment'
 import { Post } from '../entities/Post'
@@ -50,13 +51,13 @@ export class PostResolver {
 
   @Mutation(() => PostMutationResponse)
   async createPost(
-    @Arg('data') { title, categoryId }: PostInput,
+    @Arg('data') data: PostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse> {
     const post = em.create(Post, {
-      title,
+      title: data.title,
       author: em.getReference(User, req.session.userId),
-      category: em.getReference(Category, categoryId)
+      category: em.getReference(Category, data.categoryId)
     })
 
     await em.persistAndFlush(post)
@@ -76,7 +77,7 @@ export class PostResolver {
     })
 
     if (!post) {
-      throw new Error('Invalid post ID')
+      return invalidPostOrId
     }
 
     const comment = em.create(Comment, {
@@ -103,7 +104,7 @@ export class PostResolver {
     })
 
     if (!post) {
-      throw new Error('Invalid post ID')
+      return invalidPostOrId
     }
 
     const vote = em.create(Vote, {
