@@ -5,7 +5,7 @@ import { Post } from './Post'
 import { User } from './User'
 
 @Entity()
-@ObjectType()
+@ObjectType({ implements: BaseEntity })
 export class Comment extends BaseEntity {
   @Field(() => String)
   @Property()

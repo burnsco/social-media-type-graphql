@@ -17,6 +17,7 @@ import { VoteResolver } from './resolvers/vote-resolver'
 
 const REDIS_HOST = '127.0.0.1'
 const REDIS_PORT = 6379
+const PORT = process.env.PORT || 4000
 
 const main = async () => {
   const options: Redis.RedisOptions = {
@@ -73,7 +74,7 @@ const main = async () => {
   await generator.updateSchema()
 
   console.log(`Bootstraping schema and server...`)
-  new ApolloServer({
+  const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [
         PostResolver,
@@ -91,11 +92,28 @@ const main = async () => {
       req,
       res,
       redis: redisClient
-    })
-  }).applyMiddleware({ app, cors: false })
+    }),
+    subscriptions: {
+      path: '/subscriptions',
+      onConnect: async () => {
+        console.log(
+          `Subscription client connected using Apollo server's built-in SubscriptionServer.`
+        )
+      },
+      onDisconnect: async () => {
+        console.log(`Subscription client disconnected.`)
+      }
+    }
+  })
+  server.applyMiddleware({ app, cors: false })
 
-  app.listen(4000, () => {
-    console.log('server started on port 4000')
+  app.listen(PORT, () => {
+    console.log(
+      `🚀 Server ready at https://localhost:${PORT}${server.graphqlPath}`
+    )
+    console.log(
+      `🚀 Subscriptions ready at wss://localhost:${PORT}${server.subscriptionsPath}`
+    )
   })
 }
 

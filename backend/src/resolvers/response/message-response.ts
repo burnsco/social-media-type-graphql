@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql'
-import { Message } from '../../entities/Message'
+import { UserMessage } from '../../entities/UserMessage'
 import { MutationResponse } from './mutation-response'
 
 @ObjectType()
-export class MessageMutationResponse extends MutationResponse {
-  @Field(() => Message)
-  message?: Message
+export class UserMessageMutationResponse extends MutationResponse {
+  @Field(() => UserMessage)
+  userMessage?: UserMessage
 }

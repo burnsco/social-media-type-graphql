@@ -1,9 +1,9 @@
-import { Property } from "@mikro-orm/core"
-import { Message } from "src/entities/Message"
-import { InputType, Field, Int } from "type-graphql"
+import { Property } from '@mikro-orm/core'
+import { UserMessage } from 'src/entities/UserMessage'
+import { Field, InputType, Int } from 'type-graphql'
 
 @InputType()
-export class MessageInput implements Partial<Message> {
+export class UserMessageInput implements Partial<UserMessage> {
   @Field(() => String)
   @Property()
   title!: string

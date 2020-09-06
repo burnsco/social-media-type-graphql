@@ -1,9 +1,9 @@
-import { Entity, Property } from '@mikro-orm/core'
-import { Field, ObjectType } from 'type-graphql'
+import { Entity, Enum, Property } from '@mikro-orm/core'
+import { Field, ObjectType, registerEnumType } from 'type-graphql'
 import { BaseEntity } from './BaseEntity'
 
 @Entity()
-@ObjectType()
+@ObjectType({ implements: BaseEntity })
 export class User extends BaseEntity {
   @Field()
   @Property({ unique: true })
@@ -15,4 +15,30 @@ export class User extends BaseEntity {
 
   @Property()
   password!: string
+
+  @Enum()
+  @Field(() => UserRole)
+  role!: UserRole
+
+  @Enum()
+  @Field(() => UserStatus)
+  status!: UserStatus
 }
+
+export enum UserRole {
+  ADMIN = 'admin',
+  MODERATOR = 'moderator',
+  USER = 'user'
+}
+registerEnumType(UserRole, {
+  name: 'User Role'
+})
+
+export enum UserStatus {
+  OFFLINE = 'offline',
+  ONLINE = 'online'
+}
+registerEnumType(UserStatus, {
+  name: 'User Status',
+  description: 'Is User online or offline'
+})
