@@ -1,52 +1,43 @@
-import { Skeleton, Spinner } from '@chakra-ui/core'
+import { Spinner } from '@chakra-ui/core'
 import React from 'react'
 import { useAllPostsQuery } from '../../generated/graphql'
 import PostsFeed from './PostsFeed'
 
-const PostsPageWithData: React.FC = () => {
-  const { loading, error, data, fetchMore, networkStatus } = useAllPostsQuery({
+const PostsPageWithData = () => {
+  const { loading, error, data, fetchMore } = useAllPostsQuery({
     variables: {
       offset: 0,
-      limit: 10
-    },
-    notifyOnNetworkStatusChange: true
+      limit: 5
+    }
   })
 
-  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
-
-  const loadMorePosts = () => {
-    fetchMore({
-      variables: {
-        skip: allPosts.length,
-      },
-    })
-  }
-
+  if (loading) return <Spinner />
 
   if (error) {
     return <div>error loading posts</div>
   }
 
-  if (data && data.posts) {
+  if (data && data.allPosts !== null) {
     return (
-      <Skeleton startColor="pink" endColor="orange" isLoaded={!loading}>
-        <PostsFeed
-          posts={data?.posts || []}
-          onLoadMore={() =>
-            fetchMore({
-              variables: {
-                offset: data?.posts?.length
-              },
-              updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev
-                return Object.assign({}, prev, {
-                  posts: [...prev.posts, ...fetchMoreResult.posts]
-                })
-              }
-            })
-          }
-        />
-      </Skeleton>
+      <PostsFeed
+        {...(data.allPosts || [])}
+        onLoadMorePosts={() =>
+          fetchMore({
+            variables: {
+              offset: data.allPosts.totalPosts
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+              if (!fetchMoreResult) return prev
+              return Object.assign({}, prev, {
+                posts: {
+                  ...data.allPosts.posts,
+                  ...fetchMoreResult.allPosts
+                }
+              })
+            }
+          })
+        }
+      />
     )
   }
   return <Spinner />

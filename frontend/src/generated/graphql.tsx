@@ -15,7 +15,7 @@ export type Query = {
   __typename?: 'Query';
   categories?: Maybe<Array<Category>>;
   post?: Maybe<Post>;
-  posts?: Maybe<Array<Post>>;
+  allPosts: PostsQueryResponse;
   postsByCategory?: Maybe<Array<Post>>;
   me?: Maybe<User>;
   users?: Maybe<Array<User>>;
@@ -27,7 +27,7 @@ export type QueryPostArgs = {
 };
 
 
-export type QueryPostsArgs = {
+export type QueryAllPostsArgs = {
   offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
 };
@@ -43,7 +43,41 @@ export type Category = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   name: Scalars['String'];
+  chatMessages?: Maybe<Array<ChatMessage>>;
 };
+
+export type ChatMessage = {
+  __typename?: 'ChatMessage';
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  text: Scalars['String'];
+  sentBy: User;
+  category: Category;
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Int'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  email: Scalars['String'];
+  username: Scalars['String'];
+  role: UserRole;
+  status: UserStatus;
+};
+
+export enum UserRole {
+  Admin = 'ADMIN',
+  Moderator = 'MODERATOR',
+  User = 'USER'
+}
+
+/** Is User online or offline */
+export enum UserStatus {
+  Offline = 'OFFLINE',
+  Online = 'ONLINE'
+}
 
 export type Post = {
   __typename?: 'Post';
@@ -55,15 +89,6 @@ export type Post = {
   category: Category;
   votes?: Maybe<Array<Vote>>;
   comments?: Maybe<Array<Comment>>;
-};
-
-export type User = {
-  __typename?: 'User';
-  id: Scalars['Int'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  email: Scalars['String'];
-  username: Scalars['String'];
 };
 
 export type Vote = {
@@ -82,6 +107,13 @@ export type Comment = {
   updatedAt: Scalars['String'];
   body: Scalars['String'];
   createdBy: User;
+};
+
+export type PostsQueryResponse = {
+  __typename?: 'PostsQueryResponse';
+  posts?: Maybe<Array<Post>>;
+  offset?: Maybe<Scalars['Int']>;
+  totalPosts?: Maybe<Scalars['Int']>;
 };
 
 export type Mutation = {
@@ -295,31 +327,35 @@ export type AllPostsQueryVariables = Exact<{
 
 export type AllPostsQuery = (
   { __typename?: 'Query' }
-  & { posts?: Maybe<Array<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
-    & { author: (
-      { __typename?: 'User' }
-      & Pick<User, 'username'>
-    ), comments?: Maybe<Array<(
-      { __typename?: 'Comment' }
-      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-      & { createdBy: (
+  & { allPosts: (
+    { __typename?: 'PostsQueryResponse' }
+    & Pick<PostsQueryResponse, 'offset' | 'totalPosts'>
+    & { posts?: Maybe<Array<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
+      & { author: (
         { __typename?: 'User' }
         & Pick<User, 'username'>
-      ) }
-    )>>, category: (
-      { __typename?: 'Category' }
-      & Pick<Category, 'id' | 'name'>
-    ), votes?: Maybe<Array<(
-      { __typename?: 'Vote' }
-      & Pick<Vote, 'id' | 'value'>
-      & { castBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'username'>
-      ) }
+      ), comments?: Maybe<Array<(
+        { __typename?: 'Comment' }
+        & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+        & { createdBy: (
+          { __typename?: 'User' }
+          & Pick<User, 'username'>
+        ) }
+      )>>, category: (
+        { __typename?: 'Category' }
+        & Pick<Category, 'id' | 'name'>
+      ), votes?: Maybe<Array<(
+        { __typename?: 'Vote' }
+        & Pick<Vote, 'id' | 'value'>
+        & { castBy: (
+          { __typename?: 'User' }
+          & Pick<User, 'username'>
+        ) }
+      )>> }
     )>> }
-  )>> }
+  ) }
 );
 
 export type PostsByCategoryQueryVariables = Exact<{
@@ -590,32 +626,36 @@ export function refetchSinglePostQuery(variables?: SinglePostQueryVariables) {
     }
 export const AllPostsDocument = gql`
     query AllPosts($offset: Int, $limit: Int) {
-  posts(offset: $offset, limit: $limit) {
-    id
-    createdAt
-    updatedAt
-    title
-    author {
-      username
-    }
-    comments {
+  allPosts(offset: $offset, limit: $limit) {
+    offset
+    totalPosts
+    posts {
       id
       createdAt
       updatedAt
-      body
-      createdBy {
+      title
+      author {
         username
       }
-    }
-    category {
-      id
-      name
-    }
-    votes {
-      id
-      value
-      castBy {
-        username
+      comments {
+        id
+        createdAt
+        updatedAt
+        body
+        createdBy {
+          username
+        }
+      }
+      category {
+        id
+        name
+      }
+      votes {
+        id
+        value
+        castBy {
+          username
+        }
       }
     }
   }

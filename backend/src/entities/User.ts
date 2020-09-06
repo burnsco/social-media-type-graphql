@@ -16,12 +16,12 @@ export class User extends BaseEntity {
   @Property()
   password!: string
 
-  @Enum()
-  @Field(() => UserRole, { defaultValue: 'USER' })
+  @Enum(() => UserRole)
+  @Field(() => UserRole)
   role!: UserRole
 
-  @Enum()
-  @Field(() => UserStatus, { defaultValue: 'OFFLINE' })
+  @Enum(() => UserStatus)
+  @Field(() => UserStatus)
   status!: UserStatus
 }
 

@@ -1,14 +1,14 @@
-import { Button, Stack } from '@chakra-ui/core'
+import { Stack } from '@chakra-ui/core'
 import React from 'react'
 import PostComponent from '.'
 import { Post } from '../../generated/graphql'
 
-const PostsFeed = (props:any) => {
-  const { onLoadMore } = props
+const PostsFeed: React.FC<{ posts: any; onLoadMorePosts: any }> = ({
+  posts
+}) => {
   return (
     <Stack spacing={8}>
-      <Button onClick={() => onLoadMore}></Button>
-      {props.data?.posts?.map((post: Post) => (
+      {posts.map((post: Post) => (
         <PostComponent key={`post-${post.id}`} post={post} />
       ))}
     </Stack>

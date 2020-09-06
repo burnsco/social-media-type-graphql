@@ -21,7 +21,10 @@ import { CommentInput } from './inputs/comment-input'
 import { PostInput } from './inputs/post-input'
 import { VoteInput } from './inputs/vote-input'
 import { CommentMutationResponse } from './response/comment-response'
-import { PostMutationResponse } from './response/post-response'
+import {
+  PostMutationResponse,
+  PostsQueryResponse
+} from './response/post-response'
 import { VoteMutationResponse } from './response/vote-response'
 
 @Resolver(() => Post)
@@ -31,19 +34,22 @@ export class PostResolver {
     return em.findOne(Post, postId)
   }
 
-  @Query(() => [Post], { nullable: true })
-  async posts(
+  @Query(() => PostsQueryResponse)
+  async allPosts(
     @Args() data: PostArgs,
     @Ctx() { em }: ContextType
-  ): Promise<Post[]> {
+  ): Promise<PostsQueryResponse> {
     const [posts, count] = await em.findAndCount(
       Post,
       {},
       { limit: data.limit, offset: data.offset }
     )
-    console.log(posts.length)
-    console.log(count)
-    return posts
+
+    return {
+      posts,
+      offset: posts.length,
+      totalPosts: count
+    }
   }
 
   @Query(() => [Post], { nullable: true })
