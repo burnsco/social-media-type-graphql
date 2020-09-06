@@ -5,7 +5,7 @@ import { Category } from './Category'
 import { User } from './User'
 
 @Entity()
-@ObjectType({ implements: BaseEntity })
+@ObjectType()
 export class ChatMessage extends BaseEntity {
   @Field(() => String)
   @Property()

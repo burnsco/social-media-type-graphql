@@ -1,9 +1,9 @@
 import { Property } from '@mikro-orm/core'
-import { UserMessage } from 'src/entities/UserMessage'
+import { PrivateMessage } from 'src/entities/PrivateMessage'
 import { Field, InputType, Int } from 'type-graphql'
 
 @InputType()
-export class UserMessageInput implements Partial<UserMessage> {
+export class PrivateMessageInput implements Partial<PrivateMessage> {
   @Field(() => String)
   @Property()
   title!: string

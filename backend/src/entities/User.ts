@@ -3,7 +3,7 @@ import { Field, ObjectType, registerEnumType } from 'type-graphql'
 import { BaseEntity } from './BaseEntity'
 
 @Entity()
-@ObjectType({ implements: BaseEntity })
+@ObjectType()
 export class User extends BaseEntity {
   @Field()
   @Property({ unique: true })
@@ -17,11 +17,11 @@ export class User extends BaseEntity {
   password!: string
 
   @Enum()
-  @Field(() => UserRole)
+  @Field(() => UserRole, { defaultValue: 'USER' })
   role!: UserRole
 
   @Enum()
-  @Field(() => UserStatus)
+  @Field(() => UserStatus, { defaultValue: 'OFFLINE' })
   status!: UserStatus
 }
 
@@ -31,7 +31,7 @@ export enum UserRole {
   USER = 'user'
 }
 registerEnumType(UserRole, {
-  name: 'User Role'
+  name: 'UserRole'
 })
 
 export enum UserStatus {
@@ -39,6 +39,6 @@ export enum UserStatus {
   ONLINE = 'online'
 }
 registerEnumType(UserStatus, {
-  name: 'User Status',
+  name: 'UserStatus',
   description: 'Is User online or offline'
 })

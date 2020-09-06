@@ -14,7 +14,7 @@ import { User } from './User'
 import { Vote } from './Vote'
 
 @Entity()
-@ObjectType({ implements: BaseEntity })
+@ObjectType()
 export class Post extends BaseEntity {
   @Field(() => String)
   @Property()

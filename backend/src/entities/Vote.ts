@@ -5,7 +5,7 @@ import { Post } from './Post'
 import { User } from './User'
 
 @Entity()
-@ObjectType({ implements: BaseEntity })
+@ObjectType()
 export class Vote extends BaseEntity {
   @Field()
   @Property({ type: 'smallint' })

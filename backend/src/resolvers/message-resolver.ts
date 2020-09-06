@@ -1,34 +1,34 @@
+import { PrivateMessage } from 'src/entities/PrivateMessage'
 import { User } from 'src/entities/User'
-import { UserMessage } from 'src/entities/UserMessage'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { ContextType } from '../types'
-import { MessageInput } from './inputs/message-input'
-import { UserMessageMutationResponse } from './response/message-response'
+import { PrivateMessageInput } from './inputs/message-input'
+import { PrivateMessageMutationResponse } from './response/message-response'
 import { UserMutationResponse } from './response/user-response'
 
-@Resolver(() => UserMessage)
+@Resolver(() => PrivateMessage)
 export class UserMessageResolver {
-  @Query(() => [UserMessage], { nullable: true })
-  async messages(@Ctx() { em, req }: ContextType): Promise<UserMessage[]> {
-    return await em.find(UserMessage, { sentBy: { id: req.session.userId } })
+  @Query(() => [PrivateMessage], { nullable: true })
+  async messages(@Ctx() { em, req }: ContextType): Promise<PrivateMessage[]> {
+    return await em.find(PrivateMessage, { sentBy: { id: req.session.userId } })
   }
 
   @Mutation(() => UserMutationResponse)
   async sendMessage(
-    @Arg('data') data: MessageInput,
+    @Arg('data') data: PrivateMessageInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<UserMessageMutationResponse> {
-    const userMessage = em.create(UserMessage, {
+  ): Promise<PrivateMessageMutationResponse> {
+    const privateMessage = em.create(PrivateMessage, {
       title: data.title,
       body: data.body,
       sentBy: em.getReference(User, req.session.userId),
       sentTo: data.targetUserId
     })
 
-    await em.persistAndFlush(userMessage)
+    await em.persistAndFlush(privateMessage)
 
     return {
-      userMessage
+      privateMessage
     }
   }
 }

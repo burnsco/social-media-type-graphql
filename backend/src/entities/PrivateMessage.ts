@@ -4,8 +4,8 @@ import { BaseEntity } from './BaseEntity'
 import { User } from './User'
 
 @Entity()
-@ObjectType({ implements: BaseEntity })
-export class UserMessage extends BaseEntity {
+@ObjectType()
+export class PrivateMessage extends BaseEntity {
   @Field(() => String)
   @Property()
   title!: string
@@ -13,6 +13,10 @@ export class UserMessage extends BaseEntity {
   @Field(() => String)
   @Property()
   body!: string
+
+  @Field(() => String)
+  @Property()
+  status!: string
 
   @Field(() => User)
   @ManyToOne(() => User)
