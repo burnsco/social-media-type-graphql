@@ -12,6 +12,17 @@ const PostsPageWithData: React.FC = () => {
     notifyOnNetworkStatusChange: true
   })
 
+  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
+
+  const loadMorePosts = () => {
+    fetchMore({
+      variables: {
+        skip: allPosts.length,
+      },
+    })
+  }
+
+
   if (error) {
     return <div>error loading posts</div>
   }

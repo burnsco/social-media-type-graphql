@@ -7,3 +7,11 @@ export class CommentMutationResponse extends MutationResponse {
   @Field(() => Comment, { nullable: true })
   comment?: Comment
 }
+
+@ObjectType()
+export class NewCommentSubscriptionResponse {
+  postId: number
+  dateString: string
+  body: string
+  username?: string
+}

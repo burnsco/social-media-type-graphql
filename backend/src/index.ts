@@ -4,9 +4,9 @@ import connectRedis from 'connect-redis'
 import cors from 'cors'
 import express from 'express'
 import session from 'express-session'
+import { RedisPubSub } from 'graphql-redis-subscriptions'
+import Redis from 'ioredis'
 import path from 'path'
-import redis from 'redis'
-import 'reflect-metadata'
 import { buildSchema } from 'type-graphql'
 import MikroConfig from './mikro-orm.config'
 import { CategoryResolver } from './resolvers/category-resolver'
@@ -15,7 +15,16 @@ import { PostResolver } from './resolvers/post-resolver'
 import { UserResolver } from './resolvers/user-resolver'
 import { VoteResolver } from './resolvers/vote-resolver'
 
+const REDIS_HOST = '127.0.0.1'
+const REDIS_PORT = 6379
+
 const main = async () => {
+  const options: Redis.RedisOptions = {
+    host: REDIS_HOST,
+    port: REDIS_PORT,
+    retryStrategy: times => Math.max(times * 100, 3000)
+  }
+
   console.log('Setting up connecting to database...')
   const orm = await MikroORM.init(MikroConfig)
   await orm.getMigrator().up()
@@ -23,10 +32,15 @@ const main = async () => {
   console.log('Starting express...')
   const app = express()
 
-  console.log('Initializing redis store/client...')
+  console.log('Initializing redis store/client/pubsub...')
   const redisStore = connectRedis(session)
-  const redisClient = redis.createClient()
+  const redisClient = new Redis(options)
+  const pubSub = new RedisPubSub({
+    publisher: new Redis(options),
+    subscriber: new Redis(options)
+  })
 
+  console.log('enabling cors and sessions/cookies...')
   app.use(
     cors({
       origin: 'http://localhost:3000',
@@ -68,10 +82,16 @@ const main = async () => {
         CategoryResolver,
         CommentResolver
       ],
+      pubSub,
       emitSchemaFile: path.resolve(__dirname, './schema.gql'),
       validate: false
     }),
-    context: ({ req, res }) => ({ em: orm.em.fork(), req, res })
+    context: ({ req, res }) => ({
+      em: orm.em.fork(),
+      req,
+      res,
+      redis: redisClient
+    })
   }).applyMiddleware({ app, cors: false })
 
   app.listen(4000, () => {
