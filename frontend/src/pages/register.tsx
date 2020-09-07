@@ -1,11 +1,10 @@
-import { Box, Button, useToast } from '@chakra-ui/core'
-import { Form, Formik } from 'formik'
-import { Container } from 'next/app'
-import { useRouter } from 'next/router'
-import React from 'react'
-import { InputField } from '../components/shared/InputField'
-import { MeDocument, MeQuery, useRegisterMutation } from '../generated/graphql'
-import { RegisterSchema } from '../utils/Schemas'
+import { Box, Button, useToast } from "@chakra-ui/core"
+import { Form, Formik } from "formik"
+import { Container } from "next/app"
+import { useRouter } from "next/router"
+import { InputField } from "../components/shared/InputField"
+import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql"
+import { RegisterSchema } from "../utils/Schemas"
 
 const RegisterPage: React.FC = () => {
   const toast = useToast()
@@ -15,7 +14,7 @@ const RegisterPage: React.FC = () => {
   return (
     <Container>
       <Formik
-        initialValues={{ username: '', password: '', email: '' }}
+        initialValues={{ username: "", password: "", email: "" }}
         validationSchema={RegisterSchema}
         onSubmit={async values => {
           const response = await register({
@@ -30,7 +29,7 @@ const RegisterPage: React.FC = () => {
               cache.writeQuery<MeQuery>({
                 query: MeDocument,
                 data: {
-                  __typename: 'Query',
+                  __typename: "Query",
                   me: data?.register.user
                 }
               })
@@ -39,13 +38,13 @@ const RegisterPage: React.FC = () => {
 
           if (response.data?.register?.user) {
             toast({
-              title: 'Account created.',
+              title: "Account created.",
               description: "We've created your account for you.",
-              status: 'success',
+              status: "success",
               duration: 9000,
               isClosable: true
             })
-            router.push('/')
+            router.push("/")
           } else if (response.data?.register.errors) {
             console.log(response.data?.register.errors)
           }

@@ -5,8 +5,7 @@ import {
   Editable,
   EditablePreview,
   EditableInput
-} from '@chakra-ui/core'
-import React from 'react'
+} from "@chakra-ui/core"
 
 function CustomControls({ title }: any) {
   function EditableControls({ isEditing, onSubmit, onCancel, onEdit }: any) {

@@ -1,9 +1,8 @@
-import React from 'react'
-import { createIcon } from '@chakra-ui/core'
+import { createIcon } from "@chakra-ui/core"
 
 export const RedditLogoLarge = createIcon({
-  displayName: 'RedditLogoLarge',
-  viewBox: '0 0 500 176',
+  displayName: "RedditLogoLarge",
+  viewBox: "0 0 500 176",
   path: [
     <g key="reddit-logo-1">
       <circle

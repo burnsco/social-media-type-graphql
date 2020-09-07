@@ -7,13 +7,12 @@ import {
   MenuButton,
   MenuItem,
   MenuList
-} from '@chakra-ui/core'
-import NextLink from 'next/link'
-import { useRouter } from 'next/router'
-import React from 'react'
-import { useLogoutMutation, useMeQuery } from '../../generated/graphql'
-import { RedditLogoLarge } from '../../styles/redditLogos'
-import { ColorModeToggle } from './ColorModeToggle'
+} from "@chakra-ui/core"
+import NextLink from "next/link"
+import { useRouter } from "next/router"
+import { useLogoutMutation, useMeQuery } from "../../generated/graphql"
+import { RedditLogoLarge } from "../../styles/redditLogos"
+import { ColorModeToggle } from "./ColorModeToggle"
 
 const Header: React.FC = () => {
   const router = useRouter()
@@ -57,10 +56,10 @@ const Header: React.FC = () => {
                 <Menu>
                   <MenuButton as={Button}>Create</MenuButton>
                   <MenuList>
-                    <MenuItem onClick={() => router.push('/create-post')}>
+                    <MenuItem onClick={() => router.push("/create-post")}>
                       Post
                     </MenuItem>
-                    <MenuItem onClick={() => router.push('/create-subreddit')}>
+                    <MenuItem onClick={() => router.push("/create-subreddit")}>
                       Subreddit
                     </MenuItem>
                   </MenuList>
@@ -68,13 +67,13 @@ const Header: React.FC = () => {
                 <Menu>
                   <MenuButton as={Button}>{data.me.username}</MenuButton>
                   <MenuList>
-                    <MenuItem onClick={() => router.push('/user/profile')}>
+                    <MenuItem onClick={() => router.push("/user/profile")}>
                       My Profile
                     </MenuItem>
-                    <MenuItem onClick={() => router.push('/user/settings')}>
+                    <MenuItem onClick={() => router.push("/user/settings")}>
                       User Settings
                     </MenuItem>
-                    <MenuItem onClick={() => router.push('/nightmode')}>
+                    <MenuItem onClick={() => router.push("/nightmode")}>
                       Night Mode
                     </MenuItem>
                   </MenuList>
@@ -99,14 +98,14 @@ const Header: React.FC = () => {
                   variant="outline"
                   mr={2}
                   as={Button}
-                  onClick={() => router.push('/register')}
+                  onClick={() => router.push("/register")}
                 >
                   Register
                 </MenuButton>
                 <MenuButton
                   mr={2}
                   as={Button}
-                  onClick={() => router.push('/login')}
+                  onClick={() => router.push("/login")}
                 >
                   Login
                 </MenuButton>
