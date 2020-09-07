@@ -2,7 +2,7 @@ import { Box, Stack } from "@chakra-ui/core"
 import Layout from "@components/layout"
 import SideMenu from "@components/layout/SideMenu"
 import PostList, { allPostsQueryVars } from "@components/PostList"
-import { AllPostsDocument } from "@generated/graphql"
+import { AllPostsDocument, AllPostsQuery } from "@generated/graphql"
 import { initializeApollo } from "@lib/apolloClient"
 import React from "react"
 
@@ -22,7 +22,7 @@ const Index = () => (
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
 
-  await apolloClient.query({
+  await apolloClient.query<AllPostsQuery>({
     query: AllPostsDocument,
     variables: allPostsQueryVars,
   })

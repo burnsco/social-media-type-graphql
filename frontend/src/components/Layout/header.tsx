@@ -6,7 +6,7 @@ import {
   Menu,
   MenuButton,
   MenuItem,
-  MenuList,
+  MenuList
 } from "@chakra-ui/core"
 import { useLogoutMutation, useMeQuery } from "@generated/graphql"
 import NextLink from "next/link"

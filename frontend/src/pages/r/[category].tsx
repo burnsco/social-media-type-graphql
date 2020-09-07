@@ -6,7 +6,7 @@ import {
   AllCategoriesQuery,
   Post,
   PostsByCategoryDocument,
-  PostsByCategoryQuery,
+  PostsByCategoryQuery
 } from "@generated/graphql"
 import { initializeApollo } from "@lib/apolloClient"
 import { useRouter } from "next/router"
@@ -80,8 +80,8 @@ export const getStaticPaths = async () => {
     query: AllCategoriesDocument,
   })
 
-  const paths = data?.categories?.map((cat) => ({
-    params: { category: cat.name },
+  const paths = data?.categories?.map((c) => ({
+    params: { category: c.name },
   }))
 
   return { paths, fallback: true }
