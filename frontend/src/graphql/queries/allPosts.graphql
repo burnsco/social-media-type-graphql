@@ -1,5 +1,5 @@
-query {
-  allPosts {
+query AllPosts($first: Int, $orderBy: PostOrderBy, $skip: Int) {
+  allPosts(first: $first, orderBy: $orderBy, skip: $skip) {
     id
     createdAt
     updatedAt
@@ -27,5 +27,8 @@ query {
         username
       }
     }
+  }
+  _allPostsMeta {
+    count
   }
 }

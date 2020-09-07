@@ -45,12 +45,13 @@ export class PostResolver {
     @Ctx() { em }: ContextType
   ) {
     console.log(orderBy)
+    console.log('test')
     const [posts] = await em.findAndCount(
       Post,
       {},
       {
-        limit: skip,
-        offset: first,
+        limit: first,
+        offset: skip,
         orderBy: { createdAt: QueryOrder.DESC }
       }
     )

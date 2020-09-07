@@ -8,5 +8,3 @@ extensions:
           - "typescript"
           - "typescript-operations"
           - "typescript-react-apollo"
-        config:
-          withRefetchFn: true

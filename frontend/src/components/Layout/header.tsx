@@ -18,9 +18,7 @@ import { ColorModeToggle } from './ColorModeToggle'
 const Header: React.FC = () => {
   const router = useRouter()
 
-  const { data, loading } = useMeQuery({
-    ssr: typeof window === 'undefined'
-  })
+  const { data, loading } = useMeQuery()
 
   const [logout, { client, loading: fetchingLogout }] = useLogoutMutation()
 
