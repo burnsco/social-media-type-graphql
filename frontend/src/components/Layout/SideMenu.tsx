@@ -11,15 +11,18 @@ const SideMenu: React.FC = () => {
   return (
     <Skeleton isLoaded={!loading}>
       <List borderWidth="1px" minH="100%" spacing={3}>
-        {data?.categories?.map((subreddit) => {
-          return (
+        {data?.categories?.map((subreddit) =>
+          !subreddit ? null : (
             <ListItem key={`subreddit-${subreddit.id}`}>
-              <NextChakraLink href="/r/[category]" as={`/r/${subreddit.name}`}>
+              <NextChakraLink
+                href="/r/[category]"
+                as={`/r/${subreddit.name.toLowerCase()}`}
+              >
                 {subreddit.name}
               </NextChakraLink>
             </ListItem>
-          )
-        })}
+          ),
+        )}
       </List>
     </Skeleton>
   )

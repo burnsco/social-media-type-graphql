@@ -38,11 +38,9 @@ const PostList = () => {
   return (
     <Box>
       <ul>
-        {allPosts?.map((post, index) =>
-          !post ? null : (
-            <Post key={`Post(${index}-${post.title})`} post={post} />
-          ),
-        )}
+        {allPosts?.map((post, index) => (
+          <Post key={`Post(${index}-${post.title})`} post={post} />
+        ))}
       </ul>
       {areMorePosts && (
         <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>

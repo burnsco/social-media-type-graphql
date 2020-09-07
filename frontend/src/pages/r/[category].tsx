@@ -6,7 +6,7 @@ import {
   AllCategoriesQuery,
   Post,
   PostsByCategoryDocument,
-  PostsByCategoryQuery
+  PostsByCategoryQuery,
 } from "@generated/graphql"
 import { initializeApollo } from "@lib/apolloClient"
 import { useRouter } from "next/router"
@@ -35,12 +35,12 @@ const CategoryPage: React.FunctionComponent<{ posts: Post[] }> = ({
                 minW="100%"
               >
                 <Box>
-                  <Heading fontSize="xl">Title - {post?.title}</Heading>
+                  <Heading fontSize="xl">Title - {post.title}</Heading>
                   <Heading fontSize="md">
-                    Category - {post?.category?.name}
+                    Category - {post.category.name}
                   </Heading>
                   <Heading fontSize="sm">
-                    CreatedBy - {post?.author?.username}
+                    CreatedBy - {post.author.username}
                   </Heading>
                 </Box>
               </Flex>
@@ -80,7 +80,7 @@ export const getStaticPaths = async () => {
     query: AllCategoriesDocument,
   })
 
-  const paths = data?.categories?.map((c) => ({
+  const paths = data?.categories.map((c) => ({
     params: { category: c.name },
   }))
 
