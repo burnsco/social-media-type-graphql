@@ -1,15 +1,15 @@
-import { Heading } from "@chakra-ui/core"
-import PostList from "../components/PostList/PostsData"
-import { allPostsQueryVars } from "../components/PostList/PostsData"
+import { Box } from "@chakra-ui/core"
+import Header from "../components/layout/header"
+import PostList from "../components/PostList"
+import { allPostsQueryVars } from "../components/PostList"
 import { AllPostsDocument } from "../generated/graphql"
 import { initializeApollo } from "../lib/apolloClient"
 
 const Index = () => (
-  <>
-    <Heading>Hey</Heading>
+  <Box>
+    <Header />
     <PostList />
-    <Heading>Hey</Heading>
-  </>
+  </Box>
 )
 
 export async function getStaticProps() {
