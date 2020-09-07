@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Box, Spinner, Stack, Flex, Heading } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import Layout from "../../components/layout"

@@ -1,3 +1,4 @@
+import * as React from "react"
 import {
   Box,
   Button,
@@ -17,7 +18,7 @@ import { ColorModeToggle } from "./ColorModeToggle"
 const Header: React.FC = () => {
   const router = useRouter()
 
-  const { data, loading } = useMeQuery()
+  const { data, loading } = useMeQuery({ ssr: false })
 
   const [logout, { client, loading: fetchingLogout }] = useLogoutMutation()
 

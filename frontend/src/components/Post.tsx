@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Flex, Box, Heading } from "@chakra-ui/core"
 import { SinglePostQuery } from "../generated/graphql"
 

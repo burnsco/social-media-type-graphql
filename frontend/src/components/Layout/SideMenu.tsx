@@ -1,3 +1,4 @@
+import * as React from "react"
 import { List, ListItem, Skeleton } from "@chakra-ui/core"
 import { useAllCategoriesQuery } from "../../generated/graphql"
 import { NextChakraLink } from "../shared/NextChakraLink"

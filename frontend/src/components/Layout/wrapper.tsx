@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Box } from "@chakra-ui/core"
 interface Props {
   variant: "small" | "regular"

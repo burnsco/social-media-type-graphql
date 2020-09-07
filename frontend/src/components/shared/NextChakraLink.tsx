@@ -1,13 +1,14 @@
-import { PropsWithChildren } from 'react'
-import NextLink from 'next/link'
-import { LinkProps as NextLinkProps } from 'next/dist/client/link'
+import * as React from "react"
+import { PropsWithChildren } from "react"
+import NextLink from "next/link"
+import { LinkProps as NextLinkProps } from "next/dist/client/link"
 import {
   Link as ChakraLink,
   LinkProps as ChakraLinkProps
-} from '@chakra-ui/core'
+} from "@chakra-ui/core"
 
 export type NextChakraLinkProps = PropsWithChildren<
-  NextLinkProps & Omit<ChakraLinkProps, 'as'>
+  NextLinkProps & Omit<ChakraLinkProps, "as">
 >
 
 //  Has to be a new component because both chakra and next share the `as` keyword
