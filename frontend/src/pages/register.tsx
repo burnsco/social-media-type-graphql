@@ -84,4 +84,4 @@ const RegisterPage: React.FC = () => {
   )
 }
 
-export default Register
+export default RegisterPage

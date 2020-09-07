@@ -1,10 +1,10 @@
 import { Spinner } from '@chakra-ui/core'
 import React from 'react'
-import { useAllPostsQuery } from '../../generated/graphql'
+import { useAllPaginatedPostsQuery } from '../../generated/graphql'
 import PostsFeed from './PostsFeed'
 
 const PostsPageWithData = () => {
-  const { loading, error, data, fetchMore } = useAllPostsQuery({
+  const { loading, error, data, fetchMore } = useAllPaginatedPostsQuery({
     variables: {
       offset: 0,
       limit: 5
@@ -17,21 +17,21 @@ const PostsPageWithData = () => {
     return <div>error loading posts</div>
   }
 
-  if (data && data.allPosts !== null) {
+  if (data && data.posts.posts !== null) {
     return (
       <PostsFeed
-        {...(data.allPosts || [])}
+        posts={data.posts.posts || []}
         onLoadMorePosts={() =>
           fetchMore({
             variables: {
-              offset: data.allPosts.totalPosts
+              offset: data.posts.offset
             },
             updateQuery: (prev, { fetchMoreResult }) => {
               if (!fetchMoreResult) return prev
               return Object.assign({}, prev, {
                 posts: {
-                  ...data.allPosts.posts,
-                  ...fetchMoreResult.allPosts
+                  ...data.posts.posts,
+                  ...fetchMoreResult.posts
                 }
               })
             }

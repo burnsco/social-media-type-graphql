@@ -5,11 +5,11 @@ import { ContextType } from '../types'
 
 @Resolver(() => Comment)
 export class CommentResolver {
-  @FieldResolver({ nullable: true })
+  @FieldResolver()
   async createdBy(
     @Root() comment: Comment,
     @Ctx() { em }: ContextType
-  ): Promise<User | null> {
+  ): Promise<User> {
     return await em.findOneOrFail(User, comment.createdBy.id)
   }
 }

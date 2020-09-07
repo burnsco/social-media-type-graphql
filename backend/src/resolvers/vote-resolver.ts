@@ -5,11 +5,11 @@ import { ContextType } from '../types'
 
 @Resolver(() => Vote)
 export class VoteResolver {
-  @FieldResolver({ nullable: true })
+  @FieldResolver()
   async castBy(
     @Root() vote: Vote,
     @Ctx() { em }: ContextType
-  ): Promise<User | null> {
+  ): Promise<User> {
     return em.findOneOrFail(User, vote.castBy.id)
   }
 }

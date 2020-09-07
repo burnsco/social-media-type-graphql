@@ -4,8 +4,8 @@ import {
   InMemoryCache,
   NormalizedCacheObject
 } from '@apollo/client'
-import { concatPagination } from '@apollo/client/utilities'
 import { useMemo } from 'react'
+import { PostsQueryResponse } from '../generated/graphql'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
@@ -20,7 +20,18 @@ function createApolloClient() {
       typePolicies: {
         Query: {
           fields: {
-            allPosts: concatPagination()
+            posts: {
+              keyArgs: [],
+              merge(
+                existing: PostsQueryResponse | undefined,
+                incoming: PostsQueryResponse
+              ): PostsQueryResponse {
+                return {
+                  ...incoming,
+                  posts: [...(existing?.posts || []), ...incoming.posts]
+                }
+              }
+            }
           }
         }
       }

@@ -1,4 +1,5 @@
-import { Box, Flex, Heading, Stack } from '@chakra-ui/core'
+import { Box, Spinner, Stack } from '@chakra-ui/core'
+import { useRouter } from 'next/router'
 import * as React from 'react'
 import Layout from '../../components/layout'
 import SideMenu from '../../components/layout/SideMenu'
@@ -15,6 +16,12 @@ import { initializeApollo } from '../../lib/apolloClient'
 const CategoryPage: React.FunctionComponent<{ posts: Post[] }> = ({
   posts
 }) => {
+  const router = useRouter()
+
+  if (router.isFallback) {
+    return <Spinner />
+  }
+
   return (
     <Layout>
       <Stack isInline spacing={8}>
@@ -33,7 +40,7 @@ const CategoryPage: React.FunctionComponent<{ posts: Post[] }> = ({
   )
 }
 
-export async function getStaticProps({ params }: any) {
+export const getStaticProps = async ({ params }: any) => {
   const apolloClient = initializeApollo()
 
   const { data } = await apolloClient.query<PostsByCategoryQuery>({
@@ -46,21 +53,23 @@ export async function getStaticProps({ params }: any) {
   return {
     props: {
       posts: data?.postsByCategory ?? null
-    }
+    },
+    revalidate: 1
   }
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths = async () => {
   const apolloClient = initializeApollo()
 
   const { data } = await apolloClient.query<AllCategoriesQuery>({
     query: AllCategoriesDocument
   })
 
-  return {
-    paths: data?.categories?.map(({ name }: any) => `/r/${name}`) ?? [],
-    fallback: false
-  }
+  const paths = data?.categories?.map(cat => ({
+    params: { category: cat.name }
+  }))
+
+  return { paths, fallback: true }
 }
 
 export default CategoryPage

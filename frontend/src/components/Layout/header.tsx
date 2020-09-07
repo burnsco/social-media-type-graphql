@@ -1,19 +1,19 @@
-import React from 'react'
 import {
   Box,
-  Heading,
-  Flex,
   Button,
+  Flex,
+  Heading,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem
+  MenuItem,
+  MenuList
 } from '@chakra-ui/core'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { ColorModeToggle } from './ColorModeToggle'
+import React from 'react'
 import { useLogoutMutation, useMeQuery } from '../../generated/graphql'
 import { RedditLogoLarge } from '../../styles/redditLogos'
+import { ColorModeToggle } from './ColorModeToggle'
 
 const Header: React.FC = () => {
   const router = useRouter()
@@ -112,9 +112,9 @@ const Header: React.FC = () => {
                 >
                   Login
                 </MenuButton>
-                <ColorModeToggle mr={2} />
               </Menu>
             )}
+            <ColorModeToggle mr={2} />
           </Box>
         </Flex>
       </Flex>

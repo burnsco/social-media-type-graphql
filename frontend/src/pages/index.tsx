@@ -3,7 +3,7 @@ import React from 'react'
 import Layout from '../components/layout'
 import SideMenu from '../components/layout/SideMenu'
 import PostsPage from '../components/post/PostsData'
-import { AllPostsDocument } from '../generated/graphql'
+import { AllPaginatedPostsDocument } from '../generated/graphql'
 import { initializeApollo } from '../lib/apolloClient'
 
 const Index: React.FC = () => {
@@ -25,7 +25,11 @@ export async function getStaticProps() {
   const apolloClient = initializeApollo()
 
   await apolloClient.query({
-    query: AllPostsDocument
+    query: AllPaginatedPostsDocument,
+    variables: {
+      offset: 0,
+      limit: 5
+    }
   })
 
   return {

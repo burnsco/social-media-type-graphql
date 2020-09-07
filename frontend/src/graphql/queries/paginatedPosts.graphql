@@ -1,5 +1,5 @@
-query AllPosts($offset: Int, $limit: Int) {
-  allPosts(offset: $offset, limit: $limit) {
+query AllPaginatedPosts($offset: Int!, $limit: Int!) {
+  posts(offset: $offset, limit: $limit) {
     offset
     totalPosts
     posts {

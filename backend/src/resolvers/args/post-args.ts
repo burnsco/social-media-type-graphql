@@ -1,22 +1,18 @@
 import { Max, Min } from 'class-validator'
 import { ArgsType, Field, Int } from 'type-graphql'
+import { PostOrderBy } from '../inputs/posts-order-by'
 
 @ArgsType()
 export class PostArgs {
-  @Field(() => Int, { defaultValue: 0 })
+  @Field(() => Int, { nullable: true })
   @Min(0)
-  offset: number
+  first?: number
 
-  @Field(() => Int, { defaultValue: 5 })
+  @Field(() => PostOrderBy, { nullable: true })
+  orderBy?: PostOrderBy
+
+  @Field(() => Int, { nullable: true })
   @Min(1)
   @Max(500)
-  limit: number
-
-  // helpers - index calculations
-  get startIndex(): number {
-    return this.offset
-  }
-  get endIndex(): number {
-    return this.offset + this.limit
-  }
+  skip?: number
 }

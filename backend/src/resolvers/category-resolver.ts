@@ -7,8 +7,8 @@ import { CategoryMutationResponse } from './response/category-response'
 
 @Resolver(() => Category)
 export class CategoryResolver {
-  @Query(() => [Category], { nullable: true })
-  categories(@Ctx() { em }: ContextType): Promise<Category[] | null> {
+  @Query(() => [Category])
+  categories(@Ctx() { em }: ContextType): Promise<Category[]> {
     return em.find(Category, {})
   }
 

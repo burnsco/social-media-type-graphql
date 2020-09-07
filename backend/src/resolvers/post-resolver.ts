@@ -1,3 +1,4 @@
+import { QueryOrder } from '@mikro-orm/core'
 import {
   Arg,
   Args,
@@ -17,42 +18,47 @@ import { Vote } from '../entities/Vote'
 import { ContextType } from '../types'
 import { capitalizeFirstLetter } from '../utils/capitalize'
 import { PostArgs } from './args/post-args'
+import { _QueryMeta } from './args/_QueryMeta'
 import { CommentInput } from './inputs/comment-input'
 import { PostInput } from './inputs/post-input'
 import { VoteInput } from './inputs/vote-input'
 import { CommentMutationResponse } from './response/comment-response'
-import {
-  PostMutationResponse,
-  PostsQueryResponse
-} from './response/post-response'
+import { PostMutationResponse } from './response/post-response'
 import { VoteMutationResponse } from './response/vote-response'
 
 @Resolver(() => Post)
 export class PostResolver {
+  @Query(() => _QueryMeta)
+  async _allPostsMeta(@Root() @Ctx() { em }: ContextType) {
+    const [, count] = await em.findAndCount(Post, {})
+    console.log(count)
+    return { count }
+  }
   @Query(() => Post, { nullable: true })
   post(@Arg('postId') postId: number, @Ctx() { em }: ContextType) {
     return em.findOne(Post, postId)
   }
 
-  @Query(() => PostsQueryResponse)
+  @Query(() => [Post], { nullable: false })
   async allPosts(
-    @Args() data: PostArgs,
+    @Args() { first, orderBy, skip }: PostArgs,
     @Ctx() { em }: ContextType
-  ): Promise<PostsQueryResponse> {
-    const [posts, count] = await em.findAndCount(
+  ) {
+    console.log(orderBy)
+    const [posts] = await em.findAndCount(
       Post,
       {},
-      { limit: data.limit, offset: data.offset }
+      {
+        limit: skip,
+        offset: first,
+        orderBy: { createdAt: QueryOrder.DESC }
+      }
     )
 
-    return {
-      posts,
-      offset: posts.length,
-      totalPosts: count
-    }
+    return posts
   }
 
-  @Query(() => [Post], { nullable: true })
+  @Query(() => [Post])
   async postsByCategory(
     @Ctx() { em }: ContextType,
     @Arg('category') category: string
@@ -144,18 +150,15 @@ export class PostResolver {
   async votes(@Root() post: Post, @Ctx() { em }: ContextType) {
     return await em.find(Vote, { post: { id: post.id } })
   }
-  @FieldResolver({ nullable: true })
-  async author(
-    @Root() post: Post,
-    @Ctx() { em }: ContextType
-  ): Promise<User | null> {
+  @FieldResolver()
+  async author(@Root() post: Post, @Ctx() { em }: ContextType): Promise<User> {
     return await em.findOneOrFail(User, post.author.id)
   }
-  @FieldResolver({ nullable: true })
+  @FieldResolver()
   async category(
     @Root() post: Post,
     @Ctx() { em }: ContextType
-  ): Promise<Category | null> {
+  ): Promise<Category> {
     return await em.findOneOrFail(Category, post.category.id)
   }
 }

@@ -18,8 +18,8 @@ export class UserResolver {
     return user
   }
 
-  @Query(() => [User], { nullable: true })
-  users(@Ctx() { em }: ContextType): Promise<User[] | null> {
+  @Query(() => [User])
+  users(@Ctx() { em }: ContextType): Promise<User[]> {
     return em.find(User, {})
   }
 

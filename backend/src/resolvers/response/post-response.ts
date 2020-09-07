@@ -10,12 +10,12 @@ export class PostMutationResponse extends MutationResponse {
 
 @ObjectType()
 export class PostsQueryResponse {
-  @Field(() => [Post], { nullable: true })
-  posts?: Post[]
+  @Field(() => [Post])
+  posts: Post[]
 
-  @Field(() => Int, { nullable: true })
-  offset?: number
+  @Field(() => Int)
+  offset: number
 
-  @Field(() => Int, { nullable: true })
-  totalPosts?: number
+  @Field(() => Int)
+  totalPosts: number
 }

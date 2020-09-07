@@ -15,7 +15,8 @@ export type Query = {
   __typename?: 'Query';
   categories?: Maybe<Array<Category>>;
   post?: Maybe<Post>;
-  allPosts: PostsQueryResponse;
+  allPosts?: Maybe<Array<Post>>;
+  posts: PostsQueryResponse;
   postsByCategory?: Maybe<Array<Post>>;
   me?: Maybe<User>;
   users?: Maybe<Array<User>>;
@@ -27,7 +28,7 @@ export type QueryPostArgs = {
 };
 
 
-export type QueryAllPostsArgs = {
+export type QueryPostsArgs = {
   offset?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
 };
@@ -111,9 +112,9 @@ export type Comment = {
 
 export type PostsQueryResponse = {
   __typename?: 'PostsQueryResponse';
-  posts?: Maybe<Array<Post>>;
-  offset?: Maybe<Scalars['Int']>;
-  totalPosts?: Maybe<Scalars['Int']>;
+  posts: Array<Post>;
+  offset: Scalars['Int'];
+  totalPosts: Scalars['Int'];
 };
 
 export type Mutation = {
@@ -263,6 +264,38 @@ export type RegisterMutation = (
   ) }
 );
 
+export type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type Unnamed_1_Query = (
+  { __typename?: 'Query' }
+  & { allPosts?: Maybe<Array<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ), comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+      & { createdBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ) }
+    )>>, category: (
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
+    ), votes?: Maybe<Array<(
+      { __typename?: 'Vote' }
+      & Pick<Vote, 'id' | 'value'>
+      & { castBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ) }
+    )>> }
+  )>> }
+);
+
 export type AllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -283,6 +316,45 @@ export type MeQuery = (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
   )> }
+);
+
+export type AllPaginatedPostsQueryVariables = Exact<{
+  offset: Scalars['Int'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type AllPaginatedPostsQuery = (
+  { __typename?: 'Query' }
+  & { posts: (
+    { __typename?: 'PostsQueryResponse' }
+    & Pick<PostsQueryResponse, 'offset' | 'totalPosts'>
+    & { posts: Array<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
+      & { author: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ), comments?: Maybe<Array<(
+        { __typename?: 'Comment' }
+        & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+        & { createdBy: (
+          { __typename?: 'User' }
+          & Pick<User, 'username'>
+        ) }
+      )>>, category: (
+        { __typename?: 'Category' }
+        & Pick<Category, 'id' | 'name'>
+      ), votes?: Maybe<Array<(
+        { __typename?: 'Vote' }
+        & Pick<Vote, 'id' | 'value'>
+        & { castBy: (
+          { __typename?: 'User' }
+          & Pick<User, 'username'>
+        ) }
+      )>> }
+    )> }
+  ) }
 );
 
 export type SinglePostQueryVariables = Exact<{
@@ -317,45 +389,6 @@ export type SinglePostQuery = (
       ) }
     )>> }
   )> }
-);
-
-export type AllPostsQueryVariables = Exact<{
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type AllPostsQuery = (
-  { __typename?: 'Query' }
-  & { allPosts: (
-    { __typename?: 'PostsQueryResponse' }
-    & Pick<PostsQueryResponse, 'offset' | 'totalPosts'>
-    & { posts?: Maybe<Array<(
-      { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
-      & { author: (
-        { __typename?: 'User' }
-        & Pick<User, 'username'>
-      ), comments?: Maybe<Array<(
-        { __typename?: 'Comment' }
-        & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-        & { createdBy: (
-          { __typename?: 'User' }
-          & Pick<User, 'username'>
-        ) }
-      )>>, category: (
-        { __typename?: 'Category' }
-        & Pick<Category, 'id' | 'name'>
-      ), votes?: Maybe<Array<(
-        { __typename?: 'Vote' }
-        & Pick<Vote, 'id' | 'value'>
-        & { castBy: (
-          { __typename?: 'User' }
-          & Pick<User, 'username'>
-        ) }
-      )>> }
-    )>> }
-  ) }
 );
 
 export type PostsByCategoryQueryVariables = Exact<{
@@ -562,6 +595,73 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export function refetchMeQuery(variables?: MeQueryVariables) {
       return { query: MeDocument, variables: variables }
     }
+export const AllPaginatedPostsDocument = gql`
+    query AllPaginatedPosts($offset: Int!, $limit: Int!) {
+  posts(offset: $offset, limit: $limit) {
+    offset
+    totalPosts
+    posts {
+      id
+      createdAt
+      updatedAt
+      title
+      author {
+        username
+      }
+      comments {
+        id
+        createdAt
+        updatedAt
+        body
+        createdBy {
+          username
+        }
+      }
+      category {
+        id
+        name
+      }
+      votes {
+        id
+        value
+        castBy {
+          username
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAllPaginatedPostsQuery__
+ *
+ * To run a query within a React component, call `useAllPaginatedPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllPaginatedPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllPaginatedPostsQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useAllPaginatedPostsQuery(baseOptions?: Apollo.QueryHookOptions<AllPaginatedPostsQuery, AllPaginatedPostsQueryVariables>) {
+        return Apollo.useQuery<AllPaginatedPostsQuery, AllPaginatedPostsQueryVariables>(AllPaginatedPostsDocument, baseOptions);
+      }
+export function useAllPaginatedPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllPaginatedPostsQuery, AllPaginatedPostsQueryVariables>) {
+          return Apollo.useLazyQuery<AllPaginatedPostsQuery, AllPaginatedPostsQueryVariables>(AllPaginatedPostsDocument, baseOptions);
+        }
+export type AllPaginatedPostsQueryHookResult = ReturnType<typeof useAllPaginatedPostsQuery>;
+export type AllPaginatedPostsLazyQueryHookResult = ReturnType<typeof useAllPaginatedPostsLazyQuery>;
+export type AllPaginatedPostsQueryResult = Apollo.QueryResult<AllPaginatedPostsQuery, AllPaginatedPostsQueryVariables>;
+export function refetchAllPaginatedPostsQuery(variables?: AllPaginatedPostsQueryVariables) {
+      return { query: AllPaginatedPostsDocument, variables: variables }
+    }
 export const SinglePostDocument = gql`
     query SinglePost($postId: Float!) {
   post(postId: $postId) {
@@ -623,73 +723,6 @@ export type SinglePostLazyQueryHookResult = ReturnType<typeof useSinglePostLazyQ
 export type SinglePostQueryResult = Apollo.QueryResult<SinglePostQuery, SinglePostQueryVariables>;
 export function refetchSinglePostQuery(variables?: SinglePostQueryVariables) {
       return { query: SinglePostDocument, variables: variables }
-    }
-export const AllPostsDocument = gql`
-    query AllPosts($offset: Int, $limit: Int) {
-  allPosts(offset: $offset, limit: $limit) {
-    offset
-    totalPosts
-    posts {
-      id
-      createdAt
-      updatedAt
-      title
-      author {
-        username
-      }
-      comments {
-        id
-        createdAt
-        updatedAt
-        body
-        createdBy {
-          username
-        }
-      }
-      category {
-        id
-        name
-      }
-      votes {
-        id
-        value
-        castBy {
-          username
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useAllPostsQuery__
- *
- * To run a query within a React component, call `useAllPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAllPostsQuery({
- *   variables: {
- *      offset: // value for 'offset'
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useAllPostsQuery(baseOptions?: Apollo.QueryHookOptions<AllPostsQuery, AllPostsQueryVariables>) {
-        return Apollo.useQuery<AllPostsQuery, AllPostsQueryVariables>(AllPostsDocument, baseOptions);
-      }
-export function useAllPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllPostsQuery, AllPostsQueryVariables>) {
-          return Apollo.useLazyQuery<AllPostsQuery, AllPostsQueryVariables>(AllPostsDocument, baseOptions);
-        }
-export type AllPostsQueryHookResult = ReturnType<typeof useAllPostsQuery>;
-export type AllPostsLazyQueryHookResult = ReturnType<typeof useAllPostsLazyQuery>;
-export type AllPostsQueryResult = Apollo.QueryResult<AllPostsQuery, AllPostsQueryVariables>;
-export function refetchAllPostsQuery(variables?: AllPostsQueryVariables) {
-      return { query: AllPostsDocument, variables: variables }
     }
 export const PostsByCategoryDocument = gql`
     query PostsByCategory($category: String!) {

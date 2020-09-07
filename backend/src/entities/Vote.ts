@@ -8,7 +8,7 @@ import { User } from './User'
 @ObjectType()
 export class Vote extends BaseEntity {
   @Field()
-  @Property({ type: 'smallint' })
+  @Property()
   value!: number
 
   @Field(() => User)

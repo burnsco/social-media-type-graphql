@@ -9,3 +9,7 @@ export class PostInput implements Partial<Post> {
   @Field(() => Int)
   categoryId!: number
 }
+
+
+
+
