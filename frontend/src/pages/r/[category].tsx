@@ -81,7 +81,7 @@ export const getStaticPaths = async () => {
   })
 
   const paths = data?.categories.map((c) => ({
-    params: { category: c.name },
+    params: { category: c.name.toLowerCase() },
   }))
 
   return { paths, fallback: true }

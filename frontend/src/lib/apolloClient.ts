@@ -2,7 +2,7 @@ import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
-  NormalizedCacheObject,
+  NormalizedCacheObject
 } from "@apollo/client"
 import { Post } from "@generated/graphql"
 import { useMemo } from "react"
