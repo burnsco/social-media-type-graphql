@@ -1,8 +1,8 @@
-import * as React from "react"
 import { Box, Button, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { Container } from "next/app"
 import { useRouter } from "next/router"
+import * as React from "react"
 import { InputField } from "../components/shared/InputField"
 import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql"
 import { RegisterSchema } from "../utils/Schemas"
@@ -17,24 +17,24 @@ const RegisterPage: React.FC = () => {
       <Formik
         initialValues={{ username: "", password: "", email: "" }}
         validationSchema={RegisterSchema}
-        onSubmit={async values => {
+        onSubmit={async (values) => {
           const response = await register({
             variables: {
               data: {
                 username: values.username,
                 password: values.password,
-                email: values.email
-              }
+                email: values.email,
+              },
             },
             update: (cache, { data }) => {
               cache.writeQuery<MeQuery>({
                 query: MeDocument,
                 data: {
                   __typename: "Query",
-                  me: data?.register.user
-                }
+                  me: data?.register.user,
+                },
               })
-            }
+            },
           })
 
           if (response.data?.register?.user) {
@@ -43,7 +43,7 @@ const RegisterPage: React.FC = () => {
               description: "We've created your account for you.",
               status: "success",
               duration: 9000,
-              isClosable: true
+              isClosable: true,
             })
             router.push("/")
           } else if (response.data?.register.errors) {

@@ -1,11 +1,10 @@
-import * as React from "react"
 import { Box, Stack } from "@chakra-ui/core"
-import Layout from "../components/layout"
-import SideMenu from "../components/layout/SideMenu"
-import PostList from "../components/PostList"
-import { allPostsQueryVars } from "../components/PostList"
-import { AllPostsDocument } from "../generated/graphql"
-import { initializeApollo } from "../lib/apolloClient"
+import Layout from "@components/layout"
+import SideMenu from "@components/layout/SideMenu"
+import PostList, { allPostsQueryVars } from "@components/PostList"
+import { AllPostsDocument } from "@generated/graphql"
+import { initializeApollo } from "@lib/apolloClient"
+import React from "react"
 
 const Index = () => (
   <Layout>
@@ -25,14 +24,14 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: AllPostsDocument,
-    variables: allPostsQueryVars
+    variables: allPostsQueryVars,
   })
 
   return {
     props: {
-      initialApolloState: apolloClient.cache.extract()
+      initialApolloState: apolloClient.cache.extract(),
     },
-    revalidate: 1
+    revalidate: 1,
   }
 }
 

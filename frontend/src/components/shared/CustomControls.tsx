@@ -1,12 +1,12 @@
-import * as React from "react"
 import {
   ButtonGroup,
-  IconButton,
-  Flex,
   Editable,
+  EditableInput,
   EditablePreview,
-  EditableInput
+  Flex,
+  IconButton,
 } from "@chakra-ui/core"
+import * as React from "react"
 
 function CustomControls({ title }: any) {
   function EditableControls({ isEditing, onSubmit, onCancel, onEdit }: any) {

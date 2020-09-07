@@ -1,7 +1,7 @@
-import * as React from "react"
 import { Box } from "@chakra-ui/core"
-import { AllCategoriesDocument } from "../../generated/graphql"
-import { initializeApollo } from "../../lib/apolloClient"
+import { AllCategoriesDocument } from "@generated/graphql"
+import { initializeApollo } from "@lib/apolloClient"
+import * as React from "react"
 import Header from "./header"
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -17,14 +17,14 @@ export async function getStaticProps() {
   const apolloClient = initializeApollo()
 
   await apolloClient.query({
-    query: AllCategoriesDocument
+    query: AllCategoriesDocument,
   })
 
   return {
     props: {
-      initialApolloState: apolloClient.cache.extract()
+      initialApolloState: apolloClient.cache.extract(),
     },
-    revalidate: 1
+    revalidate: 1,
   }
 }
 

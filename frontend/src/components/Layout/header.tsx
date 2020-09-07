@@ -1,4 +1,3 @@
-import * as React from "react"
 import {
   Box,
   Button,
@@ -7,12 +6,13 @@ import {
   Menu,
   MenuButton,
   MenuItem,
-  MenuList
+  MenuList,
 } from "@chakra-ui/core"
+import { useLogoutMutation, useMeQuery } from "@generated/graphql"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useLogoutMutation, useMeQuery } from "../../generated/graphql"
-import { RedditLogoLarge } from "../../styles/redditLogos"
+import * as React from "react"
+import { RedditLogoLarge } from "src/styles/redditLogos"
 import { ColorModeToggle } from "./ColorModeToggle"
 
 const Header: React.FC = () => {

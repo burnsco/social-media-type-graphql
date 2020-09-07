@@ -1,19 +1,19 @@
-import * as React from "react"
-import { Box, Spinner, Stack, Flex, Heading } from "@chakra-ui/core"
-import { useRouter } from "next/router"
-import Layout from "../../components/layout"
-import SideMenu from "../../components/layout/SideMenu"
+import { Box, Flex, Heading, Spinner, Stack } from "@chakra-ui/core"
+import Layout from "@components/layout"
+import SideMenu from "@components/layout/SideMenu"
 import {
   AllCategoriesDocument,
   AllCategoriesQuery,
   Post,
   PostsByCategoryDocument,
-  PostsByCategoryQuery
-} from "../../generated/graphql"
-import { initializeApollo } from "../../lib/apolloClient"
+  PostsByCategoryQuery,
+} from "@generated/graphql"
+import { initializeApollo } from "@lib/apolloClient"
+import { useRouter } from "next/router"
+import * as React from "react"
 
 const CategoryPage: React.FunctionComponent<{ posts: Post[] }> = ({
-  posts
+  posts,
 }) => {
   const router = useRouter()
 
@@ -61,15 +61,15 @@ export const getStaticProps = async ({ params }: any) => {
   const { data } = await apolloClient.query<PostsByCategoryQuery>({
     query: PostsByCategoryDocument,
     variables: {
-      category: params.category
-    }
+      category: params.category,
+    },
   })
 
   return {
     props: {
-      posts: data?.postsByCategory ?? null
+      posts: data?.postsByCategory ?? null,
     },
-    revalidate: 1
+    revalidate: 1,
   }
 }
 
@@ -77,11 +77,11 @@ export const getStaticPaths = async () => {
   const apolloClient = initializeApollo()
 
   const { data } = await apolloClient.query<AllCategoriesQuery>({
-    query: AllCategoriesDocument
+    query: AllCategoriesDocument,
   })
 
-  const paths = data?.categories?.map(cat => ({
-    params: { category: cat.name }
+  const paths = data?.categories?.map((cat) => ({
+    params: { category: cat.name },
   }))
 
   return { paths, fallback: true }

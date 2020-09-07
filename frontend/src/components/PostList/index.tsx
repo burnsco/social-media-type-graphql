@@ -1,18 +1,18 @@
-import * as React from "react"
 import { NetworkStatus } from "@apollo/client"
 import { Box } from "@chakra-ui/core"
-import { useAllPostsQuery } from "../../generated/graphql"
-import Post from "../Post"
+import Post from "@components/Post"
+import { useAllPostsQuery } from "@generated/graphql"
+import * as React from "react"
 
 export const allPostsQueryVars = {
   skip: 0,
-  first: 4
+  first: 4,
 }
 
 const PostList = () => {
   const { loading, data, error, fetchMore, networkStatus } = useAllPostsQuery({
     variables: allPostsQueryVars,
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   })
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
@@ -20,8 +20,8 @@ const PostList = () => {
   const loadMorePosts = () => {
     fetchMore({
       variables: {
-        skip: allPosts!.length
-      }
+        skip: allPosts!.length,
+      },
     })
   }
 
@@ -38,7 +38,7 @@ const PostList = () => {
         {allPosts!.map((post, index) =>
           !post ? null : (
             <Post key={`Post(${index}-${post.title})`} post={post} />
-          )
+          ),
         )}
       </ul>
       {areMorePosts && (

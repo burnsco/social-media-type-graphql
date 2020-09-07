@@ -1,8 +1,8 @@
+import { Box, Flex, Heading } from "@chakra-ui/core"
+import { SinglePostQuery } from "@generated/graphql"
 import * as React from "react"
-import { Flex, Box, Heading } from "@chakra-ui/core"
-import { SinglePostQuery } from "../generated/graphql"
 
-const Post: React.FC<SinglePostQuery> = props => {
+const Post: React.FC<SinglePostQuery> = (props) => {
   const post = props.post
 
   return !post ? null : (

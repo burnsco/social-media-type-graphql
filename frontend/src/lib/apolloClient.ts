@@ -1,10 +1,10 @@
-import { Post } from "./../generated/graphql"
 import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
-  NormalizedCacheObject
+  NormalizedCacheObject,
 } from "@apollo/client"
+import { Post } from "@generated/graphql"
 import { useMemo } from "react"
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
@@ -14,7 +14,7 @@ function createApolloClient() {
     ssrMode: typeof window === "undefined",
     link: new HttpLink({
       uri: "http://localhost:4000/graphql",
-      credentials: "include"
+      credentials: "include",
     }),
     cache: new InMemoryCache({
       typePolicies: {
@@ -24,12 +24,12 @@ function createApolloClient() {
               keyArgs: [],
               merge(existing: Post[] | undefined, incoming: Post[]): Post[] {
                 return existing ? [...existing, ...incoming] : [...incoming]
-              }
-            }
-          }
-        }
-      }
-    })
+              },
+            },
+          },
+        },
+      },
+    }),
   })
 }
 
