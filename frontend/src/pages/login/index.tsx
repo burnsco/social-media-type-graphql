@@ -3,11 +3,15 @@ import { Form, Formik } from "formik"
 import { Container } from "next/app"
 import { useRouter } from "next/router"
 import * as React from "react"
-import { InputField } from "../components/shared/InputField"
-import { MeDocument, MeQuery, useRegisterMutation } from "../generated/graphql"
-import { RegisterSchema } from "../utils/Schemas"
+import { InputField } from "../../components/shared/InputField"
+import {
+  MeDocument,
+  MeQuery,
+  useRegisterMutation,
+} from "../../generated/graphql"
+import { RegisterSchema } from "../../utils/Schemas"
 
-const RegisterPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
   const [register] = useRegisterMutation()
@@ -84,4 +88,4 @@ const RegisterPage: React.FC = () => {
   )
 }
 
-export default RegisterPage
+export default LoginPage

@@ -9,26 +9,26 @@ import {
 import Layout from "@components/layout"
 import * as React from "react"
 
-const SettingsPage: React.FunctionComponent<{}> = () => {
+const UserProfilePage: React.FunctionComponent<{}> = () => {
   return (
     <Layout>
-      <Heading>Settings Page</Heading>
+      <Heading>Profile Page</Heading>
       <Tabs>
         <TabList>
-          <Tab>Account</Tab>
-          <Tab>Profile</Tab>
-          <Tab>Chat & Messaging</Tab>
+          <Tab>Overview</Tab>
+          <Tab>Posts</Tab>
+          <Tab>Comments</Tab>
         </TabList>
 
         <TabPanels>
           <TabPanel>
-            <p>Email address</p>
+            <p>one!</p>
           </TabPanel>
           <TabPanel>
-            <p>Change password</p>
+            <p>two!</p>
           </TabPanel>
           <TabPanel>
-            <p>delete account</p>
+            <p>three!</p>
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -36,4 +36,4 @@ const SettingsPage: React.FunctionComponent<{}> = () => {
   )
 }
 
-export default SettingsPage
+export default UserProfilePage

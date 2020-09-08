@@ -3,17 +3,19 @@ import {
   Button,
   Flex,
   Heading,
+  Input,
   Menu,
   MenuButton,
   MenuItem,
-  MenuList
+  MenuList,
+  Select,
 } from "@chakra-ui/core"
 import { useLogoutMutation, useMeQuery } from "@generated/graphql"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import * as React from "react"
 import { RedditLogoLarge } from "src/styles/redditLogos"
-import { ColorModeToggle } from "./ColorModeToggle"
+import { ColorModeToggle } from "../layout/ColorModeToggle"
 
 const Header: React.FC = () => {
   const router = useRouter()
@@ -52,6 +54,12 @@ const Header: React.FC = () => {
             justifyContent="space-evenly"
             flexGrow={1}
           >
+            <Input variant="outline" placeholder="Outline" />
+            <Select placeholder="Select option">
+              <option value="option1">Option 1</option>
+              <option value="option2">Option 2</option>
+              <option value="option3">Option 3</option>
+            </Select>
             {data && data?.me?.username ? (
               <Menu>
                 <Menu>
