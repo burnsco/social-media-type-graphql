@@ -1,15 +1,17 @@
-import { Box, Button, useToast } from "@chakra-ui/core"
-import { Form, Formik } from "formik"
-import { Container } from "next/app"
-import { useRouter } from "next/router"
-import * as React from "react"
-import { InputField } from "../../components/shared/InputField"
+import { Form, Formik } from 'formik'
+import { Container } from 'next/app'
+import { useRouter } from 'next/router'
+import * as React from 'react'
+
+import { Box, Button, useToast } from '@chakra-ui/core'
+
+import { InputField } from '../../components/shared/InputField'
 import {
   MeDocument,
   MeQuery,
-  useRegisterMutation,
-} from "../../generated/graphql"
-import { RegisterSchema } from "../../utils/Schemas"
+  useRegisterMutation
+} from '../../generated/graphql'
+import { RegisterSchema } from '../../utils/Schemas'
 
 const LoginPage: React.FC = () => {
   const toast = useToast()
