@@ -1,12 +1,20 @@
-import { Heading } from "@chakra-ui/core"
-import Layout from "@components/layout"
-import * as React from "react"
+import { Button, Heading, TabPanel, Text } from '@chakra-ui/core'
+import * as React from 'react'
 
 const AccountSettingsPage: React.FunctionComponent<{}> = () => {
   return (
-    <Layout>
-      <Heading>Account Settings Page</Heading>
-    </Layout>
+    <TabPanel>
+      <Heading fontSize='lg'>Account settings</Heading>
+      <Text>
+        Email address - <Button>Change</Button>
+      </Text>
+      <Text>
+        Change password - <Button>Change</Button>
+      </Text>
+      <Text>
+        Delete Account- <Button>DELETE</Button>
+      </Text>
+    </TabPanel>
   )
 }
 
