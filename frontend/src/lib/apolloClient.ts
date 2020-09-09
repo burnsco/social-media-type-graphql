@@ -3,34 +3,57 @@ import {
   HttpLink,
   InMemoryCache,
   NormalizedCacheObject
-} from "@apollo/client"
-import { Post } from "@generated/graphql"
-import { useMemo } from "react"
+} from '@apollo/client'
+import { onError } from '@apollo/client/link/error'
+import { Post } from '@generated/graphql'
+import { useMemo } from 'react'
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
 
 function createApolloClient() {
-  return new ApolloClient({
-    ssrMode: typeof window === "undefined",
-    link: new HttpLink({
-      uri: "http://localhost:4000/graphql",
-      credentials: "include",
-    }),
-    cache: new InMemoryCache({
-      typePolicies: {
-        Query: {
-          fields: {
-            allPosts: {
-              keyArgs: [],
-              merge(existing: Post[] | undefined, incoming: Post[]): Post[] {
-                return existing ? [...existing, ...incoming] : [...incoming]
-              },
-            },
-          },
-        },
-      },
-    }),
+  const httpLink = new HttpLink({
+    uri: 'http://localhost:4000/graphql',
+    credentials: 'include'
   })
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.map(({ message, locations, path }) =>
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
+      )
+
+    if (networkError) console.log(`[Network error]: ${networkError}`)
+  })
+
+  const cacheOptions = new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          allPosts: {
+            keyArgs: [],
+            merge(existing: Post[] | undefined, incoming: Post[]): Post[] {
+              return existing ? [...existing, ...incoming] : [...incoming]
+            }
+          }
+        }
+      }
+    }
+  })
+
+  const client = new ApolloClient({
+    ssrMode: typeof window === 'undefined',
+    link: errorLink.concat(httpLink),
+    cache: cacheOptions,
+    defaultOptions: {
+      watchQuery: { errorPolicy: 'all' },
+      query: { errorPolicy: 'all' },
+      mutate: { errorPolicy: 'all' }
+    }
+  })
+
+  return client
 }
 
 export function initializeApollo(initialState: any = null) {
@@ -41,7 +64,7 @@ export function initializeApollo(initialState: any = null) {
     _apolloClient.cache.restore({ ...existingCache, ...initialState })
   }
 
-  if (typeof window === "undefined") return _apolloClient
+  if (typeof window === 'undefined') return _apolloClient
 
   if (!apolloClient) apolloClient = _apolloClient
 

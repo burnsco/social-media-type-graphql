@@ -1,7 +1,7 @@
-import { List, ListItem, Skeleton } from "@chakra-ui/core"
-import { NextChakraLink } from "@components/shared/NextChakraLink"
-import { useAllCategoriesQuery } from "@generated/graphql"
-import * as React from "react"
+import { List, ListItem, Skeleton } from '@chakra-ui/core'
+import { NextChakraLink } from '@components/shared/NextChakraLink'
+import { useAllCategoriesQuery } from '@generated/graphql'
+import * as React from 'react'
 
 const SideMenu: React.FC = () => {
   const { data, loading, error } = useAllCategoriesQuery()
@@ -10,13 +10,10 @@ const SideMenu: React.FC = () => {
 
   return (
     <Skeleton isLoaded={!loading}>
-      <List borderWidth="xs" minH="100%" spacing={3}>
+      <List borderWidth='xs' minH='100%' spacing={3}>
         {data?.categories?.map((subreddit) => (
           <ListItem key={`subreddit-${subreddit.id}`}>
-            <NextChakraLink
-              href="/r/[category]"
-              as={`/r/${subreddit.name.toLowerCase()}`}
-            >
+            <NextChakraLink href='/r/[category]' as={`/r/${subreddit.name}`}>
               {subreddit.name}
             </NextChakraLink>
           </ListItem>

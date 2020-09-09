@@ -1,8 +1,3 @@
-import NextLink from 'next/link'
-import { useRouter } from 'next/router'
-import * as React from 'react'
-import { RedditLogoLarge } from 'src/styles/redditLogos'
-
 import {
   Box,
   Button,
@@ -16,7 +11,10 @@ import {
   Select
 } from '@chakra-ui/core'
 import { useLogoutMutation, useMeQuery } from '@generated/graphql'
-
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
+import * as React from 'react'
+import { RedditLogoLarge } from 'src/styles/redditLogos'
 import { ColorModeToggle } from '../layout/ColorModeToggle'
 
 const Header: React.FC = () => {

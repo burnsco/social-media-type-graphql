@@ -1,4 +1,4 @@
-query AllCategories {
+query Categories {
   categories {
     id
     name

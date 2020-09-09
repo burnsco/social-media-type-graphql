@@ -1,5 +1,10 @@
-query AllPosts($first: Int, $orderBy: PostOrderBy, $skip: Int) {
-  allPosts(first: $first, orderBy: $orderBy, skip: $skip) {
+query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
+  postsByCategory(
+    first: $first
+    orderBy: $orderBy
+    skip: $skip
+    category: $category
+  ) {
     id
     createdAt
     updatedAt
