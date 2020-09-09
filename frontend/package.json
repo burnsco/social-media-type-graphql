@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.1.4",
-    "@chakra-ui/core": "^1.0.0-rc.3",
-    "@chakra-ui/theme": "^1.0.0-rc.3",
-    "@chakra-ui/theme-tools": "^1.0.0-rc.3",
+    "@chakra-ui/core": "next",
+    "@chakra-ui/theme": "next",
+    "@chakra-ui/theme-tools": "next",
     "formik": "^2.1.5",
     "graphql": "^15.3.0",
     "graphql-config": "^3.0.3",

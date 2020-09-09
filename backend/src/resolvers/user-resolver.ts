@@ -1,5 +1,6 @@
 import argon2 from 'argon2'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+
 import { User, UserRole, UserStatus } from '../entities/User'
 import { ContextType } from '../types'
 import { RegisterInput } from './inputs/user-input'
@@ -31,7 +32,7 @@ export class UserResolver {
     const errors = await validateUser(data)
     if (errors !== null) {
       return {
-        errors
+        errors,
       }
     }
 
@@ -40,14 +41,14 @@ export class UserResolver {
       username: data.username,
       password: await argon2.hash(data.password),
       role: UserRole.USER,
-      status: UserStatus.OFFLINE
+      status: UserStatus.OFFLINE,
     })
     await em.persistAndFlush(user)
 
     req.session!.userId = user.id
 
     return {
-      user
+      user,
     }
   }
 
@@ -60,13 +61,13 @@ export class UserResolver {
           resolve(false)
           return {
             message: err,
-            code: false
+            code: false,
           }
         }
         resolve(true)
         return {
           message: 'user logged out successfully',
-          code: true
+          code: true,
         }
       })
     )

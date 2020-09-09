@@ -16,8 +16,7 @@ export type Query = {
   categories: Array<Category>;
   _allPostsMeta: _QueryMeta;
   post?: Maybe<Post>;
-  allPosts: Array<Post>;
-  postsByCategory: Array<Post>;
+  posts: Array<Post>;
   me?: Maybe<User>;
   users: Array<User>;
 };
@@ -28,15 +27,11 @@ export type QueryPostArgs = {
 };
 
 
-export type QueryAllPostsArgs = {
+export type QueryPostsArgs = {
   first?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryPostsByCategoryArgs = {
-  category: Scalars['String'];
 };
 
 export type Category = {
@@ -275,16 +270,73 @@ export type RegisterMutation = (
   ) }
 );
 
-export type AllPostsQueryVariables = Exact<{
-  first?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<PostOrderBy>;
-  skip?: Maybe<Scalars['Int']>;
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesQuery = (
+  { __typename?: 'Query' }
+  & { categories: Array<(
+    { __typename?: 'Category' }
+    & Pick<Category, 'id' | 'name'>
+  )> }
+);
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
+  )> }
+);
+
+export type PostQueryVariables = Exact<{
+  postId: Scalars['Float'];
 }>;
 
 
-export type AllPostsQuery = (
+export type PostQuery = (
   { __typename?: 'Query' }
-  & { allPosts: Array<(
+  & { post?: Maybe<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ), comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+      & { createdBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ) }
+    )>>, category: (
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
+    ), votes?: Maybe<Array<(
+      { __typename?: 'Vote' }
+      & Pick<Vote, 'id' | 'value'>
+      & { castBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ) }
+    )>> }
+  )> }
+);
+
+export type PostsQueryVariables = Exact<{
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<PostOrderBy>;
+  skip?: Maybe<Scalars['Int']>;
+  category?: Maybe<Scalars['String']>;
+}>;
+
+
+export type PostsQuery = (
+  { __typename?: 'Query' }
+  & { posts: Array<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
     & { author: (
@@ -314,100 +366,10 @@ export type AllPostsQuery = (
   ) }
 );
 
-export type AllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllCategoriesQuery = (
-  { __typename?: 'Query' }
-  & { categories: Array<(
-    { __typename?: 'Category' }
-    & Pick<Category, 'id' | 'name'>
-  )> }
-);
-
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = (
-  { __typename?: 'Query' }
-  & { me?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
-  )> }
-);
-
-export type SinglePostQueryVariables = Exact<{
-  postId: Scalars['Float'];
-}>;
-
-
-export type SinglePostQuery = (
-  { __typename?: 'Query' }
-  & { post?: Maybe<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
-    & { author: (
-      { __typename?: 'User' }
-      & Pick<User, 'username'>
-    ), comments?: Maybe<Array<(
-      { __typename?: 'Comment' }
-      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-      & { createdBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'username'>
-      ) }
-    )>>, category: (
-      { __typename?: 'Category' }
-      & Pick<Category, 'id' | 'name'>
-    ), votes?: Maybe<Array<(
-      { __typename?: 'Vote' }
-      & Pick<Vote, 'id' | 'value'>
-      & { castBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'username'>
-      ) }
-    )>> }
-  )> }
-);
-
-export type PostsByCategoryQueryVariables = Exact<{
-  category: Scalars['String'];
-}>;
-
-
-export type PostsByCategoryQuery = (
-  { __typename?: 'Query' }
-  & { postsByCategory: Array<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title'>
-    & { author: (
-      { __typename?: 'User' }
-      & Pick<User, 'username'>
-    ), comments?: Maybe<Array<(
-      { __typename?: 'Comment' }
-      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-      & { createdBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'username'>
-      ) }
-    )>>, category: (
-      { __typename?: 'Category' }
-      & Pick<Category, 'id' | 'name'>
-    ), votes?: Maybe<Array<(
-      { __typename?: 'Vote' }
-      & Pick<Vote, 'id' | 'value'>
-      & { castBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'username'>
-      ) }
-    )>> }
-  )> }
-);
-
-export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AllUsersQuery = (
+export type UsersQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
@@ -502,9 +464,134 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
-export const AllPostsDocument = gql`
-    query AllPosts($first: Int, $orderBy: PostOrderBy, $skip: Int) {
-  allPosts(first: $first, orderBy: $orderBy, skip: $skip) {
+export const CategoriesDocument = gql`
+    query Categories {
+  categories {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useCategoriesQuery__
+ *
+ * To run a query within a React component, call `useCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+        return Apollo.useQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, baseOptions);
+      }
+export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+          return Apollo.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, baseOptions);
+        }
+export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
+export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
+export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    username
+  }
+}
+    `;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+      }
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+        }
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const PostDocument = gql`
+    query Post($postId: Float!) {
+  post(postId: $postId) {
+    id
+    createdAt
+    updatedAt
+    title
+    author {
+      username
+    }
+    comments {
+      id
+      createdAt
+      updatedAt
+      body
+      createdBy {
+        username
+      }
+    }
+    category {
+      id
+      name
+    }
+    votes {
+      id
+      value
+      castBy {
+        username
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePostQuery__
+ *
+ * To run a query within a React component, call `usePostQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function usePostQuery(baseOptions?: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>) {
+        return Apollo.useQuery<PostQuery, PostQueryVariables>(PostDocument, baseOptions);
+      }
+export function usePostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostQuery, PostQueryVariables>) {
+          return Apollo.useLazyQuery<PostQuery, PostQueryVariables>(PostDocument, baseOptions);
+        }
+export type PostQueryHookResult = ReturnType<typeof usePostQuery>;
+export type PostLazyQueryHookResult = ReturnType<typeof usePostLazyQuery>;
+export type PostQueryResult = Apollo.QueryResult<PostQuery, PostQueryVariables>;
+export const PostsDocument = gql`
+    query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
+  posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
     id
     createdAt
     updatedAt
@@ -540,218 +627,35 @@ export const AllPostsDocument = gql`
     `;
 
 /**
- * __useAllPostsQuery__
+ * __usePostsQuery__
  *
- * To run a query within a React component, call `useAllPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `usePostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAllPostsQuery({
+ * const { data, loading, error } = usePostsQuery({
  *   variables: {
  *      first: // value for 'first'
  *      orderBy: // value for 'orderBy'
  *      skip: // value for 'skip'
- *   },
- * });
- */
-export function useAllPostsQuery(baseOptions?: Apollo.QueryHookOptions<AllPostsQuery, AllPostsQueryVariables>) {
-        return Apollo.useQuery<AllPostsQuery, AllPostsQueryVariables>(AllPostsDocument, baseOptions);
-      }
-export function useAllPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllPostsQuery, AllPostsQueryVariables>) {
-          return Apollo.useLazyQuery<AllPostsQuery, AllPostsQueryVariables>(AllPostsDocument, baseOptions);
-        }
-export type AllPostsQueryHookResult = ReturnType<typeof useAllPostsQuery>;
-export type AllPostsLazyQueryHookResult = ReturnType<typeof useAllPostsLazyQuery>;
-export type AllPostsQueryResult = Apollo.QueryResult<AllPostsQuery, AllPostsQueryVariables>;
-export const AllCategoriesDocument = gql`
-    query AllCategories {
-  categories {
-    id
-    name
-  }
-}
-    `;
-
-/**
- * __useAllCategoriesQuery__
- *
- * To run a query within a React component, call `useAllCategoriesQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAllCategoriesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useAllCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<AllCategoriesQuery, AllCategoriesQueryVariables>) {
-        return Apollo.useQuery<AllCategoriesQuery, AllCategoriesQueryVariables>(AllCategoriesDocument, baseOptions);
-      }
-export function useAllCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllCategoriesQuery, AllCategoriesQueryVariables>) {
-          return Apollo.useLazyQuery<AllCategoriesQuery, AllCategoriesQueryVariables>(AllCategoriesDocument, baseOptions);
-        }
-export type AllCategoriesQueryHookResult = ReturnType<typeof useAllCategoriesQuery>;
-export type AllCategoriesLazyQueryHookResult = ReturnType<typeof useAllCategoriesLazyQuery>;
-export type AllCategoriesQueryResult = Apollo.QueryResult<AllCategoriesQuery, AllCategoriesQueryVariables>;
-export const MeDocument = gql`
-    query Me {
-  me {
-    id
-    username
-  }
-}
-    `;
-
-/**
- * __useMeQuery__
- *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMeQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-      }
-export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-        }
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
-export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const SinglePostDocument = gql`
-    query SinglePost($postId: Float!) {
-  post(postId: $postId) {
-    id
-    createdAt
-    updatedAt
-    title
-    author {
-      username
-    }
-    comments {
-      id
-      createdAt
-      updatedAt
-      body
-      createdBy {
-        username
-      }
-    }
-    category {
-      id
-      name
-    }
-    votes {
-      id
-      value
-      castBy {
-        username
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useSinglePostQuery__
- *
- * To run a query within a React component, call `useSinglePostQuery` and pass it any options that fit your needs.
- * When your component renders, `useSinglePostQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSinglePostQuery({
- *   variables: {
- *      postId: // value for 'postId'
- *   },
- * });
- */
-export function useSinglePostQuery(baseOptions?: Apollo.QueryHookOptions<SinglePostQuery, SinglePostQueryVariables>) {
-        return Apollo.useQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, baseOptions);
-      }
-export function useSinglePostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SinglePostQuery, SinglePostQueryVariables>) {
-          return Apollo.useLazyQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, baseOptions);
-        }
-export type SinglePostQueryHookResult = ReturnType<typeof useSinglePostQuery>;
-export type SinglePostLazyQueryHookResult = ReturnType<typeof useSinglePostLazyQuery>;
-export type SinglePostQueryResult = Apollo.QueryResult<SinglePostQuery, SinglePostQueryVariables>;
-export const PostsByCategoryDocument = gql`
-    query PostsByCategory($category: String!) {
-  postsByCategory(category: $category) {
-    id
-    createdAt
-    updatedAt
-    title
-    author {
-      username
-    }
-    comments {
-      id
-      createdAt
-      updatedAt
-      body
-      createdBy {
-        username
-      }
-    }
-    category {
-      id
-      name
-    }
-    votes {
-      id
-      value
-      castBy {
-        username
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __usePostsByCategoryQuery__
- *
- * To run a query within a React component, call `usePostsByCategoryQuery` and pass it any options that fit your needs.
- * When your component renders, `usePostsByCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePostsByCategoryQuery({
- *   variables: {
  *      category: // value for 'category'
  *   },
  * });
  */
-export function usePostsByCategoryQuery(baseOptions?: Apollo.QueryHookOptions<PostsByCategoryQuery, PostsByCategoryQueryVariables>) {
-        return Apollo.useQuery<PostsByCategoryQuery, PostsByCategoryQueryVariables>(PostsByCategoryDocument, baseOptions);
+export function usePostsQuery(baseOptions?: Apollo.QueryHookOptions<PostsQuery, PostsQueryVariables>) {
+        return Apollo.useQuery<PostsQuery, PostsQueryVariables>(PostsDocument, baseOptions);
       }
-export function usePostsByCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsByCategoryQuery, PostsByCategoryQueryVariables>) {
-          return Apollo.useLazyQuery<PostsByCategoryQuery, PostsByCategoryQueryVariables>(PostsByCategoryDocument, baseOptions);
+export function usePostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsQuery, PostsQueryVariables>) {
+          return Apollo.useLazyQuery<PostsQuery, PostsQueryVariables>(PostsDocument, baseOptions);
         }
-export type PostsByCategoryQueryHookResult = ReturnType<typeof usePostsByCategoryQuery>;
-export type PostsByCategoryLazyQueryHookResult = ReturnType<typeof usePostsByCategoryLazyQuery>;
-export type PostsByCategoryQueryResult = Apollo.QueryResult<PostsByCategoryQuery, PostsByCategoryQueryVariables>;
-export const AllUsersDocument = gql`
-    query AllUsers {
+export type PostsQueryHookResult = ReturnType<typeof usePostsQuery>;
+export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>;
+export type PostsQueryResult = Apollo.QueryResult<PostsQuery, PostsQueryVariables>;
+export const UsersDocument = gql`
+    query Users {
   users {
     id
     username
@@ -760,26 +664,26 @@ export const AllUsersDocument = gql`
     `;
 
 /**
- * __useAllUsersQuery__
+ * __useUsersQuery__
  *
- * To run a query within a React component, call `useAllUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAllUsersQuery({
+ * const { data, loading, error } = useUsersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
-        return Apollo.useQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, baseOptions);
+export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
       }
-export function useAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
-          return Apollo.useLazyQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, baseOptions);
+export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
         }
-export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
-export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;
-export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQueryVariables>;
+export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
+export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
+export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;

@@ -1,4 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+
 import { subRedditNameInUse } from '../constants'
 import { Category } from '../entities/Category'
 import { ContextType } from '../types'
@@ -24,7 +25,7 @@ export class CategoryResolver {
     }
 
     const category = em.create(Category, {
-      name: data.name
+      name: data.name,
     })
 
     await em.persistAndFlush(category)

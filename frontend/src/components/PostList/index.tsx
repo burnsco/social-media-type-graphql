@@ -1,19 +1,19 @@
-import { NetworkStatus } from "@apollo/client"
-import { Box } from "@chakra-ui/core"
-import Post from "@components/Post"
-import { useAllPostsQuery } from "@generated/graphql"
-import * as React from "react"
-import { PaginationArgs } from "src"
+import { NetworkStatus } from '@apollo/client'
+import { Box } from '@chakra-ui/core'
+import Post from '@components/Post'
+import { usePostsQuery } from '@generated/graphql'
+import * as React from 'react'
+import { PaginationArgs } from 'src'
 
 export const allPostsQueryVars: PaginationArgs = {
   skip: 0,
-  first: 4,
+  first: 4
 }
 
 const PostList = () => {
-  const { loading, data, error, fetchMore, networkStatus } = useAllPostsQuery({
+  const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
     variables: allPostsQueryVars,
-    notifyOnNetworkStatusChange: true,
+    notifyOnNetworkStatusChange: true
   })
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
@@ -21,8 +21,8 @@ const PostList = () => {
   const loadMorePosts = () => {
     fetchMore({
       variables: {
-        skip: allPosts?.length ?? 0,
-      },
+        skip: allPosts?.length ?? 0
+      }
     })
   }
 
@@ -30,7 +30,7 @@ const PostList = () => {
 
   if (loading && !loadingMorePosts) return <div>Loading</div>
 
-  const allPosts = data?.allPosts
+  const allPosts = data?.posts
   const _allPostsMeta = data?._allPostsMeta
   const areMorePosts =
     (allPosts?.length ?? false) < (_allPostsMeta?.count ?? false)
@@ -44,7 +44,7 @@ const PostList = () => {
       </ul>
       {areMorePosts && (
         <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
-          {loadingMorePosts ? "Loading..." : "Show More"}
+          {loadingMorePosts ? 'Loading...' : 'Show More'}
         </button>
       )}
     </Box>

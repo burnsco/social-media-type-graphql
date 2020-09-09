@@ -1,32 +1,57 @@
+import { NetworkStatus } from '@apollo/client'
 import { Box, Flex, Heading, Spinner, Stack } from '@chakra-ui/core'
 import Layout from '@components/layout'
 import SideMenu from '@components/layout/SideMenu'
 import {
   CategoriesDocument,
   CategoriesQuery,
-  Post,
   PostsDocument,
-  PostsQuery
+  PostsQuery,
+  usePostsQuery
 } from '@generated/graphql'
 import { initializeApollo } from '@lib/apolloClient'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 
-const CategoryPage: React.FunctionComponent<{ posts: Post[] }> = ({
-  posts
-}) => {
+const CategoryPage: React.FunctionComponent<{}> = () => {
   const router = useRouter()
+  const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
+    variables: {
+      skip: 0,
+      first: 5,
+      category: 
+    },
+    notifyOnNetworkStatusChange: true
+  })
 
   if (router.isFallback) {
     return <Spinner />
   }
+  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
+
+  const loadMorePosts = () => {
+    fetchMore({
+      variables: {
+        skip: allPosts?.length ?? 0
+      }
+    })
+  }
+
+  if (error) return <div>error loading posts</div>
+
+  if (loading && !loadingMorePosts) return <div>Loading</div>
+
+  const allPosts = data?.posts
+  const _allPostsMeta = data?._allPostsMeta
+  const areMorePosts =
+    (allPosts?.length ?? false) < (_allPostsMeta?.count ?? false)
 
   return (
     <Layout>
       <Stack isInline spacing={8}>
         <Box width='100%'>
           <Stack spacing={8}>
-            {posts.map((post, index) => (
+            {allPosts?.map((post, index) => (
               <Flex
                 key={`post-${post.title}-index-${index}`}
                 p={5}
@@ -46,6 +71,11 @@ const CategoryPage: React.FunctionComponent<{ posts: Post[] }> = ({
               </Flex>
             ))}
           </Stack>
+          {areMorePosts && (
+            <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
+              {loadingMorePosts ? 'Loading...' : 'Show More'}
+            </button>
+          )}
         </Box>
         <Box width='200px' mx={2}>
           <SideMenu />
@@ -64,6 +94,7 @@ export const getStaticProps = async ({ params }: any) => {
       category: params.category,
       skip: 0,
       last: 4
+
     }
   })
 

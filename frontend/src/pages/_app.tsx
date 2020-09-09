@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <ChakraProvider theme={theme}>
+      <ChakraProvider resetCSS theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
     </ApolloProvider>

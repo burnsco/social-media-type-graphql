@@ -1,10 +1,10 @@
 import { List, ListItem, Skeleton } from '@chakra-ui/core'
 import { NextChakraLink } from '@components/shared/NextChakraLink'
-import { useAllCategoriesQuery } from '@generated/graphql'
+import { useCategoriesQuery } from '@generated/graphql'
 import * as React from 'react'
 
 const SideMenu: React.FC = () => {
-  const { data, loading, error } = useAllCategoriesQuery()
+  const { data, loading, error } = useCategoriesQuery()
 
   if (error) return <div>Error loading subreddits.</div>
 
