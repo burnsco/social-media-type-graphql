@@ -1,23 +1,16 @@
-import NextLink from 'next/link'
-import { useRouter } from 'next/router'
-import * as React from 'react'
-import { RedditLogoLarge } from 'src/styles/redditLogos'
-
 import {
   Button,
   Flex,
-  Input,
   Menu,
   MenuButton,
   MenuGroup,
   MenuItem,
-  MenuList,
-  Modal,
-  Select
+  MenuList
 } from '@chakra-ui/core'
 import { TestModal } from '@components/Modal'
 import { useLogoutMutation, useMeQuery } from '@generated/graphql'
-
+import { useRouter } from 'next/router'
+import * as React from 'react'
 import { ColorModeToggle } from '../layout/ColorModeToggle'
 
 const Header: React.FC = () => {

@@ -9,6 +9,7 @@ import {
   PostsQuery
 } from '@generated/graphql'
 import { initializeApollo } from '@lib/apolloClient'
+import { GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 
@@ -55,13 +56,13 @@ const CategoryPage: React.FunctionComponent<{ posts: Post[] }> = ({
   )
 }
 
-export const getStaticProps = async ({ params }: any) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo()
 
   const { data } = await apolloClient.query<PostsQuery>({
     query: PostsDocument,
     variables: {
-      category: params.category,
+      category: params?.category,
       skip: 0,
       last: 4
     }
@@ -82,11 +83,12 @@ export const getStaticPaths = async () => {
     query: CategoriesDocument
   })
 
-  const paths = data?.categories.map((c) => ({
-    params: { category: c.name }
-  }))
-
-  return { paths, fallback: true }
+ 
+    const paths = data?.categories.map((c) => ({
+      params: { category: c.name }
+    }))
+    return { paths, fallback: true }
+  
 }
 
 export default CategoryPage

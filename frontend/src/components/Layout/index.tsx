@@ -1,9 +1,8 @@
-import * as React from 'react'
-
 import { Box } from '@chakra-ui/core'
 import { CategoriesDocument } from '@generated/graphql'
 import { initializeApollo } from '@lib/apolloClient'
-
+import { GetStaticProps } from 'next'
+import * as React from 'react'
 import Header from '../Header'
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -17,7 +16,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   )
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo()
 
   await apolloClient.query({
