@@ -11,7 +11,7 @@ import * as React from 'react'
 import { AccountSettingsPage } from './account'
 import { ProfileSettingsPage } from './profile'
 
-const SettingsPage = () => (
+export const SettingsPage = () => (
   <Layout>
     <Heading mb={2}>User settings</Heading>
     <Tabs>

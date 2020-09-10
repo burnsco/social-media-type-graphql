@@ -31,7 +31,7 @@ function createApolloClient() {
     typePolicies: {
       Query: {
         fields: {
-          allPosts: {
+          posts: {
             keyArgs: [],
             merge(existing: Post[] | undefined, incoming: Post[]): Post[] {
               return existing ? [...existing, ...incoming] : [...incoming]

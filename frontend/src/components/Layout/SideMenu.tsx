@@ -8,19 +8,22 @@ const SideMenu: React.FC = () => {
 
   if (error) return <div>Error loading subreddits.</div>
 
-  return (
-    <Skeleton isLoaded={!loading}>
-      <List borderWidth='xs' minH='100%' spacing={3}>
-        {data?.categories?.map((subreddit) => (
-          <ListItem key={`subreddit-${subreddit.id}`}>
-            <NextChakraLink href='/r/[category]' as={`/r/${subreddit.name}`}>
-              {subreddit.name}
-            </NextChakraLink>
-          </ListItem>
-        ))}
-      </List>
-    </Skeleton>
-  )
+  if (data?.categories) {
+    return (
+      <Skeleton isLoaded={!loading}>
+        <List borderWidth='xs' minH='100%' spacing={3}>
+          {data.categories.map((subreddit) => (
+            <ListItem key={`subreddit-${subreddit.id}`}>
+              <NextChakraLink href='/r/[category]' as={`/r/${subreddit.name}`}>
+                {subreddit.name}
+              </NextChakraLink>
+            </ListItem>
+          ))}
+        </List>
+      </Skeleton>
+    )
+  }
+  return <div>No Subreddits</div>
 }
 
 export default SideMenu

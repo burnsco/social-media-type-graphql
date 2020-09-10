@@ -30,25 +30,27 @@ const PostList = () => {
 
   if (loading && !loadingMorePosts) return <div>Loading</div>
 
-  const allPosts = data?.posts
+  const allPosts = data?.posts ?? []
   const _allPostsMeta = data?._allPostsMeta
-  const areMorePosts =
-    (allPosts?.length ?? false) < (_allPostsMeta?.count ?? false)
+  const areMorePosts = (allPosts?.length ?? 1) < (_allPostsMeta?.count ?? 0)
 
-  return (
-    <Box>
-      <ul>
-        {allPosts?.map((post, index) => (
-          <Post key={`Post(${index}-${post.title})`} post={post} />
-        ))}
-      </ul>
-      {areMorePosts && (
-        <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
-          {loadingMorePosts ? 'Loading...' : 'Show More'}
-        </button>
-      )}
-    </Box>
-  )
+  if (allPosts) {
+    return (
+      <Box>
+        <ul>
+          {allPosts.map((post, index) => (
+            <Post key={`Post(${index}-${post.title})`} post={post} />
+          ))}
+        </ul>
+        {areMorePosts && (
+          <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
+            {loadingMorePosts ? 'Loading...' : 'Show More'}
+          </button>
+        )}
+      </Box>
+    )
+  }
+  return <div>No Posts.</div>
 }
 
 export default PostList
