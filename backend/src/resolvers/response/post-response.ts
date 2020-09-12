@@ -14,8 +14,5 @@ export class PostsQueryResponse {
   posts: Post[]
 
   @Field(() => Int)
-  offset: number
-
-  @Field(() => Int)
   totalPosts: number
 }

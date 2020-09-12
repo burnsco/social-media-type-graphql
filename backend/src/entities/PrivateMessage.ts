@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToMany, Property } from '@mikro-orm/core'
+import { Entity, ManyToOne, Property } from '@mikro-orm/core'
 import { Field, ObjectType } from 'type-graphql'
 import { BaseEntity } from './BaseEntity'
 import { User } from './User'
@@ -23,6 +23,6 @@ export class PrivateMessage extends BaseEntity {
   sentBy!: User
 
   @Field(() => User)
-  @OneToMany(() => User)
+  @ManyToOne(() => User)
   sentTo!: User
 }

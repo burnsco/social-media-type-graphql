@@ -1,6 +1,5 @@
 import argon2 from 'argon2'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-
 import { User, UserRole, UserStatus } from '../entities/User'
 import { ContextType } from '../types'
 import { RegisterInput } from './inputs/user-input'

@@ -6,7 +6,7 @@ import {
   TabPanels,
   Tabs
 } from '@chakra-ui/core'
-import Layout from '@components/layout'
+import Layout from '@components/Layout'
 import * as React from 'react'
 import { AccountSettingsPage } from './account'
 import { ProfileSettingsPage } from './profile'

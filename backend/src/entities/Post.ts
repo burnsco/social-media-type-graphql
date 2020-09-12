@@ -3,7 +3,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  Property
+  Property,
 } from '@mikro-orm/core'
 import { ObjectType } from 'type-graphql'
 import { Field } from 'type-graphql/dist/decorators/Field'

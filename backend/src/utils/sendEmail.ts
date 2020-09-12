@@ -7,8 +7,8 @@ export async function sendEmail(to: string, html: string) {
     secure: false, // true for 465, false for other ports
     auth: {
       user: 'mds43vi6nviwucqv@ethereal.email', // generated ethereal user
-      pass: 'xJsQzVAuFYKqx5xUR9' // generated ethereal password
-    }
+      pass: 'xJsQzVAuFYKqx5xUR9', // generated ethereal password
+    },
   })
 
   // send mail with defined transport object
@@ -16,7 +16,7 @@ export async function sendEmail(to: string, html: string) {
     from: '"Fred Foo 👻" <foo@example.com>', // sender address
     to: to, // list of receivers
     subject: 'Change password', // Subject line
-    html
+    html,
   })
 
   console.log('Message sent: %s', info.messageId)

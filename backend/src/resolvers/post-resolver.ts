@@ -1,3 +1,4 @@
+import { QueryOrder } from '@mikro-orm/core'
 import {
   Arg,
   Args,
@@ -6,11 +7,8 @@ import {
   Mutation,
   Query,
   Resolver,
-  Root
+  Root,
 } from 'type-graphql'
-
-import { QueryOrder } from '@mikro-orm/core'
-
 import { invalidPostOrId } from '../constants'
 import { Category } from '../entities/Category'
 import { Comment } from '../entities/Comment'
@@ -18,8 +16,8 @@ import { Post } from '../entities/Post'
 import { User } from '../entities/User'
 import { Vote } from '../entities/Vote'
 import { ContextType } from '../types'
-import { _QueryMeta } from './args/_QueryMeta'
 import { PostArgs } from './args/post-args'
+import { _QueryMeta } from './args/_QueryMeta'
 import { CommentInput } from './inputs/comment-input'
 import { PostInput } from './inputs/post-input'
 import { VoteInput } from './inputs/vote-input'

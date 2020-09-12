@@ -8,7 +8,7 @@ export async function seedDatabase(em: EntityManager) {
       let user = em.create(User, {
         email: Faker.fake('{{internet.exampleEmail}}'),
         username: Faker.fake('{{internet.userName}}'),
-        password: Faker.fake('{{internet.password}}')
+        password: Faker.fake('{{internet.password}}'),
       })
       await em.persistAndFlush(user)
     }

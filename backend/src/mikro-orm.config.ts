@@ -13,7 +13,7 @@ import { Vote } from './entities/Vote'
 export default {
   migrations: {
     path: path.join(__dirname, './migrations'),
-    pattern: /^[\w-]+\d+\.[tj]s$/
+    pattern: /^[\w-]+\d+\.[tj]s$/,
   },
   entities: [
     BaseEntity,
@@ -23,11 +23,11 @@ export default {
     Comment,
     Vote,
     PrivateMessage,
-    ChatMessage
+    ChatMessage,
   ],
   dbName: 'reddit-ts-2',
   username: 'postgres',
   password: 'postgres',
   type: 'postgresql',
-  debug: !__prod__
+  debug: !__prod__,
 } as Parameters<typeof MikroORM.init>[0]

@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "declaration": true,
     "sourceMap": true,
     "moduleResolution": "node",
@@ -23,21 +20,11 @@
     "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@generated/*": [
-        "src/generated/*"
-      ],
-      "@lib/*": [
-        "src/lib/*"
-      ],
-      "@utils/*": [
-        "src/utils/*"
-      ],
-      "@pages/*": [
-        "src/pages/*"
-      ]
+      "@components/*": ["src/components/*"],
+      "@generated/*": ["src/generated/*"],
+      "@lib/*": ["src/lib/*"],
+      "@utils/*": ["src/utils/*"],
+      "@pages/*": ["src/pages/*"]
     },
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
@@ -52,9 +39,7 @@
     "lib/apolloClient.ts",
     "next.config.js"
   ],
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS",

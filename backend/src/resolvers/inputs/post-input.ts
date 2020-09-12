@@ -1,5 +1,5 @@
-import { InputType, Field, Int } from 'type-graphql'
-import { Post } from '../../entities/Post'
+import { Field, InputType, Int } from "type-graphql"
+import { Post } from "../../entities/Post"
 
 @InputType()
 export class PostInput implements Partial<Post> {
@@ -9,7 +9,3 @@ export class PostInput implements Partial<Post> {
   @Field(() => Int)
   categoryId!: number
 }
-
-
-
-

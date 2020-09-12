@@ -1,7 +1,7 @@
 import { NetworkStatus } from '@apollo/client'
 import { Box, Flex, Heading, Spinner, Stack } from '@chakra-ui/core'
-import Layout from '@components/layout'
-import SideMenu from '@components/layout/SideMenu'
+import Layout from '@components/Layout'
+import SideMenu from '@components/Layout/SideMenu'
 import {
   CategoriesDocument,
   Category,
@@ -14,8 +14,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 
-const CategoryPage = ({ category }: any) => {
-  console.log(category)
+const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
     variables: {
       category: category

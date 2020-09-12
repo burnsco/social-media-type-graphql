@@ -1,5 +1,4 @@
 import { Ctx, FieldResolver, Resolver, Root } from 'type-graphql'
-
 import { Comment } from '../entities/Comment'
 import { User } from '../entities/User'
 import { ContextType } from '../types'

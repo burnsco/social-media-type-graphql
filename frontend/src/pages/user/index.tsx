@@ -1,5 +1,5 @@
 import { Heading, Tab, TabList, TabPanels, Tabs } from '@chakra-ui/core'
-import Layout from '@components/layout'
+import Layout from '@components/Layout'
 import * as React from 'react'
 import { UserProfileComments } from './UserProfileComments'
 import { UserProfileOverview } from './UserProfileOverview'

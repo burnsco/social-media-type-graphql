@@ -1,6 +1,6 @@
-import { Enum } from '@mikro-orm/core'
-import { Field, InputType } from 'type-graphql'
-import { OrderBy } from '../enums/pagination'
+import { Enum } from "@mikro-orm/core"
+import { Field, InputType } from "type-graphql"
+import { OrderBy } from "../enums/pagination"
 
 @InputType()
 export class PostOrderBy {

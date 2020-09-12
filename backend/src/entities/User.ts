@@ -28,17 +28,17 @@ export class User extends BaseEntity {
 export enum UserRole {
   ADMIN = 'admin',
   MODERATOR = 'moderator',
-  USER = 'user'
+  USER = 'user',
 }
 registerEnumType(UserRole, {
-  name: 'UserRole'
+  name: 'UserRole',
 })
 
 export enum UserStatus {
   OFFLINE = 'offline',
-  ONLINE = 'online'
+  ONLINE = 'online',
 }
 registerEnumType(UserStatus, {
   name: 'UserStatus',
-  description: 'Is User online or offline'
+  description: 'Is User online or offline',
 })

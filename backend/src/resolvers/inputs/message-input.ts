@@ -1,6 +1,6 @@
-import { Property } from '@mikro-orm/core'
-import { PrivateMessage } from 'src/entities/PrivateMessage'
-import { Field, InputType, Int } from 'type-graphql'
+import { Property } from "@mikro-orm/core"
+import { PrivateMessage } from "src/entities/PrivateMessage"
+import { Field, InputType, Int } from "type-graphql"
 
 @InputType()
 export class PrivateMessageInput implements Partial<PrivateMessage> {

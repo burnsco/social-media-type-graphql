@@ -1,5 +1,4 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-
 import { subRedditNameInUse } from '../constants'
 import { Category } from '../entities/Category'
 import { ContextType } from '../types'
