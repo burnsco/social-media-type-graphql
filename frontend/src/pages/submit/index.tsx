@@ -9,7 +9,7 @@ import {
 import Layout from '@components/Layout'
 import * as React from 'react'
 
-const CreatePostPage: React.FunctionComponent<{}> = () => {
+const CreatePostPage: React.FunctionComponent = () => {
   return (
     <Layout>
       <Heading>Create Post Page</Heading>

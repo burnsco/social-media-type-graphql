@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import { ChakraProvider } from '@chakra-ui/core'
-import { theme } from '@chakra-ui/theme'
+import theme from '@chakra-ui/theme'
 import { AppProps } from 'next/dist/next-server/lib/router/router'
 import * as React from 'react'
 import { useApollo } from '../lib/apolloClient'

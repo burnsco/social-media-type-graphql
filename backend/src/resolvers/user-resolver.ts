@@ -2,10 +2,11 @@ import argon2 from 'argon2'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
 import { User, UserRole, UserStatus } from '../entities/User'
 import { ContextType } from '../types'
-import { RegisterInput } from './inputs/user-input'
+import { LoginInput, RegisterInput } from './inputs/user-input'
 import { LogoutMutationResponse } from './response/logout-response'
 import { UserMutationResponse } from './response/user-response'
-import { validateUser } from './validation/register-schema'
+import { validateLoginUser } from './validation/login-schema'
+import { validateRegisterUser } from './validation/register-schema'
 
 @Resolver(() => User)
 export class UserResolver {
@@ -28,7 +29,7 @@ export class UserResolver {
     @Arg('data') data: RegisterInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
-    const errors = await validateUser(data)
+    const errors = await validateRegisterUser(data)
     if (errors !== null) {
       return {
         errors,
@@ -49,6 +50,30 @@ export class UserResolver {
     return {
       user,
     }
+  }
+
+  @Mutation(() => UserMutationResponse)
+  async login(
+    @Arg('data') data: LoginInput,
+    @Ctx() { em, req }: ContextType
+  ): Promise<UserMutationResponse> {
+    const errors = await validateLoginUser(data)
+    if (errors !== null) {
+      return {
+        errors,
+      }
+    }
+
+    const user = await em.findOne(User, { email: data.email })
+
+    if (user) {
+      req.session!.userId = user.id
+
+      return {
+        user,
+      }
+    }
+    return {}
   }
 
   @Mutation(() => LogoutMutationResponse)
