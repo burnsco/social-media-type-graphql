@@ -19,14 +19,8 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
-    "baseUrl": "src",
-    "paths": {
-      "@entities/*": ["entities/*"],
-      "@resolvers/*": ["resolvers/*"],
-      "@utils/*": ["utils/*"]
-    }
+    "resolveJsonModule": true
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "./src/**/*"],
   "exclude": ["node_modules"]
 }

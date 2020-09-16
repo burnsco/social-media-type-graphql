@@ -1,5 +1,5 @@
-import { Field, InputType, Int } from "type-graphql"
-import { Comment } from "../../entities/Comment"
+import { Field, InputType, Int } from 'type-graphql'
+import { Comment } from '../../entities/Comment'
 
 @InputType()
 export class CommentInput implements Partial<Comment> {

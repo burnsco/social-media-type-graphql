@@ -1,6 +1,6 @@
-import { Entity, Enum, Property } from '@mikro-orm/core'
-import { Field, ObjectType, registerEnumType } from 'type-graphql'
-import { BaseEntity } from './BaseEntity'
+import { Entity, Enum, Property } from "@mikro-orm/core"
+import { Field, ObjectType, registerEnumType } from "type-graphql"
+import { BaseEntity } from "./BaseEntity"
 
 @Entity()
 @ObjectType()
@@ -26,19 +26,19 @@ export class User extends BaseEntity {
 }
 
 export enum UserRole {
-  ADMIN = 'admin',
-  MODERATOR = 'moderator',
-  USER = 'user',
+  ADMIN = "admin",
+  MODERATOR = "moderator",
+  USER = "user",
 }
 registerEnumType(UserRole, {
-  name: 'UserRole',
+  name: "UserRole",
 })
 
 export enum UserStatus {
-  OFFLINE = 'offline',
-  ONLINE = 'online',
+  OFFLINE = "offline",
+  ONLINE = "online",
 }
 registerEnumType(UserStatus, {
-  name: 'UserStatus',
-  description: 'Is User online or offline',
+  name: "UserStatus",
+  description: "Is User online or offline",
 })

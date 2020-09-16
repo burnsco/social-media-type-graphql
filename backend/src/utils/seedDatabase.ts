@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core'
 import * as Faker from 'faker'
-import { User } from './../entities/User'
+import { User } from '../entities/User'
 
 export async function seedDatabase(em: EntityManager) {
   async function seedUsers() {

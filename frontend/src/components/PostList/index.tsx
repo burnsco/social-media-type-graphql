@@ -18,13 +18,13 @@ const PostList = () => {
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
-  const loadMorePosts = () => {
+  const loadMorePosts = React.useCallback(() => {
     fetchMore({
       variables: {
-        skip: allPosts?.length ?? 0
+        skip: data?.posts?.length ?? 0
       }
     })
-  }
+  }, [fetchMore, data?.posts])
 
   if (error) return <div>error loading posts</div>
 

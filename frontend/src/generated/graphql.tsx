@@ -130,6 +130,7 @@ export type Mutation = {
   createComment: CommentMutationResponse;
   vote: VoteMutationResponse;
   register: UserMutationResponse;
+  login: UserMutationResponse;
   logout: LogoutMutationResponse;
 };
 
@@ -156,6 +157,11 @@ export type MutationVoteArgs = {
 
 export type MutationRegisterArgs = {
   data: RegisterInput;
+};
+
+
+export type MutationLoginArgs = {
+  data: LoginInput;
 };
 
 export type CategoryMutationResponse = {
@@ -216,6 +222,11 @@ export type UserMutationResponse = {
 export type RegisterInput = {
   email: Scalars['String'];
   username: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type LoginInput = {
+  email: Scalars['String'];
   password: Scalars['String'];
 };
 

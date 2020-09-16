@@ -1,24 +1,10 @@
 import { Box, Button, useToast } from '@chakra-ui/core'
+import { Wrapper } from '@components/Layout/wrapper'
 import { InputField } from '@components/shared/InputField'
-import {
-  MeDocument,
-  MeQuery,
-  MutationRegisterArgs,
-  useRegisterMutation
-} from '@generated/graphql'
-import { RegisterSchema } from '@utils/Schemas'
+import { MeDocument, MeQuery, useRegisterMutation } from '@generated/graphql'
 import { Form, Formik } from 'formik'
-import { Container } from 'next/app'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-
-const RegisterProps: MutationRegisterArgs = {
-  data: {
-    username: '',
-    password: '',
-    email: ''
-  }
-}
 
 const RegisterPage: React.FC = () => {
   const toast = useToast()
@@ -26,14 +12,17 @@ const RegisterPage: React.FC = () => {
   const [register] = useRegisterMutation()
 
   return (
-    <Container>
+    <Wrapper variant='small'>
       <Formik
-        initialValues={RegisterProps}
-        validationSchema={RegisterSchema}
-        onSubmit={async (registerData) => {
+        initialValues={{ username: '', email: '', password: '' }}
+        onSubmit={async (values) => {
           const response = await register({
             variables: {
-              ...registerData
+              data: {
+                username: values.username,
+                password: values.password,
+                email: values.email
+              }
             },
             update: (cache, { data }) => {
               cache.writeQuery<MeQuery>({
@@ -89,7 +78,7 @@ const RegisterPage: React.FC = () => {
           </Form>
         )}
       </Formik>
-    </Container>
+    </Wrapper>
   )
 }
 

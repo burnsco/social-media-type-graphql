@@ -1,6 +1,6 @@
-import { PrivateMessage } from 'src/entities/PrivateMessage'
-import { User } from 'src/entities/User'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
+import { PrivateMessage } from '../entities/PrivateMessage'
+import { User } from '../entities/User'
 import { ContextType } from '../types'
 import { PrivateMessageInput } from './inputs/message-input'
 import { PrivateMessageMutationResponse } from './response/message-response'

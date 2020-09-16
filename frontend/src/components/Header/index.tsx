@@ -7,11 +7,10 @@ import {
   MenuItem,
   MenuList
 } from '@chakra-ui/core'
-import { TestModal } from '@components/Modal'
+import { ColorModeToggle } from '@components/Layout/ColorModeToggle'
 import { useLogoutMutation, useMeQuery } from '@generated/graphql'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { ColorModeToggle } from '../layout/ColorModeToggle'
 
 const Header: React.FC = () => {
   const router = useRouter()
@@ -33,8 +32,6 @@ const Header: React.FC = () => {
       <Flex minW='100%' as='nav' justify='space-evenly'>
         {data && data?.me?.username ? (
           <Menu>
-            <TestModal />
-
             {/* SUBMIT MENU */}
             <Menu>
               <MenuButton as={Button}>Create</MenuButton>
