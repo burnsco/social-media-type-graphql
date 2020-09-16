@@ -8,30 +8,40 @@ import {
 } from '@chakra-ui/core'
 import Layout from '@components/Layout'
 import * as React from 'react'
-import SubmitNormalPostPage from './normal-post'
+import CreateImageOrVideoPost from './image-video-post'
+import CreateLinkPost from './link-post'
+import {
+  default as CreateRegularPost,
+  default as CreateSubreddit
+} from './normal-post'
 
 const CreatePostPage: React.FunctionComponent = () => {
   return (
     <Layout>
-      <Heading>Create Post Page</Heading>
+      <Heading>Creation Page ( Post & Subreddit )</Heading>
       <Tabs>
         <TabList>
           <Tab>Post</Tab>
-          <Tab>Images & Video</Tab>
           <Tab>Link</Tab>
+          <Tab>Images & Video</Tab>
           <Tab>Subreddit</Tab>
         </TabList>
 
         <TabPanels>
-          <SubmitNormalPostPage />
           <TabPanel>
-            <p>Image and Video Inputs</p>
+            <CreateRegularPost />
           </TabPanel>
+
           <TabPanel>
-            <p>Link Inputs</p>
+            <CreateLinkPost />
           </TabPanel>
+
           <TabPanel>
-            <p>Subreddit Inputs</p>
+            <CreateImageOrVideoPost />
+          </TabPanel>
+
+          <TabPanel>
+            <CreateSubreddit />
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -10,7 +10,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <>
       <Header />
       <Box maxW='1200px' minH='100vh' mx='auto'>
-        <Box m={[1, 2, 3]}>{children}</Box>
+        <Box m={[3, 4, 5]} p={2}>
+          {children}
+        </Box>
       </Box>
     </>
   )

@@ -7,7 +7,7 @@ import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const SubmitNormalPostPage: React.FC = () => {
+const CreateRegularPost: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
   const [submitPost] = useCreatePostMutation()
@@ -76,4 +76,4 @@ const SubmitNormalPostPage: React.FC = () => {
   )
 }
 
-export default SubmitNormalPostPage
+export default CreateRegularPost

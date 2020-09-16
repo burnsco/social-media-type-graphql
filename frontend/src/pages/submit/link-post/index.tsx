@@ -2,48 +2,49 @@ import { gql } from '@apollo/client'
 import { Button, useToast } from '@chakra-ui/core'
 import { Wrapper } from '@components/Layout/wrapper'
 import { InputField } from '@components/shared/InputField'
-import { useCreateSubredditMutation } from '@generated/graphql'
+import { useCreatePostMutation } from '@generated/graphql'
 import { Form, Formik } from 'formik'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const CreateSubreddit: React.FC = () => {
+const CreateLinkPost: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
-  const [submitPost] = useCreateSubredditMutation()
+  const [submitPost] = useCreatePostMutation()
 
   return (
     <Wrapper variant='small'>
       <Formik
-        initialValues={{ name: '' }}
+        initialValues={{ title: '', categoryId: 1 }}
         onSubmit={async (values) => {
           const response = await submitPost({
             variables: {
               data: {
-                name: values.name
+                title: values.title,
+                categoryId: values.categoryId
               }
             },
             update: (cache, { data }) => {
               cache.modify({
                 fields: {
-                  categories(existingCats = []) {
+                  posts(existingPosts = []) {
                     const newPostRef = cache.writeFragment({
-                      data: data?.createCategory,
+                      data: data?.createPost,
                       fragment: gql`
-                        fragment NewCategory on Category {
+                        fragment NewPost on Post {
                           id
-                          name
+                          title
                         }
                       `
                     })
-                    return [...existingCats, newPostRef]
+                    return [...existingPosts, newPostRef]
                   }
                 }
               })
             }
           })
 
-          if (response.data?.createCategory?.category) {
+          if (response.data?.createPost.post) {
             toast({
               title: 'Success!',
               description: 'Your post has been submitted.',
@@ -52,14 +53,14 @@ const CreateSubreddit: React.FC = () => {
               isClosable: true
             })
             router.push('/')
-          } else if (response.data?.createCategory.errors) {
-            console.log(response.data?.createCategory.errors)
+          } else if (response.data?.createPost.errors) {
+            console.log(response.data?.createPost.errors)
           }
         }}
       >
         {({ isSubmitting }) => (
           <Form>
-            <InputField name='name' placeholder='name' label='Name' />
+            <InputField name='title' placeholder='title' label='Title' />
             <Button
               mt={4}
               colorScheme='red'
@@ -75,4 +76,4 @@ const CreateSubreddit: React.FC = () => {
   )
 }
 
-export default CreateSubreddit
+export default CreateLinkPost
