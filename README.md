@@ -1,3 +1,3 @@
 # Reddit Clone
 
-## Typescript, Type-Graphql, Mikro-ORM, Chakra-UI
+## @Typescript  @TypeGraphql  @MikroORM  @Chakra-UI @Redis

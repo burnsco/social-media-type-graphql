@@ -36,9 +36,7 @@ const Header: React.FC = () => {
             <Menu>
               <MenuButton as={Button}>Create</MenuButton>
               <MenuList>
-                <MenuItem onClick={() => router.push('/create-post')}>
-                  Post
-                </MenuItem>
+                <MenuItem onClick={() => router.push('/submit')}>Post</MenuItem>
                 <MenuItem onClick={() => router.push('/create-subreddit')}>
                   Subreddit
                 </MenuItem>
