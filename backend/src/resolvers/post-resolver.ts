@@ -72,6 +72,25 @@ export class PostResolver {
     return posts
   }
 
+  @Query(() => [Post], { nullable: false })
+  async postsByCategory(
+    @Args() data: PostArgs,
+    @Ctx() { em }: ContextType
+  ): Promise<Post[] | null> {
+    const [posts] = await em.findAndCount(
+      Post,
+      { category: { name: data.category } },
+      {
+        limit: data.first,
+        offset: data.skip,
+        orderBy: {
+          createdAt: data.orderBy === 'asc' ? QueryOrder.ASC : QueryOrder.DESC,
+        },
+      }
+    )
+    return posts
+  }
+
   @Mutation(() => PostMutationResponse)
   async createPost(
     @Arg('data') data: PostInput,

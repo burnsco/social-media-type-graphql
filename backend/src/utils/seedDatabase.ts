@@ -3,7 +3,7 @@ import * as Faker from 'faker'
 import { User } from '../entities/User'
 
 export async function seedDatabase(em: EntityManager) {
-  async function seedUsers() {
+  return async function seedUsers() {
     for (let index = 0; index < 20; index++) {
       let user = em.create(User, {
         email: Faker.fake('{{internet.exampleEmail}}'),
@@ -13,7 +13,6 @@ export async function seedDatabase(em: EntityManager) {
       await em.persistAndFlush(user)
     }
   }
-  seedUsers()
 }
 //   async function seedCategories() {
 //     for (let index = 0; index < 20; index++) {
