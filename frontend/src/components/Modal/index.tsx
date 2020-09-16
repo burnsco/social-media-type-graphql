@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import {
   Button,
   FormControl,
@@ -14,6 +12,7 @@ import {
   ModalOverlay,
   useDisclosure
 } from '@chakra-ui/core'
+import * as React from 'react'
 
 export const TestModal: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()

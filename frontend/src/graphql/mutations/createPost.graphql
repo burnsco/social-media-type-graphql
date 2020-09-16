@@ -1,5 +1,12 @@
-# mutation createPost($data: PostInput!) {
-#   createPost(data: $data) {
-#     ...PostMutationResponse
-#   }
-# }
+mutation createPost($data: PostInput!) {
+  createPost(data: $data) {
+    post {
+      id
+      title
+    }
+    errors {
+      field
+      message
+    }
+  }
+}

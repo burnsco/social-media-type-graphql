@@ -17,6 +17,7 @@ export type Query = {
   _allPostsMeta: _QueryMeta;
   post?: Maybe<Post>;
   posts: Array<Post>;
+  postsByCategory: Array<Post>;
   me?: Maybe<User>;
   users: Array<User>;
 };
@@ -28,6 +29,14 @@ export type QueryPostArgs = {
 
 
 export type QueryPostsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryPostsByCategoryArgs = {
   first?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<PostOrderBy>;
   category?: Maybe<Scalars['String']>;
@@ -257,6 +266,60 @@ export type UserDetailsFragment = (
   & Pick<User, 'id' | 'username'>
 );
 
+export type CreateCommentMutationVariables = Exact<{
+  data: CommentInput;
+}>;
+
+
+export type CreateCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { createComment: (
+    { __typename?: 'CommentMutationResponse' }
+    & { comment?: Maybe<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'body'>
+    )> }
+  ) }
+);
+
+export type CreatePostMutationVariables = Exact<{
+  data: PostInput;
+}>;
+
+
+export type CreatePostMutation = (
+  { __typename?: 'Mutation' }
+  & { createPost: (
+    { __typename?: 'PostMutationResponse' }
+    & { post?: Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'title'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
+
+export type CreateSubredditMutationVariables = Exact<{
+  data: CategoryInput;
+}>;
+
+
+export type CreateSubredditMutation = (
+  { __typename?: 'Mutation' }
+  & { createCategory: (
+    { __typename?: 'CategoryMutationResponse' }
+    & { category?: Maybe<(
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
+
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -411,6 +474,119 @@ export const ErrorsAndUserDetailsFragmentDoc = gql`
 }
     ${ErrorDetailsFragmentDoc}
 ${UserDetailsFragmentDoc}`;
+export const CreateCommentDocument = gql`
+    mutation createComment($data: CommentInput!) {
+  createComment(data: $data) {
+    comment {
+      id
+      body
+    }
+  }
+}
+    `;
+export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        return Apollo.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, baseOptions);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
+export const CreatePostDocument = gql`
+    mutation createPost($data: PostInput!) {
+  createPost(data: $data) {
+    post {
+      id
+      title
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
+
+/**
+ * __useCreatePostMutation__
+ *
+ * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
+        return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, baseOptions);
+      }
+export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
+export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
+export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const CreateSubredditDocument = gql`
+    mutation createSubreddit($data: CategoryInput!) {
+  createCategory(data: $data) {
+    category {
+      id
+      name
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+export type CreateSubredditMutationFn = Apollo.MutationFunction<CreateSubredditMutation, CreateSubredditMutationVariables>;
+
+/**
+ * __useCreateSubredditMutation__
+ *
+ * To run a mutation, you first call `useCreateSubredditMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSubredditMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSubredditMutation, { data, loading, error }] = useCreateSubredditMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateSubredditMutation(baseOptions?: Apollo.MutationHookOptions<CreateSubredditMutation, CreateSubredditMutationVariables>) {
+        return Apollo.useMutation<CreateSubredditMutation, CreateSubredditMutationVariables>(CreateSubredditDocument, baseOptions);
+      }
+export type CreateSubredditMutationHookResult = ReturnType<typeof useCreateSubredditMutation>;
+export type CreateSubredditMutationResult = Apollo.MutationResult<CreateSubredditMutation>;
+export type CreateSubredditMutationOptions = Apollo.BaseMutationOptions<CreateSubredditMutation, CreateSubredditMutationVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout {

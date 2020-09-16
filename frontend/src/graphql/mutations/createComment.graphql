@@ -1,5 +1,8 @@
-# mutation createComment($data: CommentInput!) {
-#   createComment(data: $data) {
-#     ...CommentMutationResponse
-#   }
-# }
+mutation createComment($data: CommentInput!) {
+  createComment(data: $data) {
+    comment {
+      id
+      body
+    }
+  }
+}

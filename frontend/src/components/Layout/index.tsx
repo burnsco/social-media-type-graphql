@@ -1,9 +1,9 @@
 import { Box } from '@chakra-ui/core'
+import Header from '@components/Header'
 import { CategoriesDocument } from '@generated/graphql'
 import { initializeApollo } from '@lib/apolloClient'
 import { GetStaticProps } from 'next'
 import * as React from 'react'
-import Header from '../Header'
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
