@@ -33,6 +33,20 @@ export class PostResolver {
     return { count }
   }
 
+  @Query(() => _QueryMeta)
+  async _categoryPostsMeta(
+    @Root() posts: Post,
+    @Args() data: PostArgs,
+    @Ctx()
+    { em }: ContextType
+  ) {
+    console.log(posts)
+    const [, count] = await em.findAndCount(Post, {
+      category: { name: data.name },
+    })
+    return { count }
+  }
+
   @Query(() => Post, { nullable: true })
   post(@Arg('postId') postId: number, @Ctx() { em }: ContextType) {
     return em.findOne(Post, postId)

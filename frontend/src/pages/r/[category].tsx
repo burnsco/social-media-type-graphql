@@ -17,7 +17,9 @@ import * as React from 'react'
 const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
     variables: {
-      category: category
+      category: category,
+      skip: 0,
+      first: 4
     },
     notifyOnNetworkStatusChange: true
   })
@@ -40,14 +42,15 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
 
   if (error) return <div>error loading posts</div>
 
-  if (loading && !loadingMorePosts) return <div>Loading</div>
+  if (loading && !loadingMorePosts) return null
 
   const postsBySubreddit = data?.posts ?? []
-  const _allPostsMeta = data?._allPostsMeta
+  const _categoryPostsMeta = data?._categoryPostsMeta
   const areMorePosts =
-    (postsBySubreddit?.length ?? 1) < (_allPostsMeta?.count ?? 0)
+    (postsBySubreddit?.length ?? 1) < (_categoryPostsMeta?.count ?? 0)
 
   if (postsBySubreddit) {
+    console.log(data)
     return (
       <Layout>
         <Stack isInline spacing={8}>
@@ -100,7 +103,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     variables: {
       category: params?.category ?? 'funny',
       skip: 0,
-      last: 4
+      first: 4
     }
   })
 

@@ -28,7 +28,12 @@ query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
       }
     }
   }
+
   _allPostsMeta {
+    count
+  }
+
+  _categoryPostsMeta(name: $category) {
     count
   }
 }

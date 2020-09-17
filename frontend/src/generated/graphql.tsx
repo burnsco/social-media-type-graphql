@@ -15,11 +15,21 @@ export type Query = {
   __typename?: 'Query';
   categories: Array<Category>;
   _allPostsMeta: _QueryMeta;
+  _categoryPostsMeta: _QueryMeta;
   post?: Maybe<Post>;
   posts: Array<Post>;
   postsByCategory: Array<Post>;
   me?: Maybe<User>;
   users: Array<User>;
+};
+
+
+export type Query_CategoryPostsMetaArgs = {
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 
@@ -33,6 +43,7 @@ export type QueryPostsArgs = {
   orderBy?: Maybe<PostOrderBy>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 
@@ -41,6 +52,7 @@ export type QueryPostsByCategoryArgs = {
   orderBy?: Maybe<PostOrderBy>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type Category = {
@@ -90,6 +102,18 @@ export type _QueryMeta = {
   count: Scalars['Int'];
 };
 
+export type PostOrderBy = {
+  createdAt?: Maybe<OrderBy>;
+  title?: Maybe<OrderBy>;
+  updatedAt?: Maybe<OrderBy>;
+  votes?: Maybe<OrderBy>;
+};
+
+export enum OrderBy {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
+
 export type Post = {
   __typename?: 'Post';
   id: Scalars['Int'];
@@ -119,18 +143,6 @@ export type Comment = {
   body: Scalars['String'];
   createdBy: User;
 };
-
-export type PostOrderBy = {
-  createdAt?: Maybe<OrderBy>;
-  title?: Maybe<OrderBy>;
-  updatedAt?: Maybe<OrderBy>;
-  votes?: Maybe<OrderBy>;
-};
-
-export enum OrderBy {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -435,6 +447,9 @@ export type PostsQuery = (
       ) }
     )>> }
   )>, _allPostsMeta: (
+    { __typename?: '_QueryMeta' }
+    & Pick<_QueryMeta, 'count'>
+  ), _categoryPostsMeta: (
     { __typename?: '_QueryMeta' }
     & Pick<_QueryMeta, 'count'>
   ) }
@@ -808,6 +823,9 @@ export const PostsDocument = gql`
     }
   }
   _allPostsMeta {
+    count
+  }
+  _categoryPostsMeta(name: $category) {
     count
   }
 }
