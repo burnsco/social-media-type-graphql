@@ -1,3 +1,4 @@
+import { gql } from '@apollo/client'
 import { Button, useToast } from '@chakra-ui/core'
 import { Wrapper } from '@components/Layout/wrapper'
 import { InputField } from '@components/shared/InputField'
@@ -21,6 +22,24 @@ const CreateSubreddit: React.FC = () => {
               data: {
                 name: values.name
               }
+            },
+            update(cache, { data }) {
+              cache.modify({
+                fields: {
+                  categories(existingCategories = []) {
+                    const newCategoryRef = cache.writeFragment({
+                      data: data?.createCategory.category,
+                      fragment: gql`
+                        fragment NewCategory on Category {
+                          id
+                          name
+                        }
+                      `
+                    })
+                    return [newCategoryRef, ...existingCategories]
+                  }
+                }
+              })
             }
           })
 

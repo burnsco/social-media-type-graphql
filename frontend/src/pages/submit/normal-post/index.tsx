@@ -1,3 +1,4 @@
+import { gql } from '@apollo/client'
 import { Button, useToast } from '@chakra-ui/core'
 import { Wrapper } from '@components/Layout/wrapper'
 import { InputField } from '@components/shared/InputField'
@@ -22,6 +23,24 @@ const CreateRegularPost: React.FC = () => {
                 title: values.title,
                 categoryId: values.categoryId
               }
+            },
+            update(cache, { data }) {
+              cache.modify({
+                fields: {
+                  categories(existingPosts = []) {
+                    const newPostRef = cache.writeFragment({
+                      data: data?.createPost.post,
+                      fragment: gql`
+                        fragment NewPost on Post {
+                          id
+                          title
+                        }
+                      `
+                    })
+                    return [newPostRef, ...existingPosts]
+                  }
+                }
+              })
             }
           })
           if (response.data?.createPost.post) {
