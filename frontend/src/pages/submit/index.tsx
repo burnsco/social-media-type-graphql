@@ -10,10 +10,8 @@ import Layout from '@components/Layout'
 import * as React from 'react'
 import CreateImageOrVideoPost from './image-video-post'
 import CreateLinkPost from './link-post'
-import {
-  default as CreateRegularPost,
-  default as CreateSubreddit
-} from './normal-post'
+import CreateRegularPost from './normal-post'
+import CreateSubreddit from './subreddit'
 
 const CreatePostPage: React.FunctionComponent = () => {
   return (

@@ -1,4 +1,3 @@
-import { gql } from '@apollo/client'
 import { Button, useToast } from '@chakra-ui/core'
 import { Wrapper } from '@components/Layout/wrapper'
 import { InputField } from '@components/shared/InputField'
@@ -10,36 +9,18 @@ import React from 'react'
 const CreateSubreddit: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
-  const [submitPost] = useCreateSubredditMutation()
+  const [submitSubreddit] = useCreateSubredditMutation()
 
   return (
     <Wrapper variant='small'>
       <Formik
         initialValues={{ name: '' }}
         onSubmit={async (values) => {
-          const response = await submitPost({
+          const response = await submitSubreddit({
             variables: {
               data: {
                 name: values.name
               }
-            },
-            update: (cache, { data }) => {
-              cache.modify({
-                fields: {
-                  categories(existingCats = []) {
-                    const newPostRef = cache.writeFragment({
-                      data: data?.createCategory,
-                      fragment: gql`
-                        fragment NewCategory on Category {
-                          id
-                          name
-                        }
-                      `
-                    })
-                    return [...existingCats, newPostRef]
-                  }
-                }
-              })
             }
           })
 
@@ -59,7 +40,7 @@ const CreateSubreddit: React.FC = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <InputField name='name' placeholder='name' label='Name' />
+            <InputField name='name' placeholder='name' label='Subreddit Name' />
             <Button
               mt={4}
               colorScheme='red'

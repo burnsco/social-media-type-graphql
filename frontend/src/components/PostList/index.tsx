@@ -3,9 +3,8 @@ import { Box } from '@chakra-ui/core'
 import Post from '@components/Post'
 import { usePostsQuery } from '@generated/graphql'
 import * as React from 'react'
-import { PaginationArgs } from 'src'
 
-export const allPostsQueryVars: PaginationArgs = {
+export const allPostsQueryVars = {
   skip: 0,
   first: 4
 }
@@ -18,13 +17,13 @@ const PostList = () => {
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
-  const loadMorePosts = React.useCallback(() => {
+  const loadMorePosts = () => {
     fetchMore({
       variables: {
         skip: data?.posts?.length ?? 0
       }
     })
-  }, [fetchMore, data?.posts])
+  }
 
   if (error) return <div>error loading posts</div>
 

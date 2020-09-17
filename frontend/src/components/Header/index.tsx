@@ -32,7 +32,6 @@ const Header: React.FC = () => {
       <Flex minW='100%' as='nav' justify='space-evenly'>
         {data && data?.me?.username ? (
           <Menu>
-            {/* SUBMIT MENU */}
             <Menu>
               <MenuButton as={Button}>Create</MenuButton>
               <MenuList>

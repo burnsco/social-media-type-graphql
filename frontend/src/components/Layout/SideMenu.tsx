@@ -4,7 +4,7 @@ import { useCategoriesQuery } from '@generated/graphql'
 import * as React from 'react'
 
 const SideMenu: React.FC = () => {
-  const { data, loading, error } = useCategoriesQuery()
+  const { data, loading, error } = useCategoriesQuery({ pollInterval: 500 })
 
   if (error) return <div>Error loading subreddits.</div>
 
