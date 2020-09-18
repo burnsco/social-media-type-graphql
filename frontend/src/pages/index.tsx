@@ -1,9 +1,7 @@
 import { Box, Stack } from '@chakra-ui/core'
 import Layout from '@components/Layout'
 import SideMenu from '@components/Layout/SideMenu'
-import PostList, {
-  allPostsQueryVars
-} from '@components/PostList/PostsPageWithData'
+import PostList, { allPostsQueryVars } from '@components/PostList'
 import { PostsDocument, PostsQuery } from '@generated/graphql'
 import { initializeApollo } from '@lib/apolloClient'
 import React from 'react'
