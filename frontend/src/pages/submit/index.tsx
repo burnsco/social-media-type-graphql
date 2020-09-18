@@ -13,6 +13,7 @@ import * as React from 'react'
 import CreateImageOrVideoPost from './image-video-post'
 import CreateLinkPost from './link-post'
 import CreateRegularPost from './normal-post'
+import CreateSubreddit from './subreddit'
 
 const CreatePostPage: React.FunctionComponent = () => {
   return (
@@ -31,6 +32,7 @@ const CreatePostPage: React.FunctionComponent = () => {
             <Tab>Post</Tab>
             <Tab>Link</Tab>
             <Tab>Images & Video</Tab>
+            <Tab>Subreddit</Tab>
           </TabList>
 
           <TabPanels>
@@ -44,6 +46,9 @@ const CreatePostPage: React.FunctionComponent = () => {
 
             <TabPanel>
               <CreateImageOrVideoPost />
+            </TabPanel>
+            <TabPanel>
+              <CreateSubreddit />
             </TabPanel>
           </TabPanels>
         </Tabs>

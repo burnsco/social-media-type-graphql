@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/core'
 import Post from '@components/Post'
 import { usePostsQuery } from '@generated/graphql'
 import * as React from 'react'
+import { FaSpinner } from 'react-icons/fa'
 
 export const allPostsQueryVars = {
   skip: 0,
@@ -27,13 +28,13 @@ const PostList = () => {
 
   if (error) return <div>error loading posts</div>
 
-  if (loading && !loadingMorePosts) return <div>Loading</div>
+  if (loading && !loadingMorePosts) return <FaSpinner />
 
   const allPosts = data?.posts ?? []
   const _allPostsMeta = data?._allPostsMeta
   const areMorePosts = (allPosts?.length ?? 1) < (_allPostsMeta?.count ?? 0)
 
-  if (allPosts) {
+  if (allPosts.length > 0) {
     return (
       <Box>
         <ul>
@@ -49,7 +50,7 @@ const PostList = () => {
       </Box>
     )
   }
-  return <div>No Posts.</div>
+  return <div>No Posts Yet.</div>
 }
 
 export default PostList

@@ -4,11 +4,17 @@ import { useCategoriesQuery } from '@generated/graphql'
 import * as React from 'react'
 
 const SideMenu: React.FC = () => {
-  const { data, loading, error } = useCategoriesQuery()
+  const [isMounted, setIsMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsMounted(true)
+  }, [isMounted])
+
+  const { data, loading, error } = useCategoriesQuery({ skip: !isMounted })
 
   if (error) return <div>Error loading subreddits.</div>
 
-  if (data?.categories) {
+  if (data?.categories && data.categories.length > 0) {
     return (
       <Skeleton isLoaded={!loading}>
         <List borderWidth='xs' minH='100%' spacing={3}>

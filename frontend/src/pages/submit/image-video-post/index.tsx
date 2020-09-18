@@ -58,7 +58,11 @@ const CreateImageOrVideoPost: React.FC = () => {
     >
       {({ isSubmitting }) => (
         <Form>
-          <InputField name='title' placeholder='title' label='Title' />
+          <InputField
+            name='ImageVideoPost'
+            placeholder='ImageVideoPost'
+            label=''
+          />
           <Button
             mt={4}
             colorScheme='red'

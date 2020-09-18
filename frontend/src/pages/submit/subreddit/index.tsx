@@ -46,7 +46,7 @@ const CreateSubreddit: React.FC = () => {
           if (response.data?.createCategory?.category) {
             toast({
               title: 'Success!',
-              description: 'Your post has been submitted.',
+              description: 'Your Subreddit has been created.',
               status: 'success',
               duration: 9000,
               isClosable: true
