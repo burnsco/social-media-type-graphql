@@ -1,6 +1,6 @@
 import {
   Link as ChakraLink,
-  LinkProps as ChakraLinkProps,
+  LinkProps as ChakraLinkProps
 } from "@chakra-ui/core"
 import { LinkProps as NextLinkProps } from "next/dist/client/link"
 import NextLink from "next/link"

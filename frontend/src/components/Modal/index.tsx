@@ -11,8 +11,8 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure
-} from '@chakra-ui/core'
-import * as React from 'react'
+} from "@chakra-ui/core"
+import * as React from "react"
 
 export const TestModal: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -24,7 +24,7 @@ export const TestModal: React.FC = () => {
     <>
       <Button onClick={onOpen}>Open Modal</Button>
       <Button ml={4} ref={finalRef}>
-        I'll receive focus on close
+        I&apos;ll receive focus on close
       </Button>
 
       <Modal
@@ -40,17 +40,17 @@ export const TestModal: React.FC = () => {
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>First name</FormLabel>
-              <Input ref={initialRef} placeholder='First name' />
+              <Input ref={initialRef} placeholder="First name" />
             </FormControl>
 
             <FormControl mt={4}>
               <FormLabel>Last name</FormLabel>
-              <Input placeholder='Last name' />
+              <Input placeholder="Last name" />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
+            <Button colorScheme="blue" mr={3}>
               Save
             </Button>
             <Button onClick={onClose}>Cancel</Button>

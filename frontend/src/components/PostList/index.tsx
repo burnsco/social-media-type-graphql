@@ -1,9 +1,8 @@
-import { NetworkStatus } from '@apollo/client'
-import { Box } from '@chakra-ui/core'
-import Post from '@components/Post'
-import { usePostsQuery } from '@generated/graphql'
-import * as React from 'react'
-import { FaSpinner } from 'react-icons/fa'
+import { NetworkStatus } from "@apollo/client"
+import { Box } from "@chakra-ui/core"
+import Post from "@components/PostList/Post"
+import { usePostsQuery } from "@generated/graphql"
+import * as React from "react"
 
 export const allPostsQueryVars = {
   skip: 0,
@@ -15,9 +14,10 @@ const PostList = () => {
     variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true
   })
+  if (error) return <div>error loading posts</div>
+  if (loading) return null
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
-
   const loadMorePosts = () => {
     fetchMore({
       variables: {
@@ -26,31 +26,42 @@ const PostList = () => {
     })
   }
 
-  if (error) return <div>error loading posts</div>
-
-  if (loading && !loadingMorePosts) return <FaSpinner />
-
   const allPosts = data?.posts ?? []
   const _allPostsMeta = data?._allPostsMeta
   const areMorePosts = (allPosts?.length ?? 1) < (_allPostsMeta?.count ?? 0)
 
-  if (allPosts.length > 0) {
-    return (
-      <Box>
+  const ViewPosts = () => {
+    if (allPosts.length > 0) {
+      return (
         <ul>
           {allPosts.map((post, index) => (
             <Post key={`Post(${index}-${post.title})`} post={post} />
           ))}
         </ul>
-        {areMorePosts && (
-          <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
-            {loadingMorePosts ? 'Loading...' : 'Show More'}
-          </button>
-        )}
-      </Box>
-    )
+      )
+    }
+    return <div>No posts here</div>
   }
-  return <div>No Posts Yet.</div>
+
+  const ShowMorePosts = () => {
+    if (areMorePosts) {
+      return (
+        <ul>
+          <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
+            {loadingMorePosts ? "Loading..." : "Show More"}
+          </button>
+        </ul>
+      )
+    }
+    return <div>End of List</div>
+  }
+
+  return (
+    <Box>
+      <ViewPosts />
+      <ShowMorePosts />
+    </Box>
+  )
 }
 
 export default PostList

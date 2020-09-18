@@ -1,13 +1,12 @@
-import { Heading, Tab, TabList, TabPanels, Tabs } from '@chakra-ui/core'
-import Layout from '@components/Layout'
-import * as React from 'react'
-import { UserProfileComments } from './UserProfileComments'
-import { UserProfileOverview } from './UserProfileOverview'
-import { UserProfilePosts } from './UserProfilePosts'
+import { Box, Heading, Tab, TabList, TabPanels, Tabs } from "@chakra-ui/core"
+import * as React from "react"
+import { UserProfileComments } from "./UserProfileComments"
+import { UserProfileOverview } from "./UserProfileOverview"
+import { UserProfilePosts } from "./UserProfilePosts"
 
 const UserProfilePage: React.FunctionComponent = () => {
   return (
-    <Layout>
+    <Box>
       <Heading>Profile Page</Heading>
       <Tabs>
         <TabList>
@@ -22,7 +21,7 @@ const UserProfilePage: React.FunctionComponent = () => {
           <UserProfileComments />
         </TabPanels>
       </Tabs>
-    </Layout>
+    </Box>
   )
 }
 

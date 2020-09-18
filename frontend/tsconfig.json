@@ -29,8 +29,7 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true
+    "resolveJsonModule": true
   },
   "include": [
     "next-env.d.ts",

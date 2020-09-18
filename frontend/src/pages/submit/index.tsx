@@ -1,4 +1,6 @@
 import {
+  FormControl,
+  FormLabel,
   Heading,
   Select,
   Stack,
@@ -7,27 +9,47 @@ import {
   TabPanel,
   TabPanels,
   Tabs
-} from '@chakra-ui/core'
-import Layout from '@components/Layout'
-import * as React from 'react'
-import CreateImageOrVideoPost from './image-video-post'
-import CreateLinkPost from './link-post'
-import CreateRegularPost from './normal-post'
-import CreateSubreddit from './subreddit'
+} from "@chakra-ui/core"
+import { useCategoriesQuery } from "@generated/graphql"
+import * as React from "react"
+import CreateImageOrVideoPost from "./ImageVideoPost"
+import CreateLinkPost from "./LinkPost"
+import CreateRegularPost from "./NormalPost"
+import CreateSubreddit from "./Subreddit"
 
-const CreatePostPage: React.FunctionComponent = () => {
+const SubmitPage: React.FunctionComponent = () => {
+  const { data, loading, error } = useCategoriesQuery()
+
+  if (loading) return null
+
+  if (error) {
+    console.log(error)
+    return <div>Error Loading Subreddits</div>
+  }
+
   return (
-    <Layout>
-      <Stack spacing={5}>
-        <Heading size='lg' fontStyle='italic'>
-          Create a Post
-        </Heading>
-        <Select placeholder='Choose a community' size='lg' width='50%'>
-          <option value='option1'>Option 1</option>
-          <option value='option2'>Option 2</option>
-          <option value='option3'>Option 3</option>
+    <Stack spacing={5}>
+      <Heading size="lg" fontStyle="italic">
+        Create a Post
+      </Heading>
+      <FormControl>
+        <FormLabel htmlFor="category">Subreddit</FormLabel>
+        <Select
+          id="category"
+          placeholder="Choose a community"
+          size="lg"
+          width="50%"
+        >
+          {data?.categories.map(subreddit => (
+            <option
+              key={`subreddit-${subreddit.name}-sidemenu`}
+              value={subreddit.name}
+            >
+              {subreddit.name}
+            </option>
+          ))}
         </Select>
-        <Tabs isFitted variant='enclosed'>
+        <Tabs isFitted variant="enclosed">
           <TabList>
             <Tab>Post</Tab>
             <Tab>Link</Tab>
@@ -52,9 +74,9 @@ const CreatePostPage: React.FunctionComponent = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </Stack>
-    </Layout>
+      </FormControl>
+    </Stack>
   )
 }
 
-export default CreatePostPage
+export default SubmitPage

@@ -1,10 +1,10 @@
-import { gql } from '@apollo/client'
-import { Button, useToast } from '@chakra-ui/core'
-import { InputField } from '@components/shared/InputField'
-import { useCreatePostMutation } from '@generated/graphql'
-import { Form, Formik } from 'formik'
-import { useRouter } from 'next/router'
-import React from 'react'
+import { gql } from "@apollo/client"
+import { Button, useToast } from "@chakra-ui/core"
+import { InputField } from "@components/shared/InputField"
+import { useCreatePostMutation } from "@generated/graphql"
+import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
+import React from "react"
 
 const CreateImageOrVideoPost: React.FC = () => {
   const toast = useToast()
@@ -13,8 +13,8 @@ const CreateImageOrVideoPost: React.FC = () => {
 
   return (
     <Formik
-      initialValues={{ title: '', categoryId: 1 }}
-      onSubmit={async (values) => {
+      initialValues={{ title: "", categoryId: 1 }}
+      onSubmit={async values => {
         const response = await submitPost({
           variables: {
             data: {
@@ -44,13 +44,13 @@ const CreateImageOrVideoPost: React.FC = () => {
 
         if (response.data?.createPost.post) {
           toast({
-            title: 'Success!',
-            description: 'Your post has been submitted.',
-            status: 'success',
+            title: "Success!",
+            description: "Your post has been submitted.",
+            status: "success",
             duration: 9000,
             isClosable: true
           })
-          router.push('/')
+          router.push("/")
         } else if (response.data?.createPost.errors) {
           console.log(response.data?.createPost.errors)
         }
@@ -59,14 +59,14 @@ const CreateImageOrVideoPost: React.FC = () => {
       {({ isSubmitting }) => (
         <Form>
           <InputField
-            name='ImageVideoPost'
-            placeholder='ImageVideoPost'
-            label=''
+            name="ImageVideoPost"
+            placeholder="ImageVideoPost"
+            label=""
           />
           <Button
             mt={4}
-            colorScheme='red'
-            type='submit'
+            colorScheme="red"
+            type="submit"
             isLoading={isSubmitting}
           >
             Submit

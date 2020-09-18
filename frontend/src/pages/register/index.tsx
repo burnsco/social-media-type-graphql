@@ -1,10 +1,10 @@
-import { Box, Button, useToast } from '@chakra-ui/core'
-import { Wrapper } from '@components/Layout/wrapper'
-import { InputField } from '@components/shared/InputField'
-import { MeDocument, MeQuery, useRegisterMutation } from '@generated/graphql'
-import { Form, Formik } from 'formik'
-import { useRouter } from 'next/router'
-import * as React from 'react'
+import { Box, Button, useToast } from "@chakra-ui/core"
+import { Wrapper } from "@components/Layout/wrapper"
+import { InputField } from "@components/shared/InputField"
+import { MeDocument, MeQuery, useRegisterMutation } from "@generated/graphql"
+import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
+import * as React from "react"
 
 const RegisterPage: React.FC = () => {
   const toast = useToast()
@@ -12,10 +12,10 @@ const RegisterPage: React.FC = () => {
   const [register] = useRegisterMutation()
 
   return (
-    <Wrapper variant='small'>
+    <Wrapper variant="small">
       <Formik
-        initialValues={{ username: '', email: '', password: '' }}
-        onSubmit={async (values) => {
+        initialValues={{ username: "", email: "", password: "" }}
+        onSubmit={async values => {
           const response = await register({
             variables: {
               data: {
@@ -28,7 +28,7 @@ const RegisterPage: React.FC = () => {
               cache.writeQuery<MeQuery>({
                 query: MeDocument,
                 data: {
-                  __typename: 'Query',
+                  __typename: "Query",
                   me: data?.register.user
                 }
               })
@@ -37,13 +37,13 @@ const RegisterPage: React.FC = () => {
 
           if (response.data?.register?.user) {
             toast({
-              title: 'Account created.',
+              title: "Account created.",
               description: "We've created your account for you.",
-              status: 'success',
+              status: "success",
               duration: 9000,
               isClosable: true
             })
-            router.push('/')
+            router.push("/")
           } else if (response.data?.register.errors) {
             console.log(response.data?.register.errors)
           }
@@ -51,26 +51,26 @@ const RegisterPage: React.FC = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <InputField name='email' placeholder='email' label='Email' />
-            <Box my='2'>
+            <InputField name="email" placeholder="email" label="Email" />
+            <Box my="2">
               <InputField
-                name='username'
-                placeholder='username'
-                label='Username'
+                name="username"
+                placeholder="username"
+                label="Username"
               />
             </Box>
-            <Box my='4'>
+            <Box my="4">
               <InputField
-                name='password'
-                placeholder='password'
-                label='Password'
-                type='password'
+                name="password"
+                placeholder="password"
+                label="Password"
+                type="password"
               />
             </Box>
             <Button
               mt={4}
-              colorScheme='red'
-              type='submit'
+              colorScheme="red"
+              type="submit"
               isLoading={isSubmitting}
             >
               Submit

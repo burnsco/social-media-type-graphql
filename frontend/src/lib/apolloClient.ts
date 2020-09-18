@@ -3,17 +3,17 @@ import {
   HttpLink,
   InMemoryCache,
   NormalizedCacheObject
-} from '@apollo/client'
-import { onError } from '@apollo/client/link/error'
-import { Category, Post } from '@generated/graphql'
-import { useMemo } from 'react'
+} from "@apollo/client"
+import { onError } from "@apollo/client/link/error"
+import { Category, Post } from "@generated/graphql"
+import { useMemo } from "react"
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
 
 function createApolloClient() {
   const httpLink = new HttpLink({
-    uri: 'http://localhost:4000/graphql',
-    credentials: 'include'
+    uri: "http://localhost:4000/graphql",
+    credentials: "include"
   })
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -52,13 +52,13 @@ function createApolloClient() {
   })
 
   const client = new ApolloClient({
-    ssrMode: typeof window === 'undefined',
+    ssrMode: typeof window === "undefined",
     link: errorLink.concat(httpLink),
     cache: cacheOptions,
     defaultOptions: {
-      watchQuery: { errorPolicy: 'all' },
-      query: { errorPolicy: 'all' },
-      mutate: { errorPolicy: 'all' }
+      watchQuery: { errorPolicy: "all" },
+      query: { errorPolicy: "all" },
+      mutate: { errorPolicy: "all" }
     }
   })
 
@@ -73,7 +73,7 @@ export function initializeApollo(initialState: any = null) {
     _apolloClient.cache.restore({ ...existingCache, ...initialState })
   }
 
-  if (typeof window === 'undefined') return _apolloClient
+  if (typeof window === "undefined") return _apolloClient
 
   if (!apolloClient) apolloClient = _apolloClient
 
