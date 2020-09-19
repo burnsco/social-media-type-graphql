@@ -3,13 +3,14 @@ query Post($postId: Float!) {
     id
     title
     author {
+      id
       username
     }
     comments {
       id
-      createdAt
       body
       createdBy {
+        id
         username
       }
     }

@@ -1,6 +1,5 @@
 query Categories {
   categories {
-    createdAt
     id
     name
   }
