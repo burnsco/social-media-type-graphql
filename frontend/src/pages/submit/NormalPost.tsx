@@ -8,7 +8,7 @@ import {
   useToast
 } from "@chakra-ui/core"
 import { PostInput, useCreatePostMutation } from "@generated/graphql"
-import { Field, Formik } from "formik"
+import { Field, Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import * as React from "react"
 
@@ -55,7 +55,7 @@ const SubmitRegularPost: React.FC = () => {
         }}
       >
         {props => (
-          <form onSubmit={props.handleSubmit}>
+          <Form onSubmit={props.handleSubmit}>
             <Field name="title" validate={validateTitle}>
               {({ field, form }: any) => (
                 <FormControl
@@ -75,7 +75,7 @@ const SubmitRegularPost: React.FC = () => {
             >
               Submit
             </Button>
-          </form>
+          </Form>
         )}
       </Formik>
     </Box>

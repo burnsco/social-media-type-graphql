@@ -298,7 +298,7 @@ export type CreateSubredditMutationVariables = Exact<{
 export type CreateSubredditMutation = { __typename?: "Mutation" } & {
   createCategory: { __typename?: "CategoryMutationResponse" } & {
     category?: Maybe<
-      { __typename?: "Category" } & Pick<Category, "createdAt" | "id" | "name">
+      { __typename?: "Category" } & Pick<Category, "id" | "name">
     >
     errors?: Maybe<
       Array<
@@ -330,9 +330,7 @@ export type RegisterMutation = { __typename?: "Mutation" } & {
 export type CategoriesQueryVariables = Exact<{ [key: string]: never }>
 
 export type CategoriesQuery = { __typename?: "Query" } & {
-  categories: Array<
-    { __typename?: "Category" } & Pick<Category, "createdAt" | "id" | "name">
-  >
+  categories: Array<{ __typename?: "Category" } & Pick<Category, "id" | "name">>
 }
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>
@@ -348,13 +346,15 @@ export type PostQueryVariables = Exact<{
 export type PostQuery = { __typename?: "Query" } & {
   post?: Maybe<
     { __typename?: "Post" } & Pick<Post, "id" | "title"> & {
-        author: { __typename?: "User" } & Pick<User, "username">
+        author: { __typename?: "User" } & Pick<User, "id" | "username">
         comments?: Maybe<
           Array<
-            { __typename?: "Comment" } & Pick<
-              Comment,
-              "id" | "createdAt" | "body"
-            > & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
+            { __typename?: "Comment" } & Pick<Comment, "id" | "body"> & {
+                createdBy: { __typename?: "User" } & Pick<
+                  User,
+                  "id" | "username"
+                >
+              }
           >
         >
         category: { __typename?: "Category" } & Pick<Category, "id" | "name">
@@ -378,23 +378,23 @@ export type PostsQueryVariables = Exact<{
 
 export type PostsQuery = { __typename?: "Query" } & {
   posts: Array<
-    { __typename?: "Post" } & Pick<Post, "id" | "createdAt" | "title"> & {
-        author: { __typename?: "User" } & Pick<User, "username">
+    { __typename?: "Post" } & Pick<Post, "id" | "title"> & {
+        author: { __typename?: "User" } & Pick<User, "id" | "username">
         comments?: Maybe<
           Array<
-            { __typename?: "Comment" } & Pick<Comment, "createdAt" | "body"> & {
-                createdBy: { __typename?: "User" } & Pick<User, "username">
+            { __typename?: "Comment" } & Pick<Comment, "id" | "body"> & {
+                createdBy: { __typename?: "User" } & Pick<
+                  User,
+                  "id" | "username"
+                >
               }
           >
         >
-        category: { __typename?: "Category" } & Pick<
-          Category,
-          "createdAt" | "name"
-        >
+        category: { __typename?: "Category" } & Pick<Category, "id" | "name">
         votes?: Maybe<
           Array<
-            { __typename?: "Vote" } & Pick<Vote, "value"> & {
-                castBy: { __typename?: "User" } & Pick<User, "username">
+            { __typename?: "Vote" } & Pick<Vote, "id" | "value"> & {
+                castBy: { __typename?: "User" } & Pick<User, "id" | "username">
               }
           >
         >
@@ -546,7 +546,6 @@ export const CreateSubredditDocument = gql`
   mutation createSubreddit($data: CategoryInput!) {
     createCategory(data: $data) {
       category {
-        createdAt
         id
         name
       }
@@ -696,7 +695,6 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<
 export const CategoriesDocument = gql`
   query Categories {
     categories {
-      createdAt
       id
       name
     }
@@ -791,13 +789,14 @@ export const PostDocument = gql`
       id
       title
       author {
+        id
         username
       }
       comments {
         id
-        createdAt
         body
         createdBy {
+          id
           username
         }
       }
@@ -861,25 +860,28 @@ export const PostsDocument = gql`
   ) {
     posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
       id
-      createdAt
       title
       author {
+        id
         username
       }
       comments {
-        createdAt
+        id
         body
         createdBy {
+          id
           username
         }
       }
       category {
-        createdAt
+        id
         name
       }
       votes {
+        id
         value
         castBy {
+          id
           username
         }
       }

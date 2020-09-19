@@ -13,10 +13,12 @@ const PostList = () => {
     variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true
   })
+
   if (error) return <div>error loading posts</div>
   if (loading) return null
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
+
   const loadMorePosts = () => {
     fetchMore({
       variables: {

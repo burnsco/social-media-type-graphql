@@ -24,7 +24,6 @@ const SubmitPage: React.FunctionComponent = () => {
 
   if (error) {
     console.log(error)
-    return <div>Error Loading Subreddits</div>
   }
 
   return (
@@ -32,18 +31,14 @@ const SubmitPage: React.FunctionComponent = () => {
       <Heading size="lg" fontStyle="italic">
         Create a Post
       </Heading>
-      <FormControl>
+
+      <FormControl id="category">
         <FormLabel htmlFor="category">Subreddit</FormLabel>
-        <Select
-          id="category"
-          placeholder="Choose a community"
-          size="lg"
-          width="50%"
-        >
+        <Select placeholder="Choose a community" size="lg" width="50%">
           {data?.categories.map(subreddit => (
             <option
               key={`subreddit-${subreddit.name}-sidemenu`}
-              value={subreddit.name}
+              value={subreddit.id}
             >
               {subreddit.name}
             </option>
