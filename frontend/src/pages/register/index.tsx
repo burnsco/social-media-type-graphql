@@ -9,7 +9,13 @@ import * as React from "react"
 const RegisterPage: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
-  const [register] = useRegisterMutation()
+  const [register, { loading, error }] = useRegisterMutation()
+
+  if (loading) return null
+
+  if (error) {
+    console.log(error)
+  }
 
   return (
     <Wrapper variant="small">
@@ -37,8 +43,8 @@ const RegisterPage: React.FC = () => {
 
           if (response.data?.register?.user) {
             toast({
-              title: "Account created.",
-              description: "We've created your account for you.",
+              title: `Welcome ${response.data.register.user.username}!`,
+              description: "Your account was created successfully.",
               status: "success",
               duration: 9000,
               isClosable: true

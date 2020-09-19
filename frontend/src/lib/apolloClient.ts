@@ -29,6 +29,15 @@ function createApolloClient() {
 
   const cacheOptions = new InMemoryCache({
     typePolicies: {
+      Post: {
+        fields: {
+          category: {
+            merge(existing, incoming) {
+              return { ...existing, ...incoming }
+            }
+          }
+        }
+      },
       Query: {
         fields: {
           posts: {
@@ -43,7 +52,7 @@ function createApolloClient() {
               existing: Category[] | undefined,
               incoming: Category[]
             ): Category[] {
-              return existing ? [...existing, ...incoming] : [...incoming]
+              return existing ? [...incoming, ...existing] : [...incoming]
             }
           }
         }

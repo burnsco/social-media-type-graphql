@@ -1,81 +1,84 @@
-import { gql } from "@apollo/client"
-import { Button, useToast } from "@chakra-ui/core"
-import { InputField } from "@components/shared/InputField"
-import { useCreatePostMutation } from "@generated/graphql"
-import { Form, Formik } from "formik"
+import {
+  Box,
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  useToast
+} from "@chakra-ui/core"
+import { PostInput, useCreatePostMutation } from "@generated/graphql"
+import { Field, Formik } from "formik"
 import { useRouter } from "next/router"
-import React from "react"
+import * as React from "react"
 
 const SubmitRegularPost: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
   const [submitPost, { loading, error }] = useCreatePostMutation()
 
-  if (loading) return null
   if (error) {
     console.log(error)
   }
+  if (loading) return null
+
+  function validateTitle(value: string) {
+    let error
+    if (!value) {
+      error = "Title is required"
+    } else if (value.length < 2) {
+      error = "Subreddit has to be at least 5 characters. "
+    }
+    return error
+  }
+
+  const handleSubmit = (values: PostInput) => {
+    submitPost({
+      variables: {
+        data: {
+          title: values.title,
+          categoryId: values.categoryId
+        }
+      }
+    })
+  }
 
   return (
-    <Formik
-      initialValues={{ title: "", categoryId: 1 }}
-      onSubmit={async values => {
-        const response = await submitPost({
-          variables: {
-            data: {
-              title: values.title,
-              categoryId: values.categoryId
-            }
-          },
-          update(cache, { data }) {
-            cache.modify({
-              fields: {
-                categories(existingPosts = []) {
-                  const newPostRef = cache.writeFragment({
-                    data: data?.createPost.post,
-                    fragment: gql`
-                      fragment NewPost on Post {
-                        id
-                        title
-                      }
-                    `
-                  })
-                  return [newPostRef, ...existingPosts]
-                }
-              }
-            })
-          }
-        })
-
-        if (response.data?.createPost.post) {
-          toast({
-            title: "Success!",
-            description: "Your post has been submitted.",
-            status: "success",
-            duration: 9000,
-            isClosable: true
-          })
-
-          router.push("/")
-        } else if (response.data?.createPost.errors) {
-          console.log(response.data?.createPost.errors)
-        }
-      }}
-    >
-      {({ isSubmitting }) => (
-        <Form>
-          <InputField name="title" placeholder="title" label="" />
-          <Button
-            mt={4}
-            colorScheme="red"
-            type="submit"
-            isLoading={isSubmitting}
-          >
-            Submit
-          </Button>
-        </Form>
-      )}
-    </Formik>
+    <Box>
+      <Formik
+        initialValues={{ title: "", categoryId: 2 }}
+        onSubmit={(values, actions) => {
+          setTimeout(() => {
+            actions.setSubmitting(false)
+            handleSubmit(values)
+          }, 1000)
+        }}
+      >
+        {props => (
+          <form onSubmit={props.handleSubmit}>
+            <Field name="title" validate={validateTitle}>
+              {({ field, form }: any) => (
+                <FormControl
+                  isInvalid={form.errors.title && form.touched.title}
+                >
+                  <FormLabel htmlFor="title">Post Title</FormLabel>
+                  <Input {...field} id="title" placeholder="title" />
+                  <FormErrorMessage>{form.errors.title}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+            <Button
+              mt={4}
+              colorScheme="teal"
+              isLoading={props.isSubmitting}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </form>
+        )}
+      </Formik>
+    </Box>
   )
 }
 

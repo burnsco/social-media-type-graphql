@@ -1,6 +1,7 @@
 mutation createSubreddit($data: CategoryInput!) {
   createCategory(data: $data) {
     category {
+      createdAt
       id
       name
     }

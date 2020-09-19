@@ -52,8 +52,9 @@ const PostList = () => {
           </button>
         </ul>
       )
+    } else {
+      return null
     }
-    return <div>End of List</div>
   }
 
   return (

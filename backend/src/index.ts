@@ -86,7 +86,7 @@ const main = async () => {
 
   app.listen(PORT, () => {
     console.log(
-      `🚀 Server ready at https://localhost:${PORT}${server.graphqlPath}`
+      `🚀🚀  Server ready at https://localhost:${PORT}${server.graphqlPath} 🚀 🚀 `
     )
   })
 }

@@ -49,7 +49,7 @@ const SubmitPage: React.FunctionComponent = () => {
             </option>
           ))}
         </Select>
-        <Tabs isFitted variant="enclosed">
+        <Tabs variant="enclosed">
           <TabList>
             <Tab>Post</Tab>
             <Tab>Link</Tab>

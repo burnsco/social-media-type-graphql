@@ -2,26 +2,22 @@ query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
   posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
     id
     createdAt
-    updatedAt
     title
     author {
       username
     }
     comments {
-      id
       createdAt
-      updatedAt
       body
       createdBy {
         username
       }
     }
     category {
-      id
+      createdAt
       name
     }
     votes {
-      id
       value
       castBy {
         username
