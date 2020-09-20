@@ -14,6 +14,7 @@ const SideMenu: React.FC = () => {
 
   if (error) return <div>Error loading subreddits.</div>
   if (loading) return null
+
   return (
     <Skeleton isLoaded={!loading}>
       <Box borderWidth="1px" rounded="lg" overflow="hidden" p="4">
