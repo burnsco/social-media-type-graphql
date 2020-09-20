@@ -16,6 +16,7 @@ import { useLogoutMutation, useMeQuery } from "@generated/graphql"
 import { useRouter } from "next/router"
 import * as React from "react"
 import { BsFolderPlus } from "react-icons/bs"
+import { FaRedditSquare } from "react-icons/fa"
 import { HiOutlineMail } from "react-icons/hi"
 import { ImPencil2 } from "react-icons/im"
 
@@ -49,6 +50,15 @@ const Header: React.FC = () => {
                 />
                 <Input type='search' placeholder='Search' size='md' />
               </InputGroup> */}
+              <Tooltip hasArrow label="Home" bg="gray.200" color="black">
+                <IconButton
+                  onClick={() => router.push("/")}
+                  variant="ghost"
+                  color="current"
+                  aria-label="Home"
+                  icon={<FaRedditSquare />}
+                />
+              </Tooltip>
               <Tooltip hasArrow label="Submit Post" bg="gray.200" color="black">
                 <IconButton
                   onClick={() => router.push("/submit")}
@@ -66,6 +76,7 @@ const Header: React.FC = () => {
                 color="black"
               >
                 <IconButton
+                  onClick={() => router.push("/submit/Subreddit")}
                   variant="ghost"
                   color="current"
                   aria-label="Create Subreddit"

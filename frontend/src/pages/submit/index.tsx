@@ -14,7 +14,10 @@ import {
   Tabs,
   useToast
 } from "@chakra-ui/core"
-import { useCategoriesQuery, useCreatePostMutation } from "@generated/graphql"
+import {
+  useCategoriesLazyQuery,
+  useCreatePostMutation
+} from "@generated/graphql"
 import { Field, Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import * as React from "react"
@@ -28,11 +31,10 @@ interface CreatePostProps {
 const SubmitPage: React.FunctionComponent = () => {
   const toast = useToast()
   const router = useRouter()
-  const {
-    data,
-    loading: loadingSubreddits,
-    error: subredditError
-  } = useCategoriesQuery()
+  const [
+    getSubreddits,
+    { data, loading: loadingSubreddits, error: subredditError }
+  ] = useCategoriesLazyQuery()
 
   const [submitPost, { loading, error }] = useCreatePostMutation()
 
@@ -77,6 +79,7 @@ const SubmitPage: React.FunctionComponent = () => {
                 {({ field }: any) => (
                   <FormControl id="categoryId">
                     <Select
+                      onMouseOver={() => getSubreddits()}
                       {...field}
                       isRequired
                       placeholder="Choose a community"

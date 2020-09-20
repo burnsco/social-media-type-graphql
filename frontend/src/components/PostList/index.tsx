@@ -2,16 +2,19 @@ import { NetworkStatus } from "@apollo/client"
 import { Box, Flex, Heading } from "@chakra-ui/core"
 import { usePostsQuery } from "@generated/graphql"
 import * as React from "react"
-
-export const allPostsQueryVars = {
-  skip: 0,
-  first: 4
-}
+import { allPostsQueryVars } from "src/types/post"
 
 const PostList = () => {
+  const [isMounted, setIsMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsMounted(true)
+  }, [isMounted])
+
   const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
     variables: allPostsQueryVars,
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
+    skip: !isMounted
   })
 
   if (error) return <div>error loading posts</div>
@@ -74,12 +77,15 @@ const PostList = () => {
     }
   }
 
-  return (
-    <Box>
-      <ViewPosts />
-      <ShowMorePosts />
-    </Box>
-  )
+  if (isMounted) {
+    return (
+      <Box>
+        <ViewPosts />
+        <ShowMorePosts />
+      </Box>
+    )
+  }
+  return null
 }
 
 export default PostList

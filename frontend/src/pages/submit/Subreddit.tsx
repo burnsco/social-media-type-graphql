@@ -6,34 +6,28 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  Skeleton,
   useToast
 } from "@chakra-ui/core"
-import { CategoryInput, useCreateSubredditMutation } from "@generated/graphql"
+import { useCreateSubredditMutation } from "@generated/graphql"
 import { Field, Formik } from "formik"
 import { useRouter } from "next/router"
 import React from "react"
+import * as Yup from "yup"
+interface CreateSubredditProps {
+  name: string
+}
 
 const CreateSubreddit: React.FC = () => {
   const toast = useToast()
   const router = useRouter()
-  const [submitSubreddit, { loading, error }] = useCreateSubredditMutation()
 
-  if (error) {
-    console.log(error)
-  }
-  if (loading) return null
+  const [
+    submitSubreddit,
+    { loading: mutationLoading, error: mutationError }
+  ] = useCreateSubredditMutation()
 
-  function validateName(value: string) {
-    let error
-    if (!value) {
-      error = "Name is required"
-    } else if (value.length < 5) {
-      error = "Subreddit has to be at least 5 characters. "
-    }
-    return error
-  }
-
-  const handleSubmit = (values: CategoryInput) => {
+  const handleSubmit = (values: CreateSubredditProps) => {
     submitSubreddit({
       variables: {
         data: {
@@ -63,37 +57,45 @@ const CreateSubreddit: React.FC = () => {
 
   return (
     <Box>
-      <Formik
-        initialValues={{ name: "" }}
-        onSubmit={(values, actions) => {
-          setTimeout(() => {
-            actions.setSubmitting(false)
-            handleSubmit(values)
-          }, 1000)
-        }}
-      >
-        {props => (
-          <form onSubmit={props.handleSubmit}>
-            <Field name="name" validate={validateName}>
-              {({ field, form }: any) => (
-                <FormControl isInvalid={form.errors.name && form.touched.name}>
-                  <FormLabel htmlFor="name">Subreddit Name/Title</FormLabel>
-                  <Input {...field} id="name" placeholder="name" />
-                  <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
-            <Button
-              mt={4}
-              colorScheme="teal"
-              isLoading={props.isSubmitting}
-              type="submit"
-            >
-              Submit
-            </Button>
-          </form>
-        )}
-      </Formik>
+      <Skeleton isLoaded={!mutationLoading}>
+        <Formik
+          initialValues={{ name: "" }}
+          validationSchema={Yup.object().shape({
+            name: Yup.string().required("Required")
+          })}
+          onSubmit={(values, actions) => {
+            setTimeout(() => {
+              actions.setSubmitting(false)
+              handleSubmit(values)
+            }, 1000)
+          }}
+        >
+          {props => (
+            <form onSubmit={props.handleSubmit}>
+              <Field name="name">
+                {({ field, form }: any) => (
+                  <FormControl
+                    isInvalid={form.errors.name && form.touched.name}
+                  >
+                    <FormLabel htmlFor="name">Subreddit Name/Title</FormLabel>
+                    <Input {...field} id="name" placeholder="name" />
+                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+              <Button
+                mt={4}
+                colorScheme="teal"
+                isLoading={props.isSubmitting}
+                type="submit"
+              >
+                Submit
+              </Button>
+            </form>
+          )}
+        </Formik>
+        {mutationError && <p>Error: ( Please try again</p>}
+      </Skeleton>
     </Box>
   )
 }

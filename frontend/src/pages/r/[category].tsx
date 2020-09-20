@@ -55,7 +55,7 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const areMorePosts =
     (postsBySubreddit?.length ?? 1) < (_categoryPostsMeta?.count ?? 0)
 
-  if (postsBySubreddit) {
+  if (postsBySubreddit.length > 0) {
     return (
       <Box>
         {postsBySubreddit.length > 0 && (

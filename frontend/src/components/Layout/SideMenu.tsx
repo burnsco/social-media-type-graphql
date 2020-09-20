@@ -8,33 +8,27 @@ const SideMenu: React.FC = () => {
 
   React.useEffect(() => {
     setIsMounted(true)
-  }, [isMounted])
+  }, [])
 
   const { data, loading, error } = useCategoriesQuery({ skip: !isMounted })
 
   if (error) return <div>Error loading subreddits.</div>
-
-  if (data?.categories && data.categories.length > 0) {
-    return (
-      <Skeleton isLoaded={!loading}>
-        <Box borderWidth="1px" rounded="lg" overflow="hidden" p="4">
-          <List borderWidth="xs" minH="100%" spacing={3}>
-            {data.categories.map(subreddit => (
-              <ListItem key={`subreddit-${subreddit.id}`}>
-                <NextChakraLink
-                  href="/r/[category]"
-                  as={`/r/${subreddit.name}`}
-                >
-                  /r/{subreddit.name}
-                </NextChakraLink>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Skeleton>
-    )
-  }
-  return <div>No Subreddits</div>
+  if (loading) return null
+  return (
+    <Skeleton isLoaded={!loading}>
+      <Box borderWidth="1px" rounded="lg" overflow="hidden" p="4">
+        <List borderWidth="xs" minH="100%" spacing={3}>
+          {data?.categories.map(subreddit => (
+            <ListItem key={`subreddit-${subreddit.id}`}>
+              <NextChakraLink href="/r/[category]" as={`/r/${subreddit.name}`}>
+                /r/{subreddit.name}
+              </NextChakraLink>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Skeleton>
+  )
 }
 
 export default SideMenu

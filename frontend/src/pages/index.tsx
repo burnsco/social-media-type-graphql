@@ -1,9 +1,12 @@
-import PostList, { allPostsQueryVars } from "@components/PostList"
+import PostList from "@components/PostList"
 import { PostsDocument, PostsQuery } from "@generated/graphql"
 import { initializeApollo } from "@lib/apolloClient"
 import React from "react"
+import { allPostsQueryVars } from "src/types/post"
 
-const Index = () => <PostList />
+const Index: React.FC = () => {
+  return <PostList />
+}
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
