@@ -1,4 +1,7 @@
-function timeDifference(current: number, previous: number) {
+function timeDifference(current?: number, previous?: number) {
+  if (current === undefined) return null
+  if (previous === undefined) return null
+
   const milliSecondsPerMinute = 60 * 1000
   const milliSecondsPerHour = milliSecondsPerMinute * 60
   const milliSecondsPerDay = milliSecondsPerHour * 24

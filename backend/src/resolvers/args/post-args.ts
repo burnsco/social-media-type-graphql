@@ -1,12 +1,15 @@
-import { Max, Min } from 'class-validator'
-import { ArgsType, Field, Int } from 'type-graphql'
-import { PostOrderBy } from '../inputs/posts-order-by'
+import { Max, Min } from "class-validator"
+import { ArgsType, Field, Int } from "type-graphql"
+import { PostOrderBy } from "../inputs/posts-order-by"
 
 @ArgsType()
 export class PostArgs {
   @Field(() => Int, { nullable: true })
   @Min(0)
   first?: number
+
+  @Field(() => Int, { nullable: true })
+  postId?: number
 
   @Field(() => PostOrderBy, { nullable: true })
   orderBy?: PostOrderBy

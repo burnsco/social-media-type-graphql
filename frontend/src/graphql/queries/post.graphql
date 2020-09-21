@@ -1,6 +1,7 @@
-query Post($postId: Float!) {
+query Post($postId: Int) {
   post(postId: $postId) {
     id
+    createdAt
     title
     author {
       id

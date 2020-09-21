@@ -27,6 +27,7 @@ export type Query = {
 
 export type Query_CategoryPostsMetaArgs = {
   first?: Maybe<Scalars["Int"]>
+  postId?: Maybe<Scalars["Int"]>
   orderBy?: Maybe<PostOrderBy>
   category?: Maybe<Scalars["String"]>
   skip?: Maybe<Scalars["Int"]>
@@ -34,11 +35,17 @@ export type Query_CategoryPostsMetaArgs = {
 }
 
 export type QueryPostArgs = {
-  postId: Scalars["Float"]
+  first?: Maybe<Scalars["Int"]>
+  postId?: Maybe<Scalars["Int"]>
+  orderBy?: Maybe<PostOrderBy>
+  category?: Maybe<Scalars["String"]>
+  skip?: Maybe<Scalars["Int"]>
+  name?: Maybe<Scalars["String"]>
 }
 
 export type QueryPostsArgs = {
   first?: Maybe<Scalars["Int"]>
+  postId?: Maybe<Scalars["Int"]>
   orderBy?: Maybe<PostOrderBy>
   category?: Maybe<Scalars["String"]>
   skip?: Maybe<Scalars["Int"]>
@@ -47,6 +54,7 @@ export type QueryPostsArgs = {
 
 export type QueryPostsByCategoryArgs = {
   first?: Maybe<Scalars["Int"]>
+  postId?: Maybe<Scalars["Int"]>
   orderBy?: Maybe<PostOrderBy>
   category?: Maybe<Scalars["String"]>
   skip?: Maybe<Scalars["Int"]>
@@ -340,12 +348,12 @@ export type MeQuery = { __typename?: "Query" } & {
 }
 
 export type PostQueryVariables = Exact<{
-  postId: Scalars["Float"]
+  postId?: Maybe<Scalars["Int"]>
 }>
 
 export type PostQuery = { __typename?: "Query" } & {
   post?: Maybe<
-    { __typename?: "Post" } & Pick<Post, "id" | "title"> & {
+    { __typename?: "Post" } & Pick<Post, "id" | "createdAt" | "title"> & {
         author: { __typename?: "User" } & Pick<User, "id" | "username">
         comments?: Maybe<
           Array<
@@ -378,7 +386,7 @@ export type PostsQueryVariables = Exact<{
 
 export type PostsQuery = { __typename?: "Query" } & {
   posts: Array<
-    { __typename?: "Post" } & Pick<Post, "id" | "title"> & {
+    { __typename?: "Post" } & Pick<Post, "id" | "createdAt" | "title"> & {
         author: { __typename?: "User" } & Pick<User, "id" | "username">
         comments?: Maybe<
           Array<
@@ -784,9 +792,10 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>
 export const PostDocument = gql`
-  query Post($postId: Float!) {
+  query Post($postId: Int) {
     post(postId: $postId) {
       id
+      createdAt
       title
       author {
         id
@@ -860,6 +869,7 @@ export const PostsDocument = gql`
   ) {
     posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
       id
+      createdAt
       title
       author {
         id

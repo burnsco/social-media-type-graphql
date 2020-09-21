@@ -1,5 +1,6 @@
 import { NetworkStatus } from "@apollo/client"
-import { Box, Flex, Heading, Spinner, Stack } from "@chakra-ui/core"
+import { Box, Spinner, Stack } from "@chakra-ui/core"
+import NewPost from "@components/Post"
 import {
   CategoriesDocument,
   Category,
@@ -61,23 +62,7 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
         {postsBySubreddit.length > 0 && (
           <Stack spacing={8}>
             {postsBySubreddit.map((post, index) => (
-              <Flex
-                key={`post-${post.title}-index-${index}`}
-                p={5}
-                shadow="md"
-                borderWidth="1px"
-                minW="100%"
-              >
-                <Box>
-                  <Heading fontSize="xl">Title - {post.title}</Heading>
-                  <Heading fontSize="md">
-                    Category - {post.category.name}
-                  </Heading>
-                  <Heading fontSize="sm">
-                    CreatedBy - {post.author.username}
-                  </Heading>
-                </Box>
-              </Flex>
+              <NewPost key={`post-${post.id}-${index}`} post={post} />
             ))}
             {areMorePosts && (
               <button

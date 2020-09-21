@@ -1,4 +1,4 @@
-import { QueryOrder } from '@mikro-orm/core'
+import { QueryOrder } from "@mikro-orm/core"
 import {
   Arg,
   Args,
@@ -8,22 +8,22 @@ import {
   Query,
   Resolver,
   Root,
-} from 'type-graphql'
-import { invalidPostOrId } from '../constants'
-import { Category } from '../entities/Category'
-import { Comment } from '../entities/Comment'
-import { Post } from '../entities/Post'
-import { User } from '../entities/User'
-import { Vote } from '../entities/Vote'
-import { ContextType } from '../types'
-import { PostArgs } from './args/post-args'
-import { _QueryMeta } from './args/_QueryMeta'
-import { CommentInput } from './inputs/comment-input'
-import { PostInput } from './inputs/post-input'
-import { VoteInput } from './inputs/vote-input'
-import { CommentMutationResponse } from './response/comment-response'
-import { PostMutationResponse } from './response/post-response'
-import { VoteMutationResponse } from './response/vote-response'
+} from "type-graphql"
+import { invalidPostOrId } from "../constants"
+import { Category } from "../entities/Category"
+import { Comment } from "../entities/Comment"
+import { Post } from "../entities/Post"
+import { User } from "../entities/User"
+import { Vote } from "../entities/Vote"
+import { ContextType } from "../types"
+import { PostArgs } from "./args/post-args"
+import { _QueryMeta } from "./args/_QueryMeta"
+import { CommentInput } from "./inputs/comment-input"
+import { PostInput } from "./inputs/post-input"
+import { VoteInput } from "./inputs/vote-input"
+import { CommentMutationResponse } from "./response/comment-response"
+import { PostMutationResponse } from "./response/post-response"
+import { VoteMutationResponse } from "./response/vote-response"
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -48,8 +48,11 @@ export class PostResolver {
   }
 
   @Query(() => Post, { nullable: true })
-  post(@Arg('postId') postId: number, @Ctx() { em }: ContextType) {
-    return em.findOne(Post, postId)
+  post(@Args() data: PostArgs, @Ctx() { em }: ContextType) {
+    if (data.postId) {
+      return em.findOne(Post, data.postId)
+    }
+    return null
   }
 
   @Query(() => [Post], { nullable: false })
@@ -66,7 +69,7 @@ export class PostResolver {
           offset: data.skip,
           orderBy: {
             createdAt:
-              data.orderBy === 'asc' ? QueryOrder.ASC : QueryOrder.DESC,
+              data.orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC,
           },
         }
       )
@@ -79,7 +82,7 @@ export class PostResolver {
         limit: data.first,
         offset: data.skip,
         orderBy: {
-          createdAt: data.orderBy === 'asc' ? QueryOrder.ASC : QueryOrder.DESC,
+          createdAt: data.orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC,
         },
       }
     )
@@ -98,7 +101,7 @@ export class PostResolver {
         limit: data.first,
         offset: data.skip,
         orderBy: {
-          createdAt: data.orderBy === 'asc' ? QueryOrder.ASC : QueryOrder.DESC,
+          createdAt: data.orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC,
         },
       }
     )
@@ -107,7 +110,7 @@ export class PostResolver {
 
   @Mutation(() => PostMutationResponse)
   async createPost(
-    @Arg('data') data: PostInput,
+    @Arg("data") data: PostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse> {
     const post = em.create(Post, {
@@ -125,11 +128,11 @@ export class PostResolver {
 
   @Mutation(() => CommentMutationResponse)
   async createComment(
-    @Arg('data') { body, postId }: CommentInput,
+    @Arg("data") { body, postId }: CommentInput,
     @Ctx() { em, req }: ContextType
   ): Promise<CommentMutationResponse> {
     const post = await em.findOne(Post, postId, {
-      populate: ['comments'],
+      populate: ["comments"],
     })
 
     if (!post) {
@@ -152,11 +155,11 @@ export class PostResolver {
 
   @Mutation(() => VoteMutationResponse)
   async vote(
-    @Arg('data') { postId, value }: VoteInput,
+    @Arg("data") { postId, value }: VoteInput,
     @Ctx() { em, req }: ContextType
   ): Promise<VoteMutationResponse> {
     const post = await em.findOne(Post, postId, {
-      populate: ['votes'],
+      populate: ["votes"],
     })
 
     if (!post) {
