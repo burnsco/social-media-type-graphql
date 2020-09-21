@@ -1,18 +1,10 @@
-import {
-  Box,
-  Button,
-  Flex,
-  IconButton,
-  Menu,
-  MenuButton
-} from "@chakra-ui/core"
+import { Box, Flex, Heading, IconButton } from "@chakra-ui/core"
 import { NextChakraLink } from "@components/shared/NextChakraLink"
 import { PostQuery } from "@generated/graphql"
 import { timeDifferenceForDate } from "@utils/timeDifferenceForDate"
 import { useRouter } from "next/router"
 import * as React from "react"
 import { BsArrowDown, BsArrowUp } from "react-icons/bs"
-import { FaComment } from "react-icons/fa"
 
 const NewPost: React.FC<PostQuery> = props => {
   const router = useRouter()
@@ -80,7 +72,10 @@ const NewPost: React.FC<PostQuery> = props => {
               textDecoration: "underline"
             }}
           >
-            <NextChakraLink href={`/r/${post?.category.name}`}>
+            <NextChakraLink
+              href="/r/[category]"
+              as={`/r/${post?.category.name}`}
+            >
               /r/{post?.category.name}
             </NextChakraLink>
           </Box>
@@ -106,7 +101,7 @@ const NewPost: React.FC<PostQuery> = props => {
 
         {/* Post Title */}
         <Box mt={1} fontWeight="500">
-          {post?.title ?? "404"}
+          <Heading fontSize="xl">{post?.title ?? "404"}</Heading>
         </Box>
         <Box mt={1}>(post body later)</Box>
 
@@ -114,21 +109,14 @@ const NewPost: React.FC<PostQuery> = props => {
         <Box mt={2} display="flex" width="100%">
           <Box borderRadius="sm" fontSize="12px" p={1} mb={1} color="gray.200">
             {/* Post Comments */}
-            <Menu>
-              <MenuButton
-                as={Button}
-                width="140px"
-                onClick={() =>
-                  router.push(`/r/${post?.category.name}/${post?.id}`)
-                }
-                variant="ghost"
-                color="current"
-                aria-label={`Post ${post?.title}`}
-                leftIcon={<FaComment fontSize="12px" />}
-              >
-                {post?.comments?.length ?? 0}
-              </MenuButton>
-            </Menu>
+
+            <NextChakraLink
+              href="/r/[category]/[id]"
+              as={`/r/${post?.category.name}/${post?.id}`}
+            >
+              {" "}
+              Comments {post?.comments?.length ?? 0}
+            </NextChakraLink>
           </Box>
         </Box>
       </Box>

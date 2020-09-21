@@ -4,26 +4,20 @@ import { usePostQuery } from "@generated/graphql"
 import { useRouter } from "next/router"
 import * as React from "react"
 
-const PostAndCommentsPage: React.FC<{ postId: number }> = ({ postId }) => {
+const PostAndCommentsPage: React.FC = () => {
   const router = useRouter()
-  const [isMounted, setIsMounted] = React.useState(false)
 
-  React.useEffect(() => {
-    setIsMounted(true)
-  }, [isMounted])
-
-  const { loading, data, error, fetchMore, networkStatus } = usePostQuery({
+  const { loading, data, error } = usePostQuery({
     variables: {
-      postId: postId
-    },
-    skip: !isMounted
+      postId: Number(router.query.id)
+    }
   })
 
   if (router.isFallback) {
     return <Spinner />
   }
 
-  if (error) return <div>error loading posts</div>
+  if (error) return <div>error loading post</div>
 
   if (loading) return null
 
@@ -37,7 +31,7 @@ const PostAndCommentsPage: React.FC<{ postId: number }> = ({ postId }) => {
       </Box>
     )
   }
-  return <div>No posts here.</div>
+  return <div>No post here.</div>
 }
 
 export default PostAndCommentsPage
