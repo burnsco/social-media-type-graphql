@@ -1,10 +1,9 @@
 import { Entity, Property } from "@mikro-orm/core"
 import { Field, ObjectType } from "type-graphql"
-import { BaseEntity } from "./BaseEntity"
 
 @Entity()
 @ObjectType()
-export class UserProfile extends BaseEntity {
+export class UserProfile {
   @Field()
   @Property()
   firstName?: string

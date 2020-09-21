@@ -1,6 +1,7 @@
 import { Entity, Enum, Property } from "@mikro-orm/core"
 import { Field, ObjectType, registerEnumType } from "type-graphql"
 import { BaseEntity } from "./BaseEntity"
+import { UserProfile } from "./Profile"
 
 @Entity()
 @ObjectType()
@@ -15,6 +16,9 @@ export class User extends BaseEntity {
 
   @Property()
   password!: string
+
+  @Property()
+  profile?: UserProfile
 
   @Enum(() => UserRole)
   @Field(() => UserRole)
