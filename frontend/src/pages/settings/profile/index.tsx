@@ -47,3 +47,5 @@ const ProfileSettingsPage: React.FC = () => {
     </TabPanel>
   )
 }
+
+export default ProfileSettingsPage
