@@ -1,10 +1,12 @@
 import { Box, Button, Text } from "@chakra-ui/core"
 import { NextChakraLink } from "@components/shared/NextChakraLink"
+import { PostQuery } from "@generated/graphql"
 import { useRouter } from "next/router"
 import * as React from "react"
 
-const Post = () => {
+const NewPost: React.FC<PostQuery> = props => {
   const router = useRouter()
+  const { post } = props
 
   return (
     // Container
@@ -22,7 +24,7 @@ const Post = () => {
     >
       {/* VoteBoxContainer */}
       <Box mr={1}>
-        <Box>put votes score and arrows here</Box>
+        <Box>{post?.votes ?? `0`}</Box>
       </Box>
 
       {/* Post Details Conatiner */}
@@ -45,28 +47,27 @@ const Post = () => {
               textDecoration: "underline"
             }}
           >
-            <NextChakraLink href="/">link to subreddit</NextChakraLink>
+            <NextChakraLink href="/">`/r/{post?.category.name}`</NextChakraLink>
           </Box>
           {/* Post created by */}
           <Box ml="2" textDecoration="none">
-            Posted by <Text>username</Text>
+            Posted by <Text>{post?.author.username ?? "user"}</Text>
           </Box>
         </Box>
 
         {/* Post Title */}
         <Box mt={1} fontWeight="500">
-          post title
+          {post?.title ?? "404"}
         </Box>
-        <Box mt={1}>Post Text</Box>
+        <Box mt={1}>(post body later)</Box>
 
         {/* Post Footer */}
         <Box mt={2} display="flex" width="100%">
           <Box borderRadius="sm" fontSize="md" p={1} mb={1} color="gray.200">
             {/* Post Comments */}
             <NextChakraLink href="/">
-              link to user profile
-              <Button>Icon Button</Button>
-              (comments length)
+              `/user/{post?.author.username}`<Button>Icon Button</Button>
+              {post?.comments?.length ?? 0}
             </NextChakraLink>
           </Box>
         </Box>
@@ -75,4 +76,4 @@ const Post = () => {
   )
 }
 
-export default Post
+export default NewPost

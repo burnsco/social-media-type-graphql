@@ -1,5 +1,6 @@
 import { NetworkStatus } from "@apollo/client"
-import { Box, Flex, Heading } from "@chakra-ui/core"
+import { Box } from "@chakra-ui/core"
+import NewPost from "@components/Post"
 import { usePostsQuery } from "@generated/graphql"
 import * as React from "react"
 import { allPostsQueryVars } from "src/types/post"
@@ -39,23 +40,7 @@ const PostList = () => {
       return (
         <ul>
           {allPosts.map((post, index) => (
-            <Flex
-              key={`post-${post.title}-${index}-${post.id}`}
-              p={5}
-              shadow="md"
-              borderWidth="1px"
-              minW="100%"
-            >
-              <Box>
-                <Heading fontSize="xl">Title - {post?.title ?? "404"}</Heading>
-                <Heading fontSize="md">
-                  Category - {post?.category.name ?? "Not Found"}
-                </Heading>
-                <Heading fontSize="sm">
-                  CreatedBy - {post?.author.username ?? "Not Found"}
-                </Heading>
-              </Box>
-            </Flex>
+            <NewPost key={`post-${post.id}-${index}`} post={post} />
           ))}
         </ul>
       )
