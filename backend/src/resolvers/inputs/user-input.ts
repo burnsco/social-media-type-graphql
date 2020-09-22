@@ -1,9 +1,10 @@
+import { GraphQLEmail } from 'graphql-custom-types'
 import { Field, InputType } from 'type-graphql'
 import { User } from '../../entities/User'
 
 @InputType()
 export class RegisterInput implements Partial<User> {
-  @Field()
+  @Field(() => GraphQLEmail)
   email: string
 
   @Field()
@@ -15,9 +16,9 @@ export class RegisterInput implements Partial<User> {
 
 @InputType()
 export class LoginInput implements Partial<User> {
-  @Field()
-  email: string
+  @Field(() => GraphQLEmail)
+  email: string;
 
   @Field()
-  password: string
+  password: string;
 }

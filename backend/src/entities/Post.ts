@@ -5,6 +5,7 @@ import {
   OneToMany,
   Property
 } from "@mikro-orm/core"
+import { GraphQLURL } from "graphql-custom-types"
 import { ObjectType } from "type-graphql"
 import { Field } from "type-graphql/dist/decorators/Field"
 import { BaseEntity } from "./BaseEntity"
@@ -24,7 +25,7 @@ export class Post extends BaseEntity {
   @Property({ nullable: true })
   text?: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => GraphQLURL, { nullable: true })
   @Property({ nullable: true })
   link?: string;
 

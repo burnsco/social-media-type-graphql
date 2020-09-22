@@ -1,3 +1,5 @@
+import { Length } from "class-validator";
+import { GraphQLURL } from "graphql-custom-types";
 import { Field, InputType, Int } from "type-graphql";
 import { Post } from "../../entities/Post";
 
@@ -8,18 +10,19 @@ export class PostInput implements Partial<Post> {
   categoryId!: number;
 
   @Field(() => String)
+  @Length(2, 300)
   title: string;
 
   @Field(() => String, { nullable: true })
   text?: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => GraphQLURL, { nullable: true })
   image?: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => GraphQLURL, { nullable: true })
   video?: string;
 
-  @Field(() => String, { nullable: true})
+  @Field(() => GraphQLURL, { nullable: true })
   link?: string;
 }
 

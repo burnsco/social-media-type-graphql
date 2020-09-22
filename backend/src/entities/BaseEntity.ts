@@ -13,6 +13,6 @@ export abstract class BaseEntity {
   createdAt = new Date()
 
   @Field(() => String)
-  @Property({ type: "date", onUpdate: () => new Date(), nullable: true })
+  @Property({ type: "date", onUpdate: () => new Date()})
   updatedAt = new Date()
 }
