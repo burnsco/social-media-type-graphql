@@ -19,7 +19,11 @@ import { ContextType } from "../types"
 import { PostArgs } from "./args/post-args"
 import { _QueryMeta } from "./args/_QueryMeta"
 import { CommentInput } from "./inputs/comment-input"
-import { PostInput } from "./inputs/post-input"
+import {
+  LinkPostInput,
+  MediaPostInput,
+  NormalPostInput,
+} from "./inputs/post-input"
 import { VoteInput } from "./inputs/vote-input"
 import { CommentMutationResponse } from "./response/comment-response"
 import { PostMutationResponse } from "./response/post-response"
@@ -110,11 +114,10 @@ export class PostResolver {
 
   @Mutation(() => PostMutationResponse)
   async createPost(
-    @Arg("data") data: PostInput,
+    @Arg("data") data: NormalPostInput | MediaPostInput | LinkPostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse> {
     const post = em.create(Post, {
-      title: data.title,
       author: em.getReference(User, req.session.userId),
       category: em.getReference(Category, data.categoryId),
     })

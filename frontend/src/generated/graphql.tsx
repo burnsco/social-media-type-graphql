@@ -67,40 +67,6 @@ export type Category = {
   createdAt: Scalars["String"]
   updatedAt: Scalars["String"]
   name: Scalars["String"]
-  chatMessages?: Maybe<Array<ChatMessage>>
-}
-
-export type ChatMessage = {
-  __typename?: "ChatMessage"
-  id: Scalars["Int"]
-  createdAt: Scalars["String"]
-  updatedAt: Scalars["String"]
-  text: Scalars["String"]
-  sentBy: User
-  category: Category
-}
-
-export type User = {
-  __typename?: "User"
-  id: Scalars["Int"]
-  createdAt: Scalars["String"]
-  updatedAt: Scalars["String"]
-  email: Scalars["String"]
-  username: Scalars["String"]
-  role: UserRole
-  status: UserStatus
-}
-
-export enum UserRole {
-  Admin = "ADMIN",
-  Moderator = "MODERATOR",
-  User = "USER"
-}
-
-/** Is User online or offline */
-export enum UserStatus {
-  Offline = "OFFLINE",
-  Online = "ONLINE"
 }
 
 export type _QueryMeta = {
@@ -125,11 +91,38 @@ export type Post = {
   id: Scalars["Int"]
   createdAt: Scalars["String"]
   updatedAt: Scalars["String"]
-  title: Scalars["String"]
+  title?: Maybe<Scalars["String"]>
+  text?: Maybe<Scalars["String"]>
+  link?: Maybe<Scalars["String"]>
+  image?: Maybe<Scalars["String"]>
+  video?: Maybe<Scalars["String"]>
   author: User
   category: Category
   votes?: Maybe<Array<Vote>>
   comments?: Maybe<Array<Comment>>
+}
+
+export type User = {
+  __typename?: "User"
+  id: Scalars["Int"]
+  createdAt: Scalars["String"]
+  updatedAt: Scalars["String"]
+  email: Scalars["String"]
+  username: Scalars["String"]
+  role: UserRole
+  status: UserStatus
+}
+
+export enum UserRole {
+  Admin = "ADMIN",
+  Moderator = "MODERATOR",
+  User = "USER"
+}
+
+/** Is User online or offline */
+export enum UserStatus {
+  Offline = "OFFLINE",
+  Online = "ONLINE"
 }
 
 export type Vote = {
@@ -208,8 +201,12 @@ export type PostMutationResponse = {
 }
 
 export type PostInput = {
-  title: Scalars["String"]
   categoryId: Scalars["Int"]
+  title?: Maybe<Scalars["String"]>
+  text?: Maybe<Scalars["String"]>
+  link?: Maybe<Scalars["String"]>
+  image?: Maybe<Scalars["String"]>
+  video?: Maybe<Scalars["String"]>
 }
 
 export type CommentMutationResponse = {

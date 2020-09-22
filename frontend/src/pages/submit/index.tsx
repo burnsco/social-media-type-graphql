@@ -59,22 +59,23 @@ const SubmitPage: React.FunctionComponent = () => {
 
   return (
     <Box>
-      <Stack spacing={5}>
-        <Formik
-          initialValues={{ title: "", categoryId: 1 }}
-          validationSchema={Yup.object().shape({
-            title: Yup.string().required("Required"),
-            categoryId: Yup.number().required("Required")
-          })}
-          onSubmit={(values: CreatePostProps, actions) => {
-            setTimeout(() => {
-              actions.setSubmitting(false)
-              handleSubmit(values)
-            }, 1000)
-          }}
-        >
-          {props => (
-            <Form>
+      <Formik
+        initialValues={{ title: "", text: "", categoryId: 1 }}
+        validationSchema={Yup.object().shape({
+          title: Yup.string().required("Required"),
+          text: Yup.string().notRequired(),
+          categoryId: Yup.number().required("Required")
+        })}
+        onSubmit={(values: CreatePostProps, actions) => {
+          setTimeout(() => {
+            actions.setSubmitting(false)
+            handleSubmit(values)
+          }, 1000)
+        }}
+      >
+        {props => (
+          <Form>
+            <Stack spacing={5}>
               <Field name="categoryId">
                 {({ field }: any) => (
                   <FormControl id="categoryId">
@@ -113,10 +114,27 @@ const SubmitPage: React.FunctionComponent = () => {
                         <FormControl
                           isInvalid={form.errors.title && form.touched.title}
                         >
-                          <FormLabel htmlFor="title">Post Title</FormLabel>
-                          <Input {...field} id="title" placeholder="title" />
+                          <FormLabel htmlFor="title"></FormLabel>
+                          <Input {...field} id="title" placeholder="Title" />
                           <FormErrorMessage>
                             {form.errors.title}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                    <Field name="text">
+                      {({ field, form }: any) => (
+                        <FormControl
+                          isInvalid={form.errors.text && form.touched.text}
+                        >
+                          <FormLabel htmlFor="text"></FormLabel>
+                          <Input
+                            {...field}
+                            id="text"
+                            placeholder="Text (optional)"
+                          />
+                          <FormErrorMessage>
+                            {form.errors.text}
                           </FormErrorMessage>
                         </FormControl>
                       )}
@@ -140,10 +158,10 @@ const SubmitPage: React.FunctionComponent = () => {
                   </TabPanel>
                 </TabPanels>
               </Tabs>
-            </Form>
-          )}
-        </Formik>
-      </Stack>
+            </Stack>
+          </Form>
+        )}
+      </Formik>
     </Box>
   )
 }

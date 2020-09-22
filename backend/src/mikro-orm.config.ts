@@ -3,7 +3,6 @@ import path from 'path'
 import { __prod__ } from './constants'
 import { BaseEntity } from './entities/BaseEntity'
 import { Category } from './entities/Category'
-import { ChatMessage } from './entities/ChatMessage'
 import { Comment } from './entities/Comment'
 import { Post } from './entities/Post'
 import { PrivateMessage } from './entities/PrivateMessage'
@@ -15,16 +14,7 @@ export default {
     path: path.join(__dirname, './migrations'),
     pattern: /^[\w-]+\d+\.[tj]s$/,
   },
-  entities: [
-    BaseEntity,
-    Category,
-    User,
-    Post,
-    Comment,
-    Vote,
-    PrivateMessage,
-    ChatMessage,
-  ],
+  entities: [BaseEntity, Category, User, Post, Comment, Vote, PrivateMessage],
   dbName: 'reddit-ts-2',
   username: 'postgres',
   password: 'postgres',

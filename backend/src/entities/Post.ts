@@ -16,9 +16,25 @@ import { Vote } from "./Vote"
 @Entity()
 @ObjectType()
 export class Post extends BaseEntity {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Property()
-  title!: string
+  title?: string
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  text?: string
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  link?: string
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  image?: string
+
+  @Field(() => String, { nullable: true })
+  @Property()
+  video?: string
 
   @Field(() => User)
   @ManyToOne(() => User)

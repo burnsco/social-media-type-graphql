@@ -13,12 +13,12 @@ const CreateImageOrVideoPost: React.FC = () => {
 
   return (
     <Formik
-      initialValues={{ title: "", categoryId: 1 }}
+      initialValues={{ image: "", categoryId: 1 }}
       onSubmit={async values => {
         const response = await submitPost({
           variables: {
             data: {
-              title: values.title,
+              image: values.image,
               categoryId: values.categoryId
             }
           },
