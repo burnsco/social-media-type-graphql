@@ -19,10 +19,6 @@ export class User extends BaseEntity {
   @Enum(() => UserRole)
   @Field(() => UserRole)
   role!: UserRole
-
-  @Enum(() => UserStatus)
-  @Field(() => UserStatus)
-  status!: UserStatus
 }
 
 export enum UserRole {
@@ -34,11 +30,4 @@ registerEnumType(UserRole, {
   name: 'UserRole',
 })
 
-export enum UserStatus {
-  OFFLINE = 'offline',
-  ONLINE = 'online',
-}
-registerEnumType(UserStatus, {
-  name: 'UserStatus',
-  description: 'Is User online or offline',
-})
+

@@ -7,7 +7,7 @@ import {
   Mutation,
   Query,
   Resolver,
-  Root,
+  Root
 } from "type-graphql"
 import { invalidPostOrId } from "../constants"
 import { Category } from "../entities/Category"
@@ -20,9 +20,7 @@ import { PostArgs } from "./args/post-args"
 import { _QueryMeta } from "./args/_QueryMeta"
 import { CommentInput } from "./inputs/comment-input"
 import {
-  LinkPostInput,
-  MediaPostInput,
-  NormalPostInput,
+  PostInput
 } from "./inputs/post-input"
 import { VoteInput } from "./inputs/vote-input"
 import { CommentMutationResponse } from "./response/comment-response"
@@ -114,10 +112,16 @@ export class PostResolver {
 
   @Mutation(() => PostMutationResponse)
   async createPost(
-    @Arg("data") data: NormalPostInput | MediaPostInput | LinkPostInput,
+    @Arg("data") data: PostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse> {
+    console.log(data)
     const post = em.create(Post, {
+      title: data.title,
+      text: data.text,
+      image: data.image,
+      video: data.video,
+      link: data.link,
       author: em.getReference(User, req.session.userId),
       category: em.getReference(Category, data.categoryId),
     })

@@ -5,7 +5,7 @@ import { User } from './User'
 
 @Entity()
 @ObjectType()
-export class PrivateMessage extends BaseEntity {
+export class Message extends BaseEntity {
   @Field(() => String)
   @Property()
   title!: string

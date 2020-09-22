@@ -18,8 +18,6 @@
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/array-callback-return": "off",
     "@typescript-eslint/array-type": "off",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/member-delimiter-style": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/ban-types": "off",
