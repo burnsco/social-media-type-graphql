@@ -2,12 +2,19 @@ query Post($postId: Int) {
   post(postId: $postId) {
     id
     createdAt
+    updatedAt
+    text
+    link
+    video
+    image
     title
     author {
       id
       username
     }
     comments {
+      createdAt
+      updatedAt
       id
       body
       createdBy {

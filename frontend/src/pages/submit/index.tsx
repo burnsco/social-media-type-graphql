@@ -11,31 +11,24 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs,
-  useToast
+  Tabs
 } from "@chakra-ui/core"
 import {
+  PostInput,
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@generated/graphql"
 import { Field, Form, Formik } from "formik"
-import { useRouter } from "next/router"
 import * as React from "react"
 import * as Yup from "yup"
-
-interface CreatePostProps {
-  title: string
-  categoryId: number
-}
+import { postTypes } from "./postTypes"
 
 const SubmitPage: React.FunctionComponent = () => {
-  const toast = useToast()
-  const router = useRouter()
   const [
     getSubreddits,
     { data, loading: loadingSubreddits, error: subredditError }
   ] = useCategoriesLazyQuery()
-
+  const [tabIndex, setTabIndex] = React.useState(0)
   const [submitPost, { loading, error }] = useCreatePostMutation()
 
   if (loading || loadingSubreddits) return null
@@ -46,27 +39,30 @@ const SubmitPage: React.FunctionComponent = () => {
     console.log(error)
   }
 
-  const handleSubmit = (values: CreatePostProps) => {
+  const handleSubmit = (values: PostInput) => {
     submitPost({
       variables: {
         data: {
           title: values.title,
+          text: values.text,
           categoryId: Number(values.categoryId)
         }
       }
     })
   }
 
+  const formValues = postTypes[tabIndex]
+  console.log(formValues)
   return (
     <Box>
       <Formik
-        initialValues={{ title: "", text: "", categoryId: 1 }}
+        initialValues={{ formValues }}
         validationSchema={Yup.object().shape({
           title: Yup.string().required("Required"),
           text: Yup.string().notRequired(),
           categoryId: Yup.number().required("Required")
         })}
-        onSubmit={(values: CreatePostProps, actions) => {
+        onSubmit={(values: PostInput, actions) => {
           setTimeout(() => {
             actions.setSubmitting(false)
             handleSubmit(values)
@@ -100,7 +96,7 @@ const SubmitPage: React.FunctionComponent = () => {
                 )}
               </Field>
 
-              <Tabs variant="enclosed">
+              <Tabs variant="enclosed" onChange={index => setTabIndex(index)}>
                 <TabList>
                   <Tab>Post</Tab>
                   <Tab>Link</Tab>
@@ -150,11 +146,48 @@ const SubmitPage: React.FunctionComponent = () => {
                   </TabPanel>
 
                   <TabPanel>
-                    <div>Link</div>
+                    <Field name="title">
+                      {({ field, form }: any) => (
+                        <FormControl
+                          isInvalid={form.errors.title && form.touched.title}
+                        >
+                          <FormLabel htmlFor="title"></FormLabel>
+                          <Input {...field} id="title" placeholder="Title" />
+                          <FormErrorMessage>
+                            {form.errors.title}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                    <Field name="link">
+                      {({ field, form }: any) => (
+                        <FormControl
+                          isInvalid={form.errors.link && form.touched.link}
+                        >
+                          <FormLabel htmlFor="link"></FormLabel>
+                          <Input {...field} id="link" placeholder="Url" />
+                          <FormErrorMessage>
+                            {form.errors.link}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
                   </TabPanel>
 
                   <TabPanel>
-                    <div>Images & Video</div>
+                    <Field name="title">
+                      {({ field, form }: any) => (
+                        <FormControl
+                          isInvalid={form.errors.title && form.touched.title}
+                        >
+                          <FormLabel htmlFor="title"></FormLabel>
+                          <Input {...field} id="title" placeholder="Title" />
+                          <FormErrorMessage>
+                            {form.errors.title}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
                   </TabPanel>
                 </TabPanels>
               </Tabs>

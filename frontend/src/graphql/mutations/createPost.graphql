@@ -1,8 +1,13 @@
 mutation createPost($data: PostInput!) {
   createPost(data: $data) {
     post {
+      createdAt
       id
       title
+      text
+      video
+      image
+      link
     }
     errors {
       field

@@ -2,13 +2,20 @@ query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
   posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
     id
     createdAt
+    updatedAt
     title
+    text
+    image
+    video
+    link
     author {
       id
       username
     }
     comments {
       id
+      createdAt
+      updatedAt
       body
       createdBy {
         id

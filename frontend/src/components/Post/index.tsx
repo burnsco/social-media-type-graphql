@@ -103,7 +103,7 @@ const NewPost: React.FC<PostQuery> = props => {
         <Box mt={1} fontWeight="500">
           <Heading fontSize="xl">{post?.title ?? "404"}</Heading>
         </Box>
-        <Box mt={1}>(post body later)</Box>
+        <Box mt={1}>{post?.text ?? null}</Box>
 
         {/* Post Footer */}
         <Box mt={2} display="flex" width="100%">

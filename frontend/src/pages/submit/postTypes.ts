@@ -1,3 +1,22 @@
+export const postTypes = [
+  {
+    categoryId: "",
+    title: "",
+    text: ""
+  },
+  {
+    categoryId: "",
+    title: "",
+    image: "",
+    video: ""
+  },
+  {
+    categoryId: "",
+    title: "",
+    link: ""
+  }
+]
+
 export const RegularPost = {
   categoryId: "",
   title: "",
