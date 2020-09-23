@@ -2,9 +2,10 @@ import { Box, Flex, Heading, IconButton } from "@chakra-ui/core"
 import { NextChakraLink } from "@components/shared/NextChakraLink"
 import { PostQuery } from "@generated/graphql"
 import { timeDifferenceForDate } from "@utils/timeDifferenceForDate"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import * as React from "react"
-import { BsArrowDown, BsArrowUp } from "react-icons/bs"
+import { ImArrowDown, ImArrowUp } from "react-icons/im"
 
 const NewPost: React.FC<PostQuery> = props => {
   const router = useRouter()
@@ -13,15 +14,15 @@ const NewPost: React.FC<PostQuery> = props => {
   return (
     // Container
     <Box
-      border="1px solid #ebedf0"
-      background="#fff"
+      border="1px"
+      borderColor="gray.200"
       border-radius="5px"
       display="flex"
       mb="20px"
       minH="100px"
       width="100%"
       _hover={{
-        border: "1px solid #ced1db"
+        borderColor: "gray.300"
       }}
     >
       {/* VoteBoxContainer */}
@@ -39,7 +40,7 @@ const NewPost: React.FC<PostQuery> = props => {
             variant="ghost"
             color="current"
             aria-label="UpVote"
-            icon={<BsArrowUp />}
+            icon={<ImArrowUp />}
           />
           <Box>{post?.votes?.length ?? 0}</Box>
           <IconButton
@@ -47,7 +48,7 @@ const NewPost: React.FC<PostQuery> = props => {
             variant="ghost"
             color="current"
             aria-label="DownVote"
-            icon={<BsArrowDown />}
+            icon={<ImArrowDown />}
           />
         </Flex>
       </Box>
@@ -67,7 +68,7 @@ const NewPost: React.FC<PostQuery> = props => {
           {/* Post Category */}
           <Box
             fontWeight="700"
-            color="black"
+            color="gray.600"
             _hover={{
               textDecoration: "underline"
             }}
@@ -101,9 +102,13 @@ const NewPost: React.FC<PostQuery> = props => {
 
         {/* Post Title */}
         <Box mt={1} fontWeight="500">
-          <Heading fontSize="xl">{post?.title ?? "404"}</Heading>
+          <Heading fontSize="xl">{post?.title ?? null}</Heading>
         </Box>
         <Box mt={1}>{post?.text ?? null}</Box>
+
+        <Box mt={1}>
+          <Link href={`https://${post?.link}`}>{post?.link ?? null}</Link>
+        </Box>
 
         {/* Post Footer */}
         <Box mt={2} display="flex" width="100%">
@@ -115,7 +120,7 @@ const NewPost: React.FC<PostQuery> = props => {
               as={`/r/${post?.category.name}/${post?.id}`}
             >
               {" "}
-              Comments {post?.comments?.length ?? 0}
+              {post?.comments?.length ?? 0} Comments
             </NextChakraLink>
           </Box>
         </Box>

@@ -223,17 +223,17 @@ const SubmitPage: React.FunctionComponent = () => {
                         )}
                       </Field>
                     </TabPanel>
-                    <Button
-                      m={2}
-                      colorScheme="teal"
-                      isLoading={formik.isSubmitting}
-                      type="submit"
-                    >
-                      Submit
-                    </Button>
                   </TabPanels>
                 </Tabs>
               </Stack>
+              <Button
+                m={2}
+                colorScheme="teal"
+                isLoading={formik.isSubmitting}
+                type="submit"
+              >
+                Submit
+              </Button>
             </Form>
           )
         }}

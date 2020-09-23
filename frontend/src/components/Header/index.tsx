@@ -30,7 +30,6 @@ const Header: React.FC = () => {
     <Flex
       as="header"
       minW="100%"
-      mb={8}
       align="center"
       borderBottom="1px"
       borderBottomStyle="solid"

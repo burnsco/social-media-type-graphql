@@ -12,7 +12,6 @@ const RegisterPage: React.FC = () => {
   const [register, { loading, error }] = useRegisterMutation()
 
   if (loading) return null
-
   if (error) {
     console.log(error)
   }
@@ -49,7 +48,7 @@ const RegisterPage: React.FC = () => {
               duration: 9000,
               isClosable: true
             })
-            router.push("/")
+            router.push("../")
           } else if (response.data?.register.errors) {
             console.log(response.data?.register.errors)
           }
