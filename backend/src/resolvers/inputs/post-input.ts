@@ -1,28 +1,23 @@
-import { Length } from "class-validator";
-import { Field, InputType, Int } from "type-graphql";
-import { Post } from "../../entities/Post";
-
+import { Field, InputType, Int } from "type-graphql"
+import { Post } from "../../entities/Post"
 
 @InputType()
 export class PostInput implements Partial<Post> {
   @Field(() => Int)
-  categoryId!: number;
+  categoryId!: number
 
-  @Field(() => String)
-  @Length(2, 300)
-  title: string;
+  @Field()
+  title: string
 
-  @Field(() => String, { nullable: true })
-  text?: string;
+  @Field({ nullable: true })
+  text?: string
 
-  @Field(() => String, { nullable: true })
-  image?: string;
+  @Field({ nullable: true })
+  image?: string
 
-  @Field(() => String, { nullable: true })
-  video?: string;
+  @Field({ nullable: true })
+  video?: string
 
-  @Field(() => String, { nullable: true })
-  link?: string;
+  @Field({ nullable: true })
+  link?: string
 }
-
-
