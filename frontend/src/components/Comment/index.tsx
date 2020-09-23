@@ -1,27 +1,26 @@
 import { Box, Flex, IconButton } from "@chakra-ui/core"
-import { Comment } from "@generated/graphql"
 import { timeDifferenceForDate } from "@utils/timeDifferenceForDate"
 import { useRouter } from "next/router"
 import * as React from "react"
 import { BsArrowDown, BsArrowUp } from "react-icons/bs"
 
-const NewComment: React.FC<{ comment?: Comment }> = ({ comment }) => {
+interface CommentProps {
+  comment: {
+    createdBy: {
+      username: string
+    }
+    createdAt: string
+    body: string
+  }
+}
+
+const NewComment: React.FC<CommentProps> = data => {
   const router = useRouter()
 
+  const { comment } = data
   return (
     // Container
-    <Box
-      border="1px solid #ebedf0"
-      background="#fff"
-      border-radius="5px"
-      display="flex"
-      mb="20px"
-      minH="100px"
-      width="100%"
-      _hover={{
-        border: "1px solid #ced1db"
-      }}
-    >
+    <Box background="#fff" display="flex" minH="100px" width="100%">
       {/* VoteBoxContainer */}
       <Box mr={1}>
         <Flex
@@ -52,9 +51,7 @@ const NewComment: React.FC<{ comment?: Comment }> = ({ comment }) => {
 
       {/* Post Details Conatiner */}
       <Box
-        mt={1}
         minH="100px"
-        px={1}
         width="100%"
         display="flex"
         flexDir="column"

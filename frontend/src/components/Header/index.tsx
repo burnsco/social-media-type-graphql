@@ -28,8 +28,12 @@ const Header: React.FC = () => {
 
   return (
     <Flex
+      position="fixed"
       as="header"
-      minW="100%"
+      zIndex="sticky"
+      bg="white"
+      boxShadow="md"
+      width="100%"
       align="center"
       borderBottom="1px"
       borderBottomStyle="solid"
@@ -102,6 +106,7 @@ const Header: React.FC = () => {
                 as={Button}
                 width="140px"
                 border="1px"
+                colorScheme="blue"
                 rightIcon={
                   <Avatar
                     size="xs"
