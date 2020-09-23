@@ -3,9 +3,8 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  Property
+  Property,
 } from "@mikro-orm/core"
-import { GraphQLURL } from "graphql-custom-types"
 import { ObjectType } from "type-graphql"
 import { Field } from "type-graphql/dist/decorators/Field"
 import { BaseEntity } from "./BaseEntity"
@@ -19,37 +18,37 @@ import { Vote } from "./Vote"
 export class Post extends BaseEntity {
   @Field(() => String)
   @Property()
-  title: string;
+  title: string
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true })
-  text?: string;
-
-  @Field(() => GraphQLURL, { nullable: true })
-  @Property({ nullable: true })
-  link?: string;
+  text?: string
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true })
-  image?: string;
+  link?: string
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true })
-  video?: string;
+  image?: string
+
+  @Field(() => String, { nullable: true })
+  @Property({ nullable: true })
+  video?: string
 
   @Field(() => User)
   @ManyToOne(() => User)
-  author!: User;
+  author!: User
 
   @Field(() => Category)
   @ManyToOne(() => Category)
-  category!: Category;
+  category!: Category
 
   @Field(() => [Vote], { nullable: true })
-  @OneToMany(() => Vote, (vote) => vote.post)
-  votes = new Collection<Vote>(this);
+  @OneToMany(() => Vote, vote => vote.post)
+  votes = new Collection<Vote>(this)
 
   @Field(() => [Comment], { nullable: true })
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments = new Collection<Comment>(this);
+  @OneToMany(() => Comment, comment => comment.post)
+  comments = new Collection<Comment>(this)
 }

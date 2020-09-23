@@ -1,19 +1,20 @@
 export const postTypes = [
   {
-    categoryId: "",
+    categoryId: 1,
     title: "",
     text: ""
   },
+
   {
-    categoryId: "",
+    categoryId: 1,
+    title: "",
+    link: ""
+  },
+  {
+    categoryId: 1,
     title: "",
     image: "",
     video: ""
-  },
-  {
-    categoryId: "",
-    title: "",
-    link: ""
   }
 ]
 
