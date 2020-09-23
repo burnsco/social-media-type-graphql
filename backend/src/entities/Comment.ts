@@ -15,6 +15,7 @@ export class Comment extends BaseEntity {
   @ManyToOne(() => User)
   createdBy!: User
 
+  @Field(() => Post)
   @ManyToOne(() => Post)
   post!: Post
 }

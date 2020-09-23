@@ -14,6 +14,10 @@ query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
     }
     comments {
       id
+      post {
+        id
+        title
+      }
       createdAt
       updatedAt
       body

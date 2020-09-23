@@ -11,7 +11,7 @@ const SubmitCommentForm = () => {
   if (error) {
     console.log(error)
   }
-  const postId = 1
+
   return (
     <Box>
       <Formik
@@ -27,18 +27,18 @@ const SubmitCommentForm = () => {
             update(cache, { data }) {
               cache.modify({
                 fields: {
-                  comments(existingComments = [], { readField }) {
+                  comments(existingComments = []) {
                     const newCommentRef = cache.writeFragment({
-                      data: data?.createComment.comment,
+                      data: data?.createComment,
                       fragment: gql`
                         fragment NewComment on Comment {
                           id
-                          createdAt
-                          body
-                          createdBy {
+                          post {
                             id
-                            username
                           }
+                          createdAt
+                          updatedAt
+                          body
                         }
                       `
                     })

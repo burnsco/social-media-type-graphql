@@ -134,6 +134,7 @@ export type Comment = {
   updatedAt: Scalars["String"]
   body: Scalars["String"]
   createdBy: User
+  post: Post
 }
 
 export type Mutation = {
@@ -270,7 +271,15 @@ export type CreateCommentMutationVariables = Exact<{
 
 export type CreateCommentMutation = { __typename?: "Mutation" } & {
   createComment: { __typename?: "CommentMutationResponse" } & {
-    comment?: Maybe<{ __typename?: "Comment" } & Pick<Comment, "id" | "body">>
+    comment?: Maybe<
+      { __typename?: "Comment" } & Pick<
+        Comment,
+        "id" | "createdAt" | "updatedAt" | "body"
+      > & {
+          post: { __typename?: "Post" } & Pick<Post, "id">
+          createdBy: { __typename?: "User" } & Pick<User, "id" | "username">
+        }
+    >
   }
 }
 
@@ -366,6 +375,7 @@ export type PostQuery = { __typename?: "Query" } & {
               Comment,
               "createdAt" | "updatedAt" | "id" | "body"
             > & {
+                post: { __typename?: "Post" } & Pick<Post, "id">
                 createdBy: { __typename?: "User" } & Pick<
                   User,
                   "id" | "username"
@@ -412,6 +422,7 @@ export type PostsQuery = { __typename?: "Query" } & {
               Comment,
               "id" | "createdAt" | "updatedAt" | "body"
             > & {
+                post: { __typename?: "Post" } & Pick<Post, "id">
                 createdBy: { __typename?: "User" } & Pick<
                   User,
                   "id" | "username"
@@ -467,8 +478,17 @@ export const CreateCommentDocument = gql`
   mutation createComment($data: CommentInput!) {
     createComment(data: $data) {
       comment {
+        post {
+          id
+        }
         id
+        createdAt
+        updatedAt
         body
+        createdBy {
+          id
+          username
+        }
       }
     }
   }
@@ -833,6 +853,9 @@ export const PostDocument = gql`
         username
       }
       comments {
+        post {
+          id
+        }
         createdAt
         updatedAt
         id
@@ -915,6 +938,9 @@ export const PostsDocument = gql`
       }
       comments {
         id
+        post {
+          id
+        }
         createdAt
         updatedAt
         body

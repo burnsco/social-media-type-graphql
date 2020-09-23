@@ -13,6 +13,10 @@ query Post($postId: Int) {
       username
     }
     comments {
+      post {
+        id
+        title
+      }
       createdAt
       updatedAt
       id
