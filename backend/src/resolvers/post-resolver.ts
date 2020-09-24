@@ -7,7 +7,7 @@ import {
   Mutation,
   Query,
   Resolver,
-  Root,
+  Root
 } from "type-graphql"
 import { invalidPostOrId } from "../constants"
 import { Category } from "../entities/Category"
@@ -22,78 +22,78 @@ import { CommentInput } from "./inputs/comment-input"
 import { PostInput } from "./inputs/post-input"
 import { VoteInput } from "./inputs/vote-input"
 import { CommentMutationResponse } from "./response/comment-response"
-import { PostMutationResponse } from "./response/post-response"
+import { PostMutationResponse, PostsQueryResponse } from "./response/post-response"
 import { VoteMutationResponse } from "./response/vote-response"
 
 @Resolver(() => Post)
 export class PostResolver {
   @Query(() => _QueryMeta)
   async _allPostsMeta(@Root() @Ctx() { em }: ContextType) {
-    const [, count] = await em.findAndCount(Post, {})
-    return { count }
+    const [, count] = await em.findAndCount(Post, {});
+    return { count };
   }
 
   @Query(() => _QueryMeta)
   async _categoryPostsMeta(
     @Root() posts: Post,
-    @Args() data: PostArgs,
+    @Args() { name }: PostArgs,
     @Ctx()
     { em }: ContextType
   ) {
-    console.log(posts)
+    console.log(posts);
     const [, count] = await em.findAndCount(Post, {
-      category: { name: data.name },
-    })
-    return { count }
+      category: { name: name },
+    });
+    return { count };
   }
 
   @Query(() => Post, { nullable: true })
-  post(@Args() data: PostArgs, @Ctx() { em }: ContextType) {
-    if (data.postId) {
-      return em.findOne(Post, data.postId)
+  post(@Args() { postId }: PostArgs, @Ctx() { em }: ContextType) {
+    if (postId) {
+      return em.findOne(Post, postId);
     }
-    return null
+    return null;
   }
 
-  @Query(() => [Post], { nullable: false })
+  @Query(() => PostsQueryResponse)
   async posts(
-    @Args() data: PostArgs,
+    @Args() { first, skip, category, orderBy }: PostArgs,
     @Ctx() { em }: ContextType
-  ): Promise<Post[] | null> {
-    if (data.category) {
+  ): Promise<PostsQueryResponse> {
+    if (category) {
       const [posts] = await em.findAndCount(
         Post,
-        { category: { name: data.category } },
+        { category: { name: category } },
         {
-          limit: data.first,
-          offset: data.skip,
+          limit: first,
+          offset: skip,
           orderBy: {
-            createdAt:
-              data.orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC,
+            createdAt: orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC,
           },
         }
-      )
-      return posts
+      );
+      return { posts };
     }
+
     const [posts] = await em.findAndCount(
       Post,
       {},
       {
-        limit: data.first,
-        offset: data.skip,
+        limit: first,
+        offset: skip,
         orderBy: {
-          createdAt: data.orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC,
+          createdAt: orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC,
         },
       }
-    )
-    return posts
+    );
+    return { posts };
   }
 
-  @Query(() => [Post], { nullable: false })
+  @Query(() => PostsQueryResponse, { nullable: false })
   async postsByCategory(
     @Args() data: PostArgs,
     @Ctx() { em }: ContextType
-  ): Promise<Post[] | null> {
+  ): Promise<PostsQueryResponse> {
     const [posts] = await em.findAndCount(
       Post,
       { category: { name: data.category } },
@@ -104,31 +104,27 @@ export class PostResolver {
           createdAt: data.orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC,
         },
       }
-    )
-    return posts
+    );
+    return { posts };
   }
 
   @Mutation(() => PostMutationResponse)
   async createPost(
-    @Arg("data") data: PostInput,
+    @Arg("data") { title, text, image, video, link, categoryId }: PostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse> {
-    console.log(data)
     const post = em.create(Post, {
-      title: data.title,
-      text: data.text,
-      image: data.image,
-      video: data.video,
-      link: data.link,
+      title: title,
+      text: text,
+      image: image,
+      video: video,
+      link: link,
       author: em.getReference(User, req.session.userId),
-      category: em.getReference(Category, data.categoryId),
-    })
+      category: em.getReference(Category, categoryId),
+    });
+    await em.persistAndFlush(post);
 
-    await em.persistAndFlush(post)
-
-    return {
-      post,
-    }
+    return { post };
   }
 
   @Mutation(() => CommentMutationResponse)
@@ -138,24 +134,24 @@ export class PostResolver {
   ): Promise<CommentMutationResponse> {
     const post = await em.findOne(Post, postId, {
       populate: ["comments"],
-    })
+    });
 
     if (!post) {
-      return invalidPostOrId
+      return invalidPostOrId;
     }
 
     const comment = em.create(Comment, {
       post,
       body: body,
       createdBy: em.getReference(User, req.session.userId),
-    })
-    post.comments.add(comment)
+    });
+    post.comments.add(comment);
 
-    await em.persistAndFlush(post)
+    await em.persistAndFlush(post);
 
     return {
       comment,
-    }
+    };
   }
 
   @Mutation(() => VoteMutationResponse)
@@ -165,44 +161,56 @@ export class PostResolver {
   ): Promise<VoteMutationResponse> {
     const post = await em.findOne(Post, postId, {
       populate: ["votes"],
-    })
+    });
 
     if (!post) {
-      return invalidPostOrId
+      return invalidPostOrId;
     }
 
     const vote = em.create(Vote, {
       post,
       value,
       castBy: em.getReference(User, req.session.userId),
-    })
+    });
 
-    post.votes.add(vote)
+    post.votes.add(vote);
 
-    await em.persistAndFlush(post)
+    await em.persistAndFlush(post);
 
     return {
       vote,
-    }
+    };
+  }
+
+  @FieldResolver(() => _QueryMeta, { nullable: true })
+  async totalComments(@Root() post: Post, @Ctx() { em }: ContextType) {
+    const [, count] = await em.findAndCount(Comment, { post: { id: post.id } });
+    return { count };
+  }
+
+  @FieldResolver(() => _QueryMeta, { nullable: true })
+  async totalVotes(@Root() post: Post, @Ctx() { em }: ContextType) {
+    const count = await em.find(Vote, { post: { id: post.id } })
+    return { count };
   }
 
   @FieldResolver({ nullable: true })
   async comments(@Root() post: Post, @Ctx() { em }: ContextType) {
-    return await em.find(Comment, { post: { id: post.id } })
+    return await em.find(Comment, { post: { id: post.id } });
   }
   @FieldResolver({ nullable: true })
   async votes(@Root() post: Post, @Ctx() { em }: ContextType) {
-    return await em.find(Vote, { post: { id: post.id } })
+    return await em.find(Vote, { post: { id: post.id } });
   }
   @FieldResolver()
   async author(@Root() post: Post, @Ctx() { em }: ContextType): Promise<User> {
-    return await em.findOneOrFail(User, post.author.id)
+    return await em.findOneOrFail(User, post.author.id);
   }
   @FieldResolver()
   async category(
     @Root() post: Post,
     @Ctx() { em }: ContextType
   ): Promise<Category> {
-    return await em.findOneOrFail(Category, post.category.id)
+    return await em.findOneOrFail(Category, post.category.id);
   }
 }

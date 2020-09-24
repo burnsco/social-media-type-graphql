@@ -49,8 +49,6 @@ const SubmitPage: React.FunctionComponent = () => {
     console.log(error)
   }
 
-  console.log(tabIndex)
-
   return (
     <Box>
       <Formik

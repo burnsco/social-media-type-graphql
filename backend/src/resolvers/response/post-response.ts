@@ -1,6 +1,6 @@
-import { Field, Int, ObjectType } from 'type-graphql'
-import { Post } from '../../entities/Post'
-import { MutationResponse } from './mutation-response'
+import { Field, ObjectType } from 'type-graphql';
+import { Post } from '../../entities/Post';
+import { MutationResponse } from './mutation-response';
 
 @ObjectType()
 export class PostMutationResponse extends MutationResponse {
@@ -11,8 +11,5 @@ export class PostMutationResponse extends MutationResponse {
 @ObjectType()
 export class PostsQueryResponse {
   @Field(() => [Post])
-  posts: Post[]
-
-  @Field(() => Int)
-  totalPosts: number
+  posts: Post[];
 }

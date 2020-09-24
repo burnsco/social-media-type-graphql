@@ -1,18 +1,18 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
-import { Field, Int, ObjectType } from "type-graphql"
+import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import { Field, ID, ObjectType } from "type-graphql";
 
 @Entity()
 @ObjectType()
 export abstract class BaseEntity {
-  @Field(() => Int)
+  @Field(() => ID)
   @PrimaryKey()
-  id!: number
+  readonly id: number;
 
   @Field(() => String)
   @Property({ type: "date" })
-  createdAt = new Date()
+  createdAt = new Date();
 
   @Field(() => String)
-  @Property({ type: "date", onUpdate: () => new Date()})
-  updatedAt = new Date()
+  @Property({ type: "date", onUpdate: () => new Date() })
+  updatedAt = new Date();
 }

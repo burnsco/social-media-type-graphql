@@ -46,7 +46,7 @@ const PostAndCommentsPage: React.FC = () => {
           key={`post-${data.post.id}-${data.post.title}`}
           post={data.post}
         />
-        <SubmitCommentForm />
+        <SubmitCommentForm post={data.post} />
         <Box>Comments</Box>
         <ViewComments />
       </Stack>

@@ -1,4 +1,4 @@
-query Post($postId: Int) {
+query Post($postId: String) {
   post(postId: $postId) {
     id
     createdAt

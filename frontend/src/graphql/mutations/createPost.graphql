@@ -2,6 +2,7 @@ mutation createPost($data: PostInput!) {
   createPost(data: $data) {
     post {
       createdAt
+      updatedAt
       id
       title
       text

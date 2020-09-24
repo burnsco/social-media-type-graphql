@@ -1,6 +1,6 @@
 import argon2 from 'argon2'
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { User, UserRole } from '../entities/User'
+import { User } from '../entities/User'
 import { ContextType } from '../types'
 import { LoginInput, RegisterInput } from './inputs/user-input'
 import { LogoutMutationResponse } from './response/logout-response'
@@ -26,10 +26,10 @@ export class UserResolver {
 
   @Mutation(() => UserMutationResponse)
   async register(
-    @Arg('data') data: RegisterInput,
+    @Arg('data'){email, username, password}: RegisterInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
-    const errors = await validateRegisterUser(data)
+    const errors = await validateRegisterUser({email, username, password})
     if (errors !== null) {
       return {
         errors,
@@ -37,10 +37,9 @@ export class UserResolver {
     }
 
     const user = em.create(User, {
-      email: data.email,
-      username: data.username,
-      password: await argon2.hash(data.password),
-      role: UserRole.USER,
+      email,
+      username,
+      password: await argon2.hash(password),
     })
     await em.persistAndFlush(user)
 
@@ -53,17 +52,17 @@ export class UserResolver {
 
   @Mutation(() => UserMutationResponse)
   async login(
-    @Arg('data') data: LoginInput,
+    @Arg('data') {email, password}: LoginInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
-    const errors = await validateLoginUser(data)
+    const errors = await validateLoginUser({email,password})
     if (errors !== null) {
       return {
         errors,
       }
     }
 
-    const user = await em.findOne(User, { email: data.email })
+    const user = await em.findOne(User, { email: email })
 
     if (user) {
       req.session!.userId = user.id

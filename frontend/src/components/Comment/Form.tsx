@@ -1,11 +1,10 @@
-import { gql } from "@apollo/client"
 import { Box, Button, FormControl, Textarea } from "@chakra-ui/core"
-import { useCreateCommentMutation } from "@generated/graphql"
+import { PostQuery, useCreateCommentMutation } from "@generated/graphql"
 import { Field, Form, Formik } from "formik"
 import * as React from "react"
 
-const SubmitCommentForm = () => {
-  const [submitComment, { data, loading, error }] = useCreateCommentMutation()
+const SubmitCommentForm: React.FC<PostQuery> = ({ post }) => {
+  const [submitComment, { loading, error }] = useCreateCommentMutation()
 
   if (loading) return null
   if (error) {
@@ -16,38 +15,18 @@ const SubmitCommentForm = () => {
     <Box>
       <Formik
         initialValues={{ body: "", postId: 1 }}
-        onSubmit={async values => {
-          await submitComment({
-            variables: {
-              data: {
-                postId: values.postId,
-                body: values.body
-              }
-            },
-            update(cache, { data }) {
-              cache.modify({
-                fields: {
-                  comments(existingComments = []) {
-                    const newCommentRef = cache.writeFragment({
-                      data: data?.createComment,
-                      fragment: gql`
-                        fragment NewComment on Comment {
-                          id
-                          post {
-                            id
-                          }
-                          createdAt
-                          updatedAt
-                          body
-                        }
-                      `
-                    })
-                    return [newCommentRef, ...existingComments]
-                  }
+        onSubmit={(values, actions) => {
+          setTimeout(() => {
+            actions.setSubmitting(false)
+            submitComment({
+              variables: {
+                data: {
+                  postId: values.postId,
+                  body: values.body
                 }
-              })
-            }
-          })
+              }
+            })
+          }, 1000)
         }}
       >
         {formik => (
