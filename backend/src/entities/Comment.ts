@@ -9,13 +9,13 @@ import { User } from "./User"
 export class Comment extends BaseEntity {
   @Field(() => String)
   @Property()
-  body: string;
+  body: string
 
   @Field(() => User)
   @ManyToOne(() => User)
-  createdBy: User;
+  createdBy: User
 
   @Field(() => Post)
   @ManyToOne(() => Post)
-  post: Post;
+  post: Post
 }

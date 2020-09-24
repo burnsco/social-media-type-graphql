@@ -1,4 +1,4 @@
-import { Field, ID, InputType, Int } from 'type-graphql'
+import { Field, ID, InputType, Int } from "type-graphql"
 
 @InputType()
 export class VoteInput {
