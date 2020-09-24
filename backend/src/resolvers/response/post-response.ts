@@ -13,3 +13,9 @@ export class PostsQueryResponse {
   @Field(() => [Post])
   posts: Post[];
 }
+
+@ObjectType()
+export class PostQueryResponse {
+  @Field(() => Post, { nullable: true})
+  post: Post;
+}

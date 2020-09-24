@@ -15,8 +15,7 @@ export class UserResolver {
     if (!req.session.userId) {
       return null
     }
-    const user = await em.findOne(User, req.session.userId)
-    return user
+    return await em.findOne(User, req.session.userId)
   }
 
   @Query(() => [User])

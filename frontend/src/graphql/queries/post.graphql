@@ -1,41 +1,26 @@
-query Post($postId: String) {
+query Post($postId: ID) {
   post(postId: $postId) {
-    id
-    createdAt
-    updatedAt
-    text
-    link
-    video
-    image
-    title
-    author {
+    post {
       id
-      username
-    }
-    comments {
-      post {
-        id
-        title
-      }
       createdAt
       updatedAt
-      id
-      body
-      createdBy {
+      text
+      link
+      video
+      image
+      title
+      author {
         id
         username
       }
-    }
-    category {
-      id
-      name
-    }
-    votes {
-      id
-      value
-      castBy {
-        id
-        username
+      category {
+        name
+      }
+      totalVotes {
+        count
+      }
+      totalComments {
+        count
       }
     }
   }
