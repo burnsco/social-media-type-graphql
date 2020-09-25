@@ -17,8 +17,8 @@ export type Query = {
   _allPostsMeta: _QueryMeta;
   _categoryPostsMeta: _QueryMeta;
   post?: Maybe<Post>;
-  posts: Array<Post>;
-  postsByCategory: Array<Post>;
+  posts?: Maybe<Array<Post>>;
+  postsByCategory?: Maybe<Array<Post>>;
   me?: Maybe<User>;
   users: Array<User>;
 };
@@ -26,7 +26,7 @@ export type Query = {
 
 export type Query_CategoryPostsMetaArgs = {
   first?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
   orderBy?: Maybe<PostOrderBy>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
@@ -36,7 +36,7 @@ export type Query_CategoryPostsMetaArgs = {
 
 export type QueryPostArgs = {
   first?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
   orderBy?: Maybe<PostOrderBy>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
@@ -46,7 +46,7 @@ export type QueryPostArgs = {
 
 export type QueryPostsArgs = {
   first?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
   orderBy?: Maybe<PostOrderBy>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
@@ -56,7 +56,7 @@ export type QueryPostsArgs = {
 
 export type QueryPostsByCategoryArgs = {
   first?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
   orderBy?: Maybe<PostOrderBy>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
@@ -65,7 +65,7 @@ export type QueryPostsByCategoryArgs = {
 
 export type Category = {
   __typename?: 'Category';
-  id: Scalars['Int'];
+  id: Scalars['ID'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   name: Scalars['String'];
@@ -73,7 +73,7 @@ export type Category = {
 
 export type _QueryMeta = {
   __typename?: '_QueryMeta';
-  count: Scalars['Int'];
+  count?: Maybe<Scalars['Int']>;
 };
 
 export type PostOrderBy = {
@@ -90,7 +90,7 @@ export enum OrderBy {
 
 export type Post = {
   __typename?: 'Post';
-  id: Scalars['Int'];
+  id: Scalars['ID'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   title: Scalars['String'];
@@ -102,36 +102,31 @@ export type Post = {
   category: Category;
   votes?: Maybe<Array<Vote>>;
   comments?: Maybe<Array<Comment>>;
+  totalComments?: Maybe<_QueryMeta>;
+  totalVotes?: Maybe<_QueryMeta>;
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['Int'];
+  id: Scalars['ID'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   email: Scalars['String'];
   username: Scalars['String'];
-  role: UserRole;
 };
-
-export enum UserRole {
-  Admin = 'ADMIN',
-  Moderator = 'MODERATOR',
-  User = 'USER'
-}
 
 export type Vote = {
   __typename?: 'Vote';
-  id: Scalars['Int'];
+  id: Scalars['ID'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  value: Scalars['Float'];
+  value: Scalars['Int'];
   castBy: User;
 };
 
 export type Comment = {
   __typename?: 'Comment';
-  id: Scalars['Int'];
+  id: Scalars['ID'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   body: Scalars['String'];
@@ -203,7 +198,7 @@ export type PostMutationResponse = {
 };
 
 export type PostInput = {
-  categoryId: Scalars['Int'];
+  categoryId: Scalars['ID'];
   title: Scalars['String'];
   text?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
@@ -219,7 +214,7 @@ export type CommentMutationResponse = {
 
 export type CommentInput = {
   body: Scalars['String'];
-  postId: Scalars['Int'];
+  postId: Scalars['ID'];
 };
 
 export type VoteMutationResponse = {
@@ -229,7 +224,7 @@ export type VoteMutationResponse = {
 };
 
 export type VoteInput = {
-  postId: Scalars['Int'];
+  postId: Scalars['ID'];
   value: Scalars['Int'];
 };
 
@@ -287,7 +282,7 @@ export type CreateCommentMutation = (
   & { createComment: (
     { __typename?: 'CommentMutationResponse' }
     & { comment?: Maybe<(
-      { __typename: 'Comment' }
+      { __typename?: 'Comment' }
       & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
       & { post: (
         { __typename?: 'Post' }
@@ -311,7 +306,7 @@ export type CreatePostMutation = (
     { __typename?: 'PostMutationResponse' }
     & { post?: Maybe<(
       { __typename?: 'Post' }
-      & Pick<Post, 'createdAt' | 'id' | 'title' | 'text' | 'video' | 'image' | 'link'>
+      & Pick<Post, 'createdAt' | 'updatedAt' | 'id' | 'title' | 'text' | 'video' | 'image' | 'link'>
     )>, errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -385,7 +380,7 @@ export type MeQuery = (
 );
 
 export type PostQueryVariables = Exact<{
-  postId?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -397,27 +392,16 @@ export type PostQuery = (
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
-    ), comments?: Maybe<Array<(
-      { __typename?: 'Comment' }
-      & Pick<Comment, 'createdAt' | 'updatedAt' | 'id' | 'body'>
-      & { post: (
-        { __typename?: 'Post' }
-        & Pick<Post, 'id' | 'title'>
-      ), createdBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-      ) }
-    )>>, category: (
+    ), category: (
       { __typename?: 'Category' }
-      & Pick<Category, 'id' | 'name'>
-    ), votes?: Maybe<Array<(
-      { __typename?: 'Vote' }
-      & Pick<Vote, 'id' | 'value'>
-      & { castBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-      ) }
-    )>> }
+      & Pick<Category, 'name'>
+    ), totalVotes?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )>, totalComments?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )> }
   )> }
 );
 
@@ -431,34 +415,23 @@ export type PostsQueryVariables = Exact<{
 
 export type PostsQuery = (
   { __typename?: 'Query' }
-  & { posts: Array<(
+  & { posts?: Maybe<Array<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text' | 'image' | 'video' | 'link'>
-    & { author: (
+    & { totalComments?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )>, totalVotes?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )>, author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
-    ), comments?: Maybe<Array<(
-      { __typename?: 'Comment' }
-      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-      & { post: (
-        { __typename?: 'Post' }
-        & Pick<Post, 'id' | 'title'>
-      ), createdBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-      ) }
-    )>>, category: (
+    ), category: (
       { __typename?: 'Category' }
       & Pick<Category, 'id' | 'name'>
-    ), votes?: Maybe<Array<(
-      { __typename?: 'Vote' }
-      & Pick<Vote, 'id' | 'value'>
-      & { castBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-      ) }
-    )>> }
-  )>, _allPostsMeta: (
+    ) }
+  )>>, _allPostsMeta: (
     { __typename?: '_QueryMeta' }
     & Pick<_QueryMeta, 'count'>
   ), _categoryPostsMeta: (
@@ -505,7 +478,6 @@ export const CreateCommentDocument = gql`
     mutation createComment($data: CommentInput!) {
   createComment(data: $data) {
     comment {
-      __typename
       post {
         id
         title
@@ -552,6 +524,7 @@ export const CreatePostDocument = gql`
   createPost(data: $data) {
     post {
       createdAt
+      updatedAt
       id
       title
       text
@@ -761,7 +734,7 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const PostDocument = gql`
-    query Post($postId: Int) {
+    query Post($postId: ID) {
   post(postId: $postId) {
     id
     createdAt
@@ -775,31 +748,14 @@ export const PostDocument = gql`
       id
       username
     }
-    comments {
-      post {
-        id
-        title
-      }
-      createdAt
-      updatedAt
-      id
-      body
-      createdBy {
-        id
-        username
-      }
-    }
     category {
-      id
       name
     }
-    votes {
-      id
-      value
-      castBy {
-        id
-        username
-      }
+    totalVotes {
+      count
+    }
+    totalComments {
+      count
     }
   }
 }
@@ -841,35 +797,19 @@ export const PostsDocument = gql`
     image
     video
     link
+    totalComments {
+      count
+    }
+    totalVotes {
+      count
+    }
     author {
       id
       username
     }
-    comments {
-      id
-      post {
-        id
-        title
-      }
-      createdAt
-      updatedAt
-      body
-      createdBy {
-        id
-        username
-      }
-    }
     category {
       id
       name
-    }
-    votes {
-      id
-      value
-      castBy {
-        id
-        username
-      }
     }
   }
   _allPostsMeta {

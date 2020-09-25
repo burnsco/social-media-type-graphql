@@ -1,5 +1,5 @@
 import { Entity, Property } from "@mikro-orm/core"
-import { Field, ObjectType } from "type-graphql"
+import { ObjectType, Field } from "type-graphql"
 import { BaseEntity } from "./BaseEntity"
 
 @Entity()

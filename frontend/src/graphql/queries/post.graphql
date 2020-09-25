@@ -1,27 +1,25 @@
 query Post($postId: ID) {
   post(postId: $postId) {
-    post {
+    id
+    createdAt
+    updatedAt
+    text
+    link
+    video
+    image
+    title
+    author {
       id
-      createdAt
-      updatedAt
-      text
-      link
-      video
-      image
-      title
-      author {
-        id
-        username
-      }
-      category {
-        name
-      }
-      totalVotes {
-        count
-      }
-      totalComments {
-        count
-      }
+      username
+    }
+    category {
+      name
+    }
+    totalVotes {
+      count
+    }
+    totalComments {
+      count
     }
   }
 }
