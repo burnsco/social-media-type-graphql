@@ -1,12 +1,12 @@
-import argon2 from 'argon2'
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql'
-import { User } from '../entities/User'
-import { ContextType } from '../types'
-import { LoginInput, RegisterInput } from './inputs/user-input'
-import { LogoutMutationResponse } from './response/logout-response'
-import { UserMutationResponse } from './response/user-response'
-import { validateLoginUser } from './validation/login-schema'
-import { validateRegisterUser } from './validation/register-schema'
+import argon2 from "argon2"
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql"
+import { User } from "../entities/User"
+import { ContextType } from "../types"
+import { LoginInput, RegisterInput } from "./inputs/user-input"
+import { LogoutMutationResponse } from "./response/logout-response"
+import { UserMutationResponse } from "./response/user-response"
+import { validateLoginUser } from "./validation/login-schema"
+import { validateRegisterUser } from "./validation/register-schema"
 
 @Resolver(() => User)
 export class UserResolver {
@@ -25,49 +25,49 @@ export class UserResolver {
 
   @Mutation(() => UserMutationResponse)
   async register(
-    @Arg('data'){email, username, password}: RegisterInput,
+    @Arg("data") { email, username, password }: RegisterInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
-    const errors = await validateRegisterUser({email, username, password})
+    const errors = await validateRegisterUser({ email, username, password })
     if (errors !== null) {
       return {
-        errors,
+        errors
       }
     }
 
     const user = em.create(User, {
       email,
       username,
-      password: await argon2.hash(password),
+      password: await argon2.hash(password)
     })
     await em.persistAndFlush(user)
 
     req.session.userId = user.id
 
     return {
-      user,
+      user
     }
   }
 
   @Mutation(() => UserMutationResponse)
   async login(
-    @Arg('data') {email, password}: LoginInput,
+    @Arg("data") { email, password }: LoginInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
-    const errors = await validateLoginUser({email,password})
+    const errors = await validateLoginUser({ email, password })
     if (errors !== null) {
       return {
-        errors,
+        errors
       }
     }
 
     const user = await em.findOne(User, { email: email })
 
     if (user) {
-      req.session!.userId = user.id
+      req.session.userId = user.id
 
       return {
-        user,
+        user
       }
     }
     return {}
@@ -77,18 +77,18 @@ export class UserResolver {
   logout(@Ctx() { req, res }: ContextType) {
     return new Promise(resolve =>
       req.session.destroy(err => {
-        res.clearCookie('rdt')
+        res.clearCookie("rdt")
         if (err) {
           resolve(false)
           return {
             message: err,
-            code: false,
+            code: false
           }
         }
         resolve(true)
         return {
-          message: 'user logged out successfully',
-          code: true,
+          message: "user logged out successfully",
+          code: true
         }
       })
     )

@@ -1,4 +1,3 @@
-
 import * as Yup from "yup"
 import { RegisterInput } from "../inputs/user-input"
 
@@ -11,7 +10,7 @@ export const RegisterSchema = Yup.object().shape({
     .min(3, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
+  email: Yup.string().email("Invalid email").required("Required")
 })
 
 export async function validateRegisterUser(data: RegisterInput) {
@@ -22,8 +21,8 @@ export async function validateRegisterUser(data: RegisterInput) {
     return [
       {
         field: `${err.path}`,
-        message: `${err.message}`,
-      },
+        message: `${err.message}`
+      }
     ]
   }
 }
