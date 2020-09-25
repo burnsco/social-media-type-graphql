@@ -210,6 +210,7 @@ export type CommentMutationResponse = {
   __typename?: 'CommentMutationResponse';
   errors?: Maybe<Array<FieldError>>;
   comment?: Maybe<Comment>;
+  post?: Maybe<Post>;
 };
 
 export type CommentInput = {
@@ -281,16 +282,23 @@ export type CreateCommentMutation = (
   { __typename?: 'Mutation' }
   & { createComment: (
     { __typename?: 'CommentMutationResponse' }
-    & { comment?: Maybe<(
-      { __typename?: 'Comment' }
-      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
-      & { post: (
-        { __typename?: 'Post' }
-        & Pick<Post, 'id' | 'title'>
-      ), createdBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-      ) }
+    & { post?: Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'title'>
+      & { totalComments?: Maybe<(
+        { __typename?: '_QueryMeta' }
+        & Pick<_QueryMeta, 'count'>
+      )>, totalVotes?: Maybe<(
+        { __typename?: '_QueryMeta' }
+        & Pick<_QueryMeta, 'count'>
+      )>, comments?: Maybe<Array<(
+        { __typename?: 'Comment' }
+        & Pick<Comment, 'id'>
+        & { createdBy: (
+          { __typename?: 'User' }
+          & Pick<User, 'username'>
+        ) }
+      )>> }
     )> }
   ) }
 );
@@ -388,20 +396,30 @@ export type PostQuery = (
   { __typename?: 'Query' }
   & { post?: Maybe<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'text' | 'link' | 'video' | 'image' | 'title'>
-    & { author: (
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text' | 'image' | 'video' | 'link'>
+    & { comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+      & { post: (
+        { __typename?: 'Post' }
+        & Pick<Post, 'id' | 'title'>
+      ), createdBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ) }
+    )>>, totalComments?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )>, totalVotes?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )>, author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ), category: (
       { __typename?: 'Category' }
-      & Pick<Category, 'name'>
-    ), totalVotes?: Maybe<(
-      { __typename?: '_QueryMeta' }
-      & Pick<_QueryMeta, 'count'>
-    )>, totalComments?: Maybe<(
-      { __typename?: '_QueryMeta' }
-      & Pick<_QueryMeta, 'count'>
-    )> }
+      & Pick<Category, 'id' | 'name'>
+    ) }
   )> }
 );
 
@@ -418,7 +436,17 @@ export type PostsQuery = (
   & { posts?: Maybe<Array<(
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text' | 'image' | 'video' | 'link'>
-    & { totalComments?: Maybe<(
+    & { comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+      & { post: (
+        { __typename?: 'Post' }
+        & Pick<Post, 'id' | 'title'>
+      ), createdBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ) }
+    )>>, totalComments?: Maybe<(
       { __typename?: '_QueryMeta' }
       & Pick<_QueryMeta, 'count'>
     )>, totalVotes?: Maybe<(
@@ -477,18 +505,20 @@ ${UserDetailsFragmentDoc}`;
 export const CreateCommentDocument = gql`
     mutation createComment($data: CommentInput!) {
   createComment(data: $data) {
-    comment {
-      post {
-        id
-        title
-      }
+    post {
       id
-      createdAt
-      updatedAt
-      body
-      createdBy {
+      title
+      totalComments {
+        count
+      }
+      totalVotes {
+        count
+      }
+      comments {
         id
-        username
+        createdBy {
+          username
+        }
       }
     }
   }
@@ -739,23 +769,37 @@ export const PostDocument = gql`
     id
     createdAt
     updatedAt
-    text
-    link
-    video
-    image
     title
+    text
+    image
+    video
+    link
+    comments {
+      id
+      createdAt
+      updatedAt
+      body
+      post {
+        id
+        title
+      }
+      createdBy {
+        username
+      }
+    }
+    totalComments {
+      count
+    }
+    totalVotes {
+      count
+    }
     author {
       id
       username
     }
     category {
+      id
       name
-    }
-    totalVotes {
-      count
-    }
-    totalComments {
-      count
     }
   }
 }
@@ -797,6 +841,19 @@ export const PostsDocument = gql`
     image
     video
     link
+    comments {
+      id
+      createdAt
+      updatedAt
+      body
+      post {
+        id
+        title
+      }
+      createdBy {
+        username
+      }
+    }
     totalComments {
       count
     }

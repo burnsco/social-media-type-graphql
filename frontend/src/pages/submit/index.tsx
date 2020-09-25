@@ -23,7 +23,7 @@ import * as Yup from "yup"
 
 const SubmitPage: React.FunctionComponent = () => {
   const initialValues = {
-    categoryId: undefined,
+    categoryId: "",
     title: "",
     text: "",
     link: "",
@@ -36,7 +36,6 @@ const SubmitPage: React.FunctionComponent = () => {
   ] = useCategoriesLazyQuery()
 
   const [snapShot, setSnapShot] = React.useState(initialValues)
-  const [tabIndex, setTabIndex] = React.useState(0)
 
   const [submitPost, { loading, error }] = useCreatePostMutation()
 
@@ -69,7 +68,7 @@ const SubmitPage: React.FunctionComponent = () => {
                   video: values.video,
                   link: values.link,
                   image: values.image,
-                  categoryId: Number(values.categoryId)
+                  categoryId: values.categoryId
                 }
               }
             })

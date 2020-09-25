@@ -1,17 +1,19 @@
 mutation createComment($data: CommentInput!) {
   createComment(data: $data) {
-    comment {
-      post {
-        id
-        title
-      }
+    post {
       id
-      createdAt
-      updatedAt
-      body
-      createdBy {
+      title
+      totalComments {
+        count
+      }
+      totalVotes {
+        count
+      }
+      comments {
         id
-        username
+        createdBy {
+          username
+        }
       }
     }
   }

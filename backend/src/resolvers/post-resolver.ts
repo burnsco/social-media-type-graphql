@@ -148,8 +148,9 @@ export class PostResolver {
     post.comments.add(comment)
 
     await em.persistAndFlush(post)
-
+    console.log(post)
     return {
+      post,
       comment
     }
   }

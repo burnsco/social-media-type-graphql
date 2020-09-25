@@ -3,23 +3,38 @@ query Post($postId: ID) {
     id
     createdAt
     updatedAt
-    text
-    link
-    video
-    image
     title
-    author {
+    text
+    image
+    video
+    link
+    comments {
       id
-      username
+      createdAt
+      updatedAt
+      body
+      post {
+        id
+        title
+      }
+      createdBy {
+        username
+      }
     }
-    category {
-      name
+    totalComments {
+      count
     }
     totalVotes {
       count
     }
-    totalComments {
-      count
+    author {
+      id
+      username
+    }
+
+    category {
+      id
+      name
     }
   }
 }

@@ -42,7 +42,7 @@ const NewPost: React.FC<PostQuery> = props => {
             aria-label="UpVote"
             icon={<ImArrowUp />}
           />
-          <Box>{post?.votes?.length ?? 0}</Box>
+          <Box>{post?.totalVotes?.count ?? 0}</Box>
           <IconButton
             onClick={() => console.log("downvote")}
             variant="ghost"
@@ -112,15 +112,14 @@ const NewPost: React.FC<PostQuery> = props => {
 
         {/* Post Footer */}
         <Box mt={2} display="flex" width="100%">
-          <Box borderRadius="sm" fontSize="12px" p={1} mb={1} color="gray.200">
+          <Box borderRadius="sm" fontSize="12px" p={1} mb={1} color="gray.400">
             {/* Post Comments */}
 
             <NextChakraLink
               href="/r/[category]/[id]"
               as={`/r/${post?.category.name}/${post?.id}`}
             >
-              {" "}
-              {post?.comments?.length ?? 0} Comments
+              {post?.totalComments?.count ?? 0} Comments
             </NextChakraLink>
           </Box>
         </Box>

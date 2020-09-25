@@ -8,10 +8,11 @@ import * as React from "react"
 
 const PostAndCommentsPage: React.FC = () => {
   const router = useRouter()
+  const postId = router.query.id as string
 
   const { loading, data, error } = usePostQuery({
     variables: {
-      postId: Number(router.query.id)
+      postId: postId
     }
   })
 
@@ -21,13 +22,13 @@ const PostAndCommentsPage: React.FC = () => {
   if (error) return <div>error loading post</div>
   if (loading) return null
 
-  const comments = data?.post?.comments ?? []
+  const totalComments = data?.post?.totalComments?.count
 
   const ViewComments = () => {
-    if (comments.length > 0) {
+    if ((totalComments && totalComments > 0) ?? false) {
       return (
         <Stack spacing={4}>
-          {comments.map((comment, index) => (
+          {data?.post?.comments?.map((comment, index) => (
             <NewComment
               key={`comment-${comment.id}-${index}`}
               comment={comment}
@@ -46,7 +47,7 @@ const PostAndCommentsPage: React.FC = () => {
           key={`post-${data.post.id}-${data.post.title}`}
           post={data.post}
         />
-        <SubmitCommentForm post={data.post} />
+        <SubmitCommentForm postId={postId} />
         <Box>Comments</Box>
         <ViewComments />
       </Stack>

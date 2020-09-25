@@ -8,12 +8,29 @@ query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
     image
     video
     link
+
+    comments {
+      id
+      createdAt
+      updatedAt
+      body
+      post {
+        id
+        title
+      }
+      createdBy {
+        username
+      }
+    }
+
     totalComments {
       count
     }
+
     totalVotes {
       count
     }
+
     author {
       id
       username

@@ -5,7 +5,7 @@ import {
   NormalizedCacheObject
 } from "@apollo/client"
 import { onError } from "@apollo/client/link/error"
-import { Category, Comment, Post } from "@generated/graphql"
+import { Category, Post } from "@generated/graphql"
 import { useMemo } from "react"
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
@@ -31,11 +31,6 @@ function createApolloClient() {
     typePolicies: {
       Post: {
         fields: {
-          comments: {
-            merge(existing, incoming) {
-              return { ...existing, ...incoming }
-            }
-          },
           category: {
             merge(existing, incoming) {
               return { ...existing, ...incoming }
@@ -45,15 +40,6 @@ function createApolloClient() {
       },
       Query: {
         fields: {
-          comments: {
-            keyArgs: [],
-            merge(
-              existing: Comment[] | undefined,
-              incoming: Comment[]
-            ): Comment[] {
-              return existing ? [...incoming, ...existing] : [...incoming]
-            }
-          },
           posts: {
             keyArgs: [],
             merge(existing: Post[] | undefined, incoming: Post[]): Post[] {
