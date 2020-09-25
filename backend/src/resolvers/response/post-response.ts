@@ -10,7 +10,7 @@ export class PostMutationResponse extends MutationResponse {
 
 @ObjectType()
 export class PostsQueryResponse {
-  @Field(() => [Post])
+  @Field(() => [Post], { nullable: true })
   posts: Post[]
 }
 

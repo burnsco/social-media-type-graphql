@@ -1,13 +1,62 @@
 import { QueryOrder } from "@mikro-orm/core"
-import { Args, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
+import {
+  Arg,
+  Args,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root
+} from "type-graphql"
 import { Comment } from "../entities/Comment"
 import { Post } from "../entities/Post"
 import { User } from "../entities/User"
 import { ContextType } from "../types"
 import { PostArgs } from "./args/post-args"
+import { CommentInput } from "./inputs/comment-input"
+import { CommentMutationResponse } from "./response/comment-response"
 
 @Resolver(() => Comment)
 export class CommentResolver {
+  @Mutation(() => CommentMutationResponse)
+  async editComment(
+    @Arg("data") { body, postId }: CommentInput,
+    @Ctx() { em }: ContextType
+  ): Promise<CommentMutationResponse> {
+    const comment = await em.findOne(Comment, { post: { id: postId } })
+    if (comment) {
+      comment.body = body
+
+      await em.flush()
+
+      return {
+        comment
+      }
+    }
+    return {
+      comment: undefined
+    }
+  }
+
+  @Mutation(() => CommentMutationResponse)
+  async deleteComment(
+    @Arg("data") { postId }: CommentInput,
+    @Ctx() { em }: ContextType
+  ): Promise<CommentMutationResponse> {
+    const comment = await em.findOne(Comment, { post: { id: postId } })
+    if (comment) {
+      em.removeAndFlush
+
+      return {
+        comment
+      }
+    }
+    return {
+      comment: undefined
+    }
+  }
+
   @Query(() => [Comment], { nullable: true })
   async comments(
     @Args() { first, skip, orderBy, postId }: PostArgs,
