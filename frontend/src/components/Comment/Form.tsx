@@ -28,7 +28,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
           fields: {
             comments(existingComments = []) {
               const newCommentRef = cache.writeFragment({
-                data: data?.createComment.comment,
+                data: data?.createComment?.comment,
                 fragment: gql`
                   fragment NewComment on Comment {
                     id

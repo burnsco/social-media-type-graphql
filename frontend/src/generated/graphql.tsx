@@ -14,6 +14,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   categories: Array<Category>;
+  comments?: Maybe<Array<Comment>>;
   _allPostsMeta: _QueryMeta;
   _categoryPostsMeta: _QueryMeta;
   post?: Maybe<Post>;
@@ -21,6 +22,16 @@ export type Query = {
   postsByCategory?: Maybe<Array<Post>>;
   me?: Maybe<User>;
   users: Array<User>;
+};
+
+
+export type QueryCommentsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 
@@ -71,22 +82,24 @@ export type Category = {
   name: Scalars['String'];
 };
 
-export type _QueryMeta = {
-  __typename?: '_QueryMeta';
-  count?: Maybe<Scalars['Int']>;
+export type Comment = {
+  __typename?: 'Comment';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  body: Scalars['String'];
+  createdBy: User;
+  post: Post;
 };
 
-export type PostOrderBy = {
-  createdAt?: Maybe<OrderBy>;
-  title?: Maybe<OrderBy>;
-  updatedAt?: Maybe<OrderBy>;
-  votes?: Maybe<OrderBy>;
+export type User = {
+  __typename?: 'User';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  email: Scalars['String'];
+  username: Scalars['String'];
 };
-
-export enum OrderBy {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
 
 export type Post = {
   __typename?: 'Post';
@@ -106,15 +119,6 @@ export type Post = {
   totalVotes?: Maybe<_QueryMeta>;
 };
 
-export type User = {
-  __typename?: 'User';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  email: Scalars['String'];
-  username: Scalars['String'];
-};
-
 export type Vote = {
   __typename?: 'Vote';
   id: Scalars['ID'];
@@ -124,15 +128,22 @@ export type Vote = {
   castBy: User;
 };
 
-export type Comment = {
-  __typename?: 'Comment';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  body: Scalars['String'];
-  createdBy: User;
-  post: Post;
+export type _QueryMeta = {
+  __typename?: '_QueryMeta';
+  count?: Maybe<Scalars['Int']>;
 };
+
+export type PostOrderBy = {
+  createdAt?: Maybe<OrderBy>;
+  title?: Maybe<OrderBy>;
+  updatedAt?: Maybe<OrderBy>;
+  votes?: Maybe<OrderBy>;
+};
+
+export enum OrderBy {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -282,7 +293,17 @@ export type CreateCommentMutation = (
   { __typename?: 'Mutation' }
   & { createComment: (
     { __typename?: 'CommentMutationResponse' }
-    & { post?: Maybe<(
+    & { comment?: Maybe<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'body'>
+      & { createdBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ), post: (
+        { __typename?: 'Post' }
+        & Pick<Post, 'id'>
+      ) }
+    )>, post?: Maybe<(
       { __typename?: 'Post' }
       & Pick<Post, 'id' | 'title'>
       & { totalComments?: Maybe<(
@@ -374,6 +395,26 @@ export type CategoriesQuery = (
     { __typename?: 'Category' }
     & Pick<Category, 'id' | 'name'>
   )> }
+);
+
+export type CommentsQueryVariables = Exact<{
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<PostOrderBy>;
+  skip?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+}>;
+
+
+export type CommentsQuery = (
+  { __typename?: 'Query' }
+  & { comments?: Maybe<Array<(
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+    & { createdBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ) }
+  )>> }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -505,6 +546,16 @@ ${UserDetailsFragmentDoc}`;
 export const CreateCommentDocument = gql`
     mutation createComment($data: CommentInput!) {
   createComment(data: $data) {
+    comment {
+      id
+      body
+      createdBy {
+        username
+      }
+      post {
+        id
+      }
+    }
     post {
       id
       title
@@ -730,6 +781,48 @@ export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
 export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
 export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export const CommentsDocument = gql`
+    query Comments($first: Int, $orderBy: PostOrderBy, $skip: Int, $postId: ID) {
+  comments(first: $first, orderBy: $orderBy, skip: $skip, postId: $postId) {
+    id
+    createdAt
+    updatedAt
+    body
+    createdBy {
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useCommentsQuery__
+ *
+ * To run a query within a React component, call `useCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      orderBy: // value for 'orderBy'
+ *      skip: // value for 'skip'
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useCommentsQuery(baseOptions?: Apollo.QueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+        return Apollo.useQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, baseOptions);
+      }
+export function useCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+          return Apollo.useLazyQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, baseOptions);
+        }
+export type CommentsQueryHookResult = ReturnType<typeof useCommentsQuery>;
+export type CommentsLazyQueryHookResult = ReturnType<typeof useCommentsLazyQuery>;
+export type CommentsQueryResult = Apollo.QueryResult<CommentsQuery, CommentsQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

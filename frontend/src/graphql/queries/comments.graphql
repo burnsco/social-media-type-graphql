@@ -1,0 +1,11 @@
+query Comments($first: Int, $orderBy: PostOrderBy, $skip: Int, $postId: ID) {
+  comments(first: $first, orderBy: $orderBy, skip: $skip, postId: $postId) {
+    id
+    createdAt
+    updatedAt
+    body
+    createdBy {
+      username
+    }
+  }
+}

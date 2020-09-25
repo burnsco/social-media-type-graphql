@@ -8,7 +8,7 @@ import * as React from "react"
 
 const PostAndCommentsPage: React.FC = () => {
   const router = useRouter()
-  const postId = router.query.id as string
+  const postId = (router?.query?.id as string) ?? 1
 
   const { loading, data, error } = usePostQuery({
     variables: {
@@ -26,16 +26,7 @@ const PostAndCommentsPage: React.FC = () => {
 
   const ViewComments = () => {
     if ((totalComments && totalComments > 0) ?? false) {
-      return (
-        <Stack spacing={4}>
-          {data?.post?.comments?.map((comment, index) => (
-            <NewComment
-              key={`comment-${comment.id}-${index}`}
-              comment={comment}
-            />
-          ))}
-        </Stack>
-      )
+      return <NewComment postId={postId} />
     }
     return <div>no comments yet</div>
   }

@@ -1,5 +1,5 @@
 import { NetworkStatus } from "@apollo/client"
-import { Box } from "@chakra-ui/core"
+import { Box, Button } from "@chakra-ui/core"
 import NewPost from "@components/Post"
 import { usePostsQuery } from "@generated/graphql"
 import * as React from "react"
@@ -51,11 +51,15 @@ const PostList = () => {
   const ShowMorePosts = () => {
     if (areMorePosts) {
       return (
-        <ul>
-          <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
+        <Box m={2}>
+          <Button
+            variant="outline"
+            onClick={() => loadMorePosts()}
+            disabled={loadingMorePosts}
+          >
             {loadingMorePosts ? "Loading..." : "Show More"}
-          </button>
-        </ul>
+          </Button>
+        </Box>
       )
     } else {
       return null
