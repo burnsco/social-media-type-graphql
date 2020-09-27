@@ -15,7 +15,7 @@ export default {
     pattern: /^[\w-]+\d+\.[tj]s$/
   },
   entities: [BaseEntity, Category, User, Post, Comment, Vote],
-  dbName: "reddit-ts-2",
+  dbName: "reddit-ts",
   username: "postgres",
   password: "postgres",
   type: "postgresql",

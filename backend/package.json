@@ -13,7 +13,7 @@
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write \"**/*.{js,ts,tsx}\"",
     "lint": "eslint . --ext ts --ext tsx --ext js",
-    "test": "jest",
+    "test": "jest --forceExit --detectOpenHandles",
     "test-all": "yarn lint && yarn type-check && yarn test"
   },
   "husky": {
@@ -42,8 +42,9 @@
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",
     "eslint": "^7.9.0",
-    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "faker": "^5.1.0",
     "gen-env-types": "^1.0.4",
     "graphql-custom-types": "^1.6.0",
     "husky": "^4.3.0",
@@ -69,7 +70,6 @@
     "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "faker": "^5.1.0",
     "graphql": "^15.3.0",
     "ioredis": "^4.17.3",
     "moment": "^2.29.0",
@@ -77,6 +77,7 @@
     "pg": "^8.3.3",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.0.0",
+    "typedi": "^0.8.0",
     "yup": "^0.29.3"
   },
   "mikro-orm": {

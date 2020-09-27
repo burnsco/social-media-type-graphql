@@ -83,6 +83,7 @@ const main = async () => {
       redis: redisClient
     })
   })
+
   server.applyMiddleware({ app, cors: false })
 
   app.listen(PORT, () => {

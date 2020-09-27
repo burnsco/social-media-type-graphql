@@ -9,3 +9,7 @@ export const invalidPostOrId = {
 export const subRedditNameInUse = {
   errors: [{ field: "name", message: "Subreddit name already in use." }]
 }
+
+export const userNotFound = {
+  errors: [{ field: "email", message: "Not Found." }]
+}
