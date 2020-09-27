@@ -1,0 +1,11 @@
+query Comment($postId: ID) {
+  comment(postId: $postId) {
+    id
+    createdAt
+    updatedAt
+    body
+    createdBy {
+      username
+    }
+  }
+}

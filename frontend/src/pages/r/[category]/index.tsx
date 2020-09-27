@@ -1,18 +1,18 @@
 import { NetworkStatus } from "@apollo/client"
 import { Box, Spinner, Stack } from "@chakra-ui/core"
-import NewPost from "@components/Post"
+import { GetStaticPaths, GetStaticProps } from "next"
+import { useRouter } from "next/router"
+import PropTypes from "prop-types"
+import * as React from "react"
+import NewPost from "../../../components/Post"
 import {
   CategoriesDocument,
   Category,
   PostsDocument,
   PostsQuery,
   usePostsQuery
-} from "@generated/graphql"
-import { initializeApollo } from "@lib/apolloClient"
-import { GetStaticPaths, GetStaticProps } from "next"
-import { useRouter } from "next/router"
-import PropTypes from "prop-types"
-import * as React from "react"
+} from "../../../generated/graphql"
+import { initializeApollo } from "../../../lib/apolloClient"
 
 const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const [isMounted, setIsMounted] = React.useState(false)

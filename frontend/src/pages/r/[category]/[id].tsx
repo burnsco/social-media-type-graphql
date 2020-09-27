@@ -1,10 +1,10 @@
 import { Box, Spinner, Stack } from "@chakra-ui/core"
-import NewComment from "@components/Comment"
-import SubmitCommentForm from "@components/Comment/Form"
-import NewPost from "@components/Post"
-import { usePostQuery } from "@generated/graphql"
 import { useRouter } from "next/router"
 import * as React from "react"
+import CommentsPageWithData from "../../../components/Comment/Data"
+import SubmitCommentForm from "../../../components/Comment/Form"
+import NewPost from "../../../components/Post"
+import { usePostQuery } from "../../../generated/graphql"
 
 const PostAndCommentsPage: React.FC = () => {
   const router = useRouter()
@@ -26,7 +26,7 @@ const PostAndCommentsPage: React.FC = () => {
 
   const ViewComments = () => {
     if ((totalComments && totalComments > 0) ?? false) {
-      return <NewComment postId={postId} />
+      return <CommentsPageWithData postId={postId} />
     }
     return <div>no comments yet</div>
   }

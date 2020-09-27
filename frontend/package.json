@@ -30,9 +30,14 @@
   "dependencies": {
     "@apollo/client": "^3.2.1",
     "@chakra-ui/core": "next",
+    "@chakra-ui/theme": "next",
+    "@chakra-ui/tools": "next",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^12.1.6",
+    "babel-plugin-chakra-ui": "^1.0.0-next.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "formik": "^2.1.5",
     "graphql": "^15.3.0",
     "graphql-config": "^3.0.3",
@@ -53,18 +58,78 @@
     "@types/yup": "^0.29.6",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",
+    "babel-jest": "^26.3.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "enzyme-to-json": "^3.6.0",
     "eslint": "^7.8.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-react": "^1.1.7",
+    "eslint-plugin-jest-dom": "^3.2.3",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.2",
     "eslint-plugin-react-hooks": "^4.1.0",
+    "eslint-plugin-testing-library": "^3.9.0",
     "husky": "^4.3.0",
     "jest": "^26.4.2",
+    "jest-transform-graphql": "^2.1.0",
     "jest-watch-typeahead": "^0.6.1",
     "lint-staged": "^10.4.0",
     "prettier": "^2.1.2",
     "prop-types": "^15.7.2",
+    "react-test-renderer": "^16.13.1",
     "typescript": "^4.0.2"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/jest.setup.js",
+    "testPathIgnorePatterns": [
+      "<rootDir>/.next/",
+      "<rootDir>/node_modules/"
+    ],
+    "transform": {
+      "\\.(gql|graphql)$": "jest-transform-graphql",
+      ".*": "babel-jest"
+    }
+  },
+  "//": "This is our babel config, I prefer this over a .babelrc file",
+  "babel": {
+    "env": {
+      "development": {
+        "presets": [
+          "next/babel"
+        ],
+        "plugins": [
+          [
+            "babel-plugin-chakra-ui"
+          ]
+        ]
+      },
+      "production": {
+        "presets": [
+          "next/babel"
+        ],
+        "plugins": [
+          [
+            "babel-plugin-chakra-ui"
+          ]
+        ]
+      },
+      "test": {
+        "presets": [
+          [
+            "next/babel",
+            {
+              "preset-env": {
+                "modules": "commonjs"
+              }
+            }
+          ]
+        ],
+        "plugins": [
+          [
+            "babel-plugin-chakra-ui"
+          ]
+        ]
+      }
+    }
   }
 }

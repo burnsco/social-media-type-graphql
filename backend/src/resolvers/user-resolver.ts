@@ -2,6 +2,7 @@ import argon2 from "argon2"
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql"
 import { User } from "../entities/User"
 import { ContextType } from "../types"
+import { PostInput } from "./inputs/post-input"
 import { LoginInput, RegisterInput } from "./inputs/user-input"
 import { LogoutMutationResponse } from "./response/logout-response"
 import { UserMutationResponse } from "./response/user-response"
@@ -16,6 +17,14 @@ export class UserResolver {
       return null
     }
     return await em.findOne(User, req.session.userId)
+  }
+
+  @Query(() => User)
+  async user(
+    @Arg("userId") { userId }: PostInput,
+    @Ctx() { em }: ContextType
+  ): Promise<User> {
+    return await em.findOneOrFail(User, { id: userId })
   }
 
   @Query(() => [User])

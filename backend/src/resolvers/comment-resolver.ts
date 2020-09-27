@@ -57,6 +57,14 @@ export class CommentResolver {
     }
   }
 
+  @Query(() => Comment, { nullable: true })
+  async comment(
+    @Args() { postId }: PostArgs,
+    @Ctx() { em }: ContextType
+  ): Promise<Comment | null> {
+    return await em.findOneOrFail(Comment, { post: { id: postId } })
+  }
+
   @Query(() => [Comment], { nullable: true })
   async comments(
     @Args() { first, skip, orderBy, postId }: PostArgs,

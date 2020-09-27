@@ -1,10 +1,14 @@
 import { Box, Button, useToast } from "@chakra-ui/core"
-import { Wrapper } from "@components/Layout/wrapper"
-import { InputField } from "@components/shared/InputField"
-import { MeDocument, MeQuery, useRegisterMutation } from "@generated/graphql"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import * as React from "react"
+import { Wrapper } from "../../components/Layout/wrapper"
+import { InputField } from "../../components/shared/InputField"
+import {
+  MeDocument,
+  MeQuery,
+  useRegisterMutation
+} from "../../generated/graphql"
 
 const RegisterPage: React.FC = () => {
   const toast = useToast()

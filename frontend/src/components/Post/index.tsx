@@ -1,11 +1,11 @@
 import { Box, Flex, Heading, IconButton } from "@chakra-ui/core"
-import { NextChakraLink } from "@components/shared/NextChakraLink"
-import { PostQuery } from "@generated/graphql"
-import { timeDifferenceForDate } from "@utils/timeDifferenceForDate"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import * as React from "react"
 import { ImArrowDown, ImArrowUp } from "react-icons/im"
+import { PostQuery } from "../../generated/graphql"
+import { timeDifferenceForDate } from "../../utils/timeDifferenceForDate"
+import { NextChakraLink } from "../shared/NextChakraLink"
 
 const NewPost: React.FC<PostQuery> = props => {
   const router = useRouter()

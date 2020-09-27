@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/core"
 import * as React from "react"
 
-function CustomControls({ title }: any) {
+const CustomControls: React.FC<{ title: string }> = ({ title }) => {
   function EditableControls({ isEditing, onSubmit, onCancel, onEdit }: any) {
     return isEditing ? (
       <ButtonGroup justifyContent="center" size="sm">

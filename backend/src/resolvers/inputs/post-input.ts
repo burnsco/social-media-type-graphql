@@ -6,6 +6,9 @@ export class PostInput implements Partial<Post> {
   @Field(() => ID)
   categoryId: number
 
+  @Field(() => ID)
+  userId?: number
+
   @Field(() => String)
   title: string
 

@@ -13,16 +13,17 @@ import {
   TabPanels,
   Tabs
 } from "@chakra-ui/core"
-import {
-  useCategoriesLazyQuery,
-  useCreatePostMutation
-} from "@generated/graphql"
 import { Field, Form, Formik } from "formik"
 import * as React from "react"
 import * as Yup from "yup"
+import {
+  useCategoriesLazyQuery,
+  useCreatePostMutation
+} from "../../generated/graphql"
 
 const SubmitPage: React.FunctionComponent = () => {
   const initialValues = {
+    userId: "",
     categoryId: "",
     title: "",
     text: "",
@@ -63,6 +64,7 @@ const SubmitPage: React.FunctionComponent = () => {
             submitPost({
               variables: {
                 data: {
+                  userId: values.userId,
                   title: values.title,
                   text: values.text,
                   video: values.video,

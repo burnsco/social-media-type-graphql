@@ -9,11 +9,11 @@ import {
   Skeleton,
   useToast
 } from "@chakra-ui/core"
-import { useCreateSubredditMutation } from "@generated/graphql"
 import { Field, Formik } from "formik"
 import { useRouter } from "next/router"
 import React from "react"
 import * as Yup from "yup"
+import { useCreateSubredditMutation } from "../../generated/graphql"
 interface CreateSubredditProps {
   name: string
 }

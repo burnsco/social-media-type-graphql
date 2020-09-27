@@ -1,7 +1,7 @@
 import { Box, List, ListItem, Skeleton } from "@chakra-ui/core"
-import { NextChakraLink } from "@components/shared/NextChakraLink"
-import { useCategoriesQuery } from "@generated/graphql"
 import * as React from "react"
+import { useCategoriesQuery } from "../../generated/graphql"
+import { NextChakraLink } from "../shared/NextChakraLink"
 
 const SideMenu: React.FC = () => {
   const [isMounted, setIsMounted] = React.useState(false)

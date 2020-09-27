@@ -15,7 +15,6 @@ import { useRouter } from "next/router"
 import * as React from "react"
 import { BsFolderPlus } from "react-icons/bs"
 import { FaRedditSquare } from "react-icons/fa"
-import { HiOutlineMail } from "react-icons/hi"
 import { ImPencil2 } from "react-icons/im"
 import { useLogoutMutation, useMeQuery } from "../../generated/graphql"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
@@ -44,15 +43,6 @@ const Header: React.FC = () => {
         {data && data?.me?.username ? (
           <Menu>
             <ButtonGroup spacing="4" mr="4">
-              {/* <InputGroup>
-                <InputLeftElement
-                  height='40px'
-                  width='40px'
-                  pointerEvents='none'
-                  children={<BsSearch color='gray.200' />}
-                />
-                <Input type='search' placeholder='Search' size='md' />
-              </InputGroup> */}
               <Tooltip hasArrow label="Home" bg="gray.200" color="black">
                 <IconButton
                   onClick={() => router.push("/")}
@@ -84,20 +74,6 @@ const Header: React.FC = () => {
                   color="current"
                   aria-label="Create Subreddit"
                   icon={<BsFolderPlus />}
-                />
-              </Tooltip>
-
-              <Tooltip
-                hasArrow
-                label="Send Message"
-                bg="gray.200"
-                color="black"
-              >
-                <IconButton
-                  variant="ghost"
-                  color="current"
-                  aria-label="Send Message"
-                  icon={<HiOutlineMail />}
                 />
               </Tooltip>
             </ButtonGroup>

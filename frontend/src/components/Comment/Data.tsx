@@ -4,10 +4,17 @@ import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import * as React from "react"
-import NewComment from "."
-import { useCommentsQuery } from "../../generated/graphql"
+import CommentPage from "."
+import {
+  CategoriesDocument,
+  Category,
+  PostsDocument,
+  PostsQuery,
+  useCommentsQuery
+} from "../../generated/graphql"
+import { initializeApollo } from "../../lib/apolloClient"
 
-const CommentsData: React.FC<{ postId: string }> = ({ postId }) => {
+const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   const [isMounted, setIsMounted] = React.useState(false)
 
   React.useEffect(() => {
@@ -52,7 +59,7 @@ const CommentsData: React.FC<{ postId: string }> = ({ postId }) => {
       {comments.length > 0 && (
         <Stack spacing={8}>
           {comments.map((comment, index) => (
-            <NewComment
+            <CommentPage
               key={`comment-${comment.id}-${index}`}
               comment={comment}
             />
@@ -107,8 +114,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-CommentsData.propTypes = {
+CommentsPageWithData.propTypes = {
   postId: PropTypes.string.isRequired
 }
 
-export default CommentsData
+export default CommentsPageWithData
