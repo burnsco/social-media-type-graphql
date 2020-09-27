@@ -11,14 +11,14 @@ import {
   MenuList,
   Tooltip
 } from "@chakra-ui/core"
-import { ColorModeToggle } from "@components/Layout/ColorModeToggle"
-import { useLogoutMutation, useMeQuery } from "@generated/graphql"
 import { useRouter } from "next/router"
 import * as React from "react"
 import { BsFolderPlus } from "react-icons/bs"
 import { FaRedditSquare } from "react-icons/fa"
 import { HiOutlineMail } from "react-icons/hi"
 import { ImPencil2 } from "react-icons/im"
+import { useLogoutMutation, useMeQuery } from "../../generated/graphql"
+import { ColorModeToggle } from "../Layout/ColorModeToggle"
 
 const Header: React.FC = () => {
   const router = useRouter()

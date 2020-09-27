@@ -1,18 +1,11 @@
 import { NetworkStatus } from "@apollo/client"
 import { Box, Spinner, Stack } from "@chakra-ui/core"
-import {
-  CategoriesDocument,
-  Category,
-  PostsDocument,
-  PostsQuery,
-  useCommentsQuery
-} from "@generated/graphql"
-import { initializeApollo } from "@lib/apolloClient"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import * as React from "react"
 import NewComment from "."
+import { useCommentsQuery } from "../../generated/graphql"
 
 const CommentsData: React.FC<{ postId: string }> = ({ postId }) => {
   const [isMounted, setIsMounted] = React.useState(false)

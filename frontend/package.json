@@ -30,12 +30,9 @@
   "dependencies": {
     "@apollo/client": "^3.2.1",
     "@chakra-ui/core": "next",
-    "@chakra-ui/theme": "next",
-    "@chakra-ui/theme-tools": "next",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^12.1.6",
-    "cloudinary-react": "^1.6.6",
     "formik": "^2.1.5",
     "graphql": "^15.3.0",
     "graphql-config": "^3.0.3",
@@ -43,7 +40,6 @@
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "^3.11.0",
-    "ts-jest": "^26.4.0",
     "yup": "^0.29.3"
   },
   "devDependencies": {
@@ -54,7 +50,6 @@
     "@types/jest": "^26.0.13",
     "@types/node": "^14.11.2",
     "@types/react": "^16.9.49",
-    "@types/react-dom": "^16.9.8",
     "@types/yup": "^0.29.6",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",

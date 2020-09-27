@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client"
 import { Box, Button, FormControl, Skeleton, Textarea } from "@chakra-ui/core"
-import { useCreateCommentMutation } from "@generated/graphql"
 import { Field, Formik } from "formik"
 import * as React from "react"
 
