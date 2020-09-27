@@ -69,6 +69,7 @@
     "eslint-plugin-react": "^7.21.2",
     "eslint-plugin-react-hooks": "^4.1.0",
     "eslint-plugin-testing-library": "^3.9.0",
+    "graphql-let": "^0.16.1",
     "husky": "^4.3.0",
     "jest": "^26.4.2",
     "jest-transform-graphql": "^2.1.0",
