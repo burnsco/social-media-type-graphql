@@ -8,7 +8,7 @@ import { usePostQuery } from "../../../generated/graphql"
 
 const PostAndCommentsPage: React.FC = () => {
   const router = useRouter()
-  const postId = router?.query?.id
+  const postId = router?.query?.id.toString()
 
   const { loading, data, error } = usePostQuery({
     variables: {

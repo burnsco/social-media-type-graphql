@@ -14,9 +14,7 @@ import {
 } from "../../generated/graphql"
 import { initializeApollo } from "../../lib/apolloClient"
 
-const CommentsPageWithData: React.FC<{ postId: string | number }> = ({
-  postId
-}) => {
+const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   const [isMounted, setIsMounted] = React.useState(false)
 
   React.useEffect(() => {
