@@ -4,7 +4,6 @@ mutation createPost($data: PostInput!) {
       createdAt
       updatedAt
       id
-      title
       text
       video
       image

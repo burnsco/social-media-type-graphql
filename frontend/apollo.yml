@@ -1,0 +1,22 @@
+schema: "http://localhost:4000/graphql"
+documents: "src/graphql/**/*.graphql"
+config:
+  scalars:
+    Date: string
+generates:
+  src/generated/apollo.ts:
+    plugins:
+      - apollo-typed-documents/lib/codegenApolloMock
+  src/codegenTypedDocuments.d.ts:
+    plugins:
+      - apollo-typed-documents/lib/codegenTypedDocuments
+    config:
+      typesModule: "@codegen-types"
+  src/codegenTypes.d.ts:
+    plugins:
+      - add: 'declare module "@codegen-types" {'
+      - add:
+          placement: append
+          content: "}"
+      - typescript
+      - typescript-operations

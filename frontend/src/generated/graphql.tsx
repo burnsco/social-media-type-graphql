@@ -1,593 +1,591 @@
-import { gql } from "@apollo/client"
-import * as Apollo from "@apollo/client"
-export type Maybe<T> = T | null
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K]
-}
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
+export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string
-  String: string
-  Boolean: boolean
-  Int: number
-  Float: number
-}
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+};
 
 export type Query = {
-  __typename?: "Query"
-  categories: Array<Category>
-  comment?: Maybe<Comment>
-  comments?: Maybe<Array<Comment>>
-  _allPostsMeta: _QueryMeta
-  _categoryPostsMeta: _QueryMeta
-  post?: Maybe<Post>
-  posts?: Maybe<Array<Post>>
-  postsByCategory?: Maybe<Array<Post>>
-  me?: Maybe<User>
-  user: User
-  users: Array<User>
-}
+  __typename?: 'Query';
+  categories: Array<Category>;
+  comment?: Maybe<Comment>;
+  comments?: Maybe<Array<Comment>>;
+  _allPostsMeta: _QueryMeta;
+  _categoryPostsMeta: _QueryMeta;
+  post?: Maybe<Post>;
+  posts?: Maybe<Array<Post>>;
+  postsByCategory?: Maybe<Array<Post>>;
+  me?: Maybe<User>;
+  user: User;
+  users: Array<User>;
+};
+
 
 export type QueryCommentArgs = {
-  first?: Maybe<Scalars["Int"]>
-  postId?: Maybe<Scalars["ID"]>
-  orderBy?: Maybe<PostOrderBy>
-  category?: Maybe<Scalars["String"]>
-  skip?: Maybe<Scalars["Int"]>
-  name?: Maybe<Scalars["String"]>
-}
+  first?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
 
 export type QueryCommentsArgs = {
-  first?: Maybe<Scalars["Int"]>
-  postId?: Maybe<Scalars["ID"]>
-  orderBy?: Maybe<PostOrderBy>
-  category?: Maybe<Scalars["String"]>
-  skip?: Maybe<Scalars["Int"]>
-  name?: Maybe<Scalars["String"]>
-}
+  first?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
 
 export type Query_CategoryPostsMetaArgs = {
-  first?: Maybe<Scalars["Int"]>
-  postId?: Maybe<Scalars["ID"]>
-  orderBy?: Maybe<PostOrderBy>
-  category?: Maybe<Scalars["String"]>
-  skip?: Maybe<Scalars["Int"]>
-  name?: Maybe<Scalars["String"]>
-}
+  first?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
 
 export type QueryPostArgs = {
-  first?: Maybe<Scalars["Int"]>
-  postId?: Maybe<Scalars["ID"]>
-  orderBy?: Maybe<PostOrderBy>
-  category?: Maybe<Scalars["String"]>
-  skip?: Maybe<Scalars["Int"]>
-  name?: Maybe<Scalars["String"]>
-}
+  first?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
 
 export type QueryPostsArgs = {
-  first?: Maybe<Scalars["Int"]>
-  postId?: Maybe<Scalars["ID"]>
-  orderBy?: Maybe<PostOrderBy>
-  category?: Maybe<Scalars["String"]>
-  skip?: Maybe<Scalars["Int"]>
-  name?: Maybe<Scalars["String"]>
-}
+  first?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
 
 export type QueryPostsByCategoryArgs = {
-  first?: Maybe<Scalars["Int"]>
-  postId?: Maybe<Scalars["ID"]>
-  orderBy?: Maybe<PostOrderBy>
-  category?: Maybe<Scalars["String"]>
-  skip?: Maybe<Scalars["Int"]>
-  name?: Maybe<Scalars["String"]>
-}
+  first?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<PostOrderBy>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
 
 export type QueryUserArgs = {
-  userId: PostInput
-}
+  userId: PostInput;
+};
 
 export type Category = {
-  __typename?: "Category"
-  id: Scalars["ID"]
-  createdAt: Scalars["String"]
-  updatedAt: Scalars["String"]
-  name: Scalars["String"]
-}
+  __typename?: 'Category';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  name: Scalars['String'];
+};
 
 export type Comment = {
-  __typename?: "Comment"
-  id: Scalars["ID"]
-  createdAt: Scalars["String"]
-  updatedAt: Scalars["String"]
-  body: Scalars["String"]
-  createdBy: User
-  post: Post
-}
+  __typename?: 'Comment';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  body: Scalars['String'];
+  createdBy: User;
+  post: Post;
+};
 
 export type User = {
-  __typename?: "User"
-  id: Scalars["ID"]
-  createdAt: Scalars["String"]
-  updatedAt: Scalars["String"]
-  email: Scalars["String"]
-  username: Scalars["String"]
-}
+  __typename?: 'User';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  email: Scalars['String'];
+  username: Scalars['String'];
+};
 
 export type Post = {
-  __typename?: "Post"
-  id: Scalars["ID"]
-  createdAt: Scalars["String"]
-  updatedAt: Scalars["String"]
-  title: Scalars["String"]
-  text?: Maybe<Scalars["String"]>
-  link?: Maybe<Scalars["String"]>
-  image?: Maybe<Scalars["String"]>
-  video?: Maybe<Scalars["String"]>
-  author: User
-  category: Category
-  votes?: Maybe<Array<Vote>>
-  comments?: Maybe<Array<Comment>>
-  totalComments?: Maybe<_QueryMeta>
-  totalVotes?: Maybe<_QueryMeta>
-}
+  __typename?: 'Post';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  title: Scalars['String'];
+  text?: Maybe<Scalars['String']>;
+  link?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  video?: Maybe<Scalars['String']>;
+  author: User;
+  category: Category;
+  votes?: Maybe<Array<Vote>>;
+  comments?: Maybe<Array<Comment>>;
+  totalComments?: Maybe<_QueryMeta>;
+  totalVotes?: Maybe<_QueryMeta>;
+};
 
 export type Vote = {
-  __typename?: "Vote"
-  id: Scalars["ID"]
-  createdAt: Scalars["String"]
-  updatedAt: Scalars["String"]
-  value: Scalars["Int"]
-  castBy: User
-}
+  __typename?: 'Vote';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  value: Scalars['Int'];
+  castBy: User;
+};
 
 export type _QueryMeta = {
-  __typename?: "_QueryMeta"
-  count?: Maybe<Scalars["Int"]>
-}
+  __typename?: '_QueryMeta';
+  count?: Maybe<Scalars['Int']>;
+};
 
 export type PostOrderBy = {
-  createdAt?: Maybe<OrderBy>
-  title?: Maybe<OrderBy>
-  updatedAt?: Maybe<OrderBy>
-  votes?: Maybe<OrderBy>
-}
+  createdAt?: Maybe<OrderBy>;
+  title?: Maybe<OrderBy>;
+  updatedAt?: Maybe<OrderBy>;
+  votes?: Maybe<OrderBy>;
+};
 
 export enum OrderBy {
-  Asc = "ASC",
-  Desc = "DESC"
+  Asc = 'ASC',
+  Desc = 'DESC'
 }
 
 export type PostInput = {
-  categoryId: Scalars["ID"]
-  userId: Scalars["ID"]
-  title: Scalars["String"]
-  text?: Maybe<Scalars["String"]>
-  image?: Maybe<Scalars["String"]>
-  video?: Maybe<Scalars["String"]>
-  link?: Maybe<Scalars["String"]>
-}
+  categoryId: Scalars['ID'];
+  userId: Scalars['ID'];
+  title: Scalars['String'];
+  text?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  video?: Maybe<Scalars['String']>;
+  link?: Maybe<Scalars['String']>;
+};
 
 export type Mutation = {
-  __typename?: "Mutation"
-  createCategory: CategoryMutationResponse
-  editComment: CommentMutationResponse
-  deleteComment: CommentMutationResponse
-  createPost: PostMutationResponse
-  createComment: CommentMutationResponse
-  vote: VoteMutationResponse
-  register: UserMutationResponse
-  login: UserMutationResponse
-  logout: LogoutMutationResponse
-}
+  __typename?: 'Mutation';
+  createCategory: CategoryMutationResponse;
+  editComment: CommentMutationResponse;
+  deleteComment: CommentMutationResponse;
+  createPost: PostMutationResponse;
+  createComment: CommentMutationResponse;
+  vote: VoteMutationResponse;
+  register: UserMutationResponse;
+  login: UserMutationResponse;
+  logout: LogoutMutationResponse;
+};
+
 
 export type MutationCreateCategoryArgs = {
-  data: CategoryInput
-}
+  data: CategoryInput;
+};
+
 
 export type MutationEditCommentArgs = {
-  data: CommentInput
-}
+  data: CommentInput;
+};
+
 
 export type MutationDeleteCommentArgs = {
-  data: CommentInput
-}
+  data: CommentInput;
+};
+
 
 export type MutationCreatePostArgs = {
-  data: PostInput
-}
+  data: PostInput;
+};
+
 
 export type MutationCreateCommentArgs = {
-  data: CommentInput
-}
+  data: CommentInput;
+};
+
 
 export type MutationVoteArgs = {
-  data: VoteInput
-}
+  data: VoteInput;
+};
+
 
 export type MutationRegisterArgs = {
-  data: RegisterInput
-}
+  data: RegisterInput;
+};
+
 
 export type MutationLoginArgs = {
-  data: LoginInput
-}
+  data: LoginInput;
+};
 
 export type CategoryMutationResponse = {
-  __typename?: "CategoryMutationResponse"
-  errors?: Maybe<Array<FieldError>>
-  category?: Maybe<Category>
-}
+  __typename?: 'CategoryMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  category?: Maybe<Category>;
+};
 
 export type FieldError = {
-  __typename?: "FieldError"
-  field: Scalars["String"]
-  message: Scalars["String"]
-}
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
 
 export type CategoryInput = {
-  name: Scalars["String"]
-}
+  name: Scalars['String'];
+};
 
 export type CommentMutationResponse = {
-  __typename?: "CommentMutationResponse"
-  errors?: Maybe<Array<FieldError>>
-  comment?: Maybe<Comment>
-  post?: Maybe<Post>
-}
+  __typename?: 'CommentMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  comment?: Maybe<Comment>;
+  post?: Maybe<Post>;
+};
 
 export type CommentInput = {
-  body: Scalars["String"]
-  postId: Scalars["ID"]
-}
+  body: Scalars['String'];
+  postId: Scalars['ID'];
+};
 
 export type PostMutationResponse = {
-  __typename?: "PostMutationResponse"
-  errors?: Maybe<Array<FieldError>>
-  post?: Maybe<Post>
-}
+  __typename?: 'PostMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  post?: Maybe<Post>;
+};
 
 export type VoteMutationResponse = {
-  __typename?: "VoteMutationResponse"
-  errors?: Maybe<Array<FieldError>>
-  vote?: Maybe<Vote>
-}
+  __typename?: 'VoteMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  vote?: Maybe<Vote>;
+};
 
 export type VoteInput = {
-  postId: Scalars["ID"]
-  value: Scalars["Int"]
-}
+  postId: Scalars['ID'];
+  value: Scalars['Int'];
+};
 
 export type UserMutationResponse = {
-  __typename?: "UserMutationResponse"
-  errors?: Maybe<Array<FieldError>>
-  user?: Maybe<User>
-}
+  __typename?: 'UserMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
 
 export type RegisterInput = {
-  email: Scalars["String"]
-  username: Scalars["String"]
-  password: Scalars["String"]
-}
+  email: Scalars['String'];
+  username: Scalars['String'];
+  password: Scalars['String'];
+};
 
 export type LoginInput = {
-  email: Scalars["String"]
-  password: Scalars["String"]
-}
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
 
 export type LogoutMutationResponse = {
-  __typename?: "LogoutMutationResponse"
-  message: Scalars["String"]
-  success: Scalars["Boolean"]
-}
-
-export type ErrorDetailsFragment = { __typename?: "FieldError" } & Pick<
-  FieldError,
-  "field" | "message"
->
-
-export type ErrorsAndUserDetailsFragment = {
-  __typename?: "UserMutationResponse"
-} & {
-  errors?: Maybe<Array<{ __typename?: "FieldError" } & ErrorDetailsFragment>>
-  user?: Maybe<{ __typename?: "User" } & UserDetailsFragment>
-}
-
-export type UserDetailsFragment = { __typename?: "User" } & Pick<
-  User,
-  "id" | "username"
->
+  __typename?: 'LogoutMutationResponse';
+  message: Scalars['String'];
+  success: Scalars['Boolean'];
+};
 
 export type CreateCommentMutationVariables = Exact<{
-  data: CommentInput
-}>
+  data: CommentInput;
+}>;
 
-export type CreateCommentMutation = { __typename?: "Mutation" } & {
-  createComment: { __typename?: "CommentMutationResponse" } & {
-    comment?: Maybe<
-      { __typename?: "Comment" } & Pick<Comment, "id" | "body"> & {
-          createdBy: { __typename?: "User" } & Pick<User, "username">
-          post: { __typename?: "Post" } & Pick<Post, "id">
-        }
-    >
-    post?: Maybe<
-      { __typename?: "Post" } & Pick<Post, "id" | "title"> & {
-          totalComments?: Maybe<
-            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-          >
-          totalVotes?: Maybe<
-            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-          >
-          comments?: Maybe<
-            Array<
-              { __typename?: "Comment" } & Pick<Comment, "id"> & {
-                  createdBy: { __typename?: "User" } & Pick<User, "username">
-                }
-            >
-          >
-        }
-    >
-  }
-}
+
+export type CreateCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { createComment: (
+    { __typename?: 'CommentMutationResponse' }
+    & { comment?: Maybe<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'body'>
+      & { createdBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ), post: (
+        { __typename?: 'Post' }
+        & Pick<Post, 'id'>
+      ) }
+    )>, post?: Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'title'>
+      & { totalComments?: Maybe<(
+        { __typename?: '_QueryMeta' }
+        & Pick<_QueryMeta, 'count'>
+      )>, totalVotes?: Maybe<(
+        { __typename?: '_QueryMeta' }
+        & Pick<_QueryMeta, 'count'>
+      )>, comments?: Maybe<Array<(
+        { __typename?: 'Comment' }
+        & Pick<Comment, 'id'>
+        & { createdBy: (
+          { __typename?: 'User' }
+          & Pick<User, 'username'>
+        ) }
+      )>> }
+    )> }
+  ) }
+);
 
 export type CreatePostMutationVariables = Exact<{
-  data: PostInput
-}>
+  data: PostInput;
+}>;
 
-export type CreatePostMutation = { __typename?: "Mutation" } & {
-  createPost: { __typename?: "PostMutationResponse" } & {
-    post?: Maybe<
-      { __typename?: "Post" } & Pick<
-        Post,
-        | "createdAt"
-        | "updatedAt"
-        | "id"
-        | "title"
-        | "text"
-        | "video"
-        | "image"
-        | "link"
-      >
-    >
-    errors?: Maybe<
-      Array<
-        { __typename?: "FieldError" } & Pick<FieldError, "field" | "message">
-      >
-    >
-  }
-}
+
+export type CreatePostMutation = (
+  { __typename?: 'Mutation' }
+  & { createPost: (
+    { __typename?: 'PostMutationResponse' }
+    & { post?: Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'createdAt' | 'updatedAt' | 'id' | 'text' | 'video' | 'image' | 'link'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
 
 export type CreateSubredditMutationVariables = Exact<{
-  data: CategoryInput
-}>
+  data: CategoryInput;
+}>;
 
-export type CreateSubredditMutation = { __typename?: "Mutation" } & {
-  createCategory: { __typename?: "CategoryMutationResponse" } & {
-    category?: Maybe<
-      { __typename?: "Category" } & Pick<Category, "id" | "name">
-    >
-    errors?: Maybe<
-      Array<
-        { __typename?: "FieldError" } & Pick<FieldError, "field" | "message">
-      >
-    >
-  }
-}
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never }>
+export type CreateSubredditMutation = (
+  { __typename?: 'Mutation' }
+  & { createCategory: (
+    { __typename?: 'CategoryMutationResponse' }
+    & { category?: Maybe<(
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
 
-export type LogoutMutation = { __typename?: "Mutation" } & {
-  logout: { __typename?: "LogoutMutationResponse" } & Pick<
-    LogoutMutationResponse,
-    "message" | "success"
-  >
-}
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = (
+  { __typename?: 'Mutation' }
+  & { logout: (
+    { __typename?: 'LogoutMutationResponse' }
+    & Pick<LogoutMutationResponse, 'message' | 'success'>
+  ) }
+);
 
 export type RegisterMutationVariables = Exact<{
-  data: RegisterInput
-}>
+  data: RegisterInput;
+}>;
 
-export type RegisterMutation = { __typename?: "Mutation" } & {
-  register: {
-    __typename?: "UserMutationResponse"
-  } & ErrorsAndUserDetailsFragment
-}
 
-export type CategoriesQueryVariables = Exact<{ [key: string]: never }>
+export type RegisterMutation = (
+  { __typename?: 'Mutation' }
+  & { register: (
+    { __typename?: 'UserMutationResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    )> }
+  ) }
+);
 
-export type CategoriesQuery = { __typename?: "Query" } & {
-  categories: Array<{ __typename?: "Category" } & Pick<Category, "id" | "name">>
-}
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesQuery = (
+  { __typename?: 'Query' }
+  & { categories: Array<(
+    { __typename?: 'Category' }
+    & Pick<Category, 'id' | 'name'>
+  )> }
+);
 
 export type CommentQueryVariables = Exact<{
-  postId?: Maybe<Scalars["ID"]>
-}>
+  postId?: Maybe<Scalars['ID']>;
+}>;
 
-export type CommentQuery = { __typename?: "Query" } & {
-  comment?: Maybe<
-    { __typename?: "Comment" } & Pick<
-      Comment,
-      "id" | "createdAt" | "updatedAt" | "body"
-    > & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
-  >
-}
+
+export type CommentQuery = (
+  { __typename?: 'Query' }
+  & { comment?: Maybe<(
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+    & { createdBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ) }
+  )> }
+);
 
 export type CommentsQueryVariables = Exact<{
-  first?: Maybe<Scalars["Int"]>
-  orderBy?: Maybe<PostOrderBy>
-  skip?: Maybe<Scalars["Int"]>
-  postId?: Maybe<Scalars["ID"]>
-}>
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<PostOrderBy>;
+  skip?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+}>;
 
-export type CommentsQuery = { __typename?: "Query" } & {
-  comments?: Maybe<
-    Array<
-      { __typename?: "Comment" } & Pick<
-        Comment,
-        "id" | "createdAt" | "updatedAt" | "body"
-      > & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
-    >
-  >
-}
 
-export type MeQueryVariables = Exact<{ [key: string]: never }>
+export type CommentsQuery = (
+  { __typename?: 'Query' }
+  & { comments?: Maybe<Array<(
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+    & { createdBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ) }
+  )>> }
+);
 
-export type MeQuery = { __typename?: "Query" } & {
-  me?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">>
-}
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
+  )> }
+);
 
 export type PostQueryVariables = Exact<{
-  postId?: Maybe<Scalars["ID"]>
-}>
+  postId?: Maybe<Scalars['ID']>;
+}>;
 
-export type PostQuery = { __typename?: "Query" } & {
-  post?: Maybe<
-    { __typename?: "Post" } & Pick<
-      Post,
-      | "id"
-      | "createdAt"
-      | "updatedAt"
-      | "title"
-      | "text"
-      | "image"
-      | "video"
-      | "link"
-    > & {
-        comments?: Maybe<
-          Array<
-            { __typename?: "Comment" } & Pick<
-              Comment,
-              "id" | "createdAt" | "updatedAt" | "body"
-            > & {
-                post: { __typename?: "Post" } & Pick<Post, "id" | "title">
-                createdBy: { __typename?: "User" } & Pick<User, "username">
-              }
-          >
-        >
-        totalComments?: Maybe<
-          { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-        >
-        totalVotes?: Maybe<
-          { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-        >
-        author: { __typename?: "User" } & Pick<User, "id" | "username">
-        category: { __typename?: "Category" } & Pick<Category, "id" | "name">
-      }
-  >
-}
+
+export type PostQuery = (
+  { __typename?: 'Query' }
+  & { post?: Maybe<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text' | 'image' | 'video' | 'link'>
+    & { comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+      & { post: (
+        { __typename?: 'Post' }
+        & Pick<Post, 'id' | 'title'>
+      ), createdBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ) }
+    )>>, totalComments?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )>, totalVotes?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )>, author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ), category: (
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
+    ) }
+  )> }
+);
 
 export type PostsQueryVariables = Exact<{
-  first?: Maybe<Scalars["Int"]>
-  orderBy?: Maybe<PostOrderBy>
-  skip?: Maybe<Scalars["Int"]>
-  category?: Maybe<Scalars["String"]>
-}>
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<PostOrderBy>;
+  skip?: Maybe<Scalars['Int']>;
+  category?: Maybe<Scalars['String']>;
+}>;
 
-export type PostsQuery = { __typename?: "Query" } & {
-  posts?: Maybe<
-    Array<
-      { __typename?: "Post" } & Pick<
-        Post,
-        | "id"
-        | "createdAt"
-        | "updatedAt"
-        | "title"
-        | "text"
-        | "image"
-        | "video"
-        | "link"
-      > & {
-          comments?: Maybe<
-            Array<
-              { __typename?: "Comment" } & Pick<
-                Comment,
-                "id" | "createdAt" | "updatedAt" | "body"
-              > & {
-                  post: { __typename?: "Post" } & Pick<Post, "id" | "title">
-                  createdBy: { __typename?: "User" } & Pick<User, "username">
-                }
-            >
-          >
-          totalComments?: Maybe<
-            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-          >
-          totalVotes?: Maybe<
-            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-          >
-          author: { __typename?: "User" } & Pick<User, "id" | "username">
-          category: { __typename?: "Category" } & Pick<Category, "id" | "name">
-        }
-    >
-  >
-  _allPostsMeta: { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-  _categoryPostsMeta: { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-}
 
-export type UsersQueryVariables = Exact<{ [key: string]: never }>
+export type PostsQuery = (
+  { __typename?: 'Query' }
+  & { posts?: Maybe<Array<(
+    { __typename?: 'Post' }
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text' | 'image' | 'video' | 'link'>
+    & { comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'createdAt' | 'updatedAt' | 'body'>
+      & { post: (
+        { __typename?: 'Post' }
+        & Pick<Post, 'id' | 'title'>
+      ), createdBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'username'>
+      ) }
+    )>>, totalComments?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )>, totalVotes?: Maybe<(
+      { __typename?: '_QueryMeta' }
+      & Pick<_QueryMeta, 'count'>
+    )>, author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ), category: (
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
+    ) }
+  )>>, _allPostsMeta: (
+    { __typename?: '_QueryMeta' }
+    & Pick<_QueryMeta, 'count'>
+  ), _categoryPostsMeta: (
+    { __typename?: '_QueryMeta' }
+    & Pick<_QueryMeta, 'count'>
+  ) }
+);
 
-export type UsersQuery = { __typename?: "Query" } & {
-  users: Array<{ __typename?: "User" } & Pick<User, "id" | "username">>
-}
+export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
-export const ErrorDetailsFragmentDoc = gql`
-  fragment ErrorDetails on FieldError {
-    field
-    message
-  }
-`
-export const UserDetailsFragmentDoc = gql`
-  fragment UserDetails on User {
-    id
-    username
-  }
-`
-export const ErrorsAndUserDetailsFragmentDoc = gql`
-  fragment ErrorsAndUserDetails on UserMutationResponse {
-    errors {
-      ...ErrorDetails
-    }
-    user {
-      ...UserDetails
-    }
-  }
-  ${ErrorDetailsFragmentDoc}
-  ${UserDetailsFragmentDoc}
-`
+
+export type UsersQuery = (
+  { __typename?: 'Query' }
+  & { users: Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
+  )> }
+);
+
+
 export const CreateCommentDocument = gql`
-  mutation createComment($data: CommentInput!) {
-    createComment(data: $data) {
-      comment {
-        id
-        body
-        createdBy {
-          username
-        }
-        post {
-          id
-        }
+    mutation createComment($data: CommentInput!) {
+  createComment(data: $data) {
+    comment {
+      id
+      body
+      createdBy {
+        username
       }
       post {
         id
-        title
-        totalComments {
-          count
-        }
-        totalVotes {
-          count
-        }
-        comments {
-          id
-          createdBy {
-            username
-          }
+      }
+    }
+    post {
+      id
+      title
+      totalComments {
+        count
+      }
+      totalVotes {
+        count
+      }
+      comments {
+        id
+        createdBy {
+          username
         }
       }
     }
   }
-`
-export type CreateCommentMutationFn = Apollo.MutationFunction<
-  CreateCommentMutation,
-  CreateCommentMutationVariables
->
+}
+    `;
+export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
 
 /**
  * __useCreateCommentMutation__
@@ -606,51 +604,32 @@ export type CreateCommentMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateCommentMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateCommentMutation,
-    CreateCommentMutationVariables
-  >
-) {
-  return Apollo.useMutation<
-    CreateCommentMutation,
-    CreateCommentMutationVariables
-  >(CreateCommentDocument, baseOptions)
-}
-export type CreateCommentMutationHookResult = ReturnType<
-  typeof useCreateCommentMutation
->
-export type CreateCommentMutationResult = Apollo.MutationResult<
-  CreateCommentMutation
->
-export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<
-  CreateCommentMutation,
-  CreateCommentMutationVariables
->
+export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        return Apollo.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, baseOptions);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
 export const CreatePostDocument = gql`
-  mutation createPost($data: PostInput!) {
-    createPost(data: $data) {
-      post {
-        createdAt
-        updatedAt
-        id
-        title
-        text
-        video
-        image
-        link
-      }
-      errors {
-        field
-        message
-      }
+    mutation createPost($data: PostInput!) {
+  createPost(data: $data) {
+    post {
+      createdAt
+      updatedAt
+      id
+      text
+      video
+      image
+      link
+    }
+    errors {
+      field
+      message
     }
   }
-`
-export type CreatePostMutationFn = Apollo.MutationFunction<
-  CreatePostMutation,
-  CreatePostMutationVariables
->
+}
+    `;
+export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
 
 /**
  * __useCreatePostMutation__
@@ -669,43 +648,27 @@ export type CreatePostMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreatePostMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreatePostMutation,
-    CreatePostMutationVariables
-  >
-) {
-  return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(
-    CreatePostDocument,
-    baseOptions
-  )
-}
-export type CreatePostMutationHookResult = ReturnType<
-  typeof useCreatePostMutation
->
-export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>
-export type CreatePostMutationOptions = Apollo.BaseMutationOptions<
-  CreatePostMutation,
-  CreatePostMutationVariables
->
+export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
+        return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, baseOptions);
+      }
+export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
+export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
+export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const CreateSubredditDocument = gql`
-  mutation createSubreddit($data: CategoryInput!) {
-    createCategory(data: $data) {
-      category {
-        id
-        name
-      }
-      errors {
-        field
-        message
-      }
+    mutation createSubreddit($data: CategoryInput!) {
+  createCategory(data: $data) {
+    category {
+      id
+      name
+    }
+    errors {
+      field
+      message
     }
   }
-`
-export type CreateSubredditMutationFn = Apollo.MutationFunction<
-  CreateSubredditMutation,
-  CreateSubredditMutationVariables
->
+}
+    `;
+export type CreateSubredditMutationFn = Apollo.MutationFunction<CreateSubredditMutation, CreateSubredditMutationVariables>;
 
 /**
  * __useCreateSubredditMutation__
@@ -724,39 +687,21 @@ export type CreateSubredditMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateSubredditMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateSubredditMutation,
-    CreateSubredditMutationVariables
-  >
-) {
-  return Apollo.useMutation<
-    CreateSubredditMutation,
-    CreateSubredditMutationVariables
-  >(CreateSubredditDocument, baseOptions)
-}
-export type CreateSubredditMutationHookResult = ReturnType<
-  typeof useCreateSubredditMutation
->
-export type CreateSubredditMutationResult = Apollo.MutationResult<
-  CreateSubredditMutation
->
-export type CreateSubredditMutationOptions = Apollo.BaseMutationOptions<
-  CreateSubredditMutation,
-  CreateSubredditMutationVariables
->
+export function useCreateSubredditMutation(baseOptions?: Apollo.MutationHookOptions<CreateSubredditMutation, CreateSubredditMutationVariables>) {
+        return Apollo.useMutation<CreateSubredditMutation, CreateSubredditMutationVariables>(CreateSubredditDocument, baseOptions);
+      }
+export type CreateSubredditMutationHookResult = ReturnType<typeof useCreateSubredditMutation>;
+export type CreateSubredditMutationResult = Apollo.MutationResult<CreateSubredditMutation>;
+export type CreateSubredditMutationOptions = Apollo.BaseMutationOptions<CreateSubredditMutation, CreateSubredditMutationVariables>;
 export const LogoutDocument = gql`
-  mutation Logout {
-    logout {
-      message
-      success
-    }
+    mutation Logout {
+  logout {
+    message
+    success
   }
-`
-export type LogoutMutationFn = Apollo.MutationFunction<
-  LogoutMutation,
-  LogoutMutationVariables
->
+}
+    `;
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
 /**
  * __useLogoutMutation__
@@ -774,35 +719,27 @@ export type LogoutMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useLogoutMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    LogoutMutation,
-    LogoutMutationVariables
-  >
-) {
-  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(
-    LogoutDocument,
-    baseOptions
-  )
-}
-export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>
-export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<
-  LogoutMutation,
-  LogoutMutationVariables
->
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+      }
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const RegisterDocument = gql`
-  mutation Register($data: RegisterInput!) {
-    register(data: $data) {
-      ...ErrorsAndUserDetails
+    mutation Register($data: RegisterInput!) {
+  register(data: $data) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
     }
   }
-  ${ErrorsAndUserDetailsFragmentDoc}
-`
-export type RegisterMutationFn = Apollo.MutationFunction<
-  RegisterMutation,
-  RegisterMutationVariables
->
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
  * __useRegisterMutation__
@@ -821,31 +758,20 @@ export type RegisterMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useRegisterMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    RegisterMutation,
-    RegisterMutationVariables
-  >
-) {
-  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(
-    RegisterDocument,
-    baseOptions
-  )
-}
-export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>
-export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<
-  RegisterMutation,
-  RegisterMutationVariables
->
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const CategoriesDocument = gql`
-  query Categories {
-    categories {
-      id
-      name
-    }
+    query Categories {
+  categories {
+    id
+    name
   }
-`
+}
+    `;
 
 /**
  * __useCategoriesQuery__
@@ -862,49 +788,31 @@ export const CategoriesDocument = gql`
  *   },
  * });
  */
-export function useCategoriesQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    CategoriesQuery,
-    CategoriesQueryVariables
-  >
-) {
-  return Apollo.useQuery<CategoriesQuery, CategoriesQueryVariables>(
-    CategoriesDocument,
-    baseOptions
-  )
-}
-export function useCategoriesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    CategoriesQuery,
-    CategoriesQueryVariables
-  >
-) {
-  return Apollo.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(
-    CategoriesDocument,
-    baseOptions
-  )
-}
-export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>
-export type CategoriesLazyQueryHookResult = ReturnType<
-  typeof useCategoriesLazyQuery
->
-export type CategoriesQueryResult = Apollo.QueryResult<
-  CategoriesQuery,
-  CategoriesQueryVariables
->
-export const CommentDocument = gql`
-  query Comment($postId: ID) {
-    comment(postId: $postId) {
-      id
-      createdAt
-      updatedAt
-      body
-      createdBy {
-        username
+export function useCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+        return Apollo.useQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, baseOptions);
       }
+export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+          return Apollo.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, baseOptions);
+        }
+export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
+export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
+export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export function refetchCategoriesQuery(variables?: CategoriesQueryVariables) {
+      return { query: CategoriesDocument, variables: variables }
+    }
+export const CommentDocument = gql`
+    query Comment($postId: ID) {
+  comment(postId: $postId) {
+    id
+    createdAt
+    updatedAt
+    body
+    createdBy {
+      username
     }
   }
-`
+}
+    `;
 
 /**
  * __useCommentQuery__
@@ -922,41 +830,31 @@ export const CommentDocument = gql`
  *   },
  * });
  */
-export function useCommentQuery(
-  baseOptions?: Apollo.QueryHookOptions<CommentQuery, CommentQueryVariables>
-) {
-  return Apollo.useQuery<CommentQuery, CommentQueryVariables>(
-    CommentDocument,
-    baseOptions
-  )
-}
-export function useCommentLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<CommentQuery, CommentQueryVariables>
-) {
-  return Apollo.useLazyQuery<CommentQuery, CommentQueryVariables>(
-    CommentDocument,
-    baseOptions
-  )
-}
-export type CommentQueryHookResult = ReturnType<typeof useCommentQuery>
-export type CommentLazyQueryHookResult = ReturnType<typeof useCommentLazyQuery>
-export type CommentQueryResult = Apollo.QueryResult<
-  CommentQuery,
-  CommentQueryVariables
->
-export const CommentsDocument = gql`
-  query Comments($first: Int, $orderBy: PostOrderBy, $skip: Int, $postId: ID) {
-    comments(first: $first, orderBy: $orderBy, skip: $skip, postId: $postId) {
-      id
-      createdAt
-      updatedAt
-      body
-      createdBy {
-        username
+export function useCommentQuery(baseOptions?: Apollo.QueryHookOptions<CommentQuery, CommentQueryVariables>) {
+        return Apollo.useQuery<CommentQuery, CommentQueryVariables>(CommentDocument, baseOptions);
       }
+export function useCommentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentQuery, CommentQueryVariables>) {
+          return Apollo.useLazyQuery<CommentQuery, CommentQueryVariables>(CommentDocument, baseOptions);
+        }
+export type CommentQueryHookResult = ReturnType<typeof useCommentQuery>;
+export type CommentLazyQueryHookResult = ReturnType<typeof useCommentLazyQuery>;
+export type CommentQueryResult = Apollo.QueryResult<CommentQuery, CommentQueryVariables>;
+export function refetchCommentQuery(variables?: CommentQueryVariables) {
+      return { query: CommentDocument, variables: variables }
+    }
+export const CommentsDocument = gql`
+    query Comments($first: Int, $orderBy: PostOrderBy, $skip: Int, $postId: ID) {
+  comments(first: $first, orderBy: $orderBy, skip: $skip, postId: $postId) {
+    id
+    createdAt
+    updatedAt
+    body
+    createdBy {
+      username
     }
   }
-`
+}
+    `;
 
 /**
  * __useCommentsQuery__
@@ -977,41 +875,26 @@ export const CommentsDocument = gql`
  *   },
  * });
  */
-export function useCommentsQuery(
-  baseOptions?: Apollo.QueryHookOptions<CommentsQuery, CommentsQueryVariables>
-) {
-  return Apollo.useQuery<CommentsQuery, CommentsQueryVariables>(
-    CommentsDocument,
-    baseOptions
-  )
-}
-export function useCommentsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    CommentsQuery,
-    CommentsQueryVariables
-  >
-) {
-  return Apollo.useLazyQuery<CommentsQuery, CommentsQueryVariables>(
-    CommentsDocument,
-    baseOptions
-  )
-}
-export type CommentsQueryHookResult = ReturnType<typeof useCommentsQuery>
-export type CommentsLazyQueryHookResult = ReturnType<
-  typeof useCommentsLazyQuery
->
-export type CommentsQueryResult = Apollo.QueryResult<
-  CommentsQuery,
-  CommentsQueryVariables
->
-export const MeDocument = gql`
-  query Me {
-    me {
-      id
-      username
+export function useCommentsQuery(baseOptions?: Apollo.QueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+        return Apollo.useQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, baseOptions);
+      }
+export function useCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+          return Apollo.useLazyQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, baseOptions);
+        }
+export type CommentsQueryHookResult = ReturnType<typeof useCommentsQuery>;
+export type CommentsLazyQueryHookResult = ReturnType<typeof useCommentsLazyQuery>;
+export type CommentsQueryResult = Apollo.QueryResult<CommentsQuery, CommentsQueryVariables>;
+export function refetchCommentsQuery(variables?: CommentsQueryVariables) {
+      return { query: CommentsDocument, variables: variables }
     }
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    username
   }
-`
+}
+    `;
 
 /**
  * __useMeQuery__
@@ -1028,60 +911,59 @@ export const MeDocument = gql`
  *   },
  * });
  */
-export function useMeQuery(
-  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>
-) {
-  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions)
-}
-export function useMeLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>
-) {
-  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions)
-}
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>
-export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+      }
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+        }
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export function refetchMeQuery(variables?: MeQueryVariables) {
+      return { query: MeDocument, variables: variables }
+    }
 export const PostDocument = gql`
-  query Post($postId: ID) {
-    post(postId: $postId) {
+    query Post($postId: ID) {
+  post(postId: $postId) {
+    id
+    createdAt
+    updatedAt
+    title
+    text
+    image
+    video
+    link
+    comments {
       id
       createdAt
       updatedAt
-      title
-      text
-      image
-      video
-      link
-      comments {
+      body
+      post {
         id
-        createdAt
-        updatedAt
-        body
-        post {
-          id
-          title
-        }
-        createdBy {
-          username
-        }
+        title
       }
-      totalComments {
-        count
-      }
-      totalVotes {
-        count
-      }
-      author {
-        id
+      createdBy {
         username
       }
-      category {
-        id
-        name
-      }
+    }
+    totalComments {
+      count
+    }
+    totalVotes {
+      count
+    }
+    author {
+      id
+      username
+    }
+    category {
+      id
+      name
     }
   }
-`
+}
+    `;
 
 /**
  * __usePostQuery__
@@ -1099,77 +981,65 @@ export const PostDocument = gql`
  *   },
  * });
  */
-export function usePostQuery(
-  baseOptions?: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>
-) {
-  return Apollo.useQuery<PostQuery, PostQueryVariables>(
-    PostDocument,
-    baseOptions
-  )
-}
-export function usePostLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<PostQuery, PostQueryVariables>
-) {
-  return Apollo.useLazyQuery<PostQuery, PostQueryVariables>(
-    PostDocument,
-    baseOptions
-  )
-}
-export type PostQueryHookResult = ReturnType<typeof usePostQuery>
-export type PostLazyQueryHookResult = ReturnType<typeof usePostLazyQuery>
-export type PostQueryResult = Apollo.QueryResult<PostQuery, PostQueryVariables>
+export function usePostQuery(baseOptions?: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>) {
+        return Apollo.useQuery<PostQuery, PostQueryVariables>(PostDocument, baseOptions);
+      }
+export function usePostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostQuery, PostQueryVariables>) {
+          return Apollo.useLazyQuery<PostQuery, PostQueryVariables>(PostDocument, baseOptions);
+        }
+export type PostQueryHookResult = ReturnType<typeof usePostQuery>;
+export type PostLazyQueryHookResult = ReturnType<typeof usePostLazyQuery>;
+export type PostQueryResult = Apollo.QueryResult<PostQuery, PostQueryVariables>;
+export function refetchPostQuery(variables?: PostQueryVariables) {
+      return { query: PostDocument, variables: variables }
+    }
 export const PostsDocument = gql`
-  query Posts(
-    $first: Int
-    $orderBy: PostOrderBy
-    $skip: Int
-    $category: String
-  ) {
-    posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
+    query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
+  posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
+    id
+    createdAt
+    updatedAt
+    title
+    text
+    image
+    video
+    link
+    comments {
       id
       createdAt
       updatedAt
-      title
-      text
-      image
-      video
-      link
-      comments {
+      body
+      post {
         id
-        createdAt
-        updatedAt
-        body
-        post {
-          id
-          title
-        }
-        createdBy {
-          username
-        }
+        title
       }
-      totalComments {
-        count
-      }
-      totalVotes {
-        count
-      }
-      author {
-        id
+      createdBy {
         username
       }
-      category {
-        id
-        name
-      }
     }
-    _allPostsMeta {
+    totalComments {
       count
     }
-    _categoryPostsMeta(name: $category) {
+    totalVotes {
       count
+    }
+    author {
+      id
+      username
+    }
+    category {
+      id
+      name
     }
   }
-`
+  _allPostsMeta {
+    count
+  }
+  _categoryPostsMeta(name: $category) {
+    count
+  }
+}
+    `;
 
 /**
  * __usePostsQuery__
@@ -1190,36 +1060,26 @@ export const PostsDocument = gql`
  *   },
  * });
  */
-export function usePostsQuery(
-  baseOptions?: Apollo.QueryHookOptions<PostsQuery, PostsQueryVariables>
-) {
-  return Apollo.useQuery<PostsQuery, PostsQueryVariables>(
-    PostsDocument,
-    baseOptions
-  )
-}
-export function usePostsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<PostsQuery, PostsQueryVariables>
-) {
-  return Apollo.useLazyQuery<PostsQuery, PostsQueryVariables>(
-    PostsDocument,
-    baseOptions
-  )
-}
-export type PostsQueryHookResult = ReturnType<typeof usePostsQuery>
-export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>
-export type PostsQueryResult = Apollo.QueryResult<
-  PostsQuery,
-  PostsQueryVariables
->
-export const UsersDocument = gql`
-  query Users {
-    users {
-      id
-      username
+export function usePostsQuery(baseOptions?: Apollo.QueryHookOptions<PostsQuery, PostsQueryVariables>) {
+        return Apollo.useQuery<PostsQuery, PostsQueryVariables>(PostsDocument, baseOptions);
+      }
+export function usePostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsQuery, PostsQueryVariables>) {
+          return Apollo.useLazyQuery<PostsQuery, PostsQueryVariables>(PostsDocument, baseOptions);
+        }
+export type PostsQueryHookResult = ReturnType<typeof usePostsQuery>;
+export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>;
+export type PostsQueryResult = Apollo.QueryResult<PostsQuery, PostsQueryVariables>;
+export function refetchPostsQuery(variables?: PostsQueryVariables) {
+      return { query: PostsDocument, variables: variables }
     }
+export const UsersDocument = gql`
+    query Users {
+  users {
+    id
+    username
   }
-`
+}
+    `;
 
 /**
  * __useUsersQuery__
@@ -1236,25 +1096,15 @@ export const UsersDocument = gql`
  *   },
  * });
  */
-export function useUsersQuery(
-  baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>
-) {
-  return Apollo.useQuery<UsersQuery, UsersQueryVariables>(
-    UsersDocument,
-    baseOptions
-  )
-}
-export function useUsersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>
-) {
-  return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(
-    UsersDocument,
-    baseOptions
-  )
-}
-export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>
-export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>
-export type UsersQueryResult = Apollo.QueryResult<
-  UsersQuery,
-  UsersQueryVariables
->
+export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
+      }
+export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
+        }
+export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
+export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
+export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
+export function refetchUsersQuery(variables?: UsersQueryVariables) {
+      return { query: UsersDocument, variables: variables }
+    }

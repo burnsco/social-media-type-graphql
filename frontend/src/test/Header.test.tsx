@@ -1,20 +1,16 @@
-import { gql, InMemoryCache } from "@apollo/client"
+import { InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
-import { screen, waitFor } from "@testing-library/react"
+import { cleanup, screen, waitFor } from "@testing-library/react"
 import React from "react"
 import Header from "../components/Header"
+import { MeDocument } from "../generated/graphql"
 import { render } from "../utils/renderChakra"
+
+afterEach(cleanup)
 
 const notSignedInCache = new InMemoryCache()
 notSignedInCache.writeQuery({
-  query: gql`
-    query MeQuery {
-      me {
-        id
-        username
-      }
-    }
-  `,
+  query: MeDocument,
   data: {
     me: {
       __typename: "User",
@@ -26,14 +22,7 @@ notSignedInCache.writeQuery({
 
 const signedInCache = new InMemoryCache()
 signedInCache.writeQuery({
-  query: gql`
-    query MeQuery {
-      me {
-        id
-        username
-      }
-    }
-  `,
+  query: MeDocument,
   data: {
     me: {
       __typename: "User",
@@ -44,6 +33,16 @@ signedInCache.writeQuery({
 })
 
 describe("Header", () => {
+  it("matches snapshot", () => {
+    const { asFragment } = render(
+      <MockedProvider cache={notSignedInCache}>
+        <Header />
+      </MockedProvider>,
+      {}
+    )
+    expect(asFragment()).toMatchSnapshot()
+  })
+
   it("renders basic navbar layout when not logged in", async () => {
     render(
       <MockedProvider cache={notSignedInCache}>
