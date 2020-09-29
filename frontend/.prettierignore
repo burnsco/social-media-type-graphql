@@ -3,4 +3,3 @@ node_modules
 coverage
 .next
 build
-src/generated/graphql.tsx

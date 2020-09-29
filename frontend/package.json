@@ -35,6 +35,8 @@
     "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^12.1.6",
     "babel-plugin-chakra-ui": "^1.0.0-next.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "formik": "^2.1.5",
     "graphql": "^15.3.0",
     "graphql-config": "^3.0.3",
@@ -55,9 +57,9 @@
     "@types/yup": "^0.29.6",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",
-    "apollo-typed-documents": "^1.0.0",
     "babel-jest": "^26.3.0",
     "babel-plugin-module-resolver": "^4.0.0",
+    "enzyme-to-json": "^3.6.0",
     "eslint": "^7.8.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-react": "^1.1.7",
@@ -75,7 +77,8 @@
     "prettier": "^2.1.2",
     "prop-types": "^15.7.2",
     "react-test-renderer": "^16.13.1",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "yaml-loader": "^0.6.0"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/jest.setup.js",

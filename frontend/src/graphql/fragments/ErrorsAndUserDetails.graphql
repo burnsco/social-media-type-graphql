@@ -1,0 +1,8 @@
+fragment ErrorsAndUserDetails on UserMutationResponse {
+  errors {
+    ...ErrorDetails
+  }
+  user {
+    ...UserDetails
+  }
+}

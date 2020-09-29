@@ -31,7 +31,7 @@ const Header: React.FC = () => {
       as="header"
       zIndex="sticky"
       bg="white"
-      boxShadow="sm"
+      boxShadow="md"
       width="100%"
       align="center"
       borderBottom="1px"
