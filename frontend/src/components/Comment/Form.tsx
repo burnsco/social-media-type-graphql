@@ -12,7 +12,7 @@ interface CreateSubredditProps {
 const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
   const [
     submitComment,
-    { data, loading: mutationLoading, error: mutationError }
+    { loading: mutationLoading, error: mutationError }
   ] = useCreateCommentMutation()
 
   const handleSubmit = (values: CreateSubredditProps) => {
@@ -32,7 +32,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
                 fragment: gql`
                   fragment NewComment on Comment {
                     id
-                    name
+                    body
                   }
                 `
               })

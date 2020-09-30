@@ -36,8 +36,6 @@ const SubmitPage: React.FunctionComponent = () => {
     { data, loading: loadingSubreddits, error: subredditError }
   ] = useCategoriesLazyQuery()
 
-  const [snapShot, setSnapShot] = React.useState(initialValues)
-
   const [submitPost, { loading, error }] = useCreatePostMutation()
 
   if (loading || loadingSubreddits) return null
@@ -52,7 +50,7 @@ const SubmitPage: React.FunctionComponent = () => {
   return (
     <Box>
       <Formik
-        initialValues={snapShot}
+        initialValues={initialValues}
         validationSchema={Yup.object().shape({
           title: Yup.string().required("Required"),
           text: Yup.string().notRequired(),

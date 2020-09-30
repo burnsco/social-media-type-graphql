@@ -6,11 +6,9 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-  Skeleton,
-  useToast
+  Skeleton
 } from "@chakra-ui/core"
 import { Field, Formik } from "formik"
-import { useRouter } from "next/router"
 import React from "react"
 import * as Yup from "yup"
 import { useCreateSubredditMutation } from "../../generated/graphql"
@@ -19,9 +17,6 @@ interface CreateSubredditProps {
 }
 
 const CreateSubreddit: React.FC = () => {
-  const toast = useToast()
-  const router = useRouter()
-
   const [
     submitSubreddit,
     { loading: mutationLoading, error: mutationError }
