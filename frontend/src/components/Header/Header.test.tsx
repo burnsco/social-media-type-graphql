@@ -1,9 +1,11 @@
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
-import { screen, waitFor } from "@testing-library/react"
+import { cleanup, screen, waitFor } from "@testing-library/react"
 import React from "react"
-import Header from "../components/Header"
-import { render } from "../utils/renderChakra"
+import Header from "."
+import { render } from "../../utils/renderChakra"
+
+afterAll(cleanup)
 
 const notSignedInCache = new InMemoryCache()
 notSignedInCache.writeQuery({

@@ -1,3 +1,5 @@
+#import ErrorsAndUserDetails from '../fragments/ErrorsAndUserDetails.graphql'
+
 mutation Register($data: RegisterInput!) {
   register(data: $data) {
     ...ErrorsAndUserDetails

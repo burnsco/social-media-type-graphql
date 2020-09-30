@@ -1,0 +1,4 @@
+{
+  "presets": ["next/babel"],
+  "plugins": ["babel-plugin-chakra-ui", "babel-plugin-import-graphql"]
+}

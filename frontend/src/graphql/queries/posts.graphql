@@ -1,26 +1,17 @@
 query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
   posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
-    id
-    createdAt
-    updatedAt
-    title
-    text
-    image
-    video
-    link
+    ...PostDetails
 
     comments {
-      id
-      createdAt
-      updatedAt
-      body
-      post {
-        id
-        title
-      }
-      createdBy {
-        username
-      }
+      ...CommentsDetails
+    }
+
+    category {
+      ...CategoryDetails
+    }
+
+    author {
+      ...UserDetails
     }
 
     totalComments {
@@ -29,16 +20,6 @@ query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
 
     totalVotes {
       count
-    }
-
-    author {
-      id
-      username
-    }
-
-    category {
-      id
-      name
     }
   }
 
