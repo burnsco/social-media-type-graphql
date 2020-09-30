@@ -46,6 +46,7 @@ const RegisterPage: React.FC = () => {
 
           if (response.data?.register?.user) {
             toast({
+              id: "success",
               title: `Welcome ${response.data.register.user.username}!`,
               description: "Your account was created successfully.",
               status: "success",

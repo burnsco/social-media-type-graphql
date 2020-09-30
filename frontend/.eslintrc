@@ -1,11 +1,19 @@
 {
-  "plugins": ["@typescript-eslint", "react-hooks", "jest-dom"],
+  "plugins": [
+    "@typescript-eslint",
+    "react-hooks",
+    "jest-dom",
+    "testing-library"
+  ],
   "extends": [
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     "plugin:react/recommended",
-    "prettier/react"
+    "prettier/react",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended",
+    "plugin:testing-library/recommended"
   ],
 
   "parser": "@typescript-eslint/parser",

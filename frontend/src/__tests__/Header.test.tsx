@@ -1,11 +1,10 @@
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
-import { cleanup, screen, waitFor } from "@testing-library/react"
+import "@testing-library/jest-dom"
+import { screen } from "@testing-library/react"
 import React from "react"
-import Header from "."
-import { render } from "../../utils/renderChakra"
-
-afterAll(cleanup)
+import Header from "../components/Header"
+import { render } from "../utils/renderChakra"
 
 const notSignedInCache = new InMemoryCache()
 notSignedInCache.writeQuery({
@@ -52,8 +51,8 @@ describe("Header", () => {
         <Header />
       </MockedProvider>
     )
-    await waitFor(() => screen.getByRole("button", { name: /register/i }))
-    await waitFor(() => screen.getByRole("button", { name: /login/i }))
+    await screen.findByRole("button", { name: /register/i })
+    await screen.findByRole("button", { name: /login/i })
 
     expect(screen.getByRole("button", { name: /register/i })).toBeInTheDocument
     expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument
@@ -65,7 +64,7 @@ describe("Header", () => {
         <Header />
       </MockedProvider>
     )
-    await waitFor(() => screen.getByRole("button", { name: /Corey/i }))
+    await screen.findByRole("button", { name: /Corey/i })
 
     expect(screen.getByRole("button", { name: /Corey/i })).toBeInTheDocument
   })
@@ -77,11 +76,9 @@ describe("Header", () => {
       </MockedProvider>
     )
 
-    await waitFor(() => screen.getByRole("button", { name: /submit post/i }))
-    await waitFor(() => screen.getByRole("button", { name: /home/i }))
-    await waitFor(() =>
-      screen.getByRole("button", { name: /create subreddit/i })
-    )
+    await screen.findByRole("button", { name: /submit post/i })
+    await screen.findByRole("button", { name: /home/i })
+    await screen.findByRole("button", { name: /create subreddit/i })
 
     expect(screen.getByRole("button", { name: /submit post/i }))
       .toBeInTheDocument

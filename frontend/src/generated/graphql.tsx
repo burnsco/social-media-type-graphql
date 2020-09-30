@@ -280,45 +280,6 @@ export type LogoutMutationResponse = {
   success: Scalars["Boolean"]
 }
 
-export type CategoryDetailsFragment = { __typename?: "Category" } & Pick<
-  Category,
-  "id" | "name"
->
-
-export type CommentsDetailsFragment = { __typename?: "Comment" } & Pick<
-  Comment,
-  "id" | "createdAt" | "updatedAt" | "body"
-> & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
-
-export type ErrorDetailsFragment = { __typename?: "FieldError" } & Pick<
-  FieldError,
-  "field" | "message"
->
-
-export type ErrorsAndUserDetailsFragment = {
-  __typename?: "UserMutationResponse"
-} & {
-  errors?: Maybe<Array<{ __typename?: "FieldError" } & ErrorDetailsFragment>>
-  user?: Maybe<{ __typename?: "User" } & UserDetailsFragment>
-}
-
-export type PostDetailsFragment = { __typename?: "Post" } & Pick<
-  Post,
-  | "id"
-  | "createdAt"
-  | "updatedAt"
-  | "title"
-  | "text"
-  | "image"
-  | "video"
-  | "link"
->
-
-export type UserDetailsFragment = { __typename?: "User" } & Pick<
-  User,
-  "id" | "username"
->
-
 export type CreateCommentMutationVariables = Exact<{
   data: CommentInput
 }>
@@ -384,7 +345,9 @@ export type CreateSubredditMutationVariables = Exact<{
 
 export type CreateSubredditMutation = { __typename?: "Mutation" } & {
   createCategory: { __typename?: "CategoryMutationResponse" } & {
-    category?: Maybe<{ __typename?: "Category" } & CategoryDetailsFragment>
+    category?: Maybe<
+      { __typename?: "Category" } & Pick<Category, "id" | "name">
+    >
     errors?: Maybe<
       Array<
         { __typename?: "FieldError" } & Pick<FieldError, "field" | "message">
@@ -407,15 +370,20 @@ export type RegisterMutationVariables = Exact<{
 }>
 
 export type RegisterMutation = { __typename?: "Mutation" } & {
-  register: {
-    __typename?: "UserMutationResponse"
-  } & ErrorsAndUserDetailsFragment
+  register: { __typename?: "UserMutationResponse" } & {
+    user?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">>
+    errors?: Maybe<
+      Array<
+        { __typename?: "FieldError" } & Pick<FieldError, "field" | "message">
+      >
+    >
+  }
 }
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never }>
 
 export type CategoriesQuery = { __typename?: "Query" } & {
-  categories: Array<{ __typename?: "Category" } & CategoryDetailsFragment>
+  categories: Array<{ __typename?: "Category" } & Pick<Category, "id" | "name">>
 }
 
 export type CommentQueryVariables = Exact<{
@@ -423,7 +391,12 @@ export type CommentQueryVariables = Exact<{
 }>
 
 export type CommentQuery = { __typename?: "Query" } & {
-  comment?: Maybe<{ __typename?: "Comment" } & CommentsDetailsFragment>
+  comment?: Maybe<
+    { __typename?: "Comment" } & Pick<
+      Comment,
+      "id" | "createdAt" | "updatedAt" | "body"
+    > & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
+  >
 }
 
 export type CommentsQueryVariables = Exact<{
@@ -434,13 +407,20 @@ export type CommentsQueryVariables = Exact<{
 }>
 
 export type CommentsQuery = { __typename?: "Query" } & {
-  comments?: Maybe<Array<{ __typename?: "Comment" } & CommentsDetailsFragment>>
+  comments?: Maybe<
+    Array<
+      { __typename?: "Comment" } & Pick<
+        Comment,
+        "id" | "createdAt" | "updatedAt" | "body"
+      > & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
+    >
+  >
 }
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
 export type MeQuery = { __typename?: "Query" } & {
-  me?: Maybe<{ __typename?: "User" } & UserDetailsFragment>
+  me?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">>
 }
 
 export type PostQueryVariables = Exact<{
@@ -449,19 +429,34 @@ export type PostQueryVariables = Exact<{
 
 export type PostQuery = { __typename?: "Query" } & {
   post?: Maybe<
-    { __typename?: "Post" } & {
-      comments?: Maybe<
-        Array<{ __typename?: "Comment" } & CommentsDetailsFragment>
-      >
-      author: { __typename?: "User" } & UserDetailsFragment
-      category: { __typename?: "Category" } & CategoryDetailsFragment
-      totalComments?: Maybe<
-        { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-      >
-      totalVotes?: Maybe<
-        { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-      >
-    } & PostDetailsFragment
+    { __typename?: "Post" } & Pick<
+      Post,
+      | "id"
+      | "createdAt"
+      | "updatedAt"
+      | "title"
+      | "text"
+      | "image"
+      | "video"
+      | "link"
+    > & {
+        comments?: Maybe<
+          Array<
+            { __typename?: "Comment" } & Pick<
+              Comment,
+              "id" | "createdAt" | "updatedAt" | "body"
+            > & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
+          >
+        >
+        author: { __typename?: "User" } & Pick<User, "id" | "username">
+        category: { __typename?: "Category" } & Pick<Category, "id" | "name">
+        totalComments?: Maybe<
+          { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
+        >
+        totalVotes?: Maybe<
+          { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
+        >
+      }
   >
 }
 
@@ -475,19 +470,36 @@ export type PostsQueryVariables = Exact<{
 export type PostsQuery = { __typename?: "Query" } & {
   posts?: Maybe<
     Array<
-      { __typename?: "Post" } & {
-        comments?: Maybe<
-          Array<{ __typename?: "Comment" } & CommentsDetailsFragment>
-        >
-        category: { __typename?: "Category" } & CategoryDetailsFragment
-        author: { __typename?: "User" } & UserDetailsFragment
-        totalComments?: Maybe<
-          { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-        >
-        totalVotes?: Maybe<
-          { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
-        >
-      } & PostDetailsFragment
+      { __typename?: "Post" } & Pick<
+        Post,
+        | "id"
+        | "createdAt"
+        | "updatedAt"
+        | "title"
+        | "text"
+        | "image"
+        | "video"
+        | "link"
+      > & {
+          comments?: Maybe<
+            Array<
+              { __typename?: "Comment" } & Pick<
+                Comment,
+                "id" | "createdAt" | "updatedAt" | "body"
+              > & {
+                  createdBy: { __typename?: "User" } & Pick<User, "username">
+                }
+            >
+          >
+          category: { __typename?: "Category" } & Pick<Category, "id" | "name">
+          author: { __typename?: "User" } & Pick<User, "id" | "username">
+          totalComments?: Maybe<
+            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
+          >
+          totalVotes?: Maybe<
+            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
+          >
+        }
     >
   >
   _allPostsMeta: { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
@@ -497,62 +509,9 @@ export type PostsQuery = { __typename?: "Query" } & {
 export type UsersQueryVariables = Exact<{ [key: string]: never }>
 
 export type UsersQuery = { __typename?: "Query" } & {
-  users: Array<{ __typename?: "User" } & UserDetailsFragment>
+  users: Array<{ __typename?: "User" } & Pick<User, "id" | "username">>
 }
 
-export const CategoryDetailsFragmentDoc = gql`
-  fragment CategoryDetails on Category {
-    id
-    name
-  }
-`
-export const CommentsDetailsFragmentDoc = gql`
-  fragment CommentsDetails on Comment {
-    id
-    createdAt
-    updatedAt
-    body
-    createdBy {
-      username
-    }
-  }
-`
-export const ErrorDetailsFragmentDoc = gql`
-  fragment ErrorDetails on FieldError {
-    field
-    message
-  }
-`
-export const UserDetailsFragmentDoc = gql`
-  fragment UserDetails on User {
-    id
-    username
-  }
-`
-export const ErrorsAndUserDetailsFragmentDoc = gql`
-  fragment ErrorsAndUserDetails on UserMutationResponse {
-    errors {
-      ...ErrorDetails
-    }
-    user {
-      ...UserDetails
-    }
-  }
-  ${ErrorDetailsFragmentDoc}
-  ${UserDetailsFragmentDoc}
-`
-export const PostDetailsFragmentDoc = gql`
-  fragment PostDetails on Post {
-    id
-    createdAt
-    updatedAt
-    title
-    text
-    image
-    video
-    link
-  }
-`
 export const CreateCommentDocument = gql`
   mutation createComment($data: CommentInput!) {
     createComment(data: $data) {
@@ -693,7 +652,8 @@ export const CreateSubredditDocument = gql`
   mutation createSubreddit($data: CategoryInput!) {
     createCategory(data: $data) {
       category {
-        ...CategoryDetails
+        id
+        name
       }
       errors {
         field
@@ -701,7 +661,6 @@ export const CreateSubredditDocument = gql`
       }
     }
   }
-  ${CategoryDetailsFragmentDoc}
 `
 export type CreateSubredditMutationFn = Apollo.MutationFunction<
   CreateSubredditMutation,
@@ -795,10 +754,16 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<
 export const RegisterDocument = gql`
   mutation Register($data: RegisterInput!) {
     register(data: $data) {
-      ...ErrorsAndUserDetails
+      user {
+        id
+        username
+      }
+      errors {
+        field
+        message
+      }
     }
   }
-  ${ErrorsAndUserDetailsFragmentDoc}
 `
 export type RegisterMutationFn = Apollo.MutationFunction<
   RegisterMutation,
@@ -842,10 +807,10 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<
 export const CategoriesDocument = gql`
   query Categories {
     categories {
-      ...CategoryDetails
+      id
+      name
     }
   }
-  ${CategoryDetailsFragmentDoc}
 `
 
 /**
@@ -899,10 +864,15 @@ export function refetchCategoriesQuery(variables?: CategoriesQueryVariables) {
 export const CommentDocument = gql`
   query Comment($postId: ID) {
     comment(postId: $postId) {
-      ...CommentsDetails
+      id
+      createdAt
+      updatedAt
+      body
+      createdBy {
+        username
+      }
     }
   }
-  ${CommentsDetailsFragmentDoc}
 `
 
 /**
@@ -949,10 +919,15 @@ export function refetchCommentQuery(variables?: CommentQueryVariables) {
 export const CommentsDocument = gql`
   query Comments($first: Int, $orderBy: PostOrderBy, $skip: Int, $postId: ID) {
     comments(first: $first, orderBy: $orderBy, skip: $skip, postId: $postId) {
-      ...CommentsDetails
+      id
+      createdAt
+      updatedAt
+      body
+      createdBy {
+        username
+      }
     }
   }
-  ${CommentsDetailsFragmentDoc}
 `
 
 /**
@@ -1007,10 +982,10 @@ export function refetchCommentsQuery(variables?: CommentsQueryVariables) {
 export const MeDocument = gql`
   query Me {
     me {
-      ...UserDetails
+      id
+      username
     }
   }
-  ${UserDetailsFragmentDoc}
 `
 
 /**
@@ -1047,15 +1022,30 @@ export function refetchMeQuery(variables?: MeQueryVariables) {
 export const PostDocument = gql`
   query Post($postId: ID) {
     post(postId: $postId) {
-      ...PostDetails
+      id
+      createdAt
+      updatedAt
+      title
+      text
+      image
+      video
+      link
       comments {
-        ...CommentsDetails
+        id
+        createdAt
+        updatedAt
+        body
+        createdBy {
+          username
+        }
       }
       author {
-        ...UserDetails
+        id
+        username
       }
       category {
-        ...CategoryDetails
+        id
+        name
       }
       totalComments {
         count
@@ -1065,10 +1055,6 @@ export const PostDocument = gql`
       }
     }
   }
-  ${PostDetailsFragmentDoc}
-  ${CommentsDetailsFragmentDoc}
-  ${UserDetailsFragmentDoc}
-  ${CategoryDetailsFragmentDoc}
 `
 
 /**
@@ -1117,15 +1103,30 @@ export const PostsDocument = gql`
     $category: String
   ) {
     posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
-      ...PostDetails
+      id
+      createdAt
+      updatedAt
+      title
+      text
+      image
+      video
+      link
       comments {
-        ...CommentsDetails
+        id
+        createdAt
+        updatedAt
+        body
+        createdBy {
+          username
+        }
       }
       category {
-        ...CategoryDetails
+        id
+        name
       }
       author {
-        ...UserDetails
+        id
+        username
       }
       totalComments {
         count
@@ -1141,10 +1142,6 @@ export const PostsDocument = gql`
       count
     }
   }
-  ${PostDetailsFragmentDoc}
-  ${CommentsDetailsFragmentDoc}
-  ${CategoryDetailsFragmentDoc}
-  ${UserDetailsFragmentDoc}
 `
 
 /**
@@ -1194,10 +1191,10 @@ export function refetchPostsQuery(variables?: PostsQueryVariables) {
 export const UsersDocument = gql`
   query Users {
     users {
-      ...UserDetails
+      id
+      username
     }
   }
-  ${UserDetailsFragmentDoc}
 `
 
 /**

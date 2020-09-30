@@ -1,17 +1,32 @@
 query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
   posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
-    ...PostDetails
+    id
+    createdAt
+    updatedAt
+    title
+    text
+    image
+    video
+    link
 
     comments {
-      ...CommentsDetails
+      id
+      createdAt
+      updatedAt
+      body
+      createdBy {
+        username
+      }
     }
 
     category {
-      ...CategoryDetails
+      id
+      name
     }
 
     author {
-      ...UserDetails
+      id
+      username
     }
 
     totalComments {

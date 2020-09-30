@@ -1,9 +1,0 @@
-fragment CommentsDetails on Comment {
-  id
-  createdAt
-  updatedAt
-  body
-  createdBy {
-    username
-  }
-}

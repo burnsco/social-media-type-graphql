@@ -1,4 +1,0 @@
-fragment CategoryDetails on Category {
-  id
-  name
-}
