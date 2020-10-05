@@ -1,4 +1,4 @@
-import { Box, Stack } from "@chakra-ui/core"
+import { Box, Stack, useColorModeValue } from "@chakra-ui/core"
 import { GetStaticProps } from "next"
 import * as React from "react"
 import { CategoriesDocument } from "../../generated/graphql"
@@ -7,11 +7,12 @@ import Header from "../Header"
 import SideMenu from "./SideMenu"
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const bg = useColorModeValue("#DAE0E6", "black")
   return (
     <>
       <Header />
-      <Box maxW="1200px" minH="100vh" mx="auto" pt="6em">
-        <Stack isInline spacing={8}>
+      <Box minW="1200px" minH="100vh" bg={bg}>
+        <Stack isInline spacing={8} mx="auto" py="6em" px={4}>
           <Box as="main" width="100%">
             {children}
           </Box>

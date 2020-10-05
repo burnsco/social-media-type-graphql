@@ -3,11 +3,16 @@ import { theme as chakraTheme } from "@chakra-ui/theme"
 const theme = {
   ...chakraTheme,
   styles: {
-    global: {
-      html: {
-        backgroundColor: "gray.200"
+    global: (props: any) => ({
+      "html, body": {
+        fontSize: "sm",
+        color: props.colorMode === "dark" ? "white" : "gray.600",
+        lineHeight: "tall"
+      },
+      a: {
+        color: props.colorMode === "dark" ? "teal.300" : "teal.500"
       }
-    }
+    })
   }
 }
 

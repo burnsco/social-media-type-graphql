@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton } from "@chakra-ui/core"
+import { Box, Flex, IconButton, useColorModeValue } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import * as React from "react"
 import { BsArrowDown, BsArrowUp } from "react-icons/bs"
@@ -6,9 +6,10 @@ import { CommentQuery } from "../../generated/graphql"
 import { timeDifferenceForDate } from "../../utils/timeDifferenceForDate"
 
 const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
+  const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
   return (
-    <Box background="#fff" display="flex" minH="100px" width="100%">
+    <Box bg={bg} display="flex" minH="100px" width="100%">
       <Box mr={1}>
         <Flex
           width="45px"
@@ -16,7 +17,6 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
           alignItems="center"
           p="2"
           height="100%"
-          borderRight="1px solid #ebedf0"
         >
           <IconButton
             onClick={() => console.log("upvote")}
@@ -40,7 +40,6 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
       <Box
         minH="100px"
         width="100%"
-        p={2}
         display="flex"
         flexDir="column"
         justifyContent="space-evenly"

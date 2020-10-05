@@ -3,15 +3,11 @@ import { Form, Formik } from "formik"
 import * as React from "react"
 import { Wrapper } from "../../components/Layout/wrapper"
 import { InputField } from "../../components/shared/InputField"
-import {
-  MeDocument,
-  MeQuery,
-  useRegisterMutation
-} from "../../generated/graphql"
+import { MeDocument, MeQuery } from "../../generated/graphql"
 
-const RegisterPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const toast = useToast()
-  const [register, { data, loading, error }] = useRegisterMutation()
+  const [login, { data, loading, error }] = useLoginMutation()
 
   if (loading) return null
   if (error) {
@@ -21,14 +17,13 @@ const RegisterPage: React.FC = () => {
   return (
     <Wrapper variant="small">
       <Formik
-        initialValues={{ username: "", email: "", password: "" }}
+        initialValues={{ email: "", password: "" }}
         onSubmit={async values => {
-          const response = await register({
+          const response = await login({
             variables: {
               data: {
-                username: values.username,
-                password: values.password,
-                email: values.email
+                email: values.email,
+                password: values.password
               }
             },
             update: (cache, { data }) => {
@@ -36,16 +31,16 @@ const RegisterPage: React.FC = () => {
                 query: MeDocument,
                 data: {
                   __typename: "Query",
-                  me: data?.register.user
+                  me: data?.login.user
                 }
               })
             }
           })
 
-          if (response.data?.register?.user) {
+          if (response.data?.login?.user) {
             toast({
               id: "success",
-              title: `Welcome ${response.data.register.user.username}!`,
+              title: `Welcome ${response.data.login.user.username}!`,
               description: "Your account was created successfully.",
               status: "success",
               duration: 9000,
@@ -59,13 +54,6 @@ const RegisterPage: React.FC = () => {
         {({ isSubmitting }) => (
           <Form>
             <InputField name="email" placeholder="email" label="Email" />
-            <Box my="2">
-              <InputField
-                name="username"
-                placeholder="username"
-                label="Username"
-              />
-            </Box>
             <Box my="4">
               <InputField
                 name="password"
@@ -82,7 +70,7 @@ const RegisterPage: React.FC = () => {
             >
               Submit
             </Button>
-            {data?.register?.user ? "success" : null}
+            {data?.login?.user ? "success" : null}
           </Form>
         )}
       </Formik>
@@ -90,4 +78,4 @@ const RegisterPage: React.FC = () => {
   )
 }
 
-export default RegisterPage
+export default LoginPage

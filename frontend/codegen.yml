@@ -12,6 +12,3 @@ generates:
     hooks:
       afterAllFileWrite:
         - prettier --write
-  src/generated/apolloMock.js:
-    plugins:
-      - "apollo-typed-documents/lib/codegenApolloMock"

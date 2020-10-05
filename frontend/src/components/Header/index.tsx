@@ -9,7 +9,8 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
-  Tooltip
+  Tooltip,
+  useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import * as React from "react"
@@ -20,24 +21,26 @@ import { useLogoutMutation, useMeQuery } from "../../generated/graphql"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
 
 const Header: React.FC = () => {
+  const bg = useColorModeValue("white", "#1A1A1B")
+
   const router = useRouter()
+
   const { data, loading } = useMeQuery({ ssr: false })
+
   const [logout, { client }] = useLogoutMutation()
+
   if (loading) return null
 
   return (
     <Flex
       position="fixed"
       as="header"
+      bg={bg}
       zIndex="sticky"
-      bg="white"
-      boxShadow="md"
+      boxShadow="sm"
       width="100%"
+      p={[1]}
       align="center"
-      borderBottom="1px"
-      borderBottomStyle="solid"
-      borderBottomColor="gray.200"
-      height="49px"
     >
       <Flex minW="100%" as="nav" justify="flex-end">
         {data && data?.me?.username ? (

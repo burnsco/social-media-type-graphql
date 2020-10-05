@@ -1,5 +1,12 @@
 import { gql } from "@apollo/client"
-import { Box, Button, FormControl, Skeleton, Textarea } from "@chakra-ui/core"
+import {
+  Box,
+  Button,
+  FormControl,
+  Skeleton,
+  Textarea,
+  useColorModeValue
+} from "@chakra-ui/core"
 import { Field, Formik } from "formik"
 import * as React from "react"
 import { useCreateCommentMutation } from "../../generated/graphql"
@@ -10,6 +17,7 @@ interface CreateSubredditProps {
 }
 
 const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
+  const bg = useColorModeValue("white", "#1A1A1B")
   const [
     submitComment,
     { loading: mutationLoading, error: mutationError }
@@ -45,7 +53,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
   }
 
   return (
-    <Box>
+    <Box bg={bg} borderWidth="1px" rounded="md">
       <Skeleton isLoaded={!mutationLoading}>
         <Formik
           initialValues={{ body: "", postId: postId }}

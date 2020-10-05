@@ -1,4 +1,10 @@
-import { Box, Flex, Heading, IconButton } from "@chakra-ui/core"
+import {
+  Box,
+  Flex,
+  Heading,
+  IconButton,
+  useColorModeValue
+} from "@chakra-ui/core"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import * as React from "react"
@@ -8,21 +14,23 @@ import { timeDifferenceForDate } from "../../utils/timeDifferenceForDate"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 const NewPost: React.FC<PostQuery> = props => {
+  const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
   const { post } = props
 
   return (
     // Container
     <Box
-      border="1px"
-      borderColor="gray.200"
-      border-radius="5px"
+      bg={bg}
+      borderWidth="1px"
+      rounded="md"
+      overflow="hidden"
       display="flex"
       mb="20px"
       minH="100px"
       width="100%"
       _hover={{
-        borderColor: "gray.300"
+        borderColor: "gray.500"
       }}
     >
       {/* VoteBoxContainer */}
@@ -33,7 +41,6 @@ const NewPost: React.FC<PostQuery> = props => {
           alignItems="center"
           p="2"
           height="100%"
-          borderRight="1px solid #ebedf0"
         >
           <IconButton
             onClick={() => console.log("upvote")}
