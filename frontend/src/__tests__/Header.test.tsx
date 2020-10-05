@@ -4,7 +4,7 @@ import "@testing-library/jest-dom"
 import { screen } from "@testing-library/react"
 import React from "react"
 import Header from "../components/Header"
-import { render } from "../utils/renderChakra"
+import { render } from "../utils/test-utils"
 
 const notSignedInCache = new InMemoryCache()
 notSignedInCache.writeQuery({

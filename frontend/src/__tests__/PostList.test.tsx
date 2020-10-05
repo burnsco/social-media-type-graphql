@@ -4,7 +4,7 @@ import "@testing-library/jest-dom"
 import React from "react"
 import PostList from "../components/PostList"
 import { PostsDocument } from "../generated/graphql"
-import { render } from "../utils/renderChakra"
+import { render } from "../utils/test-utils"
 
 const postsCache = new InMemoryCache()
 postsCache.writeQuery({
