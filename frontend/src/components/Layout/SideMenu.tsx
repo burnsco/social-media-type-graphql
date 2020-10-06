@@ -6,17 +6,24 @@ import {
   Skeleton,
   useColorModeValue
 } from "@chakra-ui/core"
+import { useRouter } from "next/router"
 import * as React from "react"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 const SideMenu: React.FC = () => {
+  const router = useRouter()
+
   const [isMounted, setIsMounted] = React.useState(false)
+
   const color = useColorModeValue("gray.700", "gray.300")
   const hover = useColorModeValue("gray.500", "white")
   const bg = useColorModeValue("white", "#1A1A1B")
+
   React.useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  const { category } = router.query
 
   const { data, loading, error } = useCategoriesQuery({ skip: !isMounted })
 
@@ -31,7 +38,7 @@ const SideMenu: React.FC = () => {
             <ListItem key={`subreddit-${subreddit.id}`}>
               <NextChakraLink
                 fontWeight="500"
-                color={color}
+                color={category === subreddit.name ? hover : color}
                 _hover={{
                   color: hover,
                   marginLeft: 1

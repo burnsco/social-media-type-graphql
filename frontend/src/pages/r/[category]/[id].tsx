@@ -19,7 +19,9 @@ const PostAndCommentsPage: React.FC = () => {
   if (router.isFallback) {
     return <Spinner />
   }
+
   if (error) return <div>error loading post</div>
+
   if (loading) return null
 
   const totalComments = data?.post?.totalComments?.count
