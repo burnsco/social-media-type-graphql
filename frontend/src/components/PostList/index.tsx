@@ -1,6 +1,7 @@
 import { NetworkStatus } from "@apollo/client"
 import { Box, Button } from "@chakra-ui/core"
 import * as React from "react"
+import { ImSpinner } from "react-icons/im"
 import { usePostsQuery } from "../../generated/graphql"
 import { allPostsQueryVars } from "../../types/post"
 import NewPost from "../Post"
@@ -17,11 +18,10 @@ const PostList = () => {
     notifyOnNetworkStatusChange: true,
     skip: !isMounted
   })
+  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
   if (error) return <div>error loading posts</div>
-  if (loading) return null
-
-  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
+  if (loading && !loadingMorePosts) return <ImSpinner />
 
   const loadMorePosts = () => {
     fetchMore({
