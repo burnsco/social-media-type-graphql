@@ -1,3 +1,4 @@
+import { useCategoriesQuery } from "@/generated/graphql"
 import {
   Box,
   List,
@@ -6,7 +7,6 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import * as React from "react"
-import { useCategoriesQuery } from "../../generated/graphql"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 const SideMenu: React.FC = () => {

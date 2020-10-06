@@ -1,3 +1,4 @@
+import { useLogoutMutation, useMeQuery } from "@/generated/graphql"
 import {
   Avatar,
   Button,
@@ -17,7 +18,6 @@ import * as React from "react"
 import { BsFolderPlus } from "react-icons/bs"
 import { FaRedditSquare } from "react-icons/fa"
 import { ImPencil2 } from "react-icons/im"
-import { useLogoutMutation, useMeQuery } from "../../generated/graphql"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
 
 const Header: React.FC = () => {

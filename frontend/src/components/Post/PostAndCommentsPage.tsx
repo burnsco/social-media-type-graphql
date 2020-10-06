@@ -1,3 +1,5 @@
+import { usePostQuery } from "@/generated/graphql"
+import { timeDifferenceForDate } from "@/utils/timeDifferenceForDate"
 import {
   Box,
   Flex,
@@ -10,8 +12,6 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import * as React from "react"
 import { ImArrowDown, ImArrowUp } from "react-icons/im"
-import { usePostQuery } from "../../generated/graphql"
-import { timeDifferenceForDate } from "../../utils/timeDifferenceForDate"
 import CommentsPageWithData from "../Comment/Data"
 import SubmitCommentForm from "../Comment/Form"
 import { NextChakraLink } from "../shared/NextChakraLink"

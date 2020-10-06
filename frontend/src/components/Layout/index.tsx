@@ -1,8 +1,8 @@
+import { CategoriesDocument } from "@/generated/graphql"
+import { initializeApollo } from "@/lib/apolloClient"
 import { Box, Stack, useColorModeValue } from "@chakra-ui/core"
 import { GetStaticProps } from "next"
 import * as React from "react"
-import { CategoriesDocument } from "../../generated/graphql"
-import { initializeApollo } from "../../lib/apolloClient"
 import Header from "../Header"
 import SideMenu from "./SideMenu"
 

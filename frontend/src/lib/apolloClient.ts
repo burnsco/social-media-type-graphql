@@ -1,3 +1,4 @@
+import { Category, Post } from "@/generated/graphql"
 import {
   ApolloClient,
   HttpLink,
@@ -6,7 +7,6 @@ import {
 } from "@apollo/client"
 import { onError } from "@apollo/client/link/error"
 import { useMemo } from "react"
-import { Category, Post } from "../generated/graphql"
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
 

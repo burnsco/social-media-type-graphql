@@ -1,3 +1,11 @@
+import {
+  CategoriesDocument,
+  Category,
+  PostsDocument,
+  PostsQuery,
+  useCommentsQuery
+} from "@/generated/graphql"
+import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Spinner, Stack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
@@ -5,14 +13,6 @@ import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import * as React from "react"
 import CommentPage from "."
-import {
-  CategoriesDocument,
-  Category,
-  PostsDocument,
-  PostsQuery,
-  useCommentsQuery
-} from "../../generated/graphql"
-import { initializeApollo } from "../../lib/apolloClient"
 
 const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   const [isMounted, setIsMounted] = React.useState(false)

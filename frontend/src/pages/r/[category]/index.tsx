@@ -1,21 +1,23 @@
-import { NetworkStatus } from "@apollo/client"
-import { Box, Spinner, Stack } from "@chakra-ui/core"
-import { GetStaticPaths, GetStaticProps } from "next"
-import { useRouter } from "next/router"
-import PropTypes from "prop-types"
-import * as React from "react"
-import NewPost from "../../../components/Post"
+import NewPost from "@/components/Post"
 import {
   CategoriesDocument,
   Category,
   PostsDocument,
   PostsQuery,
   usePostsQuery
-} from "../../../generated/graphql"
-import { initializeApollo } from "../../../lib/apolloClient"
+} from "@/generated/graphql"
+import { initializeApollo } from "@/lib/apolloClient"
+import { NetworkStatus } from "@apollo/client"
+import { Box, Spinner, Stack } from "@chakra-ui/core"
+import { GetStaticPaths, GetStaticProps } from "next"
+import { useRouter } from "next/router"
+import PropTypes from "prop-types"
+import * as React from "react"
 
 const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const [isMounted, setIsMounted] = React.useState(false)
+
+  const router = useRouter()
 
   React.useEffect(() => {
     setIsMounted(true)
@@ -40,8 +42,6 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
       }
     })
   }
-
-  const router = useRouter()
 
   if (router.isFallback) {
     return <Spinner />

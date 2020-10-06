@@ -1,4 +1,8 @@
 import {
+  useCategoriesLazyQuery,
+  useCreatePostMutation
+} from "@/generated/graphql"
+import {
   Box,
   Button,
   FormControl,
@@ -16,10 +20,6 @@ import {
 import { Field, Form, Formik } from "formik"
 import * as React from "react"
 import * as Yup from "yup"
-import {
-  useCategoriesLazyQuery,
-  useCreatePostMutation
-} from "../../generated/graphql"
 
 const SubmitPage: React.FunctionComponent = () => {
   const initialValues = {

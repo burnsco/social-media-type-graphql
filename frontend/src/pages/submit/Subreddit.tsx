@@ -1,3 +1,4 @@
+import { useCreateSubredditMutation } from "@/generated/graphql"
 import { gql } from "@apollo/client"
 import {
   Box,
@@ -9,9 +10,8 @@ import {
   Skeleton
 } from "@chakra-ui/core"
 import { Field, Formik } from "formik"
-import React from "react"
+import * as React from "react"
 import * as Yup from "yup"
-import { useCreateSubredditMutation } from "../../generated/graphql"
 interface CreateSubredditProps {
   name: string
 }
