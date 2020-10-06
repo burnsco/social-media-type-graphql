@@ -1,3 +1,4 @@
+import { useCreateCommentMutation } from "@/generated/graphql"
 import { gql } from "@apollo/client"
 import {
   Box,
@@ -9,7 +10,6 @@ import {
 } from "@chakra-ui/core"
 import { Field, Formik } from "formik"
 import * as React from "react"
-import { useCreateCommentMutation } from "../../generated/graphql"
 
 interface CreateSubredditProps {
   postId: string
@@ -76,7 +76,6 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
                 )}
               </Field>
               <Button
-                mt={4}
                 colorScheme="teal"
                 isLoading={formik.isSubmitting}
                 type="submit"

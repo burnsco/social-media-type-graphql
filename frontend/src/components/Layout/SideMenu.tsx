@@ -28,6 +28,7 @@ const SideMenu: React.FC = () => {
   const { data, loading, error } = useCategoriesQuery({ skip: !isMounted })
 
   if (error) return <div>Error loading subreddits.</div>
+
   if (loading) return null
 
   return (

@@ -1,9 +1,9 @@
+import { CommentQuery } from "@/generated/graphql"
+import { timeDifferenceForDate } from "@/utils/timeDifferenceForDate"
 import { Box, Flex, IconButton, useColorModeValue } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import * as React from "react"
 import { BsArrowDown, BsArrowUp } from "react-icons/bs"
-import { CommentQuery } from "../../generated/graphql"
-import { timeDifferenceForDate } from "../../utils/timeDifferenceForDate"
 
 const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
   const bg = useColorModeValue("white", "#1A1A1B")
