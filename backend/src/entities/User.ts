@@ -19,4 +19,8 @@ export class User extends BaseEntity {
   @Field(() => String, { nullable: true })
   @Property({ nullable: true })
   avatar?: string
+
+  @Field(() => String, { nullable: true })
+  @Property({ nullable: true })
+  about?: string
 }

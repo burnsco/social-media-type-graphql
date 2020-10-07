@@ -1,9 +1,10 @@
+import { wrap } from "@mikro-orm/core"
 import argon2 from "argon2"
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql"
 import { User } from "../entities/User"
 import { ContextType } from "../types"
 import { PostInput } from "./inputs/post-input"
-import { LoginInput, RegisterInput } from "./inputs/user-input"
+import { EditUserInput, LoginInput, RegisterInput } from "./inputs/user-input"
 import { LogoutMutationResponse } from "./response/logout-response"
 import { UserMutationResponse } from "./response/user-response"
 import { validateLoginUser } from "./validation/login-schema"
@@ -52,6 +53,52 @@ export class UserResolver {
     await em.persistAndFlush(user)
 
     req.session.userId = user.id
+
+    return {
+      user
+    }
+  }
+
+  @Mutation(() => UserMutationResponse)
+  async editUser(
+    @Arg("data") data: EditUserInput,
+    @Ctx() { em, req }: ContextType
+  ): Promise<UserMutationResponse> {
+    const user = await em.findOneOrFail(User, { id: req.session.userId })
+
+    // Add Field/Message and Error Responses for each Field
+    // IF email is taken
+    // IF username is taken
+    // IF the formatting is incorrect (Yup)
+
+    if (data.username) {
+      wrap(user).assign({
+        username: data.username
+      })
+    }
+
+    if (data.about) {
+      wrap(user).assign({
+        about: data.about
+      })
+    }
+    if (data.email) {
+      wrap(user).assign({
+        email: data.email
+      })
+    }
+    if (data.password) {
+      wrap(user).assign({
+        password: await argon2.hash(data.password)
+      })
+    }
+    if (data.avatar) {
+      wrap(user).assign({
+        avatar: data.avatar
+      })
+    }
+
+    await em.persistAndFlush(user)
 
     return {
       user
