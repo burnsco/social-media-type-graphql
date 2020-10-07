@@ -179,6 +179,7 @@ export class PostResolver {
     await em.persistAndFlush(post)
 
     return {
+      post,
       vote
     }
   }
@@ -188,23 +189,35 @@ export class PostResolver {
     const [, count] = await em.findAndCount(Comment, { post: { id: post.id } })
     return { count }
   }
+
   @FieldResolver(() => _QueryMeta, { nullable: true })
   async totalVotes(@Root() post: Post, @Ctx() { em }: ContextType) {
-    const [, count] = await em.findAndCount(Vote, { post: { id: post.id } })
+    const [votes, count] = await em.findAndCount(Vote, {
+      post: { id: post.id }
+    })
+    if (count > 0) {
+      const score = votes.map(item => item.value).reduce((a, b) => a + b)
+      console.log(score)
+      return { count, score }
+    }
     return { count }
   }
+
   @FieldResolver({ nullable: true })
   async comments(@Root() post: Post, @Ctx() { em }: ContextType) {
     return await em.find(Comment, { post: { id: post.id } })
   }
+
   @FieldResolver({ nullable: true })
   async votes(@Root() post: Post, @Ctx() { em }: ContextType) {
     return await em.find(Vote, { post: { id: post.id } })
   }
+
   @FieldResolver()
   async author(@Root() post: Post, @Ctx() { em }: ContextType): Promise<User> {
     return await em.findOneOrFail(User, post.author.id)
   }
+
   @FieldResolver()
   async category(
     @Root() post: Post,

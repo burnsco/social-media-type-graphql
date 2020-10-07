@@ -29,6 +29,7 @@ query Post($postId: ID) {
       count
     }
     totalVotes {
+      score
       count
     }
   }

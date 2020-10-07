@@ -3,6 +3,7 @@
   "plugins": [
     "babel-plugin-chakra-ui",
     "babel-plugin-import-graphql",
+    "@babel/plugin-transform-react-jsx",
     [
       "module-resolver",
       {

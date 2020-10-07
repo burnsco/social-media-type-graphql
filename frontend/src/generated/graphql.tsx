@@ -143,6 +143,7 @@ export type Vote = {
 export type _QueryMeta = {
   __typename?: "_QueryMeta"
   count?: Maybe<Scalars["Int"]>
+  score?: Maybe<Scalars["Int"]>
 }
 
 export type PostOrderBy = {
@@ -250,6 +251,7 @@ export type VoteMutationResponse = {
   __typename?: "VoteMutationResponse"
   errors?: Maybe<Array<FieldError>>
   vote?: Maybe<Vote>
+  post?: Maybe<Post>
 }
 
 export type VoteInput = {
@@ -356,6 +358,23 @@ export type CreateSubredditMutation = { __typename?: "Mutation" } & {
   }
 }
 
+export type CreateVoteMutationVariables = Exact<{
+  data: VoteInput
+}>
+
+export type CreateVoteMutation = { __typename?: "Mutation" } & {
+  vote: { __typename?: "VoteMutationResponse" } & {
+    vote?: Maybe<{ __typename?: "Vote" } & Pick<Vote, "value" | "id">>
+    post?: Maybe<
+      { __typename?: "Post" } & Pick<Post, "id"> & {
+          totalVotes?: Maybe<
+            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count" | "score">
+          >
+        }
+    >
+  }
+}
+
 export type LogoutMutationVariables = Exact<{ [key: string]: never }>
 
 export type LogoutMutation = { __typename?: "Mutation" } & {
@@ -454,7 +473,7 @@ export type PostQuery = { __typename?: "Query" } & {
           { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
         >
         totalVotes?: Maybe<
-          { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
+          { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "score" | "count">
         >
       }
   >
@@ -497,7 +516,7 @@ export type PostsQuery = { __typename?: "Query" } & {
             { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
           >
           totalVotes?: Maybe<
-            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
+            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "score" | "count">
           >
         }
     >
@@ -704,6 +723,64 @@ export type CreateSubredditMutationResult = Apollo.MutationResult<
 export type CreateSubredditMutationOptions = Apollo.BaseMutationOptions<
   CreateSubredditMutation,
   CreateSubredditMutationVariables
+>
+export const CreateVoteDocument = gql`
+  mutation createVote($data: VoteInput!) {
+    vote(data: $data) {
+      vote {
+        value
+        id
+      }
+      post {
+        id
+        totalVotes {
+          count
+          score
+        }
+      }
+    }
+  }
+`
+export type CreateVoteMutationFn = Apollo.MutationFunction<
+  CreateVoteMutation,
+  CreateVoteMutationVariables
+>
+
+/**
+ * __useCreateVoteMutation__
+ *
+ * To run a mutation, you first call `useCreateVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createVoteMutation, { data, loading, error }] = useCreateVoteMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateVoteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateVoteMutation,
+    CreateVoteMutationVariables
+  >
+) {
+  return Apollo.useMutation<CreateVoteMutation, CreateVoteMutationVariables>(
+    CreateVoteDocument,
+    baseOptions
+  )
+}
+export type CreateVoteMutationHookResult = ReturnType<
+  typeof useCreateVoteMutation
+>
+export type CreateVoteMutationResult = Apollo.MutationResult<CreateVoteMutation>
+export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<
+  CreateVoteMutation,
+  CreateVoteMutationVariables
 >
 export const LogoutDocument = gql`
   mutation Logout {
@@ -1051,6 +1128,7 @@ export const PostDocument = gql`
         count
       }
       totalVotes {
+        score
         count
       }
     }
@@ -1132,6 +1210,7 @@ export const PostsDocument = gql`
         count
       }
       totalVotes {
+        score
         count
       }
     }

@@ -1,4 +1,4 @@
-import { PostQuery } from "@/generated/graphql"
+import { PostQuery, useCreateVoteMutation } from "@/generated/graphql"
 import { timeDifferenceForDate } from "@/utils/timeDifferenceForDate"
 import {
   Box,
@@ -15,8 +15,14 @@ import { NextChakraLink } from "../shared/NextChakraLink"
 
 const NewPost: React.FC<PostQuery> = props => {
   const bg = useColorModeValue("white", "#1A1A1B")
+
   const router = useRouter()
+
   const { post } = props
+
+  const [vote, { loading, error }] = useCreateVoteMutation()
+
+  console.log(error)
 
   return (
     // Container
@@ -43,15 +49,25 @@ const NewPost: React.FC<PostQuery> = props => {
           height="100%"
         >
           <IconButton
-            onClick={() => console.log("upvote")}
+            isDisabled={loading}
+            onClick={async () => {
+              await vote({
+                variables: { data: { value: 1, postId: post?.id as string } }
+              })
+            }}
             variant="ghost"
             color="current"
             aria-label="UpVote"
             icon={<ImArrowUp />}
           />
-          <Box>{post?.totalVotes?.count ?? 0}</Box>
+          <Box>{post?.totalVotes?.score ?? 0}</Box>
           <IconButton
-            onClick={() => console.log("downvote")}
+            isDisabled={loading}
+            onClick={async () => {
+              await vote({
+                variables: { data: { value: -1, postId: post?.id as string } }
+              })
+            }}
             variant="ghost"
             color="current"
             aria-label="DownVote"

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+    "checkJs": true,
     "alwaysStrict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -27,7 +27,8 @@
       "@/types/*": ["types/*"],
       "@/styles/*": ["styles/*"],
       "@/assets/*": ["assets/*"]
-    }
+    },
+    "allowJs": true
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx"]

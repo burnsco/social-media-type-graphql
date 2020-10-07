@@ -34,6 +34,7 @@ query Posts($first: Int, $orderBy: PostOrderBy, $skip: Int, $category: String) {
     }
 
     totalVotes {
+      score
       count
     }
   }

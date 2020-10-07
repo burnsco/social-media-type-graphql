@@ -33,7 +33,14 @@ const SideMenu: React.FC = () => {
 
   return (
     <Skeleton isLoaded={!loading}>
-      <Box bg={bg} borderWidth="1px" rounded="md" overflow="hidden" p="4">
+      <Box
+        bg={bg}
+        borderWidth="1px"
+        borderStyle="dotted"
+        rounded="md"
+        overflow="hidden"
+        p="4"
+      >
         <List borderWidth="xs" minH="100%" spacing={3}>
           {data?.categories.map(subreddit => (
             <ListItem key={`subreddit-${subreddit.id}`}>
