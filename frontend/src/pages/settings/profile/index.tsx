@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/core"
 import * as React from "react"
 
-const ProfileSettingsPage: React.FC = () => {
+const ProfileSettingsPage = () => {
   return (
     <TabPanel>
       <Heading fontSize="md">Customize Profile</Heading>

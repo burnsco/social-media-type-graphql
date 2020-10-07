@@ -111,6 +111,7 @@ export type User = {
   updatedAt: Scalars["String"]
   email: Scalars["String"]
   username: Scalars["String"]
+  avatar?: Maybe<Scalars["String"]>
 }
 
 export type Post = {

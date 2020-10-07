@@ -15,4 +15,8 @@ export class User extends BaseEntity {
 
   @Property()
   password: string
+
+  @Field(() => String, { nullable: true })
+  @Property({ nullable: true })
+  avatar?: string
 }
