@@ -76,7 +76,6 @@ export class UserResolver {
         username: data.username
       })
     }
-
     if (data.about) {
       wrap(user).assign({
         about: data.about

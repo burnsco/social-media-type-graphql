@@ -90,7 +90,7 @@ const ProfileSettingsPage: React.FunctionComponent = () => {
                             <Input
                               {...field}
                               id="username"
-                              placeholder="Display Name"
+                              placeholder="Username"
                             />
                             <FormErrorMessage>
                               {form.errors.username}
