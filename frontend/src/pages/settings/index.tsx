@@ -75,6 +75,7 @@ const ProfileSettingsPage: React.FunctionComponent = () => {
                   <TabList>
                     <Tab>Profile</Tab>
                     <Tab>Account</Tab>
+                    <Tab>Avatar</Tab>
                   </TabList>
 
                   <TabPanels>
