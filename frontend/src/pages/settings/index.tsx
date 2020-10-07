@@ -15,11 +15,6 @@ import {
 import * as React from "react"
 
 const SettingsPage: React.FC = () => {
-  const initialValues = {
-    userId: "",
-    about: "",
-    avatar: ""
-  }
   return (
     <Box>
       <Heading mb={2}>User settings</Heading>
