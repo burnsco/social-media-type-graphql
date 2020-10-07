@@ -1,3 +1,4 @@
+import { useEditUserMutation } from "@/generated/graphql"
 import {
   Box,
   Button,
@@ -51,6 +52,8 @@ const ProfileSettingsPage: React.FunctionComponent = () => {
               variables: {
                 data: {
                   username: values.username,
+                  password: values.password,
+                  email: values.email,
                   about: values.about,
                   avatar: values.avatar
                 }

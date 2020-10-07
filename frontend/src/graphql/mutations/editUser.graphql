@@ -1,0 +1,11 @@
+mutation editUser($data: EditUserInput!) {
+  editUser(data: $data) {
+    user {
+      id
+      username
+      email
+      avatar
+      about
+    }
+  }
+}
