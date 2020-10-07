@@ -7,7 +7,7 @@ import Header from "../Header"
 import SideMenu from "./SideMenu"
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const bg = useColorModeValue("#DAE0E6", "black")
+  const bg = useColorModeValue("gray.200", "black")
   return (
     <>
       <Header />

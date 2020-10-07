@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
       <ChakraProvider resetCSS theme={theme}>
-        <ColorModeScript initialColorMode="light" />
+        <ColorModeScript initialColorMode="dark" />
         <Layout>
           <Component {...pageProps} />
         </Layout>

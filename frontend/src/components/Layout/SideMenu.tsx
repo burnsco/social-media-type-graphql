@@ -45,8 +45,7 @@ const SideMenu: React.FC = () => {
           {data?.categories.map(subreddit => (
             <ListItem key={`subreddit-${subreddit.id}`}>
               <NextChakraLink
-                fontWeight="500"
-                fontStyle={category === subreddit.name ? "italic" : "normal"}
+                fontWeight={category === subreddit.name ? 600 : 400}
                 color={category === subreddit.name ? hover : color}
                 _hover={{
                   color: hover,
