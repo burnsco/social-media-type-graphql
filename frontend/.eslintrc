@@ -21,6 +21,9 @@
     "react": {
       "pragma": "React",
       "version": "detect"
+    },
+    "import/resolver": {
+      "babel-module": {}
     }
   },
   "parserOptions": {
@@ -34,6 +37,7 @@
     "node": true
   },
   "rules": {
+    "testing-library/no-debug": "off",
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",

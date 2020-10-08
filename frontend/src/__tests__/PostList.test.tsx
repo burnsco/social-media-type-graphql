@@ -1,44 +1,43 @@
-import { InMemoryCache } from "@apollo/client"
+import PostList from "@/components/PostList"
+import { PostsDocument } from "@/generated/graphql"
+import { render } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
+import { screen } from "@testing-library/react"
 import React from "react"
-import PostList from "../components/PostList"
-import { PostsDocument } from "../generated/graphql"
-import { render } from "../utils/test-utils"
+import { posts } from "../utils/postData"
 
-const postsCache = new InMemoryCache()
-postsCache.writeQuery({
-  query: PostsDocument,
-  data: {
-    posts: {
-      id: "1",
-      createdAt: "1601511422000",
-      updatedAt: "1601511422000",
-      title: "Test Post",
-      category: {
-        id: "1",
-        name: "React"
+const mocks = [
+  {
+    request: {
+      query: PostsDocument,
+      variables: {
+        skip: 0,
+        first: 4
       },
-      author: {
-        id: "1",
-        username: "Corey"
-      },
-      totalComments: {
-        count: 0
-      },
-      totalVotes: {
-        count: 0
+      notifyOnNetworkStatusChange: true
+    },
+    result: {
+      data: {
+        posts: [...posts],
+        _allPostsMeta: {
+          __typename: "_QueryMeta",
+          count: 1
+        }
       }
     }
   }
-})
+]
 
 describe("PostList", () => {
   it("renders without crashing", async () => {
     render(
-      <MockedProvider cache={postsCache} addTypename={false}>
+      <MockedProvider mocks={mocks}>
         <PostList />
       </MockedProvider>
     )
+    console.log(mocks)
+    const loading = await screen.findByText(/no posts here/i)
+    expect(loading).toBeInTheDocument()
   })
 })

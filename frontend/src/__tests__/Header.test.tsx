@@ -1,10 +1,10 @@
+import Header from "@/components/Header"
+import { render } from "@/utils/test-utils"
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 import { screen } from "@testing-library/react"
 import React from "react"
-import Header from "../components/Header"
-import { render } from "../utils/test-utils"
 
 const notSignedInCache = new InMemoryCache()
 notSignedInCache.writeQuery({
@@ -53,7 +53,6 @@ describe("Header", () => {
     )
     await screen.findByRole("button", { name: /register/i })
     await screen.findByRole("button", { name: /login/i })
-
     expect(screen.getByRole("button", { name: /register/i })).toBeInTheDocument
     expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument
   })
@@ -65,7 +64,6 @@ describe("Header", () => {
       </MockedProvider>
     )
     await screen.findByRole("button", { name: /Corey/i })
-
     expect(screen.getByRole("button", { name: /Corey/i })).toBeInTheDocument
   })
 
@@ -75,11 +73,9 @@ describe("Header", () => {
         <Header />
       </MockedProvider>
     )
-
     await screen.findByRole("button", { name: /submit post/i })
     await screen.findByRole("button", { name: /home/i })
     await screen.findByRole("button", { name: /create subreddit/i })
-
     expect(screen.getByRole("button", { name: /submit post/i }))
       .toBeInTheDocument
     expect(screen.getByRole("button", { name: /home/i })).toBeInTheDocument

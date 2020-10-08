@@ -34,7 +34,7 @@ const PostList = () => {
   const allPosts = data?.posts ?? []
   const _allPostsMeta = data?._allPostsMeta
   const areMorePosts = (allPosts?.length ?? 1) < (_allPostsMeta?.count ?? 0)
-
+  console.log(data)
   const ViewPosts = () => {
     if (allPosts.length > 0) {
       return (
