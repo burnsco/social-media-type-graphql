@@ -3,7 +3,6 @@ import { allPostsQueryVars } from "@/types/post"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Button } from "@chakra-ui/core"
 import * as React from "react"
-import { ImSpinner } from "react-icons/im"
 import NewPost from "../Post"
 
 const PostList = () => {
@@ -21,7 +20,7 @@ const PostList = () => {
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
   if (error) return <div>error loading posts</div>
-  if (loading && !loadingMorePosts) return <ImSpinner />
+  if (loading && !loadingMorePosts) return <div>loading...</div>
 
   const loadMorePosts = () => {
     fetchMore({

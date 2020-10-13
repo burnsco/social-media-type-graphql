@@ -14,7 +14,6 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import * as React from "react"
 import { BsFolderPlus } from "react-icons/bs"
 import { FaRedditSquare } from "react-icons/fa"
 import { ImPencil2 } from "react-icons/im"
