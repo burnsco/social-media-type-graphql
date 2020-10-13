@@ -8,7 +8,7 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Spinner, Stack } from "@chakra-ui/core"
+import { Skeleton, Spinner, Stack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
@@ -58,7 +58,11 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
 
   if (postsBySubreddit.length > 0) {
     return (
-      <Box>
+      <Skeleton
+        isLoaded={!loading && !loadingMorePosts}
+        startColor="pink.500"
+        endColor="orange.500"
+      >
         {postsBySubreddit.length > 0 && (
           <Stack spacing={8}>
             {postsBySubreddit.map((post, index) => (
@@ -74,7 +78,7 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
             )}
           </Stack>
         )}
-      </Box>
+      </Skeleton>
     )
   }
   return <div>No posts here.</div>

@@ -1,7 +1,7 @@
 import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/post"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Button } from "@chakra-ui/core"
+import { Box, Button, Skeleton } from "@chakra-ui/core"
 import { useEffect, useState } from "react"
 import NewPost from "../Post"
 
@@ -33,7 +33,7 @@ const PostList = () => {
   const allPosts = data?.posts ?? []
   const _allPostsMeta = data?._allPostsMeta
   const areMorePosts = (allPosts?.length ?? 1) < (_allPostsMeta?.count ?? 0)
-  console.log(data)
+
   const ViewPosts = () => {
     if (allPosts.length > 0) {
       return (
@@ -67,10 +67,12 @@ const PostList = () => {
 
   if (isMounted) {
     return (
-      <Box>
-        <ViewPosts />
-        <ShowMorePosts />
-      </Box>
+      <Skeleton isLoaded={!loading} startColor="pink.500" endColor="orange.500">
+        <Box>
+          <ViewPosts />
+          <ShowMorePosts />
+        </Box>
+      </Skeleton>
     )
   }
   return null

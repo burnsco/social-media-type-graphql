@@ -2,7 +2,7 @@ import CommentsPageWithData from "@/components/Comment/Data"
 import SubmitCommentForm from "@/components/Comment/Form"
 import NewPost from "@/components/Post"
 import { usePostQuery } from "@/generated/graphql"
-import { Box, Spinner, Stack } from "@chakra-ui/core"
+import { Box, Skeleton, Spinner, Stack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
 const PostAndCommentsPage: React.FC = () => {
@@ -14,13 +14,10 @@ const PostAndCommentsPage: React.FC = () => {
       postId: postId
     }
   })
-
   if (router.isFallback) {
     return <Spinner />
   }
-
   if (error) return <div>error loading post</div>
-
   if (loading) return null
 
   const totalComments = data?.post?.totalComments?.count
@@ -34,15 +31,17 @@ const PostAndCommentsPage: React.FC = () => {
 
   if (data && data.post) {
     return (
-      <Stack spacing={2}>
-        <NewPost
-          key={`post-${data.post.id}-${data.post.title}`}
-          post={data.post}
-        />
-        <SubmitCommentForm postId={postId} />
-        <Box>Comments</Box>
-        <ViewComments />
-      </Stack>
+      <Skeleton isLoaded={!loading} startColor="pink.500" endColor="orange.500">
+        <Stack spacing={2}>
+          <NewPost
+            key={`post-${data.post.id}-${data.post.title}`}
+            post={data.post}
+          />
+          <SubmitCommentForm postId={postId} />
+          <Box>Comments</Box>
+          <ViewComments />
+        </Stack>
+      </Skeleton>
     )
   }
   return <div>No post here.</div>

@@ -32,7 +32,7 @@ const SideMenu: React.FC = () => {
   if (loading) return null
 
   return (
-    <Skeleton isLoaded={!loading}>
+    <Skeleton isLoaded={!loading} startColor="pink.500" endColor="orange.500">
       <Box
         bg={bg}
         minW="180px"
