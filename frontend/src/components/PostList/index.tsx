@@ -2,11 +2,11 @@ import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/post"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Button } from "@chakra-ui/core"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import NewPost from "../Post"
 
 const PostList = () => {
-  const [isMounted, setIsMounted] = React.useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
