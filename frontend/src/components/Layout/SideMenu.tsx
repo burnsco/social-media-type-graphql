@@ -35,6 +35,7 @@ const SideMenu: React.FC = () => {
     <Skeleton isLoaded={!loading}>
       <Box
         bg={bg}
+        minW="180px"
         borderWidth="1px"
         borderStyle="dotted"
         rounded="md"
