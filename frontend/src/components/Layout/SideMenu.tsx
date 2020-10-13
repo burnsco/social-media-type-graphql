@@ -7,19 +7,19 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import * as React from "react"
+import { useEffect, useState } from "react"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 const SideMenu: React.FC = () => {
   const router = useRouter()
 
-  const [isMounted, setIsMounted] = React.useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
   const color = useColorModeValue("gray.700", "gray.300")
   const hover = useColorModeValue("gray.500", "white")
   const bg = useColorModeValue("white", "#1A1A1B")
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsMounted(true)
   }, [])
 

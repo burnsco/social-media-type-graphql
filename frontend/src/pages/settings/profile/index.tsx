@@ -8,7 +8,6 @@ import {
   Text,
   Textarea
 } from "@chakra-ui/core"
-import * as React from "react"
 
 const ProfileSettingsPage = () => {
   return (

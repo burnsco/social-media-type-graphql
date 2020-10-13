@@ -1,6 +1,5 @@
 import { FormLabel } from "@chakra-ui/core"
 import { ErrorMessage, Field } from "formik"
-import * as React from "react"
 
 type FieldSetProps = React.InputHTMLAttributes<HTMLInputElement> & {
   name: string

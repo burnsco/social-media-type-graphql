@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/core"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import * as React from "react"
 import { ImArrowDown, ImArrowUp } from "react-icons/im"
 import CommentsPageWithData from "../Comment/Data"
 import SubmitCommentForm from "../Comment/Form"

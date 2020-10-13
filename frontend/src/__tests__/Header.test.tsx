@@ -4,7 +4,6 @@ import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 import { screen } from "@testing-library/react"
-import React from "react"
 
 const notSignedInCache = new InMemoryCache()
 notSignedInCache.writeQuery({

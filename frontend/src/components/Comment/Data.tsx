@@ -11,13 +11,13 @@ import { Box, Spinner, Stack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
-import * as React from "react"
+import { useEffect, useState } from "react"
 import CommentPage from "."
 
 const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
-  const [isMounted, setIsMounted] = React.useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsMounted(true)
   }, [isMounted])
 

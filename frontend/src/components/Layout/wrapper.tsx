@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/core"
-import * as React from "react"
 interface VariantProps {
   variant: "small" | "regular"
   children: React.ReactNode

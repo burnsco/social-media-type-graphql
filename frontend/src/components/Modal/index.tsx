@@ -12,13 +12,13 @@ import {
   ModalOverlay,
   useDisclosure
 } from "@chakra-ui/core"
-import * as React from "react"
+import { useRef } from "react"
 
 export const TestModal: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const initialRef = React.useRef<HTMLInputElement | null>(null)
-  const finalRef = React.useRef<HTMLButtonElement | null>(null)
+  const initialRef = useRef<HTMLInputElement | null>(null)
+  const finalRef = useRef<HTMLButtonElement | null>(null)
 
   return (
     <>

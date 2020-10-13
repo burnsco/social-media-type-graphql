@@ -6,7 +6,6 @@ import {
   Flex,
   IconButton
 } from "@chakra-ui/core"
-import * as React from "react"
 
 const CustomControls: React.FC<{ title: string }> = ({ title }) => {
   function EditableControls({ isEditing, onSubmit, onCancel, onEdit }: any) {

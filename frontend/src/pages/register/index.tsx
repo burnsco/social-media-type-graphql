@@ -3,7 +3,6 @@ import { InputField } from "@/components/shared/InputField"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { Box, Button, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-import * as React from "react"
 
 const RegisterPage: React.FC = () => {
   const toast = useToast()

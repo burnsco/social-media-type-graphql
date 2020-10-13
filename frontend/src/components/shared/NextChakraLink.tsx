@@ -4,7 +4,6 @@ import {
 } from "@chakra-ui/core"
 import { LinkProps as NextLinkProps } from "next/dist/client/link"
 import NextLink from "next/link"
-import * as React from "react"
 import { PropsWithChildren } from "react"
 
 export type NextChakraLinkProps = PropsWithChildren<

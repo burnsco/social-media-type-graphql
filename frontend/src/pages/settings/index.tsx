@@ -14,7 +14,6 @@ import {
   Tabs
 } from "@chakra-ui/core"
 import { Field, Form, Formik } from "formik"
-import * as React from "react"
 import * as Yup from "yup"
 
 const ProfileSettingsPage: React.FunctionComponent = () => {

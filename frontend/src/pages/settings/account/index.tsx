@@ -1,5 +1,4 @@
 import { Button, Heading, TabPanel, Text } from "@chakra-ui/core"
-import * as React from "react"
 
 const AccountSettingsPage = () => {
   return (

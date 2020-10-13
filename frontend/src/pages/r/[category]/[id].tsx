@@ -4,7 +4,6 @@ import NewPost from "@/components/Post"
 import { usePostQuery } from "@/generated/graphql"
 import { Box, Spinner, Stack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import * as React from "react"
 
 const PostAndCommentsPage: React.FC = () => {
   const router = useRouter()

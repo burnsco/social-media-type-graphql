@@ -10,7 +10,6 @@ import {
   Skeleton
 } from "@chakra-ui/core"
 import { Field, Formik } from "formik"
-import * as React from "react"
 import * as Yup from "yup"
 interface CreateSubredditProps {
   name: string
