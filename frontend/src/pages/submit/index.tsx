@@ -15,12 +15,14 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs,
+  useColorModeValue
 } from "@chakra-ui/core"
 import { Field, Form, Formik } from "formik"
 import * as Yup from "yup"
 
 const SubmitPage: React.FunctionComponent = () => {
+  const bg = useColorModeValue("white", "#1A1A1B")
   const initialValues = {
     userId: "",
     categoryId: "",
@@ -47,7 +49,7 @@ const SubmitPage: React.FunctionComponent = () => {
   }
 
   return (
-    <Box>
+    <Box bg={bg}>
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object().shape({

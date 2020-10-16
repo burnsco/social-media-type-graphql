@@ -8,11 +8,12 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Skeleton, Spinner, Stack } from "@chakra-ui/core"
+import { Box, Skeleton, Spinner, Stack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
+import ShowMorePosts from "../../../components/PostList/showMore"
 
 const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const [isMounted, setIsMounted] = useState(false)
@@ -56,32 +57,48 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const areMorePosts =
     (postsBySubreddit?.length ?? 1) < (_categoryPostsMeta?.count ?? 0)
 
-  if (postsBySubreddit.length > 0) {
+  const ViewPosts = () => {
+    if (postsBySubreddit.length > 0) {
+      return (
+        <Skeleton
+          isLoaded={!loading && !loadingMorePosts}
+          startColor="pink.500"
+          endColor="orange.500"
+        >
+          {postsBySubreddit.length > 0 && (
+            <Stack spacing={8}>
+              {postsBySubreddit.map((post, index) => (
+                <NewPost key={`post-${post.id}-${index}`} post={post} />
+              ))}
+              {areMorePosts && (
+                <button
+                  onClick={() => loadMorePosts()}
+                  disabled={loadingMorePosts}
+                >
+                  {loadingMorePosts ? "Loading..." : "Show More"}
+                </button>
+              )}
+            </Stack>
+          )}
+        </Skeleton>
+      )
+    }
+    return <div>No posts here.</div>
+  }
+
+  if (isMounted) {
     return (
-      <Skeleton
-        isLoaded={!loading && !loadingMorePosts}
-        startColor="pink.500"
-        endColor="orange.500"
-      >
-        {postsBySubreddit.length > 0 && (
-          <Stack spacing={8}>
-            {postsBySubreddit.map((post, index) => (
-              <NewPost key={`post-${post.id}-${index}`} post={post} />
-            ))}
-            {areMorePosts && (
-              <button
-                onClick={() => loadMorePosts()}
-                disabled={loadingMorePosts}
-              >
-                {loadingMorePosts ? "Loading..." : "Show More"}
-              </button>
-            )}
-          </Stack>
-        )}
-      </Skeleton>
+      <Box>
+        <ViewPosts />
+        <ShowMorePosts
+          loadMorePosts={loadMorePosts}
+          areMorePosts={areMorePosts}
+          loadingMorePosts={loadingMorePosts}
+        />
+      </Box>
     )
   }
-  return <div>No posts here.</div>
+  return null
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
