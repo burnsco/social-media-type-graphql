@@ -1,9 +1,10 @@
 import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/post"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Button, Skeleton } from "@chakra-ui/core"
+import { Box } from "@chakra-ui/core"
 import { useEffect, useState } from "react"
 import NewPost from "../Post"
+import ShowMorePosts from "./showMore"
 
 const PostList = () => {
   const [isMounted, setIsMounted] = useState(false)
@@ -47,32 +48,16 @@ const PostList = () => {
     return <div>No posts here</div>
   }
 
-  const ShowMorePosts = () => {
-    if (areMorePosts) {
-      return (
-        <Box m={2}>
-          <Button
-            variant="outline"
-            onClick={() => loadMorePosts()}
-            disabled={loadingMorePosts}
-          >
-            {loadingMorePosts ? "Loading..." : "Show More"}
-          </Button>
-        </Box>
-      )
-    } else {
-      return null
-    }
-  }
-
   if (isMounted) {
     return (
-      <Skeleton isLoaded={!loading} startColor="pink.500" endColor="orange.500">
-        <Box>
-          <ViewPosts />
-          <ShowMorePosts />
-        </Box>
-      </Skeleton>
+      <Box>
+        <ViewPosts />
+        <ShowMorePosts
+          loadMorePosts={loadMorePosts}
+          areMorePosts={areMorePosts}
+          loadingMorePosts={loadingMorePosts}
+        />
+      </Box>
     )
   }
   return null
