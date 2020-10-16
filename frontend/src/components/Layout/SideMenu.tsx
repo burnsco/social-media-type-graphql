@@ -7,7 +7,7 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 const SideMenu: React.FC = () => {
@@ -65,4 +65,4 @@ const SideMenu: React.FC = () => {
   )
 }
 
-export default SideMenu
+export default memo(SideMenu)

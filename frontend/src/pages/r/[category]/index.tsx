@@ -1,4 +1,5 @@
 import NewPost from "@/components/Post"
+import ShowMorePosts from "@/components/PostList/showMore"
 import {
   CategoriesDocument,
   Category,
@@ -8,17 +9,13 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Skeleton, Spinner, Stack } from "@chakra-ui/core"
+import { Box, Stack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
-import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
-import ShowMorePosts from "../../../components/PostList/showMore"
 
 const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const [isMounted, setIsMounted] = useState(false)
-
-  const router = useRouter()
 
   useEffect(() => {
     setIsMounted(true)
@@ -36,6 +33,9 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
+  if (error) return <div>error loading posts</div>
+  if (loading && !loadingMorePosts) return null
+
   const loadMorePosts = () => {
     fetchMore({
       variables: {
@@ -43,14 +43,6 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
       }
     })
   }
-
-  if (router.isFallback) {
-    return <Spinner />
-  }
-
-  if (error) return <div>error loading posts</div>
-
-  if (loading && !loadingMorePosts) return null
 
   const postsBySubreddit = data?.posts ?? []
   const _categoryPostsMeta = data?._categoryPostsMeta
@@ -60,27 +52,11 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const ViewPosts = () => {
     if (postsBySubreddit.length > 0) {
       return (
-        <Skeleton
-          isLoaded={!loading && !loadingMorePosts}
-          startColor="pink.500"
-          endColor="orange.500"
-        >
-          {postsBySubreddit.length > 0 && (
-            <Stack spacing={8}>
-              {postsBySubreddit.map((post, index) => (
-                <NewPost key={`post-${post.id}-${index}`} post={post} />
-              ))}
-              {areMorePosts && (
-                <button
-                  onClick={() => loadMorePosts()}
-                  disabled={loadingMorePosts}
-                >
-                  {loadingMorePosts ? "Loading..." : "Show More"}
-                </button>
-              )}
-            </Stack>
-          )}
-        </Skeleton>
+        <Stack spacing={8}>
+          {postsBySubreddit.map((post, index) => (
+            <NewPost key={`post-${post.id}-${index}`} post={post} />
+          ))}
+        </Stack>
       )
     }
     return <div>No posts here.</div>

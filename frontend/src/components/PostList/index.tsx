@@ -23,6 +23,10 @@ const PostList = () => {
   if (error) return <div>error loading posts</div>
   if (loading && !loadingMorePosts) return <div>loading...</div>
 
+  const allPosts = data?.posts ?? []
+  const _allPostsMeta = data?._allPostsMeta
+  const areMorePosts = (allPosts?.length ?? 1) < (_allPostsMeta?.count ?? 0)
+
   const loadMorePosts = () => {
     fetchMore({
       variables: {
@@ -30,10 +34,6 @@ const PostList = () => {
       }
     })
   }
-
-  const allPosts = data?.posts ?? []
-  const _allPostsMeta = data?._allPostsMeta
-  const areMorePosts = (allPosts?.length ?? 1) < (_allPostsMeta?.count ?? 0)
 
   const ViewPosts = () => {
     if (allPosts.length > 0) {

@@ -34,7 +34,10 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   const loadingMoreComments = networkStatus === NetworkStatus.fetchMore
 
   if (error) return <div>error loading posts</div>
-  if (loading && !loadingMoreComments) return null
+  if (loading && !loadingMoreComments) return <div>loading...</div>
+
+  const comments = data?.comments ?? []
+  const areMoreComments = (comments?.length ?? 1) < (comments?.length ?? 0)
 
   const loadMoreComments = () => {
     fetchMore({
@@ -44,37 +47,24 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
     })
   }
 
-  const comments = data?.comments ?? []
-  const areMoreComments = (comments?.length ?? 1) < (comments?.length ?? 0)
-
-  // TODO setup pagination for comments?
   const ViewComments = () => {
     if (comments.length > 0) {
       return (
         <Box>
-          {comments.length > 0 && (
-            <Stack spacing={8}>
-              {comments.map((comment, index) => (
-                <CommentPage
-                  key={`comment-${comment.id}-${index}`}
-                  comment={comment}
-                />
-              ))}
-              {areMoreComments && (
-                <button
-                  onClick={() => loadMoreComments()}
-                  disabled={loadingMoreComments}
-                >
-                  {loadingMoreComments ? "Loading..." : "Show More"}
-                </button>
-              )}
-            </Stack>
-          )}
+          <Stack spacing={8}>
+            {comments.map((comment, index) => (
+              <CommentPage
+                key={`comment-${comment.id}-${index}`}
+                comment={comment}
+              />
+            ))}
+          </Stack>
         </Box>
       )
     }
     return <div>No comments yet.</div>
   }
+
   if (isMounted) {
     return (
       <Box>
