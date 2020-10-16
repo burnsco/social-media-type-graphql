@@ -7,12 +7,12 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Spinner, Stack } from "@chakra-ui/core"
+import { Box, Stack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
-import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
 import CommentPage from "."
+import ShowMoreComments from "./ShowMore"
 
 const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   const [isMounted, setIsMounted] = useState(false)
@@ -33,49 +33,61 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
 
   const loadingMoreComments = networkStatus === NetworkStatus.fetchMore
 
+  if (error) return <div>error loading posts</div>
+  if (loading && !loadingMoreComments) return null
+
   const loadMoreComments = () => {
     fetchMore({
       variables: {
-        skip: comments?.length ?? 0
+        skip: data?.comments?.length ?? 0
       }
     })
   }
 
-  const router = useRouter()
-
-  if (router.isFallback) {
-    return <Spinner />
-  }
-
-  if (error) return <div>error loading posts</div>
-
-  if (loading && !loadingMoreComments) return null
-
   const comments = data?.comments ?? []
-  const areMorePosts = (comments?.length ?? 1) < (comments?.length ?? 0)
+  const areMoreComments = (comments?.length ?? 1) < (comments?.length ?? 0)
 
-  return (
-    <Box>
-      {comments.length > 0 && (
-        <Stack spacing={8}>
-          {comments.map((comment, index) => (
-            <CommentPage
-              key={`comment-${comment.id}-${index}`}
-              comment={comment}
-            />
-          ))}
-          {areMorePosts && (
-            <button
-              onClick={() => loadMoreComments()}
-              disabled={loadingMoreComments}
-            >
-              {loadingMoreComments ? "Loading..." : "Show More"}
-            </button>
+  // TODO setup pagination for comments?
+  const ViewComments = () => {
+    if (comments.length > 0) {
+      return (
+        <Box>
+          {comments.length > 0 && (
+            <Stack spacing={8}>
+              {comments.map((comment, index) => (
+                <CommentPage
+                  key={`comment-${comment.id}-${index}`}
+                  comment={comment}
+                />
+              ))}
+              {areMoreComments && (
+                <button
+                  onClick={() => loadMoreComments()}
+                  disabled={loadingMoreComments}
+                >
+                  {loadingMoreComments ? "Loading..." : "Show More"}
+                </button>
+              )}
+            </Stack>
           )}
-        </Stack>
-      )}
-    </Box>
-  )
+        </Box>
+      )
+    }
+    return <div>No comments yet.</div>
+  }
+  if (isMounted) {
+    return (
+      <Box>
+        <ViewComments />
+        <ShowMoreComments
+          loadMoreComments={loadMoreComments}
+          areMoreComments={areMoreComments}
+          loadingMoreComments={loadingMoreComments}
+        />
+      </Box>
+    )
+  }
+  return null
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {

@@ -45,7 +45,7 @@ const PostList = () => {
         </ul>
       )
     }
-    return <div>No posts here</div>
+    return <div>No posts here.</div>
   }
 
   if (isMounted) {
