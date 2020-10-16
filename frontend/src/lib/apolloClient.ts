@@ -35,6 +35,11 @@ function createApolloClient() {
             merge(existing, incoming) {
               return { ...existing, ...incoming }
             }
+          },
+          totalVotes: {
+            merge(existing, incoming) {
+              return { ...existing, ...incoming }
+            }
           }
         }
       },
