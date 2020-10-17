@@ -19,8 +19,8 @@ import { VoteResolver } from "./resolvers/vote-resolver"
 
 const main = async () => {
   const options: Redis.RedisOptions = {
-    host: process.env.REDIS_HOST,
-    port: parseInt(process.env.REDIS_PORT),
+    host: '127.0.0.1',
+    port: 6379,
     retryStrategy: times => Math.max(times * 100, 3000)
   }
 

@@ -5,10 +5,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "lib": ["dom", "es2017"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -21,39 +18,18 @@
     "target": "esnext",
     "baseUrl": "./src",
     "paths": {
-      "@/generated/*": [
-        "generated/*"
-      ],
-      "@/pages/*": [
-        "pages/*"
-      ],
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/lib/*": [
-        "lib/*"
-      ],
-      "@/utils*": [
-        "utils*"
-      ],
-      "@/types/*": [
-        "types/*"
-      ],
-      "@/styles/*": [
-        "styles/*"
-      ],
-      "@/assets/*": [
-        "assets/*"
-      ]
+      "@/generated/*": ["generated/*"],
+      "@/pages/*": ["pages/*"],
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/utils*": ["utils*"],
+      "@/types/*": ["types/*"],
+      "@/styles/*": ["styles/*"],
+      "@/assets/*": ["assets/*"]
     },
     "allowJs": true,
     "jsx": "preserve"
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }
