@@ -10,6 +10,7 @@ import path from "path"
 import "reflect-metadata"
 import { buildSchema } from "type-graphql"
 import { COOKIE_NAME, __prod__ } from "./constants"
+import MikroConfig from "./mikro-orm.config"
 import { CategoryResolver } from "./resolvers/category-resolver"
 import { CommentResolver } from "./resolvers/comment-resolver"
 import { PostResolver } from "./resolvers/post-resolver"
@@ -23,8 +24,7 @@ const main = async () => {
     retryStrategy: times => Math.max(times * 100, 3000)
   }
 
-  const orm = await MikroORM.init()
-  await orm.getMigrator().up()
+  const orm = await MikroORM.init(MikroConfig)
 
   const app = express()
 
