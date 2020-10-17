@@ -1270,7 +1270,7 @@
   dependencies:
     "@chakra-ui/utils" "1.0.0-rc.5"
 
-"@chakra-ui/core@^@chakra-ui-theme-1.0.0-rc.5":
+"@chakra-ui/core@^1.0.0-rc.5":
   version "1.0.0-rc.5"
   resolved "https://registry.yarnpkg.com/@chakra-ui/core/-/core-1.0.0-rc.5.tgz#16571a30702d68b7cdbef564bf2280437bb5b850"
   integrity sha512-s+z7vGomX3SnsoeFzW4yuuYPDnr52TDo1GETcTgzaUDfs2keQKXphzvFUxUFFY0VgHOejfXDyoNypPnAR6eqXw==
@@ -1619,7 +1619,7 @@
     "@chakra-ui/form-control" "1.0.0-rc.5"
     "@chakra-ui/utils" "1.0.0-rc.5"
 
-"@chakra-ui/theme-tools@1.0.0-rc.5", "@chakra-ui/theme-tools@^@chakra-ui-theme-1.0.0-rc.5":
+"@chakra-ui/theme-tools@1.0.0-rc.5", "@chakra-ui/theme-tools@^1.0.0-rc.5":
   version "1.0.0-rc.5"
   resolved "https://registry.yarnpkg.com/@chakra-ui/theme-tools/-/theme-tools-1.0.0-rc.5.tgz#f709ec136b333373d12c9ee6b72a4190855c2eba"
   integrity sha512-uztjaShNFxE4zcMFc0qSClfqQTJPynN7jtkxvciebf5Cz2LGUUg2qsJOBdo7YrVwpwSiUKh3o1KR8qaaTlVV0g==
@@ -1628,7 +1628,7 @@
     "@types/tinycolor2" "1.4.2"
     tinycolor2 "1.4.1"
 
-"@chakra-ui/theme@1.0.0-rc.5", "@chakra-ui/theme@^@chakra-ui-theme-1.0.0-rc.5":
+"@chakra-ui/theme@1.0.0-rc.5", "@chakra-ui/theme@^1.0.0-rc.5":
   version "1.0.0-rc.5"
   resolved "https://registry.yarnpkg.com/@chakra-ui/theme/-/theme-1.0.0-rc.5.tgz#fd275f770d190cdc52018fad6071fefa1360df65"
   integrity sha512-xSM4dp9fwp885IfqfyZ3yVrgYfIxxd/Sl6Az8HJsVHM9uWteyjzMIPf7Svtn4ft59XW79Vq6OqPyBWvsETinYg==
@@ -8092,7 +8092,7 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-next@&9.5.5:
+next@^9.5.5:
   version "9.5.5"
   resolved "https://registry.yarnpkg.com/next/-/next-9.5.5.tgz#37a37095e7c877ed6c94ba82e34ab9ed02b4eb33"
   integrity sha512-KF4MIdTYeI6YIGODNw27w9HGzCll4CXbUpkP6MNvyoHlpsunx8ybkQHm/hYa7lWMozmsn58LwaXJOhe4bSrI0g==
