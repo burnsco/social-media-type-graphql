@@ -9,6 +9,7 @@ const RegisterPage: React.FC = () => {
   const [register, { data, loading, error }] = useRegisterMutation()
 
   if (loading) return null
+
   if (error) {
     console.log(error)
   }
