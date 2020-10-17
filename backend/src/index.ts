@@ -19,7 +19,7 @@ import { VoteResolver } from "./resolvers/vote-resolver"
 
 const main = async () => {
   const options: Redis.RedisOptions = {
-    host: '127.0.0.1',
+    host: "127.0.0.1",
     port: 6379,
     retryStrategy: times => Math.max(times * 100, 3000)
   }
@@ -49,7 +49,8 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
         httpOnly: true,
         sameSite: "lax",
-        secure: __prod__
+        secure: __prod__,
+        domain: __prod__ ? ".reddit-clone.com" : undefined
       },
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET,
