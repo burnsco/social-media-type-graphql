@@ -73,11 +73,11 @@ describe("Header", () => {
       </MockedProvider>
     )
     await screen.findByRole("button", { name: /submit post/i })
-    await screen.findByRole("button", { name: /home/i })
+    await screen.findByText(/reddit/i)
     await screen.findByRole("button", { name: /create subreddit/i })
     expect(screen.getByRole("button", { name: /submit post/i }))
       .toBeInTheDocument
-    expect(screen.getByRole("button", { name: /home/i })).toBeInTheDocument
+    expect(screen.getByRole("button", { name: /reddit/i })).toBeInTheDocument
     expect(screen.getByRole("button", { name: /create subreddit/i }))
       .toBeInTheDocument
   })

@@ -4,7 +4,12 @@ import {
   Button,
   ButtonGroup,
   Flex,
+  Heading,
+  Icon,
   IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Menu,
   MenuButton,
   MenuGroup,
@@ -14,18 +19,15 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import { BsFolderPlus } from "react-icons/bs"
-import { FaRedditSquare } from "react-icons/fa"
+import { BsFolderPlus, BsSearch } from "react-icons/bs"
 import { ImPencil2 } from "react-icons/im"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
+import Logo from "./Logo"
 
 const Header: React.FC = () => {
   const bg = useColorModeValue("white", "#1A1A1B")
-
   const router = useRouter()
-
   const { data, loading } = useMeQuery({ ssr: false })
-
   const [logout, { client }] = useLogoutMutation()
 
   if (loading) return null
@@ -37,111 +39,136 @@ const Header: React.FC = () => {
       bg={bg}
       zIndex="sticky"
       boxShadow="sm"
-      width="100%"
+      width="full"
       p={[1]}
       align="center"
     >
-      <Flex minW="100%" as="nav" justify="flex-end">
-        {data && data?.me?.username ? (
-          <Menu>
-            <ButtonGroup spacing="4" mr="4">
-              <Tooltip hasArrow label="Home" bg="gray.200" color="black">
-                <IconButton
-                  onClick={() => router.push("/")}
-                  variant="ghost"
-                  color="current"
-                  aria-label="Home"
-                  icon={<FaRedditSquare />}
-                />
-              </Tooltip>
-              <Tooltip hasArrow label="Submit Post" bg="gray.200" color="black">
-                <IconButton
-                  onClick={() => router.push("/submit")}
-                  variant="ghost"
-                  color="current"
-                  aria-label="Submit Post"
-                  icon={<ImPencil2 />}
-                />
-              </Tooltip>
+      <Flex px="1em" justify="space-between" width="full">
+        <Flex
+          flexGrow={1}
+          onClick={() => router.push("/")}
+          aria-label="Home"
+          align="center"
+          mr={5}
+          p={1}
+        >
+          <Logo mr={2} />{" "}
+          <Heading
+            display={{ base: "none", md: "flex" }}
+            size="md"
+            fontWeight="400"
+          >
+            reddit
+          </Heading>
+        </Flex>
 
-              <Tooltip
-                hasArrow
-                label="Create Subreddit"
-                bg="gray.200"
-                color="black"
-              >
-                <IconButton
-                  onClick={() => router.push("/submit/Subreddit")}
-                  variant="ghost"
-                  color="current"
-                  aria-label="Create Subreddit"
-                  icon={<BsFolderPlus />}
-                />
-              </Tooltip>
-            </ButtonGroup>
+        <InputGroup flexGrow={1} maxW="300px">
+          <InputLeftElement pointerEvents="none">
+            <Icon as={BsSearch} boxSize={4} />
+          </InputLeftElement>
+          <Input placeholder="Search" />
+        </InputGroup>
+
+        <Flex flexGrow={1} maxW="720px" as="nav" justify="flex-end">
+          {data && data?.me?.username ? (
+            <Menu>
+              <ButtonGroup spacing="4" mr="4">
+                <Tooltip
+                  hasArrow
+                  label="Submit Post"
+                  bg="gray.200"
+                  color="black"
+                >
+                  <IconButton
+                    onClick={() => router.push("/submit")}
+                    variant="ghost"
+                    color="current"
+                    aria-label="Submit Post"
+                    icon={<ImPencil2 />}
+                  />
+                </Tooltip>
+
+                <Tooltip
+                  hasArrow
+                  label="Create Subreddit"
+                  bg="gray.200"
+                  color="black"
+                >
+                  <IconButton
+                    onClick={() => router.push("/submit/Subreddit")}
+                    variant="ghost"
+                    color="current"
+                    aria-label="Create Subreddit"
+                    icon={<BsFolderPlus />}
+                  />
+                </Tooltip>
+              </ButtonGroup>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  width="140px"
+                  border="1px"
+                  colorScheme="blue"
+                  rightIcon={
+                    <Avatar
+                      size="xs"
+                      name="Ryan Florence"
+                      src="https://bit.ly/ryan-florence"
+                    />
+                  }
+                  variant="outline"
+                >
+                  {data.me.username}
+                </MenuButton>
+                <MenuList>
+                  <MenuGroup title="Settings">
+                    <MenuItem>
+                      <ColorModeToggle />
+                    </MenuItem>
+                    <MenuItem onClick={() => router.push("/settings/profile")}>
+                      Profile
+                    </MenuItem>
+                    <MenuItem onClick={() => router.push("/settings/account")}>
+                      Account
+                    </MenuItem>
+                    <MenuItem onClick={() => router.push("/settings")}>
+                      General
+                    </MenuItem>
+                  </MenuGroup>
+                  <MenuItem
+                    mr={2}
+                    color="red.500"
+                    onClick={async () => {
+                      await logout()
+                      await client.resetStore()
+                    }}
+                  >
+                    {" "}
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Menu>
+          ) : (
             <Menu>
               <MenuButton
-                as={Button}
-                width="140px"
-                border="1px"
-                colorScheme="blue"
-                rightIcon={
-                  <Avatar
-                    size="xs"
-                    name="Ryan Florence"
-                    src="https://bit.ly/ryan-florence"
-                  />
-                }
                 variant="outline"
+                mr={2}
+                as={Button}
+                onClick={() => router.push("/register")}
               >
-                {data.me.username}
+                Register
               </MenuButton>
-              <MenuList>
-                <MenuGroup title="Settings">
-                  <MenuItem onClick={() => router.push("/settings/profile")}>
-                    Profile
-                  </MenuItem>
-                  <MenuItem onClick={() => router.push("/settings/account")}>
-                    Account
-                  </MenuItem>
-                  <MenuItem onClick={() => router.push("/settings")}>
-                    General
-                  </MenuItem>
-                </MenuGroup>
-                <MenuItem
-                  mr={2}
-                  color="red.500"
-                  onClick={async () => {
-                    await logout()
-                    await client.resetStore()
-                  }}
-                >
-                  {" "}
-                  Logout
-                </MenuItem>
-              </MenuList>
+              <MenuButton
+                mr={2}
+                as={Button}
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </MenuButton>
             </Menu>
-          </Menu>
-        ) : (
-          <Menu>
-            <MenuButton
-              variant="outline"
-              mr={2}
-              as={Button}
-              onClick={() => router.push("/register")}
-            >
-              Register
-            </MenuButton>
-            <MenuButton
-              mr={2}
-              as={Button}
-              onClick={() => router.push("/login")}
-            >
-              Login
-            </MenuButton>
-          </Menu>
-        )}
-        <ColorModeToggle mr={2} />
+          )}
+        </Flex>
       </Flex>
     </Flex>
   )

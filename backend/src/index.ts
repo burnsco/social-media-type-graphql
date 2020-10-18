@@ -6,7 +6,6 @@ import "dotenv-safe/config"
 import express from "express"
 import session from "express-session"
 import Redis from "ioredis"
-import path from "path"
 import "reflect-metadata"
 import { buildSchema } from "type-graphql"
 import { COOKIE_NAME, __prod__ } from "./constants"
@@ -17,10 +16,14 @@ import { PostResolver } from "./resolvers/post-resolver"
 import { UserResolver } from "./resolvers/user-resolver"
 import { VoteResolver } from "./resolvers/vote-resolver"
 
+const REDIS_HOST = "127.0.0.1"
+const REDIS_PORT = 6379
+const PORT = process.env.PORT || 4000
+
 const main = async () => {
   const options: Redis.RedisOptions = {
-    host: "127.0.0.1",
-    port: 6379,
+    host: REDIS_HOST,
+    port: REDIS_PORT,
     retryStrategy: times => Math.max(times * 100, 3000)
   }
 
@@ -31,7 +34,6 @@ const main = async () => {
   const redisStore = connectRedis(session)
   const redisClient = new Redis(options)
 
-  app.set("proxy", 1)
   app.use(
     cors({
       origin: process.env.CORS_ORIGIN,
@@ -58,11 +60,6 @@ const main = async () => {
     })
   )
 
-  const generator = orm.getSchemaGenerator()
-  await generator.dropSchema()
-  await generator.createSchema()
-  await generator.updateSchema()
-
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [
@@ -72,7 +69,6 @@ const main = async () => {
         CategoryResolver,
         CommentResolver
       ],
-      emitSchemaFile: path.resolve(__dirname, "./schema.gql"),
       validate: false
     }),
     context: ({ req, res }) => ({
@@ -85,9 +81,9 @@ const main = async () => {
 
   server.applyMiddleware({ app, cors: false })
 
-  app.listen(parseInt(process.env.PORT), () => {
+  app.listen(PORT, () => {
     console.log(
-      `🚀🚀  Server ready at https://localhost:${process.env.PORT}${server.graphqlPath} 🚀 🚀 `
+      `🚀🚀  Server ready at https://localhost:${PORT}${server.graphqlPath} 🚀 🚀 `
     )
   })
 }
