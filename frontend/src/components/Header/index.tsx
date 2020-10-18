@@ -40,7 +40,7 @@ const Header: React.FC = () => {
       align="center"
     >
       <Flex justify="space-between" width="full">
-        <Flex flexGrow={1}>
+        <Flex cursor="pointer" flexGrow={1} onClick={() => router.push("/")}>
           <Flex
             onClick={() => router.push("/")}
             aria-label="Home"

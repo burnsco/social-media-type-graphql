@@ -1,5 +1,7 @@
 import { PostQuery } from "@/generated/graphql"
 import { Box, useColorModeValue } from "@chakra-ui/core"
+import CommentsPageWithData from "../Comment/Data"
+import SubmitCommentForm from "../Comment/Form"
 import PostBody from "./Body"
 import PostContainer from "./Container"
 import PostFooter from "./Footer"
@@ -24,7 +26,7 @@ const NewPost: React.FC<PostQuery> = props => {
       <Box
         mt={1}
         minH="100px"
-        px={1}
+        p={2}
         width="100%"
         display="flex"
         flexDir="column"
@@ -41,6 +43,14 @@ const NewPost: React.FC<PostQuery> = props => {
           id={postId}
           commentsCount={postCommentsCount}
         />
+
+        <Box pt="4em">
+          <SubmitCommentForm postId={postId} />
+        </Box>
+
+        <Box pt="4em">
+          <CommentsPageWithData postId={postId} />
+        </Box>
       </Box>
     </PostContainer>
   )
