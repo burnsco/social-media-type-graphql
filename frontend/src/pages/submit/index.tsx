@@ -124,8 +124,12 @@ const SubmitPage: React.FunctionComponent = () => {
                           <FormControl
                             isInvalid={form.errors.title && form.touched.title}
                           >
-                            <FormLabel htmlFor="title"></FormLabel>
-                            <Input {...field} id="title" placeholder="Title" />
+                            <FormLabel htmlFor="regular-title"></FormLabel>
+                            <Input
+                              {...field}
+                              id="regular-title"
+                              placeholder="Title"
+                            />
                             <FormErrorMessage>
                               {form.errors.title}
                             </FormErrorMessage>
@@ -157,8 +161,12 @@ const SubmitPage: React.FunctionComponent = () => {
                           <FormControl
                             isInvalid={form.errors.title && form.touched.title}
                           >
-                            <FormLabel htmlFor="title"></FormLabel>
-                            <Input {...field} id="title" placeholder="Title" />
+                            <FormLabel htmlFor="link-title"></FormLabel>
+                            <Input
+                              {...field}
+                              id="link-title"
+                              placeholder="Title"
+                            />
                             <FormErrorMessage>
                               {form.errors.title}
                             </FormErrorMessage>
@@ -186,8 +194,12 @@ const SubmitPage: React.FunctionComponent = () => {
                           <FormControl
                             isInvalid={form.errors.title && form.touched.title}
                           >
-                            <FormLabel htmlFor="title"></FormLabel>
-                            <Input {...field} id="title" placeholder="Title" />
+                            <FormLabel htmlFor="media-title"></FormLabel>
+                            <Input
+                              {...field}
+                              id="media-title"
+                              placeholder="Title"
+                            />
                             <FormErrorMessage>
                               {form.errors.title}
                             </FormErrorMessage>

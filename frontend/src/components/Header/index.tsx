@@ -5,11 +5,7 @@ import {
   ButtonGroup,
   Flex,
   Heading,
-  Icon,
   IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Menu,
   MenuButton,
   MenuGroup,
@@ -19,9 +15,10 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import { BsFolderPlus, BsSearch } from "react-icons/bs"
+import { BsFolderPlus } from "react-icons/bs"
 import { ImPencil2 } from "react-icons/im"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
+import HomeSearch from "./Center"
 import Logo from "./Logo"
 
 const Header: React.FC = () => {
@@ -29,7 +26,6 @@ const Header: React.FC = () => {
   const router = useRouter()
   const { data, loading } = useMeQuery({ ssr: false })
   const [logout, { client }] = useLogoutMutation()
-
   if (loading) return null
 
   return (
@@ -43,31 +39,28 @@ const Header: React.FC = () => {
       p={[1]}
       align="center"
     >
-      <Flex px="1em" justify="space-between" width="full">
-        <Flex
-          flexGrow={1}
-          onClick={() => router.push("/")}
-          aria-label="Home"
-          align="center"
-          mr={5}
-          p={1}
-        >
-          <Logo mr={2} />{" "}
-          <Heading
-            display={{ base: "none", md: "flex" }}
-            size="md"
-            fontWeight="400"
+      <Flex justify="space-between" width="full">
+        <Flex flexGrow={1}>
+          <Flex
+            onClick={() => router.push("/")}
+            aria-label="Home"
+            align="center"
+            mx="1em"
+            p={1}
           >
-            reddit
-          </Heading>
+            <Logo mr={2} />{" "}
+            <Heading
+              mr={4}
+              display={{ base: "none", md: "flex" }}
+              size="md"
+              fontWeight="400"
+            >
+              reddit
+            </Heading>
+          </Flex>
         </Flex>
 
-        <InputGroup flexGrow={1} maxW="300px">
-          <InputLeftElement pointerEvents="none">
-            <Icon as={BsSearch} boxSize={4} />
-          </InputLeftElement>
-          <Input placeholder="Search" />
-        </InputGroup>
+        <HomeSearch />
 
         <Flex flexGrow={1} maxW="720px" as="nav" justify="flex-end">
           {data && data?.me?.username ? (
@@ -120,7 +113,7 @@ const Header: React.FC = () => {
                 >
                   {data.me.username}
                 </MenuButton>
-                <MenuList>
+                <MenuList opacity="0.9">
                   <MenuGroup title="Settings">
                     <MenuItem>
                       <ColorModeToggle />
