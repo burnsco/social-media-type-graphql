@@ -4,8 +4,15 @@ import NewPost from "@/components/Post"
 import { usePostQuery } from "@/generated/graphql"
 import { Box, Stack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 
 const PostAndCommentsPage: React.FC = () => {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [isMounted])
+
   const router = useRouter()
   const postId = (router?.query?.id as string) ?? 1
 
@@ -30,14 +37,17 @@ const PostAndCommentsPage: React.FC = () => {
     return <div>Post Not Found.</div>
   }
 
-  return (
-    <Stack spacing={2}>
-      <ViewPost />
-      <SubmitCommentForm postId={postId} />
-      <Box>Comments</Box>
-      <CommentsPageWithData postId={postId} />
-    </Stack>
-  )
+  if (isMounted) {
+    return (
+      <Stack spacing={2}>
+        <ViewPost />
+        <SubmitCommentForm postId={postId} />
+        <Box>Comments</Box>
+        <CommentsPageWithData postId={postId} />
+      </Stack>
+    )
+  }
+  return null
 }
 
 export default PostAndCommentsPage

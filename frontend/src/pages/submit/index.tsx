@@ -1,6 +1,7 @@
 import {
   useCategoriesLazyQuery,
-  useCreatePostMutation
+  useCreatePostMutation,
+  useMeQuery
 } from "@/generated/graphql"
 import {
   Box,
@@ -19,10 +20,38 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { Field, Form, Formik } from "formik"
+import { useRouter } from "next/router"
+import { useEffect } from "react"
 import * as Yup from "yup"
 
 const SubmitPage: React.FunctionComponent = () => {
   const bg = useColorModeValue("white", "#1A1A1B")
+  const router = useRouter()
+  const [
+    getSubreddits,
+    { data, loading: loadingSubreddits, error: subredditError }
+  ] = useCategoriesLazyQuery()
+  const [submitPost, { loading, error }] = useCreatePostMutation()
+  const {
+    data: userData,
+    loading: userLoading,
+    error: userError
+  } = useMeQuery({ ssr: false })
+
+  const user = userData?.me
+  const shouldRedirect = !(userLoading || userError || user)
+
+  useEffect(() => {
+    if (shouldRedirect) {
+      router.push("/signin")
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldRedirect])
+
+  if (error) {
+    return <p>{error.message}</p>
+  }
+
   const initialValues = {
     userId: "",
     categoryId: "",
@@ -32,12 +61,6 @@ const SubmitPage: React.FunctionComponent = () => {
     video: "",
     image: ""
   }
-  const [
-    getSubreddits,
-    { data, loading: loadingSubreddits, error: subredditError }
-  ] = useCategoriesLazyQuery()
-
-  const [submitPost, { loading, error }] = useCreatePostMutation()
 
   if (loading || loadingSubreddits) return null
 

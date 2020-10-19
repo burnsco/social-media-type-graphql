@@ -26,13 +26,13 @@ const SideMenu: React.FC = () => {
   return (
     <Box
       bg={bg}
-      minW="180px"
+      minW="200px"
       borderWidth="1px"
       borderColor=""
       borderStyle="dotted"
       rounded="md"
       overflow="hidden"
-      p="2"
+      p={3}
     >
       <List borderWidth="xs" minH="100%" spacing={3}>
         {data?.categories.map(subreddit => (

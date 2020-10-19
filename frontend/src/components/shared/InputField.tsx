@@ -20,7 +20,9 @@ export const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <FormControl isInvalid={!!error}>
-      <FormLabel htmlFor={field.name}>{label}</FormLabel>
+      <FormLabel fontSize="sm" htmlFor={field.name}>
+        {label}
+      </FormLabel>
       <Input
         {...field}
         type={type}

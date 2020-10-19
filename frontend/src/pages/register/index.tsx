@@ -3,6 +3,7 @@ import { InputField } from "@/components/shared/InputField"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { Box, Button, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
+import * as Yup from "yup"
 
 const RegisterPage: React.FC = () => {
   const toast = useToast()
@@ -17,6 +18,11 @@ const RegisterPage: React.FC = () => {
     <Wrapper variant="small">
       <Formik
         initialValues={{ username: "", email: "", password: "" }}
+        validationSchema={Yup.object().shape({
+          username: Yup.string().required("Required"),
+          email: Yup.string().required("Required"),
+          password: Yup.number().required("Required")
+        })}
         onSubmit={async values => {
           const response = await register({
             variables: {

@@ -9,7 +9,7 @@ import VoteBox from "./VoteBox"
 const NewPost: React.FC<PostQuery> = props => {
   const bg = useColorModeValue("white", "#1A1A1B")
   const { post } = props
-  const postId = post?.id as string
+  const postId = (post?.id as string) ?? 1
   const postScore = post?.totalVotes?.score ?? 0
   const postCategory = post?.category.name ?? null
   const postAuthor = post?.author.username ?? null

@@ -1,4 +1,4 @@
-import { useLogoutMutation, useMeQuery } from "@/generated/graphql"
+import { useMeQuery } from "@/generated/graphql"
 import {
   Avatar,
   Button,
@@ -20,12 +20,13 @@ import { ImPencil2 } from "react-icons/im"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
 import HomeSearch from "./Center"
 import Logo from "./Logo"
+import LogoutUser from "./Logout"
 
 const Header: React.FC = () => {
   const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
   const { data, loading } = useMeQuery({ ssr: false })
-  const [logout, { client }] = useLogoutMutation()
+
   if (loading) return null
 
   return (
@@ -53,7 +54,7 @@ const Header: React.FC = () => {
               mr={4}
               display={{ base: "none", md: "flex" }}
               size="md"
-              fontWeight="400"
+              fontWeight="500"
             >
               reddit
             </Heading>
@@ -125,14 +126,7 @@ const Header: React.FC = () => {
                       General
                     </MenuItem>
                   </MenuGroup>
-                  <MenuItem
-                    mr={2}
-                    color="red.500"
-                    onClick={async () => {
-                      await logout()
-                      await client.resetStore()
-                    }}
-                  >
+                  <MenuItem mr={2} color="red.500" onClick={() => LogoutUser()}>
                     {" "}
                     Logout
                   </MenuItem>

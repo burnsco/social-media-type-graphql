@@ -12,6 +12,7 @@ import { useRouter } from "next/router"
 import React from "react"
 import { FaHome } from "react-icons/fa"
 import { ImArrowDown, ImHappy } from "react-icons/im"
+import RegisterDrawer from "../shared/Drawer"
 
 const HomeSearch = () => {
   const router = useRouter()
@@ -36,6 +37,7 @@ const HomeSearch = () => {
         <MenuButton
           as={Button}
           mr={4}
+          maxW="250px"
           fontSize="sm"
           textAlign="left"
           w="full"
@@ -61,6 +63,7 @@ const HomeSearch = () => {
             </MenuList>
           </>
         )}
+        <RegisterDrawer />
       </Menu>
     </Flex>
   )
