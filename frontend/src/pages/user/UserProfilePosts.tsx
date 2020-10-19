@@ -1,9 +1,11 @@
 import { TabPanel } from "@chakra-ui/core"
 
-export const UserProfilePosts = () => {
+const UserProfilePosts = () => {
   return (
     <TabPanel>
       <p>UserProfile -- Posts</p>
     </TabPanel>
   )
 }
+
+export default UserProfilePosts
