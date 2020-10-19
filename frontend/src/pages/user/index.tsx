@@ -1,6 +1,6 @@
 import { Box, Heading, Tab, TabList, TabPanels, Tabs } from "@chakra-ui/core"
-import { UserProfileOverview } from "./UserProfileOverview"
-import { UserProfilePosts } from "./UserProfilePosts"
+import UserProfileOverview from "./UserProfileOverview"
+import UserProfilePosts from "./UserProfilePosts"
 
 const UserProfilePage: React.FunctionComponent = () => {
   return (
