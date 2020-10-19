@@ -10,10 +10,8 @@ export default {
   },
   entities: ["./dist/entities/**/*.js"],
   entitiesTs: ["./src/entities/**/*.ts"],
-  dbName: "maple",
-  host: "localhost",
-  user: "postgres",
-  password: "postgres",
+  clientUrl:
+    "postgres://postgres:de46926e9247fcdfead01f9a7303dba2@dokku-postgres-maple:5432/maple",
   type: "postgresql",
   debug: !__prod__
 } as Parameters<typeof MikroORM.init>[0]
