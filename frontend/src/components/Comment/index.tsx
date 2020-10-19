@@ -35,6 +35,7 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
         </Flex>
       </Box>
 
+      {/* Post Details Conatiner */}
       <Box
         minH="100px"
         width="100%"
@@ -43,6 +44,7 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
         justifyContent="space-evenly"
       >
         <Box fontSize="12px" display="flex" color="gray.300">
+          {/* Post created by */}
           <Box textDecoration="none">
             Posted by{" "}
             <Box

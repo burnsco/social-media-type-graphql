@@ -340,15 +340,34 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
     post?: Maybe<
       { __typename?: "Post" } & Pick<
         Post,
+        | "id"
         | "createdAt"
         | "updatedAt"
-        | "id"
         | "title"
         | "text"
-        | "video"
         | "image"
+        | "video"
         | "link"
-      >
+      > & {
+          comments?: Maybe<
+            Array<
+              { __typename?: "Comment" } & Pick<
+                Comment,
+                "id" | "createdAt" | "updatedAt" | "body"
+              > & {
+                  createdBy: { __typename?: "User" } & Pick<User, "username">
+                }
+            >
+          >
+          author: { __typename?: "User" } & Pick<User, "id" | "username">
+          category: { __typename?: "Category" } & Pick<Category, "id" | "name">
+          totalComments?: Maybe<
+            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
+          >
+          totalVotes?: Maybe<
+            { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "score" | "count">
+          >
+        }
     >
     errors?: Maybe<
       Array<
@@ -642,14 +661,38 @@ export const CreatePostDocument = gql`
   mutation createPost($data: PostInput!) {
     createPost(data: $data) {
       post {
+        id
         createdAt
         updatedAt
-        id
         title
         text
-        video
         image
+        video
         link
+        comments {
+          id
+          createdAt
+          updatedAt
+          body
+          createdBy {
+            username
+          }
+        }
+        author {
+          id
+          username
+        }
+        category {
+          id
+          name
+        }
+        totalComments {
+          count
+        }
+        totalVotes {
+          score
+          count
+        }
       }
       errors {
         field

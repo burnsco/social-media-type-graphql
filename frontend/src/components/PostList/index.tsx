@@ -40,11 +40,7 @@ const PostList = () => {
       return (
         <ul>
           {allPosts.map((post, index) => (
-            <NewPost
-              postId={post.id}
-              key={`post-${post.id}-${index}`}
-              post={post}
-            />
+            <NewPost key={`post-${post.id}-${index}`} post={post} />
           ))}
         </ul>
       )

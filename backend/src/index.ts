@@ -20,6 +20,8 @@ const PORT = process.env.PORT || 4000
 
 const whitelist = [
   "http://localhost:3000",
+  "http://localhost:3001",
+  "https://localhost:3001",
   "https://localhost:3000",
   "*.vercel.app",
   "*.com",

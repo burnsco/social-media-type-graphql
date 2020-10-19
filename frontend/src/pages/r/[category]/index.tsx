@@ -11,13 +11,10 @@ import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Stack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
-import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
 
 const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
-  const router = useRouter()
-
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -35,10 +32,6 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   })
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
-
-  if (router.isFallback) {
-    return <div>Loading...</div>
-  }
 
   if (error) return <div>error loading posts</div>
   if (loading && !loadingMorePosts) return null
@@ -61,11 +54,7 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
       return (
         <Stack spacing={8}>
           {postsBySubreddit.map((post, index) => (
-            <NewPost
-              postId={post.id}
-              key={`post-${post.id}-${index}`}
-              post={post}
-            />
+            <NewPost key={`post-${post.id}-${index}`} post={post} />
           ))}
         </Stack>
       )
@@ -105,7 +94,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       initialApolloState: apolloClient.cache.extract(),
       category: params?.category
     },
-    revalidate: 1
+    revalidate: 10
   }
 }
 
@@ -120,7 +109,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: true
+    fallback: false
   }
 }
 

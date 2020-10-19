@@ -14,7 +14,7 @@ import { useEffect, useState } from "react"
 import CommentPage from "."
 import ShowMoreComments from "./ShowMore"
 
-const CommentsPageWithData: React.FC<{ postId?: string }> = ({ postId }) => {
+const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {

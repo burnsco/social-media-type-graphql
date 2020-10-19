@@ -1,6 +1,8 @@
+import CommentsPageWithData from "@/components/Comment/Data"
+import SubmitCommentForm from "@/components/Comment/Form"
 import NewPost from "@/components/Post"
 import { usePostQuery } from "@/generated/graphql"
-import { Stack } from "@chakra-ui/core"
+import { Box, Stack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
 const PostAndCommentsPage: React.FC = () => {
@@ -16,12 +18,10 @@ const PostAndCommentsPage: React.FC = () => {
   if (error) return <div>error loading post</div>
   if (loading) return null
 
-  const ViewPost: React.FC<{ postId: string }> = ({ postId }) => {
+  const ViewPost = () => {
     if (data && data.post) {
       return (
         <NewPost
-          fullStyle
-          postId={postId}
           key={`post-${data.post.id}-${data.post.title}`}
           post={data.post}
         />
@@ -32,7 +32,10 @@ const PostAndCommentsPage: React.FC = () => {
 
   return (
     <Stack spacing={2}>
-      <ViewPost postId={postId} />
+      <ViewPost />
+      <SubmitCommentForm postId={postId} />
+      <Box>Comments</Box>
+      <CommentsPageWithData postId={postId} />
     </Stack>
   )
 }

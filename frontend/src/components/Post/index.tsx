@@ -4,18 +4,12 @@ import PostBody from "./Body"
 import PostContainer from "./Container"
 import PostFooter from "./Footer"
 import PostHeader from "./Header"
-import PostComments from "./PostComments"
 import VoteBox from "./VoteBox"
 
-interface NewPostProps extends PostQuery {
-  fullStyle?: boolean
-  postId: string
-}
-
-const NewPost: React.FC<NewPostProps> = props => {
+const NewPost: React.FC<PostQuery> = props => {
   const bg = useColorModeValue("white", "#1A1A1B")
   const { post } = props
-  const postId = (post?.id as string) ?? "0"
+  const postId = post?.id as string
   const postScore = post?.totalVotes?.score ?? 0
   const postCategory = post?.category.name ?? null
   const postAuthor = post?.author.username ?? null
@@ -30,7 +24,7 @@ const NewPost: React.FC<NewPostProps> = props => {
       <Box
         mt={1}
         minH="100px"
-        p={2}
+        px={1}
         width="100%"
         display="flex"
         flexDir="column"
@@ -47,7 +41,6 @@ const NewPost: React.FC<NewPostProps> = props => {
           id={postId}
           commentsCount={postCommentsCount}
         />
-        <PostComments fullStyle postId={props.postId} />
       </Box>
     </PostContainer>
   )

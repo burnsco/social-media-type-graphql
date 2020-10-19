@@ -1,14 +1,38 @@
 mutation createPost($data: PostInput!) {
   createPost(data: $data) {
     post {
+      id
       createdAt
       updatedAt
-      id
       title
       text
-      video
       image
+      video
       link
+      comments {
+        id
+        createdAt
+        updatedAt
+        body
+        createdBy {
+          username
+        }
+      }
+      author {
+        id
+        username
+      }
+      category {
+        id
+        name
+      }
+      totalComments {
+        count
+      }
+      totalVotes {
+        score
+        count
+      }
     }
     errors {
       field

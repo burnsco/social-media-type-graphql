@@ -1,4 +1,3 @@
-import Header from "@/components/Header"
 import Layout from "@/components/Layout"
 import { useApollo } from "@/lib/apolloClient"
 import { ApolloProvider } from "@apollo/client"
@@ -10,16 +9,13 @@ export default function App({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps.initialApolloState)
 
   return (
-    <>
-      <ApolloProvider client={apolloClient}>
-        <ChakraProvider resetCSS theme={theme}>
-          <ColorModeScript initialColorMode="dark" />
-          <Header />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ChakraProvider>
-      </ApolloProvider>
-    </>
+    <ApolloProvider client={apolloClient}>
+      <ChakraProvider resetCSS theme={theme}>
+        <ColorModeScript initialColorMode="dark" />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ChakraProvider>
+    </ApolloProvider>
   )
 }

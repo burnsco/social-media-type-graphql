@@ -2,7 +2,6 @@ import {
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@/generated/graphql"
-import { gql } from "@apollo/client"
 import {
   Box,
   Button,
@@ -40,34 +39,6 @@ const SubmitPage: React.FunctionComponent = () => {
 
   const [submitPost, { loading, error }] = useCreatePostMutation()
 
-  const handleSubmit = (values: any) => {
-    submitPost({
-      variables: {
-        data: {
-          ...values
-        }
-      },
-      update(cache, { data }) {
-        cache.modify({
-          fields: {
-            posts(existingPosts = []) {
-              const newPostRef = cache.writeFragment({
-                data: data?.createPost.post,
-                fragment: gql`
-                  fragment NewPost on Post {
-                    id
-                    title
-                  }
-                `
-              })
-              return [newPostRef, ...existingPosts]
-            }
-          }
-        })
-      }
-    })
-  }
-
   if (loading || loadingSubreddits) return null
 
   if (subredditError) {
@@ -89,7 +60,19 @@ const SubmitPage: React.FunctionComponent = () => {
         onSubmit={(values, actions) => {
           setTimeout(() => {
             actions.setSubmitting(false)
-            handleSubmit(values)
+            submitPost({
+              variables: {
+                data: {
+                  userId: values.userId,
+                  title: values.title,
+                  text: values.text,
+                  video: values.video,
+                  link: values.link,
+                  image: values.image,
+                  categoryId: values.categoryId
+                }
+              }
+            })
           }, 1000)
         }}
       >
@@ -141,12 +124,8 @@ const SubmitPage: React.FunctionComponent = () => {
                           <FormControl
                             isInvalid={form.errors.title && form.touched.title}
                           >
-                            <FormLabel htmlFor="regular-title"></FormLabel>
-                            <Input
-                              {...field}
-                              id="regular-title"
-                              placeholder="Title"
-                            />
+                            <FormLabel htmlFor="title"></FormLabel>
+                            <Input {...field} id="title" placeholder="Title" />
                             <FormErrorMessage>
                               {form.errors.title}
                             </FormErrorMessage>
@@ -178,12 +157,8 @@ const SubmitPage: React.FunctionComponent = () => {
                           <FormControl
                             isInvalid={form.errors.title && form.touched.title}
                           >
-                            <FormLabel htmlFor="link-title"></FormLabel>
-                            <Input
-                              {...field}
-                              id="link-title"
-                              placeholder="Title"
-                            />
+                            <FormLabel htmlFor="title"></FormLabel>
+                            <Input {...field} id="title" placeholder="Title" />
                             <FormErrorMessage>
                               {form.errors.title}
                             </FormErrorMessage>
@@ -211,12 +186,8 @@ const SubmitPage: React.FunctionComponent = () => {
                           <FormControl
                             isInvalid={form.errors.title && form.touched.title}
                           >
-                            <FormLabel htmlFor="media-title"></FormLabel>
-                            <Input
-                              {...field}
-                              id="media-title"
-                              placeholder="Title"
-                            />
+                            <FormLabel htmlFor="title"></FormLabel>
+                            <Input {...field} id="title" placeholder="Title" />
                             <FormErrorMessage>
                               {form.errors.title}
                             </FormErrorMessage>
