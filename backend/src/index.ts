@@ -36,6 +36,11 @@ function getOrigin(origin: any, callback: any) {
 
 const main = async () => {
   const orm = await MikroORM.init(MikroConfig)
+  const migrator = orm.getMigrator()
+  const migrations = await migrator.getPendingMigrations()
+  if (migrations && migrations.length > 0) {
+    await migrator.up()
+  }
 
   const app = express()
 
