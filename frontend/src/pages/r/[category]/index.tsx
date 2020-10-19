@@ -105,7 +105,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       initialApolloState: apolloClient.cache.extract(),
       category: params?.category
     },
-    revalidate: 10
+    revalidate: 1
   }
 }
 

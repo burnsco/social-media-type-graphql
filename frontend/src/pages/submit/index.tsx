@@ -2,6 +2,7 @@ import {
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@/generated/graphql"
+import { gql } from "@apollo/client"
 import {
   Box,
   Button,
@@ -39,6 +40,34 @@ const SubmitPage: React.FunctionComponent = () => {
 
   const [submitPost, { loading, error }] = useCreatePostMutation()
 
+  const handleSubmit = (values: any) => {
+    submitPost({
+      variables: {
+        data: {
+          ...values
+        }
+      },
+      update(cache, { data }) {
+        cache.modify({
+          fields: {
+            posts(existingPosts = []) {
+              const newPostRef = cache.writeFragment({
+                data: data?.createPost.post,
+                fragment: gql`
+                  fragment NewPost on Post {
+                    id
+                    title
+                  }
+                `
+              })
+              return [newPostRef, ...existingPosts]
+            }
+          }
+        })
+      }
+    })
+  }
+
   if (loading || loadingSubreddits) return null
 
   if (subredditError) {
@@ -60,19 +89,7 @@ const SubmitPage: React.FunctionComponent = () => {
         onSubmit={(values, actions) => {
           setTimeout(() => {
             actions.setSubmitting(false)
-            submitPost({
-              variables: {
-                data: {
-                  userId: values.userId,
-                  title: values.title,
-                  text: values.text,
-                  video: values.video,
-                  link: values.link,
-                  image: values.image,
-                  categoryId: values.categoryId
-                }
-              }
-            })
+            handleSubmit(values)
           }, 1000)
         }}
       >
