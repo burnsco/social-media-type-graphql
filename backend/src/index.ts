@@ -45,7 +45,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax",
         secure: __prod__,
-        domain: __prod__ ? ".reddit-clone.com" : undefined
+        domain: __prod__ ? ".reddit-clone.com" || ".vercel.app" : undefined
       },
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET,
