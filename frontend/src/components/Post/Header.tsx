@@ -11,15 +11,16 @@ const PostHeader: React.FC<{
 }> = ({ category, author, createdAt }) => {
   const router = useRouter()
   return (
-    <Box fontSize="12px" display="flex" color="gray.300">
+    <Box fontSize="12px" display="flex" color="gray.300" mb="2">
       <PostCategory category={category} />
 
       <Box ml="2" textDecoration="none">
         Posted by{" "}
         <Box
           onClick={() => router.push(`/user/${author}`)}
+          fontWeight="500"
           display="inline"
-          color="gray.400"
+          color="gray.500"
           _hover={{
             textDecoration: "underline",
             cursor: "pointer"

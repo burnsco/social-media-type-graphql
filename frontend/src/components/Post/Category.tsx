@@ -9,7 +9,7 @@ type PostCategoryProps = {
 const PostCategory = (props: PostCategoryProps) => (
   <Box
     fontWeight="700"
-    color="gray.600"
+    color="orange.500"
     _hover={{
       textDecoration: "underline"
     }}

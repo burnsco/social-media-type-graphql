@@ -2,10 +2,6 @@ import { useCategoriesLazyQuery } from "@/generated/graphql"
 import {
   Button,
   Flex,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Menu,
   MenuButton,
   MenuGroup,
@@ -14,7 +10,6 @@ import {
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import React from "react"
-import { BsSearch } from "react-icons/bs"
 import { FaHome } from "react-icons/fa"
 import { ImArrowDown, ImHappy } from "react-icons/im"
 
@@ -41,6 +36,7 @@ const HomeSearch = () => {
         <MenuButton
           as={Button}
           mr={4}
+          fontSize="sm"
           textAlign="left"
           w="full"
           leftIcon={<FaHome />}
@@ -66,12 +62,6 @@ const HomeSearch = () => {
           </>
         )}
       </Menu>
-      <InputGroup flexGrow={1} maxW="300px">
-        <InputLeftElement pointerEvents="none">
-          <Icon as={BsSearch} boxSize={4} />
-        </InputLeftElement>
-        <Input placeholder="Search" />
-      </InputGroup>
     </Flex>
   )
 }

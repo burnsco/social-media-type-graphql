@@ -1,55 +1,54 @@
 import { useCategoriesQuery } from "@/generated/graphql"
-import {
-  Box,
-  List,
-  ListItem,
-  Skeleton,
-  useColorModeValue
-} from "@chakra-ui/core"
+import { Box, List, ListItem, useColorModeValue } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { memo, useEffect, useState } from "react"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 const SideMenu: React.FC = () => {
   const router = useRouter()
-
   const [isMounted, setIsMounted] = useState(false)
-
   const color = useColorModeValue("gray.700", "gray.300")
-  const hover = useColorModeValue("gray.500", "white")
+  const hover = useColorModeValue("blue.200", "white")
   const bg = useColorModeValue("white", "#1A1A1B")
+  const linkbg = useColorModeValue("translucent", "#3661ed")
+  const linkbg2 = useColorModeValue("#3661ed", "translucent")
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
   const { category } = router.query
-
   const { data, loading, error } = useCategoriesQuery({ skip: !isMounted })
 
   if (error) return <div>Error loading subreddits.</div>
-
   if (loading) return null
 
   return (
-    <Skeleton isLoaded={!loading} startColor="pink.500" endColor="orange.500">
-      <Box
-        bg={bg}
-        minW="180px"
-        borderWidth="1px"
-        borderStyle="dotted"
-        rounded="md"
-        overflow="hidden"
-        p="4"
-      >
-        <List borderWidth="xs" minH="100%" spacing={3}>
-          {data?.categories.map(subreddit => (
-            <ListItem key={`subreddit-${subreddit.id}`}>
+    <Box
+      bg={bg}
+      minW="180px"
+      borderWidth="1px"
+      borderColor=""
+      borderStyle="dotted"
+      rounded="md"
+      overflow="hidden"
+      p="2"
+    >
+      <List borderWidth="xs" minH="100%" spacing={3}>
+        {data?.categories.map(subreddit => (
+          <ListItem key={`subreddit-${subreddit.id}`}>
+            <Box
+              rounded="md"
+              overflow="hidden"
+              bg={category === subreddit.name ? linkbg : linkbg2}
+            >
               <NextChakraLink
+                p={1}
                 fontWeight={category === subreddit.name ? 600 : 400}
                 color={category === subreddit.name ? hover : color}
                 _hover={{
                   color: hover,
+                  bg: linkbg,
                   marginLeft: 1
                 }}
                 href="/r/[category]"
@@ -57,11 +56,11 @@ const SideMenu: React.FC = () => {
               >
                 {subreddit.name}
               </NextChakraLink>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-    </Skeleton>
+            </Box>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   )
 }
 

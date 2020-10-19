@@ -13,8 +13,8 @@ const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
     <Flex width="45px" flexDir="column" alignItems="center" p="2" height="100%">
       <IconButton
         isDisabled={loading}
-        onClick={async () => {
-          await vote({
+        onClick={() => {
+          vote({
             variables: { data: { value: 1, postId: postId } }
           })
         }}
@@ -26,8 +26,8 @@ const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
       <Box>{postScore}</Box>
       <IconButton
         isDisabled={loading}
-        onClick={async () => {
-          await vote({
+        onClick={() => {
+          vote({
             variables: { data: { value: -1, postId: postId } }
           })
         }}
