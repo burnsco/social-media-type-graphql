@@ -12,7 +12,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
 
 function createApolloClient() {
   const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_API_URL,
+    uri: process.env.NEXT_PUBLIC_API_URL as string,
     credentials: "include"
   })
 

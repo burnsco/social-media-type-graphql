@@ -54,7 +54,11 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
       return (
         <Stack spacing={8}>
           {postsBySubreddit.map((post, index) => (
-            <NewPost key={`post-${post.id}-${index}`} post={post} />
+            <NewPost
+              postId={post.id}
+              key={`post-${post.id}-${index}`}
+              post={post}
+            />
           ))}
         </Stack>
       )

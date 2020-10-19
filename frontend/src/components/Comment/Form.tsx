@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   FormControl,
-  Skeleton,
   Textarea,
   useColorModeValue
 } from "@chakra-ui/core"
@@ -21,6 +20,11 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
     submitComment,
     { loading: mutationLoading, error: mutationError }
   ] = useCreateCommentMutation()
+
+  if (mutationLoading) return null
+  if (mutationError) {
+    console.log(mutationError)
+  }
 
   const handleSubmit = (values: CreateSubredditProps) => {
     submitComment({
@@ -53,40 +57,35 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
 
   return (
     <Box bg={bg} maxW="90%">
-      <Skeleton isLoaded={!mutationLoading}>
-        <Formik
-          initialValues={{ body: "", postId: postId }}
-          onSubmit={(values, actions) => {
-            setTimeout(() => {
-              actions.setSubmitting(false)
-              handleSubmit(values)
-            }, 1000)
-          }}
-        >
-          {formik => (
-            <form onSubmit={formik.handleSubmit}>
-              <Field name="body">
-                {({ field, form }: any) => (
-                  <FormControl
-                    isInvalid={form.errors.body && form.touched.body}
-                  >
-                    <Textarea {...field} id="body" placeholder="body" />
-                  </FormControl>
-                )}
-              </Field>
-              <Button
-                size="sm"
-                colorScheme="orange"
-                isLoading={formik.isSubmitting}
-                type="submit"
-              >
-                Submit
-              </Button>
-            </form>
-          )}
-        </Formik>
-        {mutationError && <p>Error: ( Please try again</p>}
-      </Skeleton>
+      <Formik
+        initialValues={{ body: "", postId: postId }}
+        onSubmit={(values, actions) => {
+          setTimeout(() => {
+            actions.setSubmitting(false)
+            handleSubmit(values)
+          }, 1000)
+        }}
+      >
+        {formik => (
+          <form onSubmit={formik.handleSubmit}>
+            <Field name="body">
+              {({ field, form }: any) => (
+                <FormControl isInvalid={form.errors.body && form.touched.body}>
+                  <Textarea {...field} id="body" placeholder="body" />
+                </FormControl>
+              )}
+            </Field>
+            <Button
+              size="sm"
+              colorScheme="orange"
+              isLoading={formik.isSubmitting}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </form>
+        )}
+      </Formik>
     </Box>
   )
 }

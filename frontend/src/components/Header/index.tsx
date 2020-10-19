@@ -115,9 +115,6 @@ const Header: React.FC = () => {
                 </MenuButton>
                 <MenuList opacity="0.9">
                   <MenuGroup title="Settings">
-                    <MenuItem>
-                      <ColorModeToggle />
-                    </MenuItem>
                     <MenuItem onClick={() => router.push("/settings/profile")}>
                       Profile
                     </MenuItem>
@@ -163,6 +160,7 @@ const Header: React.FC = () => {
           )}
         </Flex>
       </Flex>
+      <ColorModeToggle />
     </Flex>
   )
 }

@@ -1,17 +1,21 @@
 import { PostQuery } from "@/generated/graphql"
 import { Box, useColorModeValue } from "@chakra-ui/core"
-import CommentsPageWithData from "../Comment/Data"
-import SubmitCommentForm from "../Comment/Form"
 import PostBody from "./Body"
 import PostContainer from "./Container"
 import PostFooter from "./Footer"
 import PostHeader from "./Header"
+import PostComments from "./PostComments"
 import VoteBox from "./VoteBox"
 
-const NewPost: React.FC<PostQuery> = props => {
+interface NewPostProps extends PostQuery {
+  fullStyle?: boolean
+  postId: string
+}
+
+const NewPost: React.FC<NewPostProps> = props => {
   const bg = useColorModeValue("white", "#1A1A1B")
   const { post } = props
-  const postId = post?.id as string
+  const postId = (post?.id as string) ?? "0"
   const postScore = post?.totalVotes?.score ?? 0
   const postCategory = post?.category.name ?? null
   const postAuthor = post?.author.username ?? null
@@ -43,14 +47,7 @@ const NewPost: React.FC<PostQuery> = props => {
           id={postId}
           commentsCount={postCommentsCount}
         />
-
-        <Box pt="4em">
-          <SubmitCommentForm postId={postId} />
-        </Box>
-
-        <Box pt="4em">
-          <CommentsPageWithData postId={postId} />
-        </Box>
+        <PostComments fullStyle postId={props.postId} />
       </Box>
     </PostContainer>
   )

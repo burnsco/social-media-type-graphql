@@ -16,24 +16,17 @@ import { PostResolver } from "./resolvers/post-resolver"
 import { UserResolver } from "./resolvers/user-resolver"
 import { VoteResolver } from "./resolvers/vote-resolver"
 
-const REDIS_HOST = "127.0.0.1"
-const REDIS_PORT = 6379
 const PORT = process.env.PORT || 4000
 
 const main = async () => {
-  const options: Redis.RedisOptions = {
-    host: REDIS_HOST,
-    port: REDIS_PORT,
-    retryStrategy: times => Math.max(times * 100, 3000)
-  }
-
   const orm = await MikroORM.init(MikroConfig)
 
   const app = express()
 
   const redisStore = connectRedis(session)
-  const redisClient = new Redis(options)
+  const redisClient = new Redis(process.env.REDIS_URL)
 
+  app.set("trust proxy", 1)
   app.use(
     cors({
       origin: process.env.CORS_ORIGIN,
