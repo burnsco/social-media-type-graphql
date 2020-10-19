@@ -12,7 +12,7 @@ export default {
   entitiesTs: ["./src/entities/**/*.ts"],
   dbName: "maple",
   host: "localhost",
-  username: "postgres",
+  user: "postgres",
   password: "postgres",
   type: "postgresql",
   debug: !__prod__

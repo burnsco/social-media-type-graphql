@@ -18,6 +18,22 @@ import { VoteResolver } from "./resolvers/vote-resolver"
 
 const PORT = process.env.PORT || 4000
 
+const whitelist = [
+  "http://localhost:3000",
+  "https://localhost:3000",
+  "*.vercel.app",
+  "*.com",
+  "https://reddit-clone.com"
+]
+
+function getOrigin(origin: any, callback: any) {
+  if (whitelist.indexOf(origin) !== -1 || !origin) {
+    callback(null, true)
+  } else {
+    callback(new Error("Not allowed by CORS"))
+  }
+}
+
 const main = async () => {
   const orm = await MikroORM.init(MikroConfig)
 
@@ -29,7 +45,7 @@ const main = async () => {
   app.set("trust proxy", 1)
   app.use(
     cors({
-      origin: process.env.CORS_ORIGIN,
+      origin: getOrigin,
       credentials: true
     })
   )
