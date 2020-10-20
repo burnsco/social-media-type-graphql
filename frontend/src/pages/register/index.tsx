@@ -21,7 +21,7 @@ const RegisterPage: React.FC = () => {
         validationSchema={Yup.object().shape({
           username: Yup.string().required("Required"),
           email: Yup.string().required("Required"),
-          password: Yup.number().required("Required")
+          password: Yup.string().required("Required")
         })}
         onSubmit={async values => {
           const response = await register({

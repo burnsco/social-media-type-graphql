@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRef } from "react"
+import * as Yup from "yup"
 
 function RegisterDrawer() {
   const toast = useToast()
@@ -44,6 +45,11 @@ function RegisterDrawer() {
           <DrawerHeader>Register</DrawerHeader>
           <Formik
             initialValues={{ username: "", email: "", password: "" }}
+            validationSchema={Yup.object().shape({
+              username: Yup.string().min(2).max(15).required("Required"),
+              email: Yup.string().email().required("Required"),
+              password: Yup.string().min(5).max(20).required("Required")
+            })}
             onSubmit={async (values, actions) => {
               setTimeout(async () => {
                 actions.setSubmitting(false)
