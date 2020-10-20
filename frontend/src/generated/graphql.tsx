@@ -1,5 +1,5 @@
-import * as Apollo from "@apollo/client"
 import { gql } from "@apollo/client"
+import * as Apollo from "@apollo/client"
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -1062,9 +1062,6 @@ export type CategoriesQueryResult = Apollo.QueryResult<
   CategoriesQuery,
   CategoriesQueryVariables
 >
-export function refetchCategoriesQuery(variables?: CategoriesQueryVariables) {
-  return { query: CategoriesDocument, variables: variables }
-}
 export const CommentDocument = gql`
   query Comment($postId: ID) {
     comment(postId: $postId) {
@@ -1117,9 +1114,6 @@ export type CommentQueryResult = Apollo.QueryResult<
   CommentQuery,
   CommentQueryVariables
 >
-export function refetchCommentQuery(variables?: CommentQueryVariables) {
-  return { query: CommentDocument, variables: variables }
-}
 export const CommentsDocument = gql`
   query Comments($first: Int, $orderBy: PostOrderBy, $skip: Int, $postId: ID) {
     comments(first: $first, orderBy: $orderBy, skip: $skip, postId: $postId) {
@@ -1180,9 +1174,6 @@ export type CommentsQueryResult = Apollo.QueryResult<
   CommentsQuery,
   CommentsQueryVariables
 >
-export function refetchCommentsQuery(variables?: CommentsQueryVariables) {
-  return { query: CommentsDocument, variables: variables }
-}
 export const MeDocument = gql`
   query Me {
     me {
@@ -1220,9 +1211,6 @@ export function useMeLazyQuery(
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>
-export function refetchMeQuery(variables?: MeQueryVariables) {
-  return { query: MeDocument, variables: variables }
-}
 export const PostDocument = gql`
   query Post($postId: ID) {
     post(postId: $postId) {
@@ -1297,9 +1285,6 @@ export function usePostLazyQuery(
 export type PostQueryHookResult = ReturnType<typeof usePostQuery>
 export type PostLazyQueryHookResult = ReturnType<typeof usePostLazyQuery>
 export type PostQueryResult = Apollo.QueryResult<PostQuery, PostQueryVariables>
-export function refetchPostQuery(variables?: PostQueryVariables) {
-  return { query: PostDocument, variables: variables }
-}
 export const PostsDocument = gql`
   query Posts(
     $first: Int
@@ -1391,9 +1376,6 @@ export type PostsQueryResult = Apollo.QueryResult<
   PostsQuery,
   PostsQueryVariables
 >
-export function refetchPostsQuery(variables?: PostsQueryVariables) {
-  return { query: PostsDocument, variables: variables }
-}
 export const UsersDocument = gql`
   query Users {
     users {
@@ -1440,6 +1422,3 @@ export type UsersQueryResult = Apollo.QueryResult<
   UsersQuery,
   UsersQueryVariables
 >
-export function refetchUsersQuery(variables?: UsersQueryVariables) {
-  return { query: UsersDocument, variables: variables }
-}

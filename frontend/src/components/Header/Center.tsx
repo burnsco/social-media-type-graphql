@@ -1,4 +1,4 @@
-import { useCategoriesLazyQuery } from "@/generated/graphql"
+import { useCategoriesQuery } from "@/generated/graphql"
 import {
   Button,
   Flex,
@@ -14,13 +14,10 @@ import { FaHome } from "react-icons/fa"
 import { ImArrowDown } from "react-icons/im"
 import RegisterDrawer from "../shared/Drawer"
 
-const HomeSearch = () => {
+function HomeSearch() {
   const router = useRouter()
 
-  const [
-    lazyCategoriesQuery,
-    { loading, error, data }
-  ] = useCategoriesLazyQuery({ fetchPolicy: "cache-and-network" })
+  const { data, loading, error } = useCategoriesQuery()
 
   if (loading) return null
 
@@ -29,13 +26,7 @@ const HomeSearch = () => {
   }
 
   return (
-    <Flex
-      onMouseOver={() => {
-        lazyCategoriesQuery()
-      }}
-      justify="space-around"
-      flexGrow={2}
-    >
+    <Flex justify="space-around" flexGrow={2}>
       <Menu>
         <MenuButton
           as={Button}

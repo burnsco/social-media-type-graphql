@@ -1,4 +1,4 @@
-import { useMeQuery } from "@/generated/graphql"
+import { useLogoutMutation, useMeQuery } from "@/generated/graphql"
 import {
   Avatar,
   Button,
@@ -20,12 +20,12 @@ import { ImPencil2 } from "react-icons/im"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
 import HomeSearch from "./Center"
 import Logo from "./Logo"
-import LogoutUser from "./Logout"
 
 const Header: React.FC = () => {
   const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
-  const { data, loading } = useMeQuery({ ssr: false })
+  const { data, loading, client } = useMeQuery({ ssr: false })
+  const [logout] = useLogoutMutation()
 
   if (loading) return null
 
@@ -126,7 +126,17 @@ const Header: React.FC = () => {
                       General
                     </MenuItem>
                   </MenuGroup>
-                  <MenuItem mr={2} color="red.500" onClick={() => LogoutUser()}>
+                  <MenuItem
+                    mr={2}
+                    color="red.500"
+                    onClick={() => {
+                      logout().then(() => {
+                        client.resetStore().then(() => {
+                          router.push("/register")
+                        })
+                      })
+                    }}
+                  >
                     {" "}
                     Logout
                   </MenuItem>
