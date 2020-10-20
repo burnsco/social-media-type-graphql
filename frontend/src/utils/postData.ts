@@ -1,6 +1,5 @@
-export const posts = [
+export const post = [
   {
-    __typename: "Post",
     id: "1",
     createdAt: "1601511422000",
     updatedAt: "1601511422000",
@@ -27,9 +26,8 @@ export const posts = [
     }
   }
 ]
-export const test = [
+export const posts = [
   {
-    __typename: "Post",
     id: "1",
     createdAt: "1601511422000",
     updatedAt: "1601511422000",
@@ -56,7 +54,6 @@ export const test = [
     }
   },
   {
-    __typename: "Post",
     id: "1",
     createdAt: "1601511422000",
     updatedAt: "1601511422000",

@@ -21,9 +21,8 @@ export async function testConnection() {
       path: path.join(__dirname, "../migrations"),
       pattern: /^[\w-]+\d+\.[tj]s$/
     },
-    clientUrl: "postgre://postgres:postgres@127.0.0.1:5432/reddit-testing",
+    clientUrl: "postgres://postgres:postgres@127.0.0.1:5432/maple-testing",
     entities: [BaseEntity, Category, User, Post, Comment, Vote],
-    dbName: `reddit-ts`,
     baseDir: BASE_DIR,
     type: "postgresql",
     debug: true,

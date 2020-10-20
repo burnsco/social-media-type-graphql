@@ -11,16 +11,19 @@ import {
 import { useRouter } from "next/router"
 import React from "react"
 import { FaHome } from "react-icons/fa"
-import { ImArrowDown, ImHappy } from "react-icons/im"
+import { ImArrowDown } from "react-icons/im"
 import RegisterDrawer from "../shared/Drawer"
 
 const HomeSearch = () => {
   const router = useRouter()
+
   const [
     lazyCategoriesQuery,
     { loading, error, data }
-  ] = useCategoriesLazyQuery()
+  ] = useCategoriesLazyQuery({ fetchPolicy: "cache-and-network" })
+
   if (loading) return null
+
   if (error) {
     console.log(error)
   }
@@ -42,7 +45,7 @@ const HomeSearch = () => {
           textAlign="left"
           w="full"
           leftIcon={<FaHome />}
-          rightIcon={!loading ? <ImArrowDown /> : <ImHappy />}
+          rightIcon={<ImArrowDown />}
           variant="outline"
         >
           Home

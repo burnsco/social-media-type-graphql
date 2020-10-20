@@ -1,6 +1,6 @@
 import { RegisterDocument } from "@/generated/graphql"
 import RegisterPage from "@/pages/register"
-import { render } from "@/utils/test-utils"
+import { fireEvent, render } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 
@@ -9,18 +9,15 @@ const mocks = [
     request: {
       query: RegisterDocument,
       variables: {
-        username: "frank",
-        password: "frank",
-        email: "frank@gmail.com"
+        username: "",
+        password: "",
+        email: ""
       }
     },
     result: {
       data: {
         register: {
-          user: {
-            id: "1",
-            username: "frank111"
-          },
+          user: null,
           errors: {
             field: null,
             message: null
@@ -32,11 +29,19 @@ const mocks = [
 ]
 
 describe("Register", () => {
-  it("renders without crashing", async () => {
-    render(
-      <MockedProvider mocks={mocks} addTypename={false}>
+  it("shows required when given empty values on each field", async () => {
+    const { getByRole, getByText, findAllByText } = render(
+      <MockedProvider mocks={[]} addTypename={false}>
         <RegisterPage />
       </MockedProvider>
     )
+    const submit = getByRole("button", { name: /Submit/i })
+    expect(submit).toBeInTheDocument()
+
+    fireEvent.click(submit)
+    expect(getByText(/Loading.../i)).toBeInTheDocument()
+
+    const warning = await findAllByText(/required/i)
+    expect(warning).toHaveLength(3)
   })
 })

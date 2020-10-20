@@ -53,15 +53,15 @@
   dependencies:
     cross-fetch "3.0.5"
 
-"@apollo/client@^3.2.5":
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.2.5.tgz#24e0a6faa1d231ab44807af237c6227410c75c4d"
-  integrity sha512-zpruxnFMz6K94gs2pqc3sidzFDbQpKT5D6P/J/I9s8ekHZ5eczgnRp6pqXC86Bh7+44j/btpmOT0kwiboyqTnA==
+"@apollo/client@3.3.0-beta.14":
+  version "3.3.0-beta.14"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.3.0-beta.14.tgz#59c18a5d701a04497d48b34f2ada0706e3d24e15"
+  integrity sha512-hTIcO16xr9r9bRa4ThPWo8PUDZuP8YYjTz/zumpek1++Vjh2AU4CRW/2V2kf6z8tp70LB2pgrGrz9n8l7ABpZg==
   dependencies:
     "@graphql-typed-document-node/core" "^3.0.0"
     "@types/zen-observable" "^0.8.0"
     "@wry/context" "^0.5.2"
-    "@wry/equality" "^0.2.0"
+    "@wry/equality" "^0.3.0"
     fast-json-stable-stringify "^2.0.0"
     graphql-tag "^2.11.0"
     hoist-non-react-statics "^3.3.2"
@@ -1936,7 +1936,7 @@
     auto-bind "~4.0.0"
     tslib "~2.0.1"
 
-"@graphql-codegen/visitor-plugin-common@^1.17.13", "@graphql-codegen/visitor-plugin-common@^1.17.15", "@graphql-codegen/visitor-plugin-common@^1.17.16":
+"@graphql-codegen/visitor-plugin-common@^1.13.3", "@graphql-codegen/visitor-plugin-common@^1.17.13", "@graphql-codegen/visitor-plugin-common@^1.17.15", "@graphql-codegen/visitor-plugin-common@^1.17.16":
   version "1.17.16"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-1.17.16.tgz#37316cbe2bb9ec4ff65d1f3287c72641d4b3fe6c"
   integrity sha512-q/v13WA4gqD79VR+rrUPrTdLn43qaEuSfij9k52ti4GNKnXglGHP8ljXTrHKN6MypUxOJ2u7tcFRgriH1nxy6w==
@@ -3077,10 +3077,10 @@
   dependencies:
     tslib "^1.9.3"
 
-"@wry/equality@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@wry/equality/-/equality-0.2.0.tgz#a312d1b6a682d0909904c2bcd355b02303104fb7"
-  integrity sha512-Y4d+WH6hs+KZJUC8YKLYGarjGekBrhslDbf/R20oV+AakHPINSitHfDRQz3EGcEWc1luXYNUvMhawWtZVWNGvQ==
+"@wry/equality@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@wry/equality/-/equality-0.3.0.tgz#4b022a0907f01f32c07a1a665d9430155a59ea06"
+  integrity sha512-DRDAu/e3oWBj826OWNV/GCmSdHD248mASXImgNoLE/3SDvpgb+k6G/+TAmdpIB35ju264+kB22Rx92eXg52DnA==
   dependencies:
     tslib "^1.9.3"
 
@@ -3269,6 +3269,14 @@ anymatch@^3.0.3, anymatch@~3.1.1:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+apollo-typed-documents@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-typed-documents/-/apollo-typed-documents-1.0.0.tgz#7c349703e62a201ef11003d335badb4060424157"
+  integrity sha512-14dfUtC6F8thf8m+bhtSjtwrEcrsBwFsrco5FTXp6o2kjdU49QOgwJvxwgbu9nDkIoFG2VVKR2CP7JoDDA+KnA==
+  dependencies:
+    "@graphql-codegen/visitor-plugin-common" "^1.13.3"
+    pascal-case "^3.1.1"
 
 aproba@^1.1.1:
   version "1.2.0"
