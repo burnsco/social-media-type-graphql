@@ -1,6 +1,7 @@
 import { wrap } from "@mikro-orm/core"
 import argon2 from "argon2"
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql"
+import { COOKIE_NAME } from "../constants"
 import { User } from "../entities/User"
 import { ContextType } from "../types"
 import { PostInput } from "./inputs/post-input"
@@ -109,14 +110,15 @@ export class UserResolver {
     @Arg("data") { email, password }: LoginInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
+    const user = await em.findOne(User, { email: email })
+    if (!user) return {}
+
     const errors = await validateLoginUser({ email, password })
     if (errors !== null) {
       return {
         errors
       }
     }
-
-    const user = await em.findOne(User, { email: email })
 
     if (user) {
       req.session.userId = user.id
@@ -132,7 +134,7 @@ export class UserResolver {
   logout(@Ctx() { req, res }: ContextType) {
     return new Promise(resolve =>
       req.session.destroy(err => {
-        res.clearCookie("rdt")
+        res.clearCookie(COOKIE_NAME)
         if (err) {
           resolve(false)
           return {

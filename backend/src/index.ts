@@ -16,26 +16,6 @@ import { PostResolver } from "./resolvers/post-resolver"
 import { UserResolver } from "./resolvers/user-resolver"
 import { VoteResolver } from "./resolvers/vote-resolver"
 
-const PORT = process.env.PORT || 4000
-
-const whitelist = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "https://localhost:3001",
-  "https://localhost:3000",
-  "*.vercel.app",
-  "*.com",
-  "https://reddit-clone.com"
-]
-
-function getOrigin(origin: any, callback: any) {
-  if (whitelist.indexOf(origin) !== -1 || !origin) {
-    callback(null, true)
-  } else {
-    callback(new Error("Not allowed by CORS"))
-  }
-}
-
 const main = async () => {
   const orm = await MikroORM.init(MikroConfig)
   const migrator = orm.getMigrator()
@@ -52,7 +32,7 @@ const main = async () => {
   app.set("trust proxy", 1)
   app.use(
     cors({
-      origin: getOrigin,
+      origin: process.env.CORS_ORIGIN,
       credentials: true
     })
   )
@@ -97,9 +77,9 @@ const main = async () => {
 
   server.applyMiddleware({ app, cors: false })
 
-  app.listen(PORT, () => {
+  app.listen(process.env.PORT, () => {
     console.log(
-      `🚀🚀  Server ready at https://localhost:${PORT}${server.graphqlPath} 🚀 🚀 `
+      `🚀🚀  Server ready at https://localhost:${process.env.PORT}${server.graphqlPath} 🚀 🚀 `
     )
   })
 }

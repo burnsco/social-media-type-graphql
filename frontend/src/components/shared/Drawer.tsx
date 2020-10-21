@@ -10,20 +10,21 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  useDisclosure,
-  useToast
+  useDisclosure
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRef } from "react"
 import * as Yup from "yup"
 
 function RegisterDrawer() {
-  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
+
   const [register, { data, loading, error }] = useRegisterMutation()
-  const btnRef = useRef(null)
+
+  const btnRef = useRef<HTMLButtonElement | null>(null)
 
   if (loading) return null
+
   if (error) {
     console.log(error)
   }
@@ -72,19 +73,6 @@ function RegisterDrawer() {
                   }
                 })
               }, 1000)
-
-              if (data?.register?.user) {
-                toast({
-                  id: "success",
-                  title: `Welcome ${data.register.user.username}!`,
-                  description: "Your account was created successfully.",
-                  status: "success",
-                  duration: 9000,
-                  isClosable: true
-                })
-              } else if (data?.register.errors) {
-                console.log(data?.register.errors)
-              }
             }}
           >
             {({ isSubmitting }) => (

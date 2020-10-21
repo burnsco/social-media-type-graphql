@@ -4,6 +4,7 @@ import {
   useMeQuery
 } from "@/generated/graphql"
 import {
+  Alert,
   Box,
   Button,
   FormControl,
@@ -49,7 +50,7 @@ const SubmitPage: React.FunctionComponent = () => {
   }, [shouldRedirect])
 
   if (error) {
-    return <p>{error.message}</p>
+    return <Alert status="error">{error.message}</Alert>
   }
 
   const initialValues = {
@@ -76,9 +77,10 @@ const SubmitPage: React.FunctionComponent = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
+          categoryId: Yup.number().required("Required"),
           title: Yup.string().required("Required"),
-          text: Yup.string().notRequired(),
-          categoryId: Yup.number().required("Required")
+          link: Yup.string().notRequired(),
+          text: Yup.string().notRequired()
         })}
         onSubmit={(values, actions) => {
           setTimeout(() => {

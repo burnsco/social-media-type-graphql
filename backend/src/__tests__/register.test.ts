@@ -14,8 +14,8 @@ mutation Register($data: RegisterInput! ) {
 }
 `
 
-describe("Register", () => {
-  it("User", async () => {
+describe("Registers", () => {
+  it("User and can query user data in db.", async () => {
     const orm = await testConnection()
     const user = {
       username: faker.fake("{{internet.userName}}"),
