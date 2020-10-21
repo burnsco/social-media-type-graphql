@@ -1,19 +1,17 @@
 import { useCreateCommentMutation } from "@/generated/graphql"
-import { gql } from "@apollo/client"
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   FormControl,
-  Skeleton,
+  FormErrorMessage,
   Textarea,
   useColorModeValue
 } from "@chakra-ui/core"
-import { Field, Formik } from "formik"
-
-interface CreateSubredditProps {
-  postId: string
-  body: string
-}
+import { Field, Form, Formik, FormikValues } from "formik"
+import { FaSpinner } from "react-icons/fa"
+import * as Yup from "yup"
 
 const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
   const bg = useColorModeValue("white", "#1A1A1B")
@@ -22,71 +20,69 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
     { loading: mutationLoading, error: mutationError }
   ] = useCreateCommentMutation()
 
-  const handleSubmit = (values: CreateSubredditProps) => {
-    submitComment({
-      variables: {
-        data: {
-          postId: values.postId,
-          body: values.body
-        }
-      },
-      update(cache, { data }) {
-        cache.modify({
-          fields: {
-            comments(existingComments = []) {
-              const newCommentRef = cache.writeFragment({
-                data: data?.createComment?.comment,
-                fragment: gql`
-                  fragment NewComment on Comment {
-                    id
-                    body
-                  }
-                `
-              })
-              return [newCommentRef, ...existingComments]
-            }
-          }
-        })
-      }
-    })
+  if (mutationLoading) return null
+  if (mutationError) {
+    return (
+      <Alert status="error">
+        <AlertIcon />
+        {mutationError.message}
+      </Alert>
+    )
   }
 
   return (
-    <Box bg={bg} borderWidth="1px" rounded="md">
-      <Skeleton isLoaded={!mutationLoading}>
+    <>
+      <Box bg={bg} borderWidth="1px" rounded="md">
         <Formik
           initialValues={{ body: "", postId: postId }}
+          validationSchema={Yup.object().shape({
+            body: Yup.string()
+              .min(5, "Must be at least 5 characters")
+              .max(500, "Must be 500 or less characters")
+              .required("Required"),
+            postId: Yup.string().required()
+          })}
           onSubmit={(values, actions) => {
             setTimeout(() => {
               actions.setSubmitting(false)
-              handleSubmit(values)
+              submitComment({
+                variables: {
+                  data: { ...values }
+                }
+              })
             }, 1000)
           }}
         >
           {formik => (
-            <form onSubmit={formik.handleSubmit}>
+            <Form onSubmit={formik.handleSubmit}>
               <Field name="body">
-                {({ field, form }: any) => (
+                {({ field, form }: FormikValues) => (
                   <FormControl
                     isInvalid={form.errors.body && form.touched.body}
                   >
-                    <Textarea {...field} id="body" placeholder="body" />
+                    <Textarea
+                      size="lg"
+                      {...field}
+                      id="body"
+                      placeholder="enter comment here..."
+                    />
+                    <FormErrorMessage>{form.errors.body}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
               <Button
-                colorScheme="teal"
+                colorScheme="orange"
                 isLoading={formik.isSubmitting}
+                spinner={<FaSpinner size={6} color="white" />}
                 type="submit"
               >
                 Submit
               </Button>
-            </form>
+            </Form>
           )}
         </Formik>
-        {mutationError && <p>Error: ( Please try again</p>}
-      </Skeleton>
-    </Box>
+      </Box>
+    </>
   )
 }
 

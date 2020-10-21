@@ -1,5 +1,6 @@
 import { useCategoriesQuery } from "@/generated/graphql"
 import {
+  Alert,
   Button,
   Flex,
   Menu,
@@ -12,7 +13,6 @@ import { useRouter } from "next/router"
 import React from "react"
 import { FaHome } from "react-icons/fa"
 import { ImArrowDown } from "react-icons/im"
-import RegisterDrawer from "../shared/Drawer"
 
 function HomeSearch() {
   const router = useRouter()
@@ -22,7 +22,7 @@ function HomeSearch() {
   if (loading) return null
 
   if (error) {
-    console.log(error)
+    return <Alert status="error">{error.message}</Alert>
   }
 
   return (
@@ -57,7 +57,6 @@ function HomeSearch() {
             </MenuList>
           </>
         )}
-        <RegisterDrawer />
       </Menu>
     </Flex>
   )

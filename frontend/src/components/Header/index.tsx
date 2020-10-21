@@ -11,6 +11,7 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
+  Stack,
   Tooltip,
   useColorModeValue
 } from "@chakra-ui/core"
@@ -19,7 +20,9 @@ import { BsFolderPlus } from "react-icons/bs"
 import { ImPencil2 } from "react-icons/im"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
 import HomeSearch from "./Center"
+import LoginDrawer from "./LoginDrawer"
 import Logo from "./Logo"
+import RegisterDrawer from "./RegisterDrawer"
 
 const Header: React.FC = () => {
   const bg = useColorModeValue("white", "#1A1A1B")
@@ -54,7 +57,7 @@ const Header: React.FC = () => {
               mr={4}
               display={{ base: "none", md: "flex" }}
               size="md"
-              fontWeight="500"
+              fontWeight="600"
             >
               reddit
             </Heading>
@@ -145,21 +148,10 @@ const Header: React.FC = () => {
             </Menu>
           ) : (
             <Menu>
-              <MenuButton
-                variant="outline"
-                mr={2}
-                as={Button}
-                onClick={() => router.push("/register")}
-              >
-                Register
-              </MenuButton>
-              <MenuButton
-                mr={2}
-                as={Button}
-                onClick={() => router.push("/login")}
-              >
-                Login
-              </MenuButton>
+              <Stack spacing={4} direction="row" align="center">
+                <RegisterDrawer />
+                <LoginDrawer />
+              </Stack>
             </Menu>
           )}
         </Flex>

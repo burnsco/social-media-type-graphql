@@ -5,7 +5,12 @@ import { COOKIE_NAME } from "../constants"
 import { User } from "../entities/User"
 import { ContextType } from "../types"
 import { PostInput } from "./inputs/post-input"
-import { EditUserInput, LoginInput, RegisterInput } from "./inputs/user-input"
+import {
+  CheckUsernameInput,
+  EditUserInput,
+  LoginInput,
+  RegisterInput
+} from "./inputs/user-input"
 import { LogoutMutationResponse } from "./response/logout-response"
 import { UserMutationResponse } from "./response/user-response"
 import { validateLoginUser } from "./validation/login-schema"
@@ -19,6 +24,16 @@ export class UserResolver {
       return null
     }
     return await em.findOne(User, req.session.userId)
+  }
+
+  @Query(() => Boolean)
+  async isUsernameTaken(
+    @Arg("data") data: CheckUsernameInput,
+    @Ctx() { em }: ContextType
+  ): Promise<boolean> {
+    const user = await em.findOne(User, { username: data.username })
+    if (user) return true
+    return false
   }
 
   @Query(() => User)
@@ -39,6 +54,20 @@ export class UserResolver {
     @Arg("data") { email, username, password }: RegisterInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
+    const isUserTaken = await em.findOne(User, { email: email })
+
+    if (isUserTaken) {
+      const errors = [
+        {
+          field: "username",
+          message: "username taken"
+        }
+      ]
+      return {
+        errors
+      }
+    }
+
     const errors = await validateRegisterUser({ email, username, password })
     if (errors !== null) {
       return {

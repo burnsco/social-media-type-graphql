@@ -1,0 +1,3 @@
+query IsUsernameTaken($data: CheckUsernameInput!) {
+  isUsernameTaken(data: $data)
+}

@@ -16,7 +16,7 @@ import { Form, Formik } from "formik"
 import { useRef } from "react"
 import * as Yup from "yup"
 
-function RegisterDrawer() {
+function LoginDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [register, { data, loading, error }] = useRegisterMutation()
@@ -31,8 +31,8 @@ function RegisterDrawer() {
 
   return (
     <>
-      <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
-        Open
+      <Button variant="outline" size="md" ref={btnRef} onClick={onOpen}>
+        Login
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -47,9 +47,9 @@ function RegisterDrawer() {
           <Formik
             initialValues={{ username: "", email: "", password: "" }}
             validationSchema={Yup.object().shape({
-              username: Yup.string().min(2).max(15).required("Required"),
-              email: Yup.string().email().required("Required"),
-              password: Yup.string().min(5).max(20).required("Required")
+              username: Yup.string().min(2).max(20).required(),
+              email: Yup.string().email().required(),
+              password: Yup.string().min(8).max(20).required()
             })}
             onSubmit={async (values, actions) => {
               setTimeout(async () => {
@@ -108,4 +108,4 @@ function RegisterDrawer() {
   )
 }
 
-export default RegisterDrawer
+export default LoginDrawer

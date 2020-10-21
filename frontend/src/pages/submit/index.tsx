@@ -50,42 +50,37 @@ const SubmitPage: React.FunctionComponent = () => {
   }, [shouldRedirect])
 
   if (error) {
-    return <Alert status="error">{error.message}</Alert>
-  }
-
-  const initialValues = {
-    userId: "",
-    categoryId: "",
-    title: "",
-    text: "",
-    link: "",
-    video: "",
-    image: ""
+    return <Alert>{error.message}</Alert>
   }
 
   if (loading || loadingSubreddits) return null
 
   if (subredditError) {
-    console.log(subredditError)
-  }
-  if (error) {
-    console.log(error)
+    return <Alert>{subredditError.message}</Alert>
   }
 
   return (
     <Box bg={bg}>
       <Formik
-        initialValues={initialValues}
+        initialValues={{
+          userId: "",
+          categoryId: "",
+          title: "",
+          text: "",
+          link: "",
+          video: "",
+          image: ""
+        }}
         validationSchema={Yup.object().shape({
           categoryId: Yup.number().required("Required"),
-          title: Yup.string().required("Required"),
+          title: Yup.string().min(5).required("Required"),
           link: Yup.string().notRequired(),
           text: Yup.string().notRequired()
         })}
-        onSubmit={(values, actions) => {
-          setTimeout(() => {
+        onSubmit={async (values, actions) => {
+          setTimeout(async () => {
             actions.setSubmitting(false)
-            submitPost({
+            await submitPost({
               variables: {
                 data: {
                   userId: values.userId,
