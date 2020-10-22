@@ -1,4 +1,5 @@
-import { useCreateSubredditMutation, useMeQuery } from "@/generated/graphql"
+import { useCreateSubredditMutation } from "@/generated/graphql"
+import { useIsAuth } from "@/utils/useIsAuth"
 import { gql } from "@apollo/client"
 import {
   Box,
@@ -10,33 +11,17 @@ import {
   Skeleton
 } from "@chakra-ui/core"
 import { Field, Formik } from "formik"
-import { useRouter } from "next/router"
-import { useEffect } from "react"
 import * as Yup from "yup"
 interface CreateSubredditProps {
   name: string
 }
 
 const CreateSubreddit: React.FC = () => {
-  const router = useRouter()
-  const {
-    data: userData,
-    loading: userLoading,
-    error: userError
-  } = useMeQuery({ ssr: false })
+  useIsAuth()
   const [
     submitSubreddit,
     { loading: mutationLoading, error: mutationError }
   ] = useCreateSubredditMutation()
-  const user = userData?.me
-  const shouldRedirect = !(userLoading || userError || user)
-
-  useEffect(() => {
-    if (shouldRedirect) {
-      router.push("/signin")
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldRedirect])
 
   const handleSubmit = (values: CreateSubredditProps) => {
     submitSubreddit({

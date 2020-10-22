@@ -24,8 +24,7 @@ function HomeSearch() {
   if (error) {
     return <Alert status="error">{error.message}</Alert>
   }
-  const { category } = router.query
-  console.log(router)
+
   return (
     <Flex justify="space-around" flexGrow={2}>
       <Menu>
@@ -40,7 +39,7 @@ function HomeSearch() {
           rightIcon={<ImArrowDown />}
           variant="outline"
         >
-          {router.pathname === "/" ? "Home" : `${category}`}
+          Home
         </MenuButton>
         {data && (
           <>

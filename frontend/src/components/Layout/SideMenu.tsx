@@ -8,9 +8,9 @@ const SideMenu: React.FC = () => {
   const router = useRouter()
   const [isMounted, setIsMounted] = useState(false)
   const color = useColorModeValue("gray.700", "gray.300")
-  const hover = useColorModeValue("blue.200", "white")
+  const hover = useColorModeValue("black", "white")
   const bg = useColorModeValue("white", "#1A1A1B")
-  const linkbg = useColorModeValue("translucent", "#3661ed")
+  const linkbg = useColorModeValue("#ebedf0", "#3661ed")
   const linkbg2 = useColorModeValue("translucent", "translucent")
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const SideMenu: React.FC = () => {
             >
               <NextChakraLink
                 p={1}
-                fontWeight={category === subreddit.name ? 600 : 400}
+                fontWeight={category === subreddit.name ? 500 : 400}
                 color={category === subreddit.name ? hover : color}
                 _hover={{
                   color: hover,

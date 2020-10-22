@@ -1,8 +1,8 @@
 import {
   useCategoriesLazyQuery,
-  useCreatePostMutation,
-  useMeQuery
+  useCreatePostMutation
 } from "@/generated/graphql"
+import { useIsAuth } from "@/utils/useIsAuth"
 import {
   Alert,
   Box,
@@ -18,42 +18,31 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useColorModeValue
+  useColorModeValue,
+  useToast
 } from "@chakra-ui/core"
 import { Field, Form, Formik } from "formik"
-import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { FaSpinner } from "react-icons/fa"
 import * as Yup from "yup"
 
 const SubmitPage: React.FunctionComponent = () => {
   const bg = useColorModeValue("white", "#1A1A1B")
-  const router = useRouter()
+  const toast = useToast()
+
+  useIsAuth()
   const [
     getSubreddits,
     { data, loading: loadingSubreddits, error: subredditError }
   ] = useCategoriesLazyQuery()
-  const [submitPost, { loading, error }] = useCreatePostMutation()
-  const {
-    data: userData,
-    loading: userLoading,
-    error: userError
-  } = useMeQuery({ ssr: false })
 
-  const user = userData?.me
-  const shouldRedirect = !(userLoading || userError || user)
+  const [submitPost, { loading, error: postError }] = useCreatePostMutation()
 
-  useEffect(() => {
-    if (shouldRedirect) {
-      router.push("/signin")
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldRedirect])
-
-  if (error) {
-    return <Alert>{error.message}</Alert>
+  if (postError) {
+    return <Alert>{postError.message}</Alert>
   }
 
-  if (loading || loadingSubreddits) return null
+  if (loadingSubreddits) return null
+  if (loading) return <FaSpinner />
 
   if (subredditError) {
     return <Alert>{subredditError.message}</Alert>
@@ -78,22 +67,42 @@ const SubmitPage: React.FunctionComponent = () => {
           text: Yup.string().notRequired()
         })}
         onSubmit={async (values, actions) => {
-          setTimeout(async () => {
-            actions.setSubmitting(false)
-            await submitPost({
-              variables: {
-                data: {
-                  userId: values.userId,
-                  title: values.title,
-                  text: values.text,
-                  video: values.video,
-                  link: values.link,
-                  image: values.image,
-                  categoryId: values.categoryId
-                }
+          actions.setSubmitting(false)
+          const response = await submitPost({
+            variables: {
+              data: {
+                userId: values.userId,
+                title: values.title,
+                text: values.text,
+                video: values.video,
+                link: values.link,
+                image: values.image,
+                categoryId: values.categoryId
               }
+            }
+          })
+
+          if (response.data?.createPost.post) {
+            toast({
+              id: "success",
+              title: `${response.data?.createPost?.post.title}!`,
+              description: "Your post was submitted successfully.",
+              status: "success",
+              duration: 9000,
+              isClosable: true
             })
-          }, 1000)
+          } else if (response.data?.createPost.errors) {
+            toast({
+              id: "error",
+              title: `This was an error processing your post.`,
+              description: `Please try again.`,
+              status: "error",
+              duration: 9000,
+              isClosable: true
+            })
+          } else {
+            console.log("unknown error")
+          }
         }}
       >
         {formik => {
