@@ -35,7 +35,7 @@ describe("Register", () => {
         <RegisterPage />
       </MockedProvider>
     )
-    const submit = getByRole("button", { name: /Submit/i })
+    const submit = getByRole("button", { name: /submit/i })
     expect(submit).toBeInTheDocument()
 
     fireEvent.click(submit)

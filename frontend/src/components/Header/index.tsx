@@ -72,15 +72,15 @@ const Header: React.FC = () => {
               <ButtonGroup spacing="4" mr="4">
                 <Tooltip
                   hasArrow
-                  label="Submit Post"
+                  label="Create Post"
                   bg="gray.200"
                   color="black"
                 >
                   <IconButton
                     onClick={() => router.push("/submit")}
-                    variant="ghost"
-                    color="current"
-                    aria-label="Submit Post"
+                    colorScheme="green"
+                    size="md"
+                    aria-label="Create Post"
                     icon={<ImPencil2 />}
                   />
                 </Tooltip>
@@ -93,8 +93,8 @@ const Header: React.FC = () => {
                 >
                   <IconButton
                     onClick={() => router.push("/submit/Subreddit")}
-                    variant="ghost"
-                    color="current"
+                    colorScheme="orange"
+                    size="md"
                     aria-label="Create Subreddit"
                     icon={<BsFolderPlus />}
                   />

@@ -79,7 +79,7 @@ const main = async () => {
 
   app.listen(process.env.PORT, () => {
     console.log(
-      `🚀🚀  Server ready at https://localhost:${process.env.PORT}${server.graphqlPath} 🚀 🚀 `
+      `🚀🚀  Server ready at http://localhost:${process.env.PORT}${server.graphqlPath} 🚀 🚀 `
     )
   })
 }

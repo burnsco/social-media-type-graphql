@@ -24,6 +24,7 @@ export type Query = {
   posts?: Maybe<Array<Post>>
   postsByCategory?: Maybe<Array<Post>>
   me?: Maybe<User>
+  isUsernameTaken: Scalars["Boolean"]
   user: User
   users: Array<User>
 }
@@ -80,6 +81,10 @@ export type QueryPostsByCategoryArgs = {
   category?: Maybe<Scalars["String"]>
   skip?: Maybe<Scalars["Int"]>
   name?: Maybe<Scalars["String"]>
+}
+
+export type QueryIsUsernameTakenArgs = {
+  data: CheckUsernameInput
 }
 
 export type QueryUserArgs = {
@@ -158,6 +163,10 @@ export type PostOrderBy = {
 export enum OrderBy {
   Asc = "ASC",
   Desc = "DESC"
+}
+
+export type CheckUsernameInput = {
+  username: Scalars["String"]
 }
 
 export type PostInput = {
@@ -486,6 +495,15 @@ export type CommentsQuery = { __typename?: "Query" } & {
     >
   >
 }
+
+export type IsUsernameTakenQueryVariables = Exact<{
+  data: CheckUsernameInput
+}>
+
+export type IsUsernameTakenQuery = { __typename?: "Query" } & Pick<
+  Query,
+  "isUsernameTaken"
+>
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
@@ -1173,6 +1191,60 @@ export type CommentsLazyQueryHookResult = ReturnType<
 export type CommentsQueryResult = Apollo.QueryResult<
   CommentsQuery,
   CommentsQueryVariables
+>
+export const IsUsernameTakenDocument = gql`
+  query IsUsernameTaken($data: CheckUsernameInput!) {
+    isUsernameTaken(data: $data)
+  }
+`
+
+/**
+ * __useIsUsernameTakenQuery__
+ *
+ * To run a query within a React component, call `useIsUsernameTakenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIsUsernameTakenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIsUsernameTakenQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useIsUsernameTakenQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    IsUsernameTakenQuery,
+    IsUsernameTakenQueryVariables
+  >
+) {
+  return Apollo.useQuery<IsUsernameTakenQuery, IsUsernameTakenQueryVariables>(
+    IsUsernameTakenDocument,
+    baseOptions
+  )
+}
+export function useIsUsernameTakenLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    IsUsernameTakenQuery,
+    IsUsernameTakenQueryVariables
+  >
+) {
+  return Apollo.useLazyQuery<
+    IsUsernameTakenQuery,
+    IsUsernameTakenQueryVariables
+  >(IsUsernameTakenDocument, baseOptions)
+}
+export type IsUsernameTakenQueryHookResult = ReturnType<
+  typeof useIsUsernameTakenQuery
+>
+export type IsUsernameTakenLazyQueryHookResult = ReturnType<
+  typeof useIsUsernameTakenLazyQuery
+>
+export type IsUsernameTakenQueryResult = Apollo.QueryResult<
+  IsUsernameTakenQuery,
+  IsUsernameTakenQueryVariables
 >
 export const MeDocument = gql`
   query Me {

@@ -1,4 +1,4 @@
-import { InputField } from "@/components/shared/InputField"
+import { ChakraField } from "@/components/shared/ChakraField"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import {
   Box,
@@ -78,12 +78,12 @@ function LoginDrawer() {
             {({ isSubmitting }) => (
               <Form>
                 <DrawerBody>
-                  <InputField name="email" label="Email" />
+                  <ChakraField name="email" label="Email" />
                   <Box my="2">
-                    <InputField name="username" label="Username" />
+                    <ChakraField name="username" label="Username" />
                   </Box>
                   <Box my="4">
-                    <InputField
+                    <ChakraField
                       name="password"
                       label="Password"
                       type="password"

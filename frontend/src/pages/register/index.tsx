@@ -1,5 +1,5 @@
 import { Wrapper } from "@/components/Layout/wrapper"
-import { InputField } from "@/components/shared/InputField"
+import { ChakraField } from "@/components/shared/ChakraField"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { Box, Button, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
@@ -59,16 +59,16 @@ const RegisterPage: React.FC = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <InputField name="email" placeholder="email" label="Email" />
+            <ChakraField name="email" placeholder="email" label="Email" />
             <Box my="2">
-              <InputField
+              <ChakraField
                 name="username"
                 placeholder="username"
                 label="Username"
               />
             </Box>
             <Box my="4">
-              <InputField
+              <ChakraField
                 name="password"
                 placeholder="password"
                 label="Password"

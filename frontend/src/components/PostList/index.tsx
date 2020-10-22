@@ -49,7 +49,6 @@ const PostList = () => {
   }
 
   if (isMounted) {
-    console.log(allPosts)
     return (
       <Box>
         <ViewPosts />

@@ -86,7 +86,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   await apolloClient.query<PostsQuery>({
     query: PostsDocument,
     variables: {
-      category: params?.category ?? "funny",
+      category: params?.category ?? "movies",
       skip: 0,
       first: 4
     }

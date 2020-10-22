@@ -11,7 +11,7 @@ const SideMenu: React.FC = () => {
   const hover = useColorModeValue("blue.200", "white")
   const bg = useColorModeValue("white", "#1A1A1B")
   const linkbg = useColorModeValue("translucent", "#3661ed")
-  const linkbg2 = useColorModeValue("#3661ed", "translucent")
+  const linkbg2 = useColorModeValue("translucent", "translucent")
 
   useEffect(() => {
     setIsMounted(true)

@@ -6,21 +6,23 @@ import {
 } from "@chakra-ui/core"
 import { useField } from "formik"
 
-type InputFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   name: string
   label: string
+  size?: string
 }
 
-export const InputField: React.FC<InputFieldProps> = ({
+export const ChakraField: React.FC<ChakraFieldProps> = ({
   label,
   type,
+  size,
   ...props
 }) => {
   const [field, { error }] = useField(props)
 
   return (
     <FormControl isInvalid={!!error}>
-      <FormLabel fontSize="sm" htmlFor={field.name}>
+      <FormLabel fontSize={`${size}` || "sm"} htmlFor={field.name}>
         {label}
       </FormLabel>
       <Input

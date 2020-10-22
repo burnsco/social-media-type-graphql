@@ -1,5 +1,5 @@
-import { InputField } from "@/components/shared/InputField"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
+import { sleep } from "@/utils/sleepy"
 import {
   Alert,
   AlertIcon,
@@ -11,13 +11,12 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  FormControl,
-  FormErrorMessage,
   useDisclosure
 } from "@chakra-ui/core"
-import { Field, Formik } from "formik"
+import { Form, Formik } from "formik"
 import { useRef } from "react"
 import * as Yup from "yup"
+import { ChakraField } from "../shared/ChakraField"
 
 function RegisterDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -27,7 +26,6 @@ function RegisterDrawer() {
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
   if (loading) return null
-
   if (error) {
     return (
       <Alert status="error">
@@ -60,106 +58,59 @@ function RegisterDrawer() {
               password: Yup.string().min(8).max(20).required()
             })}
             onSubmit={async (values, actions) => {
-              setTimeout(async () => {
-                actions.setSubmitting(false)
-                await register({
-                  variables: {
-                    data: {
-                      username: values.username,
-                      password: values.password,
-                      email: values.email
-                    }
-                  },
-                  update: (cache, { data }) => {
-                    cache.writeQuery<MeQuery>({
-                      query: MeDocument,
-                      data: {
-                        __typename: "Query",
-                        me: data?.register.user
-                      }
-                    })
+              await sleep(500)
+              actions.setSubmitting(false)
+              await register({
+                variables: {
+                  data: {
+                    ...values
                   }
-                })
-              }, 1000)
+                },
+                update: (cache, { data }) => {
+                  cache.writeQuery<MeQuery>({
+                    query: MeDocument,
+                    data: {
+                      __typename: "Query",
+                      me: data?.register.user
+                    }
+                  })
+                }
+              })
             }}
           >
-            {formik => {
-              console.log(formik)
-              return (
-                <form onSubmit={formik.handleSubmit}>
-                  <DrawerBody>
-                    <Field name="email">
-                      {({ field, form }: any) => (
-                        <FormControl
-                          isInvalid={form.errors.email && form.touched.email}
-                        >
-                          <InputField
-                            id="email"
-                            {...field}
-                            name="email"
-                            label="Email"
-                          />
-                          <FormErrorMessage>
-                            {form.errors.email}
-                          </FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                    <Field name="username">
-                      {({ field, form }: any) => (
-                        <FormControl
-                          isInvalid={
-                            form.errors.username && form.touched.username
-                          }
-                        >
-                          <InputField
-                            id="username"
-                            {...field}
-                            name="username"
-                            label="Username"
-                          />
-                          <FormErrorMessage>
-                            {form.errors.username}
-                          </FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                    <Field name="password">
-                      {({ field, form }: any) => (
-                        <FormControl
-                          isInvalid={
-                            form.errors.password && form.touched.password
-                          }
-                        >
-                          <InputField
-                            id="password"
-                            {...field}
-                            name="password"
-                            label="Password"
-                          />
-                          <FormErrorMessage>
-                            {form.errors.password}
-                          </FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                  </DrawerBody>
+            {({ isSubmitting }) => (
+              <Form>
+                <DrawerBody>
+                  <ChakraField
+                    id="email"
+                    name="email"
+                    type="email"
+                    label="Email"
+                  />
+                  <ChakraField
+                    id="username"
+                    name="username"
+                    type="text"
+                    label="Username"
+                  />
+                  <ChakraField
+                    id="password"
+                    name="password"
+                    type="password"
+                    label="Password"
+                  />
+                </DrawerBody>
 
-                  <DrawerFooter>
-                    <Button variant="outline" mr={3} onClick={onClose}>
-                      Cancel
-                    </Button>
-                    <Button
-                      type="submit"
-                      isLoading={formik.isSubmitting}
-                      color="blue"
-                    >
-                      Submit
-                    </Button>
-                  </DrawerFooter>
-                </form>
-              )
-            }}
+                <DrawerFooter>
+                  <Button variant="outline" mr={3} onClick={onClose}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" isLoading={isSubmitting} color="blue">
+                    Submit
+                  </Button>
+                </DrawerFooter>
+              </Form>
+            )}
           </Formik>
         </DrawerContent>
       </Drawer>
