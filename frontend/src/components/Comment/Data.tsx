@@ -7,7 +7,7 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Alert, Box, Stack, Text } from "@chakra-ui/core"
+import { Box, Stack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
@@ -33,8 +33,8 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
 
   const loadingMoreComments = networkStatus === NetworkStatus.fetchMore
 
-  if (error) return <Alert status="error">{error.message}</Alert>
-  if (loading && !loadingMoreComments) return null
+  if (error) return <div>error loading posts</div>
+  if (loading && !loadingMoreComments) return <div>loading...</div>
 
   const comments = data?.comments ?? []
   const areMoreComments = (comments?.length ?? 1) < (comments?.length ?? 0)
@@ -62,7 +62,7 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
         </Box>
       )
     }
-    return <Text>No comments yet.</Text>
+    return <div>No comments yet.</div>
   }
 
   if (isMounted) {
@@ -86,7 +86,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   await apolloClient.query<PostsQuery>({
     query: PostsDocument,
     variables: {
-      category: params?.category ?? "movies",
+      category: params?.category ?? "funny",
       skip: 0,
       first: 4
     }
@@ -97,7 +97,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       initialApolloState: apolloClient.cache.extract(),
       category: params?.category
     },
-    revalidate: 1
+    revalidate: 10
   }
 }
 
