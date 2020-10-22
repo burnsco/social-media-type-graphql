@@ -429,7 +429,7 @@ export type EditUserMutation = { __typename?: "Mutation" } & {
     user?: Maybe<
       { __typename?: "User" } & Pick<
         User,
-        "id" | "username" | "email" | "avatar" | "about"
+        "id" | "username" | "about" | "email" | "avatar"
       >
     >
   }
@@ -881,9 +881,9 @@ export const EditUserDocument = gql`
       user {
         id
         username
+        about
         email
         avatar
-        about
       }
     }
   }

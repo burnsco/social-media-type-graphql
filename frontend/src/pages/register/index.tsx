@@ -1,18 +1,16 @@
 import { Wrapper } from "@/components/Layout/wrapper"
 import { ChakraField } from "@/components/shared/ChakraField"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
+import { toErrorMap } from "@/utils/toErrorMap"
 import { Box, Button, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
 import * as Yup from "yup"
 
 const RegisterPage: React.FC = () => {
+  const router = useRouter()
   const toast = useToast()
-  const [register, { data, loading, error }] = useRegisterMutation()
-
-  if (loading) return null
-  if (error) {
-    console.log(error)
-  }
+  const [register] = useRegisterMutation()
 
   return (
     <Wrapper variant="small">
@@ -23,7 +21,7 @@ const RegisterPage: React.FC = () => {
           email: Yup.string().required("Required"),
           password: Yup.string().required("Required")
         })}
-        onSubmit={async values => {
+        onSubmit={async (values, { setErrors }) => {
           const response = await register({
             variables: {
               data: {
@@ -42,7 +40,6 @@ const RegisterPage: React.FC = () => {
               })
             }
           })
-
           if (response.data?.register?.user) {
             toast({
               id: "success",
@@ -52,15 +49,16 @@ const RegisterPage: React.FC = () => {
               duration: 9000,
               isClosable: true
             })
+            router.push("/")
           } else if (response.data?.register.errors) {
-            console.log(response.data?.register.errors)
+            setErrors(toErrorMap(response.data.register.errors))
           }
         }}
       >
         {({ isSubmitting }) => (
           <Form>
             <ChakraField name="email" placeholder="email" label="Email" />
-            <Box my="2">
+            <Box my="4">
               <ChakraField
                 name="username"
                 placeholder="username"
@@ -83,7 +81,6 @@ const RegisterPage: React.FC = () => {
             >
               Submit
             </Button>
-            {data?.register?.user ? "success" : null}
           </Form>
         )}
       </Formik>

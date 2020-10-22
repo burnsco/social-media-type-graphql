@@ -1,8 +1,6 @@
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
-import { sleep } from "@/utils/sleepy"
+import { toErrorMap } from "@/utils/toErrorMap"
 import {
-  Alert,
-  AlertIcon,
   Button,
   Drawer,
   DrawerBody,
@@ -11,29 +9,21 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
 import { useRef } from "react"
 import * as Yup from "yup"
 import { ChakraField } from "../shared/ChakraField"
 
 function RegisterDrawer() {
+  const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const [register, { data, loading, error }] = useRegisterMutation()
-
+  const toast = useToast()
+  const [register] = useRegisterMutation()
   const btnRef = useRef<HTMLButtonElement | null>(null)
-
-  if (loading) return null
-  if (error) {
-    return (
-      <Alert status="error">
-        <AlertIcon />
-        {error.message}
-      </Alert>
-    )
-  }
 
   return (
     <>
@@ -53,14 +43,12 @@ function RegisterDrawer() {
           <Formik
             initialValues={{ username: "", email: "", password: "" }}
             validationSchema={Yup.object().shape({
-              username: Yup.string().min(2).max(20).required(),
+              username: Yup.string().required(),
               email: Yup.string().email().required(),
-              password: Yup.string().min(8).max(20).required()
+              password: Yup.string().required()
             })}
-            onSubmit={async (values, actions) => {
-              await sleep(500)
-              actions.setSubmitting(false)
-              await register({
+            onSubmit={async (values, { setErrors }) => {
+              const response = await register({
                 variables: {
                   data: {
                     ...values
@@ -76,6 +64,19 @@ function RegisterDrawer() {
                   })
                 }
               })
+              if (response.data?.register?.user) {
+                toast({
+                  id: "success",
+                  title: `Welcome ${response.data.register.user.username}!`,
+                  description: "Your account was created successfully.",
+                  status: "success",
+                  duration: 9000,
+                  isClosable: true
+                })
+                router.push("/")
+              } else if (response.data?.register.errors) {
+                setErrors(toErrorMap(response.data.register.errors))
+              }
             }}
           >
             {({ isSubmitting }) => (

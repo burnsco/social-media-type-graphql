@@ -1,30 +1,24 @@
+import { ChakraField } from "@/components/shared/ChakraField"
 import { useCreateSubredditMutation } from "@/generated/graphql"
 import { useIsAuth } from "@/utils/useIsAuth"
 import { gql } from "@apollo/client"
-import {
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Skeleton
-} from "@chakra-ui/core"
-import { Field, Formik } from "formik"
+import { Box, Button, useToast } from "@chakra-ui/core"
+import { Form, Formik } from "formik"
 import * as Yup from "yup"
 interface CreateSubredditProps {
   name: string
 }
 
 const CreateSubreddit: React.FC = () => {
+  const toast = useToast()
   useIsAuth()
   const [
     submitSubreddit,
-    { loading: mutationLoading, error: mutationError }
+    { loading: mutationLoading, error: mutationError, data }
   ] = useCreateSubredditMutation()
 
-  const handleSubmit = (values: CreateSubredditProps) => {
-    submitSubreddit({
+  const handleSubmit = async (values, actions) => {
+    const response = await submitSubreddit({
       variables: {
         data: {
           name: values.name
@@ -51,47 +45,43 @@ const CreateSubreddit: React.FC = () => {
     })
   }
 
+  if (mutationLoading) return <div>checking...</div>
+  if (mutationError) {
+    console.log(mutationError)
+  }
+
   return (
     <Box>
-      <Skeleton isLoaded={!mutationLoading}>
-        <Formik
-          initialValues={{ name: "" }}
-          validationSchema={Yup.object().shape({
-            name: Yup.string().required("Required")
-          })}
-          onSubmit={(values, actions) => {
-            setTimeout(() => {
-              actions.setSubmitting(false)
-              handleSubmit(values)
-            }, 1000)
-          }}
-        >
-          {props => (
-            <form onSubmit={props.handleSubmit}>
-              <Field name="name">
-                {({ field, form }: any) => (
-                  <FormControl
-                    isInvalid={form.errors.name && form.touched.name}
-                  >
-                    <FormLabel htmlFor="name">Subreddit Name/Title</FormLabel>
-                    <Input {...field} id="name" placeholder="name" />
-                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-              <Button
-                mt={4}
-                colorScheme="teal"
-                isLoading={props.isSubmitting}
-                type="submit"
-              >
-                Submit
-              </Button>
-            </form>
-          )}
-        </Formik>
-        {mutationError && <p>Error: ( Please try again</p>}
-      </Skeleton>
+      <Formik
+        initialValues={{ name: "" }}
+        validationSchema={Yup.object().shape({
+          name: Yup.string().min(2).required("Required")
+        })}
+        onSubmit={(values, actions) => {
+          setTimeout(() => {
+            actions.setSubmitting(false)
+            handleSubmit(values, actions)
+          }, 1000)
+        }}
+      >
+        {props => (
+          <Form>
+            <ChakraField
+              name="name"
+              type="text"
+              placeholder="enter your desired subreddit"
+              label="Name"
+            />
+            <Button
+              type="submit"
+              disabled={props.isSubmitting}
+              isLoading={props.isSubmitting}
+            >
+              Submit
+            </Button>
+          </Form>
+        )}
+      </Formik>
     </Box>
   )
 }

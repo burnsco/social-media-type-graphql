@@ -14,7 +14,6 @@ import {
 import { LogoutMutationResponse } from "./response/logout-response"
 import { UserMutationResponse } from "./response/user-response"
 import { validateLoginUser } from "./validation/login-schema"
-import { validateRegisterUser } from "./validation/register-schema"
 
 @Resolver(() => User)
 export class UserResolver {
@@ -54,22 +53,23 @@ export class UserResolver {
     @Arg("data") { email, username, password }: RegisterInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
-    const isUserTaken = await em.findOne(User, { email: email })
+    const errors = []
+    const isUserTaken = await em.findOne(User, { username: username })
+    const isEmailTaken = await em.findOne(User, { email: email })
 
-    if (isUserTaken) {
-      const errors = [
-        {
+    if (isUserTaken || isEmailTaken) {
+      if (isUserTaken) {
+        errors.push({
           field: "username",
-          message: "username taken"
-        }
-      ]
-      return {
-        errors
+          message: "Username taken."
+        })
       }
-    }
-
-    const errors = await validateRegisterUser({ email, username, password })
-    if (errors !== null) {
+      if (isEmailTaken) {
+        errors.push({
+          field: "email",
+          message: "Email in use."
+        })
+      }
       return {
         errors
       }

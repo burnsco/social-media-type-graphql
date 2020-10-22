@@ -9,10 +9,11 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Stack } from "@chakra-ui/core"
+import { Alert, AlertIcon, Box } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
+import { FaSpider } from "react-icons/fa"
 
 const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const [isMounted, setIsMounted] = useState(false)
@@ -33,8 +34,15 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
-  if (error) return <div>error loading posts</div>
-  if (loading && !loadingMorePosts) return null
+  if (error) {
+    return (
+      <Alert status="error">
+        <AlertIcon />
+        {error}
+      </Alert>
+    )
+  }
+  if (loading && !loadingMorePosts) return <FaSpider />
 
   const loadMorePosts = () => {
     fetchMore({
@@ -52,11 +60,11 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const ViewPosts = () => {
     if (postsBySubreddit.length > 0) {
       return (
-        <Stack spacing={8}>
+        <ul>
           {postsBySubreddit.map((post, index) => (
             <NewPost key={`post-${post.id}-${index}`} post={post} />
           ))}
-        </Stack>
+        </ul>
       )
     }
     return <div>No posts here.</div>

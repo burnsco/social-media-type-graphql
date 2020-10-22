@@ -18,20 +18,21 @@ export const ChakraField: React.FC<ChakraFieldProps> = ({
   size,
   ...props
 }) => {
-  const [field, { error }] = useField(props)
+  const [field, { error, touched }] = useField(props)
 
   return (
     <FormControl isInvalid={!!error}>
-      <FormLabel fontSize={`${size}` || "sm"} htmlFor={field.name}>
+      <FormLabel fontSize={`${size}` || "sm"} htmlFor={props.name || props.id}>
         {label}
       </FormLabel>
       <Input
         {...field}
+        {...props}
         type={type}
         id={field.name}
         placeholder={props.placeholder}
       />
-      {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
+      {error && touched ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   )
 }

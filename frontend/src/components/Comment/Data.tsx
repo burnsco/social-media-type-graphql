@@ -11,6 +11,7 @@ import { Box, Stack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
+import { ImSpinner } from "react-icons/im"
 import CommentPage from "."
 import ShowMoreComments from "./ShowMore"
 
@@ -34,7 +35,7 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   const loadingMoreComments = networkStatus === NetworkStatus.fetchMore
 
   if (error) return <div>error loading posts</div>
-  if (loading && !loadingMoreComments) return <div>loading...</div>
+  if (loading && !loadingMoreComments) return <ImSpinner />
 
   const comments = data?.comments ?? []
   const areMoreComments = (comments?.length ?? 1) < (comments?.length ?? 0)

@@ -1,5 +1,4 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql"
-import { subRedditNameInUse } from "../constants"
 import { Category } from "../entities/Category"
 import { ContextType } from "../types"
 import { CategoryInput } from "./inputs/category-input"
@@ -17,18 +16,26 @@ export class CategoryResolver {
     @Arg("data") data: CategoryInput,
     @Ctx() { em }: ContextType
   ): Promise<CategoryMutationResponse> {
+    const errors = []
     const isNameInUse = await em.findOne(Category, { name: data.name })
+    console.log(isNameInUse)
+    if (!isNameInUse) {
+      const category = em.create(Category, {
+        name: data.name
+      })
 
-    if (isNameInUse) {
-      return subRedditNameInUse
+      await em.persistAndFlush(category)
+
+      return { category }
     }
 
-    const category = em.create(Category, {
-      name: data.name
+    errors.push({
+      field: "name",
+      message: "name is in use"
     })
 
-    await em.persistAndFlush(category)
-
-    return { category }
+    return {
+      errors
+    }
   }
 }
