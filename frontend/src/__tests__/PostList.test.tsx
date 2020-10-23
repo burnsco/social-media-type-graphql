@@ -1,6 +1,6 @@
 import PostList from "@/components/PostList"
 import { PostsDocument } from "@/generated/graphql"
-import { cleanup, render, waitForElementToBeRemoved } from "@/utils/test-utils"
+import { cleanup, render, waitForElementToBeRemoved } from "@/utils/test-utils2"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 
