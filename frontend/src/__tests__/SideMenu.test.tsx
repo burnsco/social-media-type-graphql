@@ -1,6 +1,6 @@
 import SideMenu from "@/components/Layout/SideMenu"
 import { CategoriesDocument } from "@/generated/graphql"
-import { cleanup, waitForElementToBeRemoved } from "@/utils/test-utils"
+import { cleanup, waitForElementToBeRemoved } from "@/utils/test-utils2"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 import { customRender } from "../utils/test-utils2"
