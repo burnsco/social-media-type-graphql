@@ -451,7 +451,9 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: "Mutation" } & {
   register: { __typename?: "UserMutationResponse" } & {
-    user?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">>
+    user?: Maybe<
+      { __typename?: "User" } & Pick<User, "id" | "username" | "email">
+    >
     errors?: Maybe<
       Array<
         { __typename?: "FieldError" } & Pick<FieldError, "field" | "message">
@@ -514,7 +516,7 @@ export type IsUserOrEmailTakenQuery = { __typename?: "Query" } & {
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
 export type MeQuery = { __typename?: "Query" } & {
-  me?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">>
+  me?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username" | "email">>
 }
 
 export type PostQueryVariables = Exact<{
@@ -985,6 +987,7 @@ export const RegisterDocument = gql`
       user {
         id
         username
+        email
       }
       errors {
         field
@@ -1262,6 +1265,7 @@ export const MeDocument = gql`
     me {
       id
       username
+      email
     }
   }
 `

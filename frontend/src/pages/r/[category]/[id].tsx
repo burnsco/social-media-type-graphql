@@ -1,9 +1,8 @@
 import CommentsPageWithData from "@/components/Comment/Data"
 import SubmitCommentForm from "@/components/Comment/Form"
 import NewPost from "@/components/Post"
-import { PostNotFound } from "@/components/shared/PostNotFound"
 import { usePostLazyQuery } from "@/generated/graphql"
-import { Box, Skeleton, Stack } from "@chakra-ui/core"
+import { Skeleton, Stack, VisuallyHidden } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import React, { useEffect } from "react"
 
@@ -21,6 +20,12 @@ const PostAndCommentsPage: React.FC = () => {
     getPost()
   }, [getPost])
 
+  console.log(router)
+
+  if (loading) {
+    return <VisuallyHidden>loading</VisuallyHidden>
+  }
+
   if (data && data.post) {
     return (
       <Skeleton isLoaded={!loading}>
@@ -30,14 +35,13 @@ const PostAndCommentsPage: React.FC = () => {
             post={data.post}
           />
           <SubmitCommentForm postId={postId} />
-          <Box>Comments</Box>
           <CommentsPageWithData postId={postId} />
         </Stack>
       </Skeleton>
     )
-  } else {
-    return <PostNotFound />
   }
+
+  return null
 }
 
 export default PostAndCommentsPage

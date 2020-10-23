@@ -122,7 +122,7 @@ const Header: React.FC = () => {
                     <MenuItem onClick={() => router.push("/settings/profile")}>
                       Profile
                     </MenuItem>
-                    <MenuItem onClick={() => router.push("/settings/account")}>
+                    <MenuItem onClick={() => router.push("/account")}>
                       Account
                     </MenuItem>
                     <MenuItem onClick={() => router.push("/settings")}>

@@ -48,15 +48,13 @@ describe("Sidebar", () => {
     const loading = getByText(/loading/i)
     expect(loading).toBeInTheDocument()
 
-    await waitForElementToBeRemoved(loading).then(() =>
-      console.log("element is no longer in DOM")
-    )
-
-    const cat1 = getByText(/react/i)
-    expect(cat1).toBeInTheDocument()
-    const cat2 = getByText(/movies/i)
-    expect(cat2).toBeInTheDocument()
-    const cat3 = getByText(/tv/i)
-    expect(cat3).toBeInTheDocument()
+    await waitForElementToBeRemoved(loading).then(() => {
+      const cat1 = getByText(/react/i)
+      expect(cat1).toBeInTheDocument()
+      const cat2 = getByText(/movies/i)
+      expect(cat2).toBeInTheDocument()
+      const cat3 = getByText(/tv/i)
+      expect(cat3).toBeInTheDocument()
+    })
   })
 })

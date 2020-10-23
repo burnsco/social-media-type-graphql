@@ -3,6 +3,7 @@ mutation Register($data: RegisterInput!) {
     user {
       id
       username
+      email
     }
     errors {
       field

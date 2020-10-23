@@ -9,13 +9,15 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Alert, AlertIcon, Box } from "@chakra-ui/core"
+import { Alert, AlertIcon, Skeleton } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
+import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
 import { FaSpider } from "react-icons/fa"
 
 const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
+  const router = useRouter()
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -32,7 +34,9 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
     skip: !isMounted
   })
 
-  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
+  if (router.isFallback) {
+    return <div>Loading....</div>
+  }
 
   if (error) {
     return (
@@ -42,6 +46,8 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
       </Alert>
     )
   }
+
+  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
   if (loading && !loadingMorePosts) return <FaSpider />
 
   const loadMorePosts = () => {
@@ -72,14 +78,14 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
 
   if (isMounted) {
     return (
-      <Box>
+      <Skeleton isLoaded={!loading}>
         <ViewPosts />
         <ShowMorePosts
           loadMorePosts={loadMorePosts}
           areMorePosts={areMorePosts}
           loadingMorePosts={loadingMorePosts}
         />
-      </Box>
+      </Skeleton>
     )
   }
   return null
@@ -117,7 +123,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false
+    fallback: true
   }
 }
 

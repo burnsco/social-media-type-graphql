@@ -1,39 +1,31 @@
-import { useEditUserMutation } from "@/generated/graphql"
-import {
-  Alert,
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useColorModeValue
-} from "@chakra-ui/core"
-import { Field, Form, Formik } from "formik"
+import { ChakraField } from "@/components/shared/ChakraField"
+import { PasswordField } from "@/components/shared/PasswordField"
+import { useEditUserMutation, useMeQuery } from "@/generated/graphql"
+import { Alert, Box, Button, useColorModeValue } from "@chakra-ui/core"
+import { Form, Formik } from "formik"
+import { useRef, useState } from "react"
 import * as Yup from "yup"
 
-const AccountPage: React.FunctionComponent = () => {
+const AccountPage = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const onClose = () => setIsOpen(false)
+  const cancelRef = useRef<HTMLButtonElement | null>(null)
   const bg = useColorModeValue("white", "#1A1A1B")
 
-  const [editUser, { loading, error }] = useEditUserMutation()
+  const { data, loading } = useMeQuery()
+  const [editUser, { loading: editLoading, error }] = useEditUserMutation()
 
   if (error) return <Alert>{error.message}</Alert>
 
-  if (loading) return null
+  if (loading || editLoading) return null
 
   return (
     <Box bg={bg}>
       <Formik
         initialValues={{
-          username: "",
+          username: data?.me?.username,
           about: "",
-          email: "",
+          email: data?.me?.email,
           password: "",
           avatar: ""
         }}
@@ -62,132 +54,51 @@ const AccountPage: React.FunctionComponent = () => {
           }, 1000)
         }}
       >
-        {formik => {
-          return (
-            <Form>
-              <Stack spacing={5}>
-                <Tabs
-                  variant="enclosed"
-                  onChange={() => {
-                    formik.handleReset()
-                  }}
-                >
-                  <TabList>
-                    <Tab>User/Pass</Tab>
-                    <Tab>About/Avatar</Tab>
-                    <Tab>E-Mail</Tab>
-                  </TabList>
+        {({ isSubmitting }) => (
+          <Form>
+            <ChakraField
+              name="email"
+              id="email"
+              placeholder="email"
+              label="Email"
+            />
+            <Box my="4">
+              <ChakraField
+                id="username"
+                name="username"
+                placeholder="username"
+                label="Username"
+              />
+            </Box>
 
-                  <TabPanels>
-                    <TabPanel>
-                      <Field name="username">
-                        {({ field, form }: any) => (
-                          <FormControl
-                            isInvalid={
-                              form.errors.username && form.touched.username
-                            }
-                          >
-                            <FormLabel htmlFor="username"></FormLabel>
-                            <Input
-                              {...field}
-                              id="username"
-                              placeholder="Username"
-                            />
-                            <FormErrorMessage>
-                              {form.errors.username}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                      <Field name="password">
-                        {({ field, form }: any) => (
-                          <FormControl
-                            isInvalid={
-                              form.errors.password && form.touched.password
-                            }
-                          >
-                            <FormLabel htmlFor="password"></FormLabel>
-                            <Input
-                              {...field}
-                              id="password"
-                              placeholder="Password"
-                            />
-                            <FormErrorMessage>
-                              {form.errors.password}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                    </TabPanel>
+            <Box my="4">
+              <ChakraField
+                id="about"
+                name="about"
+                placeholder="about"
+                label="About Me"
+              />
+            </Box>
 
-                    <TabPanel>
-                      <Field name="about">
-                        {({ field, form }: any) => (
-                          <FormControl
-                            isInvalid={form.errors.about && form.touched.about}
-                          >
-                            <FormLabel htmlFor="about"></FormLabel>
-                            <Input
-                              {...field}
-                              id="about"
-                              placeholder="About Me"
-                            />
-                            <FormErrorMessage>
-                              {form.errors.about}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                      <Field name="avatar">
-                        {({ field, form }: any) => (
-                          <FormControl
-                            isInvalid={
-                              form.errors.avatar && form.touched.avatar
-                            }
-                          >
-                            <FormLabel htmlFor="avatar"></FormLabel>
-                            <Input
-                              {...field}
-                              id="avatar"
-                              placeholder="Avatar Link"
-                            />
-                            <FormErrorMessage>
-                              {form.errors.avatar}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                    </TabPanel>
+            <Box my="4">
+              <PasswordField
+                id="password"
+                name="password"
+                placeholder="password"
+                label="Password"
+              />
+            </Box>
 
-                    <TabPanel>
-                      <Field name="email">
-                        {({ field, form }: any) => (
-                          <FormControl
-                            isInvalid={form.errors.email && form.touched.email}
-                          >
-                            <FormLabel htmlFor="email"></FormLabel>
-                            <Input {...field} id="email" placeholder="E-Mail" />
-                            <FormErrorMessage>
-                              {form.errors.email}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                    </TabPanel>
-                  </TabPanels>
-                </Tabs>
-              </Stack>
-              <Button
-                m={2}
-                colorScheme="teal"
-                isLoading={formik.isSubmitting}
-                type="submit"
-              >
-                Submit
-              </Button>
-            </Form>
-          )
-        }}
+            <Button
+              mt={4}
+              colorScheme="red"
+              type="submit"
+              isLoading={isSubmitting}
+            >
+              Submit
+            </Button>
+          </Form>
+        )}
       </Formik>
     </Box>
   )
