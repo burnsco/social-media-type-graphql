@@ -1,13 +1,16 @@
 import {
+  Button,
   FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Text
 } from "@chakra-ui/core"
 import { useField } from "formik"
-import { useState } from "react"
+import React, { useState } from "react"
 
 type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   name: string
@@ -16,7 +19,7 @@ type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   size?: string
 }
 
-export const ChakraField: React.FC<ChakraFieldProps> = ({
+export const PasswordField: React.FC<ChakraFieldProps> = ({
   label,
   type,
   size,
@@ -24,8 +27,11 @@ export const ChakraField: React.FC<ChakraFieldProps> = ({
   ...props
 }) => {
   const [field, { error, touched }] = useField(props)
+
   const [didFocus, setDidFocus] = useState(false)
+  const [show, setShow] = useState(false)
   const handleFocus = () => setDidFocus(true)
+  const handleClick = () => setShow(!show)
   const showFeedback = (!!didFocus && field.value.trim().length > 2) || touched
 
   return (
@@ -45,17 +51,23 @@ export const ChakraField: React.FC<ChakraFieldProps> = ({
           </Text>
         ) : null}
       </FormLabel>
-
-      <Input
-        {...field}
-        {...props}
-        focusBorderColor="red.300"
-        aria-describedby={`${props.id}-feedback ${props.id}-help`}
-        type={type}
-        onFocus={handleFocus}
-        id={field.name}
-        placeholder={props.placeholder}
-      />
+      <InputGroup size="sm">
+        <Input
+          {...field}
+          {...props}
+          focusBorderColor="red.300"
+          aria-describedby={`${props.id}-feedback ${props.id}-help`}
+          type={show ? "text" : "password"}
+          onFocus={handleFocus}
+          id={field.name}
+          placeholder={props.placeholder}
+        />
+        <InputRightElement width="4.5rem">
+          <Button h="1.75rem" size="sm" onClick={handleClick}>
+            {show ? "Hide" : "Show"}
+          </Button>
+        </InputRightElement>
+      </InputGroup>
 
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
 

@@ -46,7 +46,7 @@ function LoginDrawer() {
           <DrawerHeader>Register</DrawerHeader>
           <Formik
             initialValues={{ username: "", email: "", password: "" }}
-            validationSchema={Yup.object().shape({
+            validationSchema={Yup.object({
               username: Yup.string().min(2).max(20).required(),
               email: Yup.string().email().required(),
               password: Yup.string().min(8).max(20).required()

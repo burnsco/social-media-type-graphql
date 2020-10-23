@@ -6,7 +6,7 @@ import { User } from "../entities/User"
 import { ContextType } from "../types"
 import { PostInput } from "./inputs/post-input"
 import {
-  CheckUsernameInput,
+  CheckAvailability,
   EditUserInput,
   LoginInput,
   RegisterInput
@@ -25,14 +25,43 @@ export class UserResolver {
     return await em.findOne(User, req.session.userId)
   }
 
-  @Query(() => Boolean)
-  async isUsernameTaken(
-    @Arg("data") data: CheckUsernameInput,
+  @Query(() => UserMutationResponse)
+  async isUserOrEmailTaken(
+    @Arg("data") data: CheckAvailability,
     @Ctx() { em }: ContextType
-  ): Promise<boolean> {
-    const user = await em.findOne(User, { username: data.username })
-    if (user) return true
-    return false
+  ): Promise<UserMutationResponse> {
+    const errors = []
+    const isUserTaken = await em.findOne(User, { username: data.username })
+    const isEmailTaken = await em.findOne(User, { email: data.email })
+
+    if (isUserTaken || isEmailTaken) {
+      if (isUserTaken) {
+        errors.push({
+          field: "username",
+          message: "Username taken."
+        })
+      }
+      if (isEmailTaken) {
+        errors.push({
+          field: "email",
+          message: "Email in use."
+        })
+      }
+      return {
+        errors
+      }
+    }
+    errors.push({
+      field: "email",
+      message: "email not in use"
+    })
+    errors.push({
+      field: "username",
+      message: "username available"
+    })
+    return {
+      errors
+    }
   }
 
   @Query(() => User)

@@ -1,5 +1,4 @@
 import { useCreateSubredditMutation } from "@/generated/graphql"
-import { useIsAuth } from "@/utils/useIsAuth"
 import { gql } from "@apollo/client"
 import {
   Alert,
@@ -16,6 +15,7 @@ import {
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRef } from "react"
+import { useIsAuth } from "src/hooks/useIsAuth"
 import * as Yup from "yup"
 import { ChakraField } from "../shared/ChakraField"
 

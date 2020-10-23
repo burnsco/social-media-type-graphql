@@ -20,9 +20,12 @@ export class RegisterInput implements Partial<User> {
 }
 
 @InputType()
-export class CheckUsernameInput implements Partial<User> {
+export class CheckAvailability implements Partial<User> {
   @Field()
-  username: string
+  username?: string
+
+  @Field()
+  email?: string
 }
 
 @InputType()

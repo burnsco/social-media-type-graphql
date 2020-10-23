@@ -22,8 +22,7 @@ const SideMenu: React.FC = () => {
 
   if (error) return <div>Error loading subreddits.</div>
   if (loading) return <div>loading...</div>
-  console.log(data)
-  console.log(router)
+
   return (
     <Box
       bg={bg}

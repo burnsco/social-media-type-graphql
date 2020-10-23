@@ -9,6 +9,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Stack,
   useDisclosure,
   useToast
 } from "@chakra-ui/core"
@@ -17,6 +18,7 @@ import { useRouter } from "next/router"
 import { useRef } from "react"
 import * as Yup from "yup"
 import { ChakraField } from "../shared/ChakraField"
+import { PasswordField } from "../shared/PasswordField"
 
 function RegisterDrawer() {
   const router = useRouter()
@@ -31,6 +33,7 @@ function RegisterDrawer() {
         Register
       </Button>
       <Drawer
+        size="sm"
         isOpen={isOpen}
         placement="right"
         onClose={onClose}
@@ -39,13 +42,24 @@ function RegisterDrawer() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Register</DrawerHeader>
+          <DrawerHeader>Join the Community!</DrawerHeader>
           <Formik
             initialValues={{ username: "", email: "", password: "" }}
-            validationSchema={Yup.object().shape({
-              username: Yup.string().required(),
-              email: Yup.string().email().required(),
-              password: Yup.string().required()
+            validationSchema={Yup.object({
+              username: Yup.string()
+                .min(2, "Must be at least 2 characters long")
+                .max(15, "Must be 20 characters or less")
+                .required("Username is required")
+                .matches(
+                  /^[a-zA-Z0-9]+$/,
+                  "Cannot contain special characters or spaces"
+                ),
+
+              email: Yup.string().email().required("Required"),
+              password: Yup.string()
+                .min(4, "Must be at least 4 characters long")
+                .max(15, "Must be 20 characters or less")
+                .required("Required")
             })}
             onSubmit={async (values, { setErrors }) => {
               const response = await register({
@@ -79,39 +93,44 @@ function RegisterDrawer() {
               }
             }}
           >
-            {({ isSubmitting }) => (
-              <Form>
-                <DrawerBody>
-                  <ChakraField
-                    id="email"
-                    name="email"
-                    type="email"
-                    label="Email"
-                  />
-                  <ChakraField
-                    id="username"
-                    name="username"
-                    type="text"
-                    label="Username"
-                  />
-                  <ChakraField
-                    id="password"
-                    name="password"
-                    type="password"
-                    label="Password"
-                  />
-                </DrawerBody>
+            {({ isSubmitting }) => {
+              return (
+                <Form>
+                  <DrawerBody>
+                    <Stack spacing={4}>
+                      <ChakraField
+                        id="email"
+                        name="email"
+                        type="email"
+                        label="Email"
+                      />
+                      <ChakraField
+                        id="username"
+                        name="username"
+                        type="text"
+                        label="Username"
+                        helperText="Must be 8-20 characters and cannot contain special characters."
+                      />
+                      <PasswordField
+                        id="password"
+                        name="password"
+                        type="password"
+                        label="Password"
+                      />
+                    </Stack>
+                  </DrawerBody>
 
-                <DrawerFooter>
-                  <Button variant="outline" mr={3} onClick={onClose}>
-                    Cancel
-                  </Button>
-                  <Button type="submit" isLoading={isSubmitting} color="blue">
-                    Submit
-                  </Button>
-                </DrawerFooter>
-              </Form>
-            )}
+                  <DrawerFooter>
+                    <Button variant="outline" mr={3} onClick={onClose}>
+                      Cancel
+                    </Button>
+                    <Button type="submit" isLoading={isSubmitting} color="blue">
+                      Submit
+                    </Button>
+                  </DrawerFooter>
+                </Form>
+              )
+            }}
           </Formik>
         </DrawerContent>
       </Drawer>

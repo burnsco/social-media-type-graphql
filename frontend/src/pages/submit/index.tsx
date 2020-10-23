@@ -2,7 +2,6 @@ import {
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@/generated/graphql"
-import { useIsAuth } from "@/utils/useIsAuth"
 import {
   Alert,
   Box,
@@ -23,6 +22,7 @@ import {
 } from "@chakra-ui/core"
 import { Field, Form, Formik } from "formik"
 import { FaSpinner } from "react-icons/fa"
+import { useIsAuth } from "src/hooks/useIsAuth"
 import * as Yup from "yup"
 
 const SubmitPage: React.FunctionComponent = () => {

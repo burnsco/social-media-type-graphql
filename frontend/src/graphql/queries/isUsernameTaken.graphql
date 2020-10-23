@@ -1,3 +1,8 @@
-query IsUsernameTaken($data: CheckUsernameInput!) {
-  isUsernameTaken(data: $data)
+query IsUserOrEmailTaken($data: CheckAvailability!) {
+  isUserOrEmailTaken(data: $data) {
+    errors {
+      field
+      message
+    }
+  }
 }
