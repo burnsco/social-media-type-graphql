@@ -39,6 +39,7 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "testing-library/no-debug": "off",
+    "react/display-name": "off",
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",

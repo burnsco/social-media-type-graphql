@@ -21,8 +21,9 @@ const SideMenu: React.FC = () => {
   const { data, loading, error } = useCategoriesQuery({ skip: !isMounted })
 
   if (error) return <div>Error loading subreddits.</div>
-  if (loading) return null
-
+  if (loading) return <div>loading...</div>
+  console.log(data)
+  console.log(router)
   return (
     <Box
       bg={bg}

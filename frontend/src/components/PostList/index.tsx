@@ -3,7 +3,6 @@ import { allPostsQueryVars } from "@/types/post"
 import { NetworkStatus } from "@apollo/client"
 import { Box } from "@chakra-ui/core"
 import { useEffect, useState } from "react"
-import { FaSpider } from "react-icons/fa"
 import NewPost from "../Post"
 import ShowMorePosts from "./showMore"
 
@@ -22,7 +21,7 @@ const PostList = () => {
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
   if (error) return <div>error loading posts</div>
-  if (loading && !loadingMorePosts) return <FaSpider />
+  if (loading && !loadingMorePosts) return <div>...loading</div>
 
   const allPosts = data?.posts ?? []
   const _allPostsMeta = data?._allPostsMeta
