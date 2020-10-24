@@ -5,6 +5,7 @@ query Comments($first: Int, $orderBy: PostOrderBy, $skip: Int, $postId: ID) {
     updatedAt
     body
     createdBy {
+      id
       username
     }
   }

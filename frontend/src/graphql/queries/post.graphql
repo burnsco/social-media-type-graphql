@@ -8,6 +8,7 @@ query Post($postId: ID) {
     image
     video
     link
+
     comments {
       id
       createdAt
@@ -17,17 +18,21 @@ query Post($postId: ID) {
         username
       }
     }
+
     author {
       id
       username
     }
+
     category {
       id
       name
     }
+
     totalComments {
       count
     }
+
     totalVotes {
       score
       count

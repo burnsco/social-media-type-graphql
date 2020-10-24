@@ -256,6 +256,7 @@ const SubmitPage: React.FunctionComponent = () => {
               <Button
                 m={2}
                 colorScheme="teal"
+                isDisabled={formik.isSubmitting}
                 isLoading={formik.isSubmitting}
                 type="submit"
               >

@@ -7,7 +7,7 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Stack } from "@chakra-ui/core"
+import { Box, Stack, Text } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
@@ -63,7 +63,7 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
         </Box>
       )
     }
-    return <div>No comments yet.</div>
+    return <Text>No comments yet.</Text>
   }
 
   if (isMounted) {

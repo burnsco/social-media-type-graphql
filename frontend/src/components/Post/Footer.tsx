@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/core"
-import { memo } from "react"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 const PostFooter: React.FC<{
@@ -18,4 +17,4 @@ const PostFooter: React.FC<{
   )
 }
 
-export default memo(PostFooter)
+export default PostFooter

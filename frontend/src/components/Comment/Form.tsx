@@ -1,6 +1,7 @@
 import { useCreateCommentMutation } from "@/generated/graphql"
 import { gql } from "@apollo/client"
 import {
+  Alert,
   Box,
   Button,
   FormControl,
@@ -81,6 +82,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
                 )}
               </Field>
               <Button
+                size="sm"
                 colorScheme="teal"
                 isLoading={formik.isSubmitting}
                 type="submit"
@@ -90,7 +92,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
             </form>
           )}
         </Formik>
-        {mutationError && <p>Error: ( Please try again</p>}
+        {mutationError && <Alert>{mutationError.message}</Alert>}
       </Skeleton>
     </Box>
   )

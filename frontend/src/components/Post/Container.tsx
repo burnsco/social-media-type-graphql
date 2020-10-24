@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/core"
-import { memo } from "react"
 
 const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
   children,
@@ -8,6 +7,7 @@ const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
   return (
     <Box
       bg={bg}
+      shadow="sm"
       borderWidth="1px"
       rounded="md"
       overflow="hidden"
@@ -16,7 +16,9 @@ const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
       minH="100px"
       width="100%"
       _hover={{
-        borderColor: "gray.500"
+        shadow: "md",
+        borderWidth: "1px",
+        borderColor: "gray.400"
       }}
     >
       {children}
@@ -24,4 +26,4 @@ const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
   )
 }
 
-export default memo(PostContainer)
+export default PostContainer

@@ -5,6 +5,7 @@ query Comment($postId: ID) {
     updatedAt
     body
     createdBy {
+      id
       username
     }
   }

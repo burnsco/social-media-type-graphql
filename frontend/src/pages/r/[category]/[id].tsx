@@ -29,7 +29,7 @@ const PostAndCommentsPage: React.FC = () => {
   if (data && data.post) {
     return (
       <Skeleton isLoaded={!loading}>
-        <Stack spacing={2}>
+        <Stack spacing={4}>
           <NewPost
             key={`post-${data.post.id}-${data.post.title}`}
             post={data.post}

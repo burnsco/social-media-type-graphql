@@ -1,12 +1,11 @@
 import { ChakraField } from "@/components/shared/ChakraField"
-import { PasswordField } from "@/components/shared/PasswordField"
 import { useEditUserMutation, useMeQuery } from "@/generated/graphql"
 import { Alert, Box, Button, Heading, useColorModeValue } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRef, useState } from "react"
 import * as Yup from "yup"
 
-const AccountPage = () => {
+const GeneralPage = () => {
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = useRef<HTMLButtonElement | null>(null)
@@ -21,7 +20,7 @@ const AccountPage = () => {
 
   return (
     <Box bg={bg}>
-      <Heading>Account</Heading>
+      <Heading>General</Heading>
       <Formik
         initialValues={{
           username: data?.me?.username,
@@ -33,7 +32,7 @@ const AccountPage = () => {
         validationSchema={Yup.object().shape({
           userId: Yup.string().notRequired(),
           username: Yup.string().notRequired(),
-          about: Yup.string().notRequired(),
+          about: Yup.string().min(5).max(150).notRequired(),
           email: Yup.string().notRequired(),
           password: Yup.string().notRequired(),
           avatar: Yup.string().notRequired()
@@ -57,27 +56,12 @@ const AccountPage = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <ChakraField
-              name="email"
-              id="email"
-              placeholder="email"
-              label="Email"
-            />
             <Box my="4">
               <ChakraField
-                id="username"
-                name="username"
-                placeholder="username"
-                label="Username"
-              />
-            </Box>
-
-            <Box my="4">
-              <PasswordField
-                id="password"
-                name="password"
-                placeholder="password"
-                label="Password"
+                id="about"
+                name="about"
+                placeholder="about"
+                label="About Me"
               />
             </Box>
 
@@ -96,4 +80,4 @@ const AccountPage = () => {
   )
 }
 
-export default AccountPage
+export default GeneralPage

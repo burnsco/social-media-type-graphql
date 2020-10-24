@@ -1,7 +1,6 @@
 import { timeDifferenceForDate } from "@/utils/timeDifferenceForDate"
-import { Box } from "@chakra-ui/core"
+import { Box, Flex } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import { memo } from "react"
 import PostCategory from "./Category"
 
 const PostHeader: React.FC<{
@@ -11,7 +10,7 @@ const PostHeader: React.FC<{
 }> = ({ category, author, createdAt }) => {
   const router = useRouter()
   return (
-    <Box fontSize="12px" display="flex" color="gray.400" mb="2">
+    <Flex fontSize="12px" color="gray.400" mb="2">
       <PostCategory category={category} />
 
       <Box ml="2" textDecoration="none">
@@ -32,8 +31,8 @@ const PostHeader: React.FC<{
           {timeDifferenceForDate(Number(createdAt))}
         </Box>
       </Box>
-    </Box>
+    </Flex>
   )
 }
 
-export default memo(PostHeader)
+export default PostHeader

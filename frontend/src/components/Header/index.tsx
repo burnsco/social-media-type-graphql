@@ -119,13 +119,13 @@ const Header: React.FC = () => {
                 </MenuButton>
                 <MenuList opacity="0.9">
                   <MenuGroup title="Settings">
-                    <MenuItem onClick={() => router.push("/settings/profile")}>
+                    <MenuItem onClick={() => router.push("/profile")}>
                       Profile
                     </MenuItem>
                     <MenuItem onClick={() => router.push("/account")}>
                       Account
                     </MenuItem>
-                    <MenuItem onClick={() => router.push("/settings")}>
+                    <MenuItem onClick={() => router.push("/general")}>
                       General
                     </MenuItem>
                   </MenuGroup>

@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/core"
-import { memo } from "react"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 type PostCategoryProps = {
@@ -20,4 +19,4 @@ const PostCategory = (props: PostCategoryProps) => (
   </Box>
 )
 
-export default memo(PostCategory)
+export default PostCategory

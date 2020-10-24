@@ -1,5 +1,4 @@
 import { Box, Heading, Link, Text } from "@chakra-ui/core"
-import { memo } from "react"
 
 const PostBody: React.FC<{
   title?: string | null
@@ -12,7 +11,9 @@ const PostBody: React.FC<{
         <Heading fontSize="xl">{title}</Heading>
       </Box>
 
-      <Text mt={1}>{text}</Text>
+      <Text fontSize="sm" mt={1}>
+        {text}
+      </Text>
 
       <Box mt={1}>
         <Link href={`https://${link}`}>{link}</Link>
@@ -21,4 +22,4 @@ const PostBody: React.FC<{
   )
 }
 
-export default memo(PostBody)
+export default PostBody

@@ -605,7 +605,9 @@ export type PostsQuery = { __typename?: "Query" } & {
 export type UsersQueryVariables = Exact<{ [key: string]: never }>
 
 export type UsersQuery = { __typename?: "Query" } & {
-  users: Array<{ __typename?: "User" } & Pick<User, "id" | "username">>
+  users: Array<
+    { __typename?: "User" } & Pick<User, "id" | "username" | "email">
+  >
 }
 
 export const CreateCommentDocument = gql`
@@ -1468,6 +1470,7 @@ export const UsersDocument = gql`
     users {
       id
       username
+      email
     }
   }
 `
