@@ -1,5 +1,6 @@
 import NewPost from "@/components/Post"
 import ShowMorePosts from "@/components/PostList/showMore"
+import SEO from "@/components/shared/seo"
 import {
   CategoriesDocument,
   Category,
@@ -78,14 +79,20 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
 
   if (isMounted) {
     return (
-      <Skeleton isLoaded={!loading}>
-        <ViewPosts />
-        <ShowMorePosts
-          loadMorePosts={loadMorePosts}
-          areMorePosts={areMorePosts}
-          loadingMorePosts={loadingMorePosts}
+      <>
+        <SEO
+          title={category}
+          description="A typescript/react clone to learn graphql, postgres, apollo and more."
         />
-      </Skeleton>
+        <Skeleton isLoaded={!loading}>
+          <ViewPosts />
+          <ShowMorePosts
+            loadMorePosts={loadMorePosts}
+            areMorePosts={areMorePosts}
+            loadingMorePosts={loadingMorePosts}
+          />
+        </Skeleton>
+      </>
     )
   }
   return null

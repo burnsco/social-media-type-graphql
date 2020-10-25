@@ -1,6 +1,7 @@
 import CommentsPageWithData from "@/components/Comment/Data"
 import SubmitCommentForm from "@/components/Comment/Form"
 import NewPost from "@/components/Post"
+import SEO from "@/components/shared/seo"
 import { usePostLazyQuery } from "@/generated/graphql"
 import { Skeleton, Stack, VisuallyHidden } from "@chakra-ui/core"
 import { useRouter } from "next/router"
@@ -27,17 +28,19 @@ const PostAndCommentsPage: React.FC = () => {
   }
 
   if (data && data.post) {
+    const { name: category } = data.post.category
+    const { id, title } = data.post
     return (
-      <Skeleton isLoaded={!loading}>
-        <Stack spacing={4}>
-          <NewPost
-            key={`post-${data.post.id}-${data.post.title}`}
-            post={data.post}
-          />
-          <SubmitCommentForm postId={postId} />
-          <CommentsPageWithData postId={postId} />
-        </Stack>
-      </Skeleton>
+      <>
+        <SEO title={category} description={title} />
+        <Skeleton isLoaded={!loading}>
+          <Stack spacing={4}>
+            <NewPost key={`post-${id}-${title}`} post={data.post} />
+            <SubmitCommentForm postId={postId} />
+            <CommentsPageWithData postId={postId} />
+          </Stack>
+        </Skeleton>
+      </>
     )
   }
 

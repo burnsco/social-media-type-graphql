@@ -42,6 +42,7 @@
     "graphql-config": "^3.0.3",
     "memoize-one": "^5.1.1",
     "next": "^9.5.5",
+    "next-seo": "^4.14.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-focus-lock": "^2.4.1",
