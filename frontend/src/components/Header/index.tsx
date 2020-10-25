@@ -8,6 +8,7 @@ import {
   IconButton,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuGroup,
   MenuItem,
   MenuList,
@@ -16,8 +17,11 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
+import { AiOutlineLogout } from "react-icons/ai"
 import { BsFolderPlus } from "react-icons/bs"
+import { FaUserCircle } from "react-icons/fa"
 import { ImPencil2 } from "react-icons/im"
+import { MdSettings } from "react-icons/md"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
 import HomeSearch from "./Center"
 import LoginDrawer from "./LoginDrawer"
@@ -92,20 +96,21 @@ const Header: React.FC = () => {
                   color="black"
                 >
                   <IconButton
-                    onClick={() => router.push("/submit/Subreddit")}
+                    onClick={() => router.push("/submit/subreddit")}
                     colorScheme="orange"
                     size="md"
                     aria-label="Create Subreddit"
                     icon={<BsFolderPlus />}
                   />
                 </Tooltip>
+                <ColorModeToggle />
               </ButtonGroup>
               <Menu>
                 <MenuButton
                   as={Button}
                   width="140px"
                   border="1px"
-                  colorScheme="blue"
+                  colorScheme="blue.200"
                   rightIcon={
                     <Avatar
                       size="xs"
@@ -118,31 +123,33 @@ const Header: React.FC = () => {
                   {data.me.username}
                 </MenuButton>
                 <MenuList opacity="0.9">
-                  <MenuGroup title="Settings">
+                  <MenuGroup title="User Stuff">
                     <MenuItem onClick={() => router.push("/profile")}>
+                      <FaUserCircle />
                       Profile
                     </MenuItem>
                     <MenuItem onClick={() => router.push("/account")}>
-                      Account
-                    </MenuItem>
-                    <MenuItem onClick={() => router.push("/general")}>
-                      General
+                      <MdSettings />
+                      Settings
                     </MenuItem>
                   </MenuGroup>
-                  <MenuItem
-                    mr={2}
-                    color="red.500"
-                    onClick={() => {
-                      logout().then(() => {
-                        client.resetStore().then(() => {
-                          router.push("/register")
+                  <MenuDivider />
+                  <MenuGroup>
+                    <MenuItem
+                      mr={2}
+                      color="red.500"
+                      onClick={async () => {
+                        await logout().then(() => {
+                          client.resetStore().then(() => {
+                            router.push("/register")
+                          })
                         })
-                      })
-                    }}
-                  >
-                    {" "}
-                    Logout
-                  </MenuItem>
+                      }}
+                    >
+                      <AiOutlineLogout />
+                      Logout
+                    </MenuItem>
+                  </MenuGroup>
                 </MenuList>
               </Menu>
             </Menu>
@@ -156,7 +163,6 @@ const Header: React.FC = () => {
           )}
         </Flex>
       </Flex>
-      <ColorModeToggle />
     </Flex>
   )
 }

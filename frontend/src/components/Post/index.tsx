@@ -24,9 +24,8 @@ const NewPost: React.FC<PostQuery> = props => {
       <PostContainer bg={bg}>
         <VoteBox postId={postId} postScore={postScore} />
         <Box
-          mt={1}
           minH="100px"
-          px={1}
+          p={1}
           width="100%"
           display="flex"
           flexDir="column"

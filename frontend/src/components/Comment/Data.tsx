@@ -7,8 +7,9 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Stack, Text } from "@chakra-ui/core"
+import { Box, Spinner, Stack, Text } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
+import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
 import { ImSpinner } from "react-icons/im"
@@ -16,6 +17,7 @@ import CommentPage from "."
 import ShowMoreComments from "./ShowMore"
 
 const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
+  const router = useRouter()
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -33,7 +35,9 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   })
 
   const loadingMoreComments = networkStatus === NetworkStatus.fetchMore
-
+  if (router.isFallback) {
+    return <Spinner />
+  }
   if (error) return <div>error loading posts</div>
   if (loading && !loadingMoreComments) return <ImSpinner />
 
@@ -113,7 +117,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false
+    fallback: true
   }
 }
 

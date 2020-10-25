@@ -477,7 +477,7 @@ export type CommentQuery = { __typename?: "Query" } & {
     { __typename?: "Comment" } & Pick<
       Comment,
       "id" | "createdAt" | "updatedAt" | "body"
-    > & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
+    > & { createdBy: { __typename?: "User" } & Pick<User, "id" | "username"> }
   >
 }
 
@@ -494,7 +494,7 @@ export type CommentsQuery = { __typename?: "Query" } & {
       { __typename?: "Comment" } & Pick<
         Comment,
         "id" | "createdAt" | "updatedAt" | "body"
-      > & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
+      > & { createdBy: { __typename?: "User" } & Pick<User, "id" | "username"> }
     >
   >
 }
@@ -1099,6 +1099,7 @@ export const CommentDocument = gql`
       updatedAt
       body
       createdBy {
+        id
         username
       }
     }
@@ -1151,6 +1152,7 @@ export const CommentsDocument = gql`
       updatedAt
       body
       createdBy {
+        id
         username
       }
     }

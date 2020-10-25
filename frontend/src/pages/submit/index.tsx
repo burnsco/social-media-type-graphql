@@ -49,7 +49,7 @@ const SubmitPage: React.FunctionComponent = () => {
   }
 
   return (
-    <Box bg={bg}>
+    <Box bg={bg} p={2}>
       <Formik
         initialValues={{
           userId: "",

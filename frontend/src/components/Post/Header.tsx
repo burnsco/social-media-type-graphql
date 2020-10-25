@@ -10,7 +10,7 @@ const PostHeader: React.FC<{
 }> = ({ category, author, createdAt }) => {
   const router = useRouter()
   return (
-    <Flex fontSize="12px" color="gray.400" mb="2">
+    <Flex fontSize="xs" color="gray.400">
       <PostCategory category={category} />
 
       <Box ml="2" textDecoration="none">

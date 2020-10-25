@@ -55,7 +55,6 @@ const customTheme = extendTheme({
   },
   h3: {
     mt: "3rem",
-    // mb: "0.5rem",
     lineHeight: 1.25,
     fontWeight: "semibold",
     fontSize: "1.25rem",
@@ -102,14 +101,6 @@ const customTheme = extendTheme({
     "& > * + *": {
       mt: "0.25rem"
     }
-  },
-  code: {
-    rounded: "sm",
-    px: "1",
-    fontSize: "0.875em",
-    py: "2px",
-    whiteSpace: "nowrap",
-    lineHeight: "normal"
   }
 })
 
