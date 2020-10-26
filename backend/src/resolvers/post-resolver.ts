@@ -7,7 +7,8 @@ import {
   Mutation,
   Query,
   Resolver,
-  Root
+  Root,
+  UseMiddleware
 } from "type-graphql"
 import { invalidPostOrId } from "../constants"
 import { Category } from "../entities/Category"
@@ -16,6 +17,7 @@ import { Post } from "../entities/Post"
 import { User } from "../entities/User"
 import { Vote } from "../entities/Vote"
 import { ContextType } from "../types"
+import { isAuth } from "../utils/isAuth"
 import { PostArgs } from "./args/post-args"
 import { _QueryMeta } from "./args/_QueryMeta"
 import { CommentInput } from "./inputs/comment-input"
@@ -109,6 +111,7 @@ export class PostResolver {
   }
 
   @Mutation(() => PostMutationResponse)
+  @UseMiddleware(isAuth)
   async createPost(
     @Arg("data") { title, text, image, video, link, categoryId }: PostInput,
     @Ctx() { em, req }: ContextType
@@ -128,6 +131,7 @@ export class PostResolver {
   }
 
   @Mutation(() => CommentMutationResponse)
+  @UseMiddleware(isAuth)
   async createComment(
     @Arg("data") { body, postId }: CommentInput,
     @Ctx() { em, req }: ContextType
@@ -156,6 +160,7 @@ export class PostResolver {
   }
 
   @Mutation(() => VoteMutationResponse)
+  @UseMiddleware(isAuth)
   async vote(
     @Arg("data") { postId, value }: VoteInput,
     @Ctx() { em, req }: ContextType

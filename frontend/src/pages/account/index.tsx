@@ -20,8 +20,10 @@ const AccountPage = () => {
   if (loading || editLoading) return null
 
   return (
-    <Box p={2} bg={bg}>
-      <Heading>Account</Heading>
+    <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={4}>
+      <Heading as="h3" mb={3}>
+        Account
+      </Heading>
       <Formik
         initialValues={{
           username: data?.me?.username,

@@ -7,12 +7,14 @@ import {
   Mutation,
   Query,
   Resolver,
-  Root
+  Root,
+  UseMiddleware
 } from "type-graphql"
 import { Comment } from "../entities/Comment"
 import { Post } from "../entities/Post"
 import { User } from "../entities/User"
 import { ContextType } from "../types"
+import { isAuth } from "../utils/isAuth"
 import { PostArgs } from "./args/post-args"
 import { CommentInput } from "./inputs/comment-input"
 import { CommentMutationResponse } from "./response/comment-response"
@@ -20,6 +22,7 @@ import { CommentMutationResponse } from "./response/comment-response"
 @Resolver(() => Comment)
 export class CommentResolver {
   @Mutation(() => CommentMutationResponse)
+  @UseMiddleware(isAuth)
   async editComment(
     @Arg("data") { body, postId }: CommentInput,
     @Ctx() { em }: ContextType
@@ -40,6 +43,7 @@ export class CommentResolver {
   }
 
   @Mutation(() => CommentMutationResponse)
+  @UseMiddleware(isAuth)
   async deleteComment(
     @Arg("data") { postId }: CommentInput,
     @Ctx() { em }: ContextType

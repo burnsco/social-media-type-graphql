@@ -19,7 +19,7 @@ const ProfilePage = () => {
   if (loading || editLoading) return null
 
   return (
-    <Box bg={bg}>
+    <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={4}>
       <Heading>Profile</Heading>
       <Formik
         initialValues={{

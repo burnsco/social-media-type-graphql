@@ -1,7 +1,7 @@
 import { ChakraField } from "@/components/shared/ChakraField"
 import { MeDocument, MeQuery, useLoginMutation } from "@/generated/graphql"
+import { LoginSchema } from "@/types/Schemas"
 import {
-  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -10,17 +10,15 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Stack,
   useDisclosure
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-import { useRef } from "react"
-import * as Yup from "yup"
+import React, { useRef } from "react"
 
 function LoginDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const [register, { data, loading, error }] = useLoginMutation()
-
+  const [login, { loading, error }] = useLoginMutation()
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
   if (loading) return null
@@ -46,18 +44,14 @@ function LoginDrawer() {
           <DrawerHeader>Login</DrawerHeader>
           <Formik
             initialValues={{ email: "", password: "" }}
-            validationSchema={Yup.object({
-              email: Yup.string().email().required(),
-              password: Yup.string().min(8).max(20).required()
-            })}
+            validationSchema={LoginSchema}
             onSubmit={async (values, actions) => {
               setTimeout(async () => {
                 actions.setSubmitting(false)
-                await register({
+                await login({
                   variables: {
                     data: {
-                      password: values.password,
-                      email: values.email
+                      ...values
                     }
                   },
                   update: (cache, { data }) => {
@@ -76,24 +70,32 @@ function LoginDrawer() {
             {({ isSubmitting }) => (
               <Form>
                 <DrawerBody>
-                  <ChakraField name="email" label="Email" />
-                  <Box my="2">
-                    <ChakraField name="username" label="Username" />
-                  </Box>
-                  <Box my="4">
+                  <Stack spacing={4}>
                     <ChakraField
+                      id="email"
+                      name="email"
+                      type="email"
+                      label="Email"
+                    />
+
+                    <ChakraField
+                      id="password"
                       name="password"
                       label="Password"
                       type="password"
                     />
-                  </Box>
+                  </Stack>
                 </DrawerBody>
-
                 <DrawerFooter>
                   <Button variant="outline" mr={3} onClick={onClose}>
                     Cancel
                   </Button>
-                  <Button type="submit" isLoading={isSubmitting} color="blue">
+                  <Button
+                    type="submit"
+                    isDisabled={isSubmitting}
+                    isLoading={isSubmitting}
+                    color="blue"
+                  >
                     Submit
                   </Button>
                 </DrawerFooter>

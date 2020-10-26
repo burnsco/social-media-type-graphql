@@ -305,8 +305,8 @@ export type LoginInput = {
 
 export type LogoutMutationResponse = {
   __typename?: "LogoutMutationResponse"
-  message: Scalars["String"]
-  success: Scalars["Boolean"]
+  message?: Maybe<Scalars["String"]>
+  success?: Maybe<Scalars["String"]>
 }
 
 export type CreateCommentMutationVariables = Exact<{
@@ -526,6 +526,9 @@ export type IsUserOrEmailTakenQuery = { __typename?: "Query" } & {
       Array<
         { __typename?: "FieldError" } & Pick<FieldError, "field" | "message">
       >
+    >
+    user?: Maybe<
+      { __typename?: "User" } & Pick<User, "id" | "email" | "username">
     >
   }
 }
@@ -1290,6 +1293,11 @@ export const IsUserOrEmailTakenDocument = gql`
       errors {
         field
         message
+      }
+      user {
+        id
+        email
+        username
       }
     }
   }

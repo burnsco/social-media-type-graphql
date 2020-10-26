@@ -1,4 +1,5 @@
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
+import { RegisterSchema } from "@/types/Schemas"
 import { toErrorMap } from "@/utils/toErrorMap"
 import {
   Button,
@@ -16,7 +17,6 @@ import {
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { useRef } from "react"
-import * as Yup from "yup"
 import { ChakraField } from "../shared/ChakraField"
 import { PasswordField } from "../shared/PasswordField"
 
@@ -45,22 +45,7 @@ function RegisterDrawer() {
           <DrawerHeader>Join the Community!</DrawerHeader>
           <Formik
             initialValues={{ username: "", email: "", password: "" }}
-            validationSchema={Yup.object({
-              username: Yup.string()
-                .min(2, "Must be at least 2 characters long")
-                .max(15, "Must be 20 characters or less")
-                .required("Username is required")
-                .matches(
-                  /^[a-zA-Z0-9]+$/,
-                  "Cannot contain special characters or spaces"
-                ),
-
-              email: Yup.string().email().required("Required"),
-              password: Yup.string()
-                .min(4, "Must be at least 4 characters long")
-                .max(15, "Must be 20 characters or less")
-                .required("Required")
-            })}
+            validationSchema={RegisterSchema}
             onSubmit={async (values, { setErrors }) => {
               const response = await register({
                 variables: {
@@ -104,6 +89,7 @@ function RegisterDrawer() {
                         type="email"
                         label="Email"
                       />
+
                       <ChakraField
                         id="username"
                         name="username"
@@ -111,6 +97,7 @@ function RegisterDrawer() {
                         label="Username"
                         helperText="Must be 8-20 characters and cannot contain special characters."
                       />
+
                       <PasswordField
                         id="password"
                         name="password"

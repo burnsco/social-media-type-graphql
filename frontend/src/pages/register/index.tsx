@@ -2,11 +2,11 @@ import { Wrapper } from "@/components/Layout/wrapper"
 import { ChakraField } from "@/components/shared/ChakraField"
 import SEO from "@/components/shared/seo"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
+import { RegisterSchema } from "@/types/Schemas"
 import { toErrorMap } from "@/utils/toErrorMap"
 import { Box, Button, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
-import * as Yup from "yup"
 
 const RegisterPage: React.FC = () => {
   const router = useRouter()
@@ -21,11 +21,7 @@ const RegisterPage: React.FC = () => {
       <Wrapper variant="small">
         <Formik
           initialValues={{ username: "", email: "", password: "" }}
-          validationSchema={Yup.object().shape({
-            username: Yup.string().required("Required"),
-            email: Yup.string().required("Required"),
-            password: Yup.string().required("Required")
-          })}
+          validationSchema={RegisterSchema}
           onSubmit={async (values, { setErrors }) => {
             const response = await register({
               variables: {

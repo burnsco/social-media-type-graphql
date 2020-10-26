@@ -4,5 +4,10 @@ query IsUserOrEmailTaken($data: CheckAvailability!) {
       field
       message
     }
+    user {
+      id
+      email
+      username
+    }
   }
 }

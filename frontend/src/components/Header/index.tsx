@@ -1,6 +1,8 @@
 import { useLogoutMutation, useMeQuery } from "@/generated/graphql"
+import { sleep } from "@/utils/sleepy"
 import {
   Avatar,
+  Box,
   Button,
   ButtonGroup,
   Flex,
@@ -113,28 +115,28 @@ const Header: React.FC = () => {
                   <MenuGroup>
                     <MenuItem onClick={() => router.push("/profile")}>
                       <FaUserCircle />
-                      Profile
+                      <Box ml={1}>Profile</Box>
                     </MenuItem>
                     <MenuItem onClick={() => router.push("/account")}>
                       <MdSettings />
-                      Settings
+                      <Box ml={1}>Account</Box>
                     </MenuItem>
                   </MenuGroup>
                   <MenuDivider />
                   <MenuGroup>
                     <MenuItem
                       mr={2}
-                      color="red.500"
-                      onClick={async () => {
-                        await logout().then(() => {
-                          client.resetStore().then(() => {
-                            router.push("/register")
+                      onClick={() => {
+                        logout().then(() => {
+                          client.resetStore().then(async () => {
+                            await sleep(1000)
+                            router.push("/")
                           })
                         })
                       }}
                     >
                       <AiOutlineLogout />
-                      Logout
+                      <Box ml={1}>Logout</Box>
                     </MenuItem>
                   </MenuGroup>
                 </MenuList>

@@ -7,7 +7,6 @@ const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
   return (
     <Box
       bg={bg}
-      shadow="sm"
       borderWidth="1px"
       rounded="md"
       overflow="hidden"
@@ -16,7 +15,6 @@ const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
       minH="100px"
       width="100%"
       _hover={{
-        shadow: "md",
         borderWidth: "1px",
         borderColor: "gray.400"
       }}

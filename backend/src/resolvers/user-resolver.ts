@@ -1,9 +1,17 @@
 import { wrap } from "@mikro-orm/core"
 import argon2 from "argon2"
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql"
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware
+} from "type-graphql"
 import { COOKIE_NAME } from "../constants"
 import { User } from "../entities/User"
 import { ContextType } from "../types"
+import { isAuth } from "../utils/isAuth"
 import {
   CheckAvailability,
   EditUserInput,
@@ -33,31 +41,31 @@ export class UserResolver {
     const isUserTaken = await em.findOne(User, { username: data.username })
     const isEmailTaken = await em.findOne(User, { email: data.email })
 
-    if (isUserTaken || isEmailTaken) {
-      if (isUserTaken) {
-        errors.push({
-          field: "username",
-          message: "Username taken."
-        })
-      }
-      if (isEmailTaken) {
-        errors.push({
-          field: "email",
-          message: "Email in use."
-        })
-      }
-      return {
-        errors
-      }
+    if (isUserTaken) {
+      errors.push({
+        field: "username",
+        message: "Username taken."
+      })
     }
-    errors.push({
-      field: "email",
-      message: "email not in use"
-    })
-    errors.push({
-      field: "username",
-      message: "username available"
-    })
+    if (isEmailTaken) {
+      errors.push({
+        field: "email",
+        message: "Email in use."
+      })
+    }
+    if (!isEmailTaken) {
+      errors.push({
+        field: "email",
+        message: "Email not in use."
+      })
+    }
+    if (!isUserTaken) {
+      errors.push({
+        field: "username",
+        message: "Username available."
+      })
+    }
+
     return {
       errors
     }
@@ -118,6 +126,7 @@ export class UserResolver {
   }
 
   @Mutation(() => UserMutationResponse)
+  @UseMiddleware(isAuth)
   async editUser(
     @Arg("data") data: EditUserInput,
     @Ctx() { em, req }: ContextType
@@ -186,6 +195,7 @@ export class UserResolver {
   }
 
   @Mutation(() => LogoutMutationResponse)
+  @UseMiddleware(isAuth)
   logout(@Ctx() { req, res }: ContextType) {
     return new Promise(resolve =>
       req.session.destroy(err => {

@@ -2,8 +2,8 @@ import { Field, ObjectType } from "type-graphql"
 
 @ObjectType()
 export class LogoutMutationResponse {
-  @Field()
-  message!: string
-  @Field()
-  success!: boolean
+  @Field(() => String, { nullable: true })
+  message?: string
+  @Field(() => String, { nullable: true })
+  success?: boolean
 }
