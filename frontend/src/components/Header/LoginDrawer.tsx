@@ -1,5 +1,5 @@
 import { ChakraField } from "@/components/shared/ChakraField"
-import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
+import { MeDocument, MeQuery, useLoginMutation } from "@/generated/graphql"
 import {
   Box,
   Button,
@@ -19,7 +19,7 @@ import * as Yup from "yup"
 function LoginDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [register, { data, loading, error }] = useRegisterMutation()
+  const [register, { data, loading, error }] = useLoginMutation()
 
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
@@ -43,11 +43,10 @@ function LoginDrawer() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Register</DrawerHeader>
+          <DrawerHeader>Login</DrawerHeader>
           <Formik
-            initialValues={{ username: "", email: "", password: "" }}
+            initialValues={{ email: "", password: "" }}
             validationSchema={Yup.object({
-              username: Yup.string().min(2).max(20).required(),
               email: Yup.string().email().required(),
               password: Yup.string().min(8).max(20).required()
             })}
@@ -57,7 +56,6 @@ function LoginDrawer() {
                 await register({
                   variables: {
                     data: {
-                      username: values.username,
                       password: values.password,
                       email: values.email
                     }
@@ -67,7 +65,7 @@ function LoginDrawer() {
                       query: MeDocument,
                       data: {
                         __typename: "Query",
-                        me: data?.register.user
+                        me: data?.login.user
                       }
                     })
                   }

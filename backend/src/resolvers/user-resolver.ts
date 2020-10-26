@@ -176,15 +176,13 @@ export class UserResolver {
         errors
       }
     }
-
-    if (user) {
+    const valid = await argon2.verify(user.password, password)
+    if (valid) {
       req.session.userId = user.id
-
-      return {
-        user
-      }
     }
-    return {}
+    return {
+      user
+    }
   }
 
   @Mutation(() => LogoutMutationResponse)

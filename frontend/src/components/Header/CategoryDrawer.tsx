@@ -1,5 +1,6 @@
 import { useCreateSubredditMutation } from "@/generated/graphql"
 import { toErrorMap } from "@/utils/toErrorMap"
+import { gql } from "@apollo/client"
 import {
   Button,
   Drawer,
@@ -32,14 +33,14 @@ function CreateCategoryDrawer() {
       </Button>
       <Drawer
         isOpen={isOpen}
-        placement="top"
+        placement="bottom"
         onClose={onClose}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Subreddit Name: </DrawerHeader>
+          <DrawerHeader>Subreddit</DrawerHeader>
           <Formik
             initialValues={{ name: "" }}
             validationSchema={Yup.object().shape({
@@ -55,8 +56,25 @@ function CreateCategoryDrawer() {
                       ...values
                     }
                   },
-                  update(cache) {
-                    cache.evict({ fieldName: "categories:{}" })
+                  update(cache, { data }) {
+                    if (!data?.createCategory.errors) {
+                      cache.modify({
+                        fields: {
+                          categories(existingCategories = []) {
+                            const newCategoryRef = cache.writeFragment({
+                              data: data?.createCategory.category,
+                              fragment: gql`
+                                fragment NewCategory on Category {
+                                  id
+                                  name
+                                }
+                              `
+                            })
+                            return [newCategoryRef, ...existingCategories]
+                          }
+                        }
+                      })
+                    }
                   }
                 })
               } catch (ex) {
@@ -85,7 +103,7 @@ function CreateCategoryDrawer() {
               return (
                 <Form>
                   <DrawerBody>
-                    <ChakraField id="name" name="name" label="Name" />
+                    <ChakraField id="name" name="name" label="Name/Title" />
                   </DrawerBody>
 
                   <DrawerFooter>

@@ -47,7 +47,7 @@ const Header: React.FC = () => {
       p={[1]}
       align="center"
     >
-      <Flex justify="space-between" width="full">
+      <Flex justify="space-between" width="98%">
         <Flex cursor="pointer" flexGrow={1} onClick={() => router.push("/")}>
           <Flex
             onClick={() => router.push("/")}
