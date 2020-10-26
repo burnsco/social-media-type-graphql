@@ -4,7 +4,6 @@ import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql"
 import { COOKIE_NAME } from "../constants"
 import { User } from "../entities/User"
 import { ContextType } from "../types"
-import { PostInput } from "./inputs/post-input"
 import {
   CheckAvailability,
   EditUserInput,
@@ -66,10 +65,10 @@ export class UserResolver {
 
   @Query(() => User)
   async user(
-    @Arg("userId") { userId }: PostInput,
+    @Arg("data") data: EditUserInput,
     @Ctx() { em }: ContextType
   ): Promise<User> {
-    return await em.findOneOrFail(User, { id: userId })
+    return await em.findOneOrFail(User, { username: data.username })
   }
 
   @Query(() => [User])

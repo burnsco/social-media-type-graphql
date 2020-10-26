@@ -18,34 +18,32 @@ const mocks = {
   },
   result: {
     data: {
-      post: [
-        {
-          author: {
-            id: "1",
-            username: "Bob"
-          },
-          category: {
-            id: "1",
-            name: "react"
-          },
-          comments: [],
-          createdAt: "1603212919000",
+      post: {
+        author: {
           id: "1",
-          image: "",
-          link: "",
-          text: "you agree?",
-          title: "react rocks!",
-          totalComments: {
-            count: 0
-          },
-          totalVotes: {
-            count: 0,
-            score: null
-          },
-          updatedAt: "1603212919000",
-          video: ""
-        }
-      ]
+          username: "Bob"
+        },
+        category: {
+          id: "1",
+          name: "react"
+        },
+        comments: [],
+        createdAt: "1603212919000",
+        id: "1",
+        image: "",
+        link: "",
+        text: "you agree?",
+        title: "react rocks!",
+        totalComments: {
+          count: 0
+        },
+        totalVotes: {
+          count: 0,
+          score: null
+        },
+        updatedAt: "1603212919000",
+        video: ""
+      }
     }
   }
 }
@@ -70,14 +68,13 @@ describe("Single Post", () => {
         <PostAndCommentsPage />
       </MockedProvider>
     )
-
     const loading = getByText(/loading.../i)
     expect(loading).toBeInTheDocument()
 
     await waitForElementToBeRemoved(loading).then(() => {
       const author = getByText(/bob/i)
       expect(author).toBeInTheDocument()
-      const category = getByText(/react/i)
+      const category = getByText(/react rocks!/i)
       expect(category).toBeInTheDocument()
       const text = getByText(/you agree?/i)
       expect(text).toBeInTheDocument()

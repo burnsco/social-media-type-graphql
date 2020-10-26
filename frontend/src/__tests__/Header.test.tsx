@@ -31,6 +31,7 @@ signedInCache.writeQuery({
       me {
         id
         username
+        email
       }
     }
   `,
@@ -38,7 +39,8 @@ signedInCache.writeQuery({
     me: {
       __typename: "User",
       id: "1",
-      username: "Corey"
+      username: "Corey",
+      email: "coreymburns@gmail.com"
     }
   }
 })
@@ -62,8 +64,8 @@ describe("Header", () => {
         <Header />
       </MockedProvider>
     )
-    await screen.findByRole("button", { name: /Corey/i })
-    expect(screen.getByRole("button", { name: /Corey/i })).toBeInTheDocument
+    const user = await screen.findByText(/Corey/i)
+    expect(user).toBeInTheDocument
   })
 
   it("renders home, submit, category buttons", async () => {

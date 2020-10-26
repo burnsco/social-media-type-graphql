@@ -1,5 +1,5 @@
 import { useCategoriesQuery } from "@/generated/graphql"
-import { Box, List, ListItem, Text, useColorModeValue } from "@chakra-ui/core"
+import { Box, List, ListItem, useColorModeValue } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { memo, useEffect, useState } from "react"
 import { NextChakraLink } from "../shared/NextChakraLink"
@@ -20,8 +20,8 @@ const SideMenu: React.FC = () => {
   const { category } = router.query
   const { data, loading, error } = useCategoriesQuery({ skip: !isMounted })
 
-  if (error) return <Text fontSize="xs">Error loading subreddits.</Text>
-  if (loading) return null
+  if (error) return <div>Error loading subreddits.</div>
+  if (loading) return <div>loading...</div>
 
   return (
     <Box

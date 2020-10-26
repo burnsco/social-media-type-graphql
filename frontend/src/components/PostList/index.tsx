@@ -1,7 +1,7 @@
 import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/post"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Spinner, VisuallyHidden } from "@chakra-ui/core"
+import { Box, Spinner } from "@chakra-ui/core"
 import { useEffect, useState } from "react"
 import NewPost from "../Post"
 import ShowMorePosts from "./showMore"
@@ -23,12 +23,7 @@ const PostList = () => {
   if (error) return <div>error loading posts</div>
 
   if (loading && !loadingMorePosts) {
-    return (
-      <>
-        <VisuallyHidden>loading</VisuallyHidden>
-        <Spinner />
-      </>
-    )
+    return <Spinner />
   }
 
   const allPosts = data?.posts ?? []

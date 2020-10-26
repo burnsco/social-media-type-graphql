@@ -1,6 +1,6 @@
 {
   "plugins": [
-    "@typescript-eslint",
+    "@typescript-eslint/eslint-plugin",
     "react-hooks",
     "jest-dom",
     "testing-library"

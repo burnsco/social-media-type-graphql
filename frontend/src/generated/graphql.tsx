@@ -88,7 +88,7 @@ export type QueryIsUserOrEmailTakenArgs = {
 }
 
 export type QueryUserArgs = {
-  userId: PostInput
+  data: EditUserInput
 }
 
 export type Category = {
@@ -182,14 +182,12 @@ export type CheckAvailability = {
   email: Scalars["String"]
 }
 
-export type PostInput = {
-  categoryId: Scalars["ID"]
-  userId: Scalars["ID"]
-  title: Scalars["String"]
-  text?: Maybe<Scalars["String"]>
-  image?: Maybe<Scalars["String"]>
-  video?: Maybe<Scalars["String"]>
-  link?: Maybe<Scalars["String"]>
+export type EditUserInput = {
+  email?: Maybe<Scalars["String"]>
+  username?: Maybe<Scalars["String"]>
+  password?: Maybe<Scalars["String"]>
+  avatar?: Maybe<Scalars["String"]>
+  about?: Maybe<Scalars["String"]>
 }
 
 export type Mutation = {
@@ -270,6 +268,16 @@ export type PostMutationResponse = {
   post?: Maybe<Post>
 }
 
+export type PostInput = {
+  categoryId: Scalars["ID"]
+  userId: Scalars["ID"]
+  title: Scalars["String"]
+  text?: Maybe<Scalars["String"]>
+  image?: Maybe<Scalars["String"]>
+  video?: Maybe<Scalars["String"]>
+  link?: Maybe<Scalars["String"]>
+}
+
 export type VoteMutationResponse = {
   __typename?: "VoteMutationResponse"
   errors?: Maybe<Array<FieldError>>
@@ -286,14 +294,6 @@ export type RegisterInput = {
   email: Scalars["String"]
   username: Scalars["String"]
   password: Scalars["String"]
-  avatar?: Maybe<Scalars["String"]>
-  about?: Maybe<Scalars["String"]>
-}
-
-export type EditUserInput = {
-  email?: Maybe<Scalars["String"]>
-  username?: Maybe<Scalars["String"]>
-  password?: Maybe<Scalars["String"]>
   avatar?: Maybe<Scalars["String"]>
   about?: Maybe<Scalars["String"]>
 }
@@ -600,6 +600,14 @@ export type PostsQuery = { __typename?: "Query" } & {
   >
   _allPostsMeta: { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
   _categoryPostsMeta: { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "count">
+}
+
+export type UserQueryVariables = Exact<{
+  data: EditUserInput
+}>
+
+export type UserQuery = { __typename?: "Query" } & {
+  user: { __typename?: "User" } & Pick<User, "username" | "email" | "about">
 }
 
 export type UsersQueryVariables = Exact<{ [key: string]: never }>
@@ -1467,6 +1475,51 @@ export type PostsQueryResult = Apollo.QueryResult<
   PostsQuery,
   PostsQueryVariables
 >
+export const UserDocument = gql`
+  query User($data: EditUserInput!) {
+    user(data: $data) {
+      username
+      email
+      about
+    }
+  }
+`
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUserQuery(
+  baseOptions?: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>
+) {
+  return Apollo.useQuery<UserQuery, UserQueryVariables>(
+    UserDocument,
+    baseOptions
+  )
+}
+export function useUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>
+) {
+  return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(
+    UserDocument,
+    baseOptions
+  )
+}
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>
 export const UsersDocument = gql`
   query Users {
     users {

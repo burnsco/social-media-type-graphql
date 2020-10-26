@@ -2,31 +2,31 @@ import CommentsPageWithData from "@/components/Comment/Data"
 import SubmitCommentForm from "@/components/Comment/Form"
 import NewPost from "@/components/Post"
 import SEO from "@/components/shared/seo"
-import { usePostLazyQuery } from "@/generated/graphql"
-import { Skeleton, Stack, VisuallyHidden } from "@chakra-ui/core"
+import { usePostQuery } from "@/generated/graphql"
+import { Skeleton, Stack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 
 const PostAndCommentsPage: React.FC = () => {
   const router = useRouter()
+  const [isMounted, setIsMounted] = useState(false)
   const postId = (router?.query?.id as string) ?? "1"
+  useEffect(() => {
+    setIsMounted(true)
+  }, [isMounted])
 
-  const [getPost, { loading, data }] = usePostLazyQuery({
+  const { loading, data } = usePostQuery({
     variables: {
       postId: postId
     }
   })
 
-  useEffect(() => {
-    getPost()
-  }, [getPost])
-
   console.log(router)
 
   if (loading) {
-    return <VisuallyHidden>loading</VisuallyHidden>
+    return <div>loading...</div>
   }
-
+  console.log(data)
   if (data && data.post) {
     const { name: category } = data.post.category
     const { id, title } = data.post

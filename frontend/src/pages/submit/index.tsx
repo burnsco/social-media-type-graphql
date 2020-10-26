@@ -49,7 +49,7 @@ const SubmitPage: React.FunctionComponent = () => {
   }
 
   return (
-    <Box bg={bg} p={2}>
+    <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={2}>
       <Formik
         initialValues={{
           userId: "",
@@ -255,7 +255,7 @@ const SubmitPage: React.FunctionComponent = () => {
               </Stack>
               <Button
                 m={2}
-                colorScheme="teal"
+                colorScheme="orange"
                 isDisabled={formik.isSubmitting}
                 isLoading={formik.isSubmitting}
                 type="submit"
