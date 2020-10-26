@@ -1,8 +1,6 @@
 import { useCreateSubredditMutation } from "@/generated/graphql"
-import { gql } from "@apollo/client"
+import { toErrorMap } from "@/utils/toErrorMap"
 import {
-  Alert,
-  AlertIcon,
   Button,
   Drawer,
   DrawerBody,
@@ -11,66 +9,21 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
 import { useRef } from "react"
-import { useIsAuth } from "src/hooks/useIsAuth"
 import * as Yup from "yup"
 import { ChakraField } from "../shared/ChakraField"
 
-interface CreateSubredditProps {
-  name: string
-}
-
 function CreateCategoryDrawer() {
+  const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  useIsAuth()
-  const [
-    submitSubreddit,
-    { loading: mutationLoading, error: mutationError }
-  ] = useCreateSubredditMutation()
-
+  const toast = useToast()
+  const [createCategory] = useCreateSubredditMutation()
   const btnRef = useRef<HTMLButtonElement | null>(null)
-
-  if (mutationLoading) return null
-  if (mutationError) {
-    return (
-      <Alert status="error">
-        <AlertIcon />
-        {mutationError.message}
-      </Alert>
-    )
-  }
-
-  const handleSubmit = (values: CreateSubredditProps) => {
-    submitSubreddit({
-      variables: {
-        data: {
-          name: values.name
-        }
-      },
-      update(cache, { data }) {
-        cache.modify({
-          fields: {
-            categories(existingCategories = []) {
-              const newCategoryRef = cache.writeFragment({
-                data: data?.createCategory.category,
-                fragment: gql`
-                  fragment NewCategory on Category {
-                    id
-                    name
-                  }
-                `
-              })
-              return [newCategoryRef, ...existingCategories]
-            }
-          }
-        })
-      }
-    })
-  }
 
   return (
     <>
@@ -92,29 +45,60 @@ function CreateCategoryDrawer() {
             validationSchema={Yup.object().shape({
               name: Yup.string().required("Required")
             })}
-            onSubmit={(values, actions) => {
-              setTimeout(() => {
-                actions.setSubmitting(false)
-                handleSubmit(values)
-              }, 1000)
+            onSubmit={async (values, actions) => {
+              actions.setSubmitting(false)
+              let response
+              try {
+                response = await createCategory({
+                  variables: {
+                    data: {
+                      ...values
+                    }
+                  },
+                  update(cache) {
+                    cache.evict({ fieldName: "categories:{}" })
+                  }
+                })
+              } catch (ex) {
+                console.log(ex)
+              }
+
+              if (response?.data?.createCategory?.category) {
+                toast({
+                  id: "success",
+                  title: `${response.data.createCategory.category.name}!`,
+                  description:
+                    "Your subreddit/category was created successfully.",
+                  status: "success",
+                  duration: 9000,
+                  isClosable: true
+                })
+                onClose()
+              } else if (response?.data?.createCategory.errors) {
+                actions.setErrors(
+                  toErrorMap(response.data.createCategory.errors)
+                )
+              }
             }}
           >
-            {({ isSubmitting, handleSubmit }) => (
-              <Form onSubmit={handleSubmit}>
-                <DrawerBody>
-                  <ChakraField id="name" name="name" type="text" label="Name" />
-                </DrawerBody>
+            {({ isSubmitting }) => {
+              return (
+                <Form>
+                  <DrawerBody>
+                    <ChakraField id="name" name="name" label="Name" />
+                  </DrawerBody>
 
-                <DrawerFooter>
-                  <Button variant="outline" mr={3} onClick={onClose}>
-                    Cancel
-                  </Button>
-                  <Button type="submit" isLoading={isSubmitting} color="blue">
-                    Submit
-                  </Button>
-                </DrawerFooter>
-              </Form>
-            )}
+                  <DrawerFooter>
+                    <Button variant="outline" mr={3} onClick={onClose}>
+                      Cancel
+                    </Button>
+                    <Button type="submit" isLoading={isSubmitting} color="blue">
+                      Submit
+                    </Button>
+                  </DrawerFooter>
+                </Form>
+              )
+            }}
           </Formik>
         </DrawerContent>
       </Drawer>

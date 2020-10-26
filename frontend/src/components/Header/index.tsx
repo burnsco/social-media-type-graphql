@@ -18,11 +18,11 @@ import {
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { AiOutlineLogout } from "react-icons/ai"
-import { BsFolderPlus } from "react-icons/bs"
 import { FaUserCircle } from "react-icons/fa"
 import { ImPencil2 } from "react-icons/im"
 import { MdSettings } from "react-icons/md"
 import { ColorModeToggle } from "../Layout/ColorModeToggle"
+import CreateCategoryDrawer from "./CategoryDrawer"
 import HomeSearch from "./Center"
 import LoginDrawer from "./LoginDrawer"
 import Logo from "./Logo"
@@ -89,20 +89,7 @@ const Header: React.FC = () => {
                   />
                 </Tooltip>
 
-                <Tooltip
-                  hasArrow
-                  label="Create Subreddit"
-                  bg="gray.200"
-                  color="black"
-                >
-                  <IconButton
-                    onClick={() => router.push("/submit/subreddit")}
-                    colorScheme="orange"
-                    size="md"
-                    aria-label="Create Subreddit"
-                    icon={<BsFolderPlus />}
-                  />
-                </Tooltip>
+                <CreateCategoryDrawer />
                 <ColorModeToggle />
               </ButtonGroup>
               <Menu>
@@ -123,7 +110,7 @@ const Header: React.FC = () => {
                   {data.me.username}
                 </MenuButton>
                 <MenuList opacity="0.9">
-                  <MenuGroup title="User Stuff">
+                  <MenuGroup>
                     <MenuItem onClick={() => router.push("/profile")}>
                       <FaUserCircle />
                       Profile

@@ -23,45 +23,48 @@ const SideMenu: React.FC = () => {
   if (error) return <div>Error loading subreddits.</div>
   if (loading) return <div>loading...</div>
 
-  return (
-    <Box
-      bg={bg}
-      minW="200px"
-      borderWidth="1px"
-      borderColor=""
-      borderStyle="dotted"
-      rounded="md"
-      overflow="hidden"
-      p={3}
-    >
-      <List borderWidth="xs" minH="100%" spacing={3}>
-        {data?.categories.map(subreddit => (
-          <ListItem key={`subreddit-${subreddit.id}`}>
-            <Box
-              rounded="md"
-              overflow="hidden"
-              bg={category === subreddit.name ? linkbg : linkbg2}
-            >
-              <NextChakraLink
-                p={1}
-                fontWeight={category === subreddit.name ? 500 : 400}
-                color={category === subreddit.name ? hover : color}
-                _hover={{
-                  color: hover,
-                  bg: linkbg,
-                  marginLeft: 1
-                }}
-                href="/r/[category]"
-                as={`/r/${subreddit.name}`}
+  if (isMounted) {
+    return (
+      <Box
+        bg={bg}
+        minW="200px"
+        borderWidth="1px"
+        borderColor=""
+        borderStyle="dotted"
+        rounded="md"
+        overflow="hidden"
+        p={3}
+      >
+        <List borderWidth="xs" minH="100%" spacing={3}>
+          {data?.categories.map(subreddit => (
+            <ListItem key={`subreddit-${subreddit.id}`}>
+              <Box
+                rounded="md"
+                overflow="hidden"
+                bg={category === subreddit.name ? linkbg : linkbg2}
               >
-                {subreddit.name}
-              </NextChakraLink>
-            </Box>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  )
+                <NextChakraLink
+                  p={1}
+                  fontWeight={category === subreddit.name ? 500 : 400}
+                  color={category === subreddit.name ? hover : color}
+                  _hover={{
+                    color: hover,
+                    bg: linkbg,
+                    marginLeft: 1
+                  }}
+                  href="/r/[category]"
+                  as={`/r/${subreddit.name}`}
+                >
+                  {subreddit.name}
+                </NextChakraLink>
+              </Box>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    )
+  }
+  return null
 }
 
 export default memo(SideMenu)

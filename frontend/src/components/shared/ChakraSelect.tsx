@@ -2,7 +2,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
-  FormLabel,
   Select
 } from "@chakra-ui/core"
 import { useField } from "formik"
@@ -24,9 +23,6 @@ export const ChakraSelect: React.FC<ChakraFieldProps> = ({
 
   return (
     <FormControl id={props.id} isInvalid={!!error}>
-      <FormLabel fontSize={`${size}` || "sm"} htmlFor={props.name || props.id}>
-        {label}
-      </FormLabel>
       <Select
         {...field}
         {...props}

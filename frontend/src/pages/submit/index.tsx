@@ -1,3 +1,4 @@
+import { ChakraField } from "@/components/shared/ChakraField"
 import {
   useCategoriesLazyQuery,
   useCreatePostMutation
@@ -148,36 +149,20 @@ const SubmitPage: React.FunctionComponent = () => {
 
                   <TabPanels>
                     <TabPanel>
-                      <Field name="title">
-                        {({ field, form }: any) => (
-                          <FormControl
-                            isInvalid={form.errors.title && form.touched.title}
-                          >
-                            <FormLabel htmlFor="title"></FormLabel>
-                            <Input {...field} id="title" placeholder="Title" />
-                            <FormErrorMessage>
-                              {form.errors.title}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                      <Field name="text">
-                        {({ field, form }: any) => (
-                          <FormControl
-                            isInvalid={form.errors.text && form.touched.text}
-                          >
-                            <FormLabel htmlFor="text"></FormLabel>
-                            <Input
-                              {...field}
-                              id="text"
-                              placeholder="Text (optional)"
-                            />
-                            <FormErrorMessage>
-                              {form.errors.text}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
+                      <ChakraField
+                        label=""
+                        id="title"
+                        placeholder="title"
+                        aria-placeholder="post title"
+                        name="title"
+                      />
+                      <ChakraField
+                        label=""
+                        id="text"
+                        placeholder="text"
+                        aria-placeholder="post text"
+                        name="text"
+                      />
                     </TabPanel>
 
                     <TabPanel>

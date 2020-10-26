@@ -11,7 +11,9 @@ import * as Yup from "yup"
 const RegisterPage: React.FC = () => {
   const router = useRouter()
   const toast = useToast()
-  const [register] = useRegisterMutation()
+  const [register, { data }] = useRegisterMutation()
+
+  console.log(data)
 
   return (
     <>
@@ -28,9 +30,7 @@ const RegisterPage: React.FC = () => {
             const response = await register({
               variables: {
                 data: {
-                  username: values.username,
-                  password: values.password,
-                  email: values.email
+                  ...values
                 }
               },
               update: (cache, { data }) => {
@@ -43,6 +43,7 @@ const RegisterPage: React.FC = () => {
                 })
               }
             })
+            console.log(response)
             if (response.data?.register?.user) {
               toast({
                 id: "success",

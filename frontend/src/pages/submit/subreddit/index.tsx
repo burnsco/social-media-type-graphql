@@ -27,7 +27,7 @@ const CreateSubreddit: React.FC = () => {
           onSubmit={async (values, actions) => {
             setTimeout(async () => {
               actions.setSubmitting(false)
-              const response = await submitSubreddit({
+              await submitSubreddit({
                 variables: {
                   data: {
                     name: values.name
