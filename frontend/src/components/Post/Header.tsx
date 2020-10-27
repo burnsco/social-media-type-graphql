@@ -10,7 +10,8 @@ const PostHeader: React.FC<{
   category?: string | null
   author?: string | null
   createdAt?: string | null
-}> = ({ category, author, createdAt }) => {
+  postId?: string | null | undefined
+}> = ({ category, author, createdAt, postId }) => {
   const router = useRouter()
   return (
     <Flex fontSize="xs" color="gray.400" w="full" h="10px">
@@ -36,25 +37,27 @@ const PostHeader: React.FC<{
         </Box>
       </Flex>
       <Spacer />
-      <Flex>
-        <Tooltip
-          placement="top"
-          hasArrow
-          label="Edit Post"
-          bg="gray.200"
-          color="black"
-        >
-          <IconButton
-            onClick={() => router.push("/submit/edit")}
-            mr={2}
-            variant="outline"
-            size="xs"
-            aria-label="Edit Post"
-            icon={<FiEdit />}
-          />
-        </Tooltip>
-        <DeletePostDialog />
-      </Flex>
+      {postId && (
+        <Flex>
+          <Tooltip
+            placement="top"
+            hasArrow
+            label="Edit Post"
+            bg="gray.200"
+            color="black"
+          >
+            <IconButton
+              onClick={() => router.push("/submit/edit")}
+              mr={2}
+              variant="outline"
+              size="xs"
+              aria-label="Edit Post"
+              icon={<FiEdit />}
+            />
+          </Tooltip>
+          {postId ? <DeletePostDialog postId={postId} /> : <DeletePostDialog />}
+        </Flex>
+      )}
     </Flex>
   )
 }

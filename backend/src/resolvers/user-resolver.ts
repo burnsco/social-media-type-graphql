@@ -131,28 +131,43 @@ export class UserResolver {
     @Arg("data") data: EditUserInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
-    const user = await em.findOneOrFail(User, { id: req.session.userId })
-
-    // Add Field/Message and Error Responses for each Field
-    // IF email is taken
-    // IF username is taken
-    // IF the formatting is incorrect (Yup)
+    const errors = []
+    const user = await em.findOne(User, { id: req.session.userId })
 
     if (data.username) {
-      wrap(user).assign({
-        username: data.username
-      })
+      const checkUser = await em.findOne(User, { username: data.username })
+      if (checkUser) {
+        errors.push({
+          field: "username",
+          message: "Username taken."
+        })
+      } else if (!checkUser) {
+        wrap(user).assign({
+          username: data.username
+        })
+      }
     }
+
+    if (data.email) {
+      const checkEmail = await em.findOne(User, { email: data.email })
+      if (checkEmail) {
+        errors.push({
+          field: "email",
+          message: "Email taken."
+        })
+      } else if (!checkEmail) {
+        wrap(user).assign({
+          email: data.email
+        })
+      }
+    }
+
     if (data.about) {
       wrap(user).assign({
         about: data.about
       })
     }
-    if (data.email) {
-      wrap(user).assign({
-        email: data.email
-      })
-    }
+
     if (data.password) {
       wrap(user).assign({
         password: await argon2.hash(data.password)
@@ -164,10 +179,16 @@ export class UserResolver {
       })
     }
 
-    await em.persistAndFlush(user)
+    if (user && errors.length < 1) {
+      await em.persistAndFlush(user)
+
+      return {
+        user
+      }
+    }
 
     return {
-      user
+      errors
     }
   }
 

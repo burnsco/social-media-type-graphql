@@ -6,12 +6,6 @@ export class PostInput implements Partial<Post> {
   @Field(() => ID)
   categoryId: number
 
-  @Field(() => ID)
-  postId: number
-
-  @Field(() => ID, { nullable: true })
-  userId?: number
-
   @Field(() => String, { nullable: true })
   title?: string
 
@@ -30,6 +24,6 @@ export class PostInput implements Partial<Post> {
 
 @InputType()
 export class PostIdInput {
-  @Field(() => ID, { nullable: true })
-  postId?: number
+  @Field(() => ID)
+  postId: number
 }

@@ -1,4 +1,4 @@
-import { PostQuery } from "@/generated/graphql"
+import { PostQuery, useMeQuery } from "@/generated/graphql"
 import { Box, useColorModeValue } from "@chakra-ui/core"
 import PostBody from "./Body"
 import PostContainer from "./Container"
@@ -7,6 +7,7 @@ import PostHeader from "./Header"
 import VoteBox from "./VoteBox"
 
 const NewPost: React.FC<PostQuery> = props => {
+  const { data } = useMeQuery()
   const bg = useColorModeValue("white", "#1A1A1B")
   const { post } = props
   const postId = (post?.id as string) ?? "1"
@@ -18,6 +19,8 @@ const NewPost: React.FC<PostQuery> = props => {
   const postText = post?.text ?? null
   const postLink = post?.link ?? null
   const postCommentsCount = post?.totalComments?.count ?? 0
+
+  const isOwner = data?.me?.id === post?.author.id ?? false
 
   if (post) {
     return (
@@ -31,11 +34,21 @@ const NewPost: React.FC<PostQuery> = props => {
           flexDir="column"
           justifyContent="space-evenly"
         >
-          <PostHeader
-            author={postAuthor}
-            createdAt={postCreatedTime}
-            category={postCategory}
-          />
+          {isOwner ? (
+            <PostHeader
+              postId={postId}
+              author={postAuthor}
+              createdAt={postCreatedTime}
+              category={postCategory}
+            />
+          ) : (
+            <PostHeader
+              author={postAuthor}
+              createdAt={postCreatedTime}
+              category={postCategory}
+            />
+          )}
+
           <PostBody title={postTitle} text={postText} link={postLink} />
           <PostFooter
             category={postCategory}

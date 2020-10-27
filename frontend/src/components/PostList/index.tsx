@@ -16,6 +16,7 @@ const PostList = () => {
   const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
     variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true,
+    partialRefetch: true,
     skip: !isMounted
   })
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore

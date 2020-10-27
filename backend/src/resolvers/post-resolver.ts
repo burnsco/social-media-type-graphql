@@ -21,7 +21,7 @@ import { isAuth } from "../utils/isAuth"
 import { PostArgs } from "./args/post-args"
 import { _QueryMeta } from "./args/_QueryMeta"
 import { CommentInput } from "./inputs/comment-input"
-import { PostInput } from "./inputs/post-input"
+import { PostIdInput, PostInput } from "./inputs/post-input"
 import { VoteInput } from "./inputs/vote-input"
 import { CommentMutationResponse } from "./response/comment-response"
 import { PostMutationResponse } from "./response/post-response"
@@ -133,7 +133,7 @@ export class PostResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deletePost(
-    @Arg("data") { postId }: PostInput,
+    @Arg("data") { postId }: PostIdInput,
     @Ctx() { em }: ContextType
   ): Promise<Boolean> {
     const post = await em.findOne(Post, postId, {

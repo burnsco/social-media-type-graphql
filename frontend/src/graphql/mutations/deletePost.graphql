@@ -1,0 +1,3 @@
+mutation DeletePost($data: PostIdInput!) {
+  deletePost(data: $data)
+}

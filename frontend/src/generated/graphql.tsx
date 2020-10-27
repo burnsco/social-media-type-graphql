@@ -106,7 +106,7 @@ export type Comment = {
   updatedAt: Scalars["String"]
   body: Scalars["String"]
   createdBy: User
-  post: Post
+  post?: Maybe<Post>
 }
 
 export type User = {
@@ -125,7 +125,7 @@ export type Post = {
   id: Scalars["ID"]
   createdAt: Scalars["String"]
   updatedAt: Scalars["String"]
-  title: Scalars["String"]
+  title?: Maybe<Scalars["String"]>
   text?: Maybe<Scalars["String"]>
   link?: Maybe<Scalars["String"]>
   image?: Maybe<Scalars["String"]>
@@ -196,6 +196,7 @@ export type Mutation = {
   editComment: CommentMutationResponse
   deleteComment: CommentMutationResponse
   createPost: PostMutationResponse
+  deletePost: Scalars["Boolean"]
   createComment: CommentMutationResponse
   vote: VoteMutationResponse
   register: UserMutationResponse
@@ -218,6 +219,10 @@ export type MutationDeleteCommentArgs = {
 
 export type MutationCreatePostArgs = {
   data: PostInput
+}
+
+export type MutationDeletePostArgs = {
+  data: PostIdInput
 }
 
 export type MutationCreateCommentArgs = {
@@ -270,12 +275,15 @@ export type PostMutationResponse = {
 
 export type PostInput = {
   categoryId: Scalars["ID"]
-  userId: Scalars["ID"]
-  title: Scalars["String"]
+  title?: Maybe<Scalars["String"]>
   text?: Maybe<Scalars["String"]>
   image?: Maybe<Scalars["String"]>
   video?: Maybe<Scalars["String"]>
   link?: Maybe<Scalars["String"]>
+}
+
+export type PostIdInput = {
+  postId: Scalars["ID"]
 }
 
 export type VoteMutationResponse = {
@@ -318,7 +326,7 @@ export type CreateCommentMutation = { __typename?: "Mutation" } & {
     comment?: Maybe<
       { __typename?: "Comment" } & Pick<Comment, "id" | "body"> & {
           createdBy: { __typename?: "User" } & Pick<User, "username">
-          post: { __typename?: "Post" } & Pick<Post, "id">
+          post?: Maybe<{ __typename?: "Post" } & Pick<Post, "id">>
         }
     >
     post?: Maybe<
@@ -420,6 +428,15 @@ export type CreateVoteMutation = { __typename?: "Mutation" } & {
     >
   }
 }
+
+export type DeletePostMutationVariables = Exact<{
+  data: PostIdInput
+}>
+
+export type DeletePostMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "deletePost"
+>
 
 export type EditUserMutationVariables = Exact<{
   data: EditUserInput
@@ -912,6 +929,52 @@ export type CreateVoteMutationResult = Apollo.MutationResult<CreateVoteMutation>
 export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<
   CreateVoteMutation,
   CreateVoteMutationVariables
+>
+export const DeletePostDocument = gql`
+  mutation DeletePost($data: PostIdInput!) {
+    deletePost(data: $data)
+  }
+`
+export type DeletePostMutationFn = Apollo.MutationFunction<
+  DeletePostMutation,
+  DeletePostMutationVariables
+>
+
+/**
+ * __useDeletePostMutation__
+ *
+ * To run a mutation, you first call `useDeletePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePostMutation, { data, loading, error }] = useDeletePostMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useDeletePostMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeletePostMutation,
+    DeletePostMutationVariables
+  >
+) {
+  return Apollo.useMutation<DeletePostMutation, DeletePostMutationVariables>(
+    DeletePostDocument,
+    baseOptions
+  )
+}
+export type DeletePostMutationHookResult = ReturnType<
+  typeof useDeletePostMutation
+>
+export type DeletePostMutationResult = Apollo.MutationResult<DeletePostMutation>
+export type DeletePostMutationOptions = Apollo.BaseMutationOptions<
+  DeletePostMutation,
+  DeletePostMutationVariables
 >
 export const EditUserDocument = gql`
   mutation editUser($data: EditUserInput!) {
