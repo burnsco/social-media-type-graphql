@@ -4,11 +4,12 @@ import SEO from "@/components/shared/seo"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { RegisterSchema } from "@/types/Schemas"
 import { toErrorMap } from "@/utils/toErrorMap"
-import { Box, Button, useToast } from "@chakra-ui/core"
+import { Box, Button, useColorModeValue, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 
 const RegisterPage: React.FC = () => {
+  const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
   const toast = useToast()
   const [register, { data }] = useRegisterMutation()
@@ -16,7 +17,7 @@ const RegisterPage: React.FC = () => {
   console.log(data)
 
   return (
-    <>
+    <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={2}>
       <SEO title="Register" description="Register here to post on the site." />
       <Wrapper variant="small">
         <Formik
@@ -85,7 +86,7 @@ const RegisterPage: React.FC = () => {
           )}
         </Formik>
       </Wrapper>
-    </>
+    </Box>
   )
 }
 

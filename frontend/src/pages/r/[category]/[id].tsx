@@ -5,7 +5,7 @@ import SEO from "@/components/shared/seo"
 import { usePostQuery } from "@/generated/graphql"
 import { Skeleton, Stack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 const PostAndCommentsPage: React.FC = () => {
   const router = useRouter()

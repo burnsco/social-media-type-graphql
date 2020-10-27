@@ -10,10 +10,10 @@ import {
   PopoverHeader,
   PopoverTrigger
 } from "@chakra-ui/core"
-import * as React from "react"
+import { useState } from "react"
 
-function ControlledUsage() {
-  const [isOpen, setIsOpen] = React.useState(false)
+export const ControlledUsage = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const open = () => setIsOpen(!isOpen)
   const close = () => setIsOpen(false)
   return (
@@ -25,7 +25,7 @@ function ControlledUsage() {
         returnFocusOnClose={false}
         isOpen={isOpen}
         onClose={close}
-        placement="right"
+        placement="left"
         closeOnBlur={false}
       >
         <PopoverTrigger>

@@ -1,5 +1,5 @@
 import { Box, Button, Spinner } from "@chakra-ui/core"
-import React, { memo } from "react"
+import { memo } from "react"
 
 type MoreCommentsProps = {
   loadMoreComments: () => void

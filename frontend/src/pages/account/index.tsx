@@ -1,7 +1,7 @@
 import { ChakraField } from "@/components/shared/ChakraField"
 import { PasswordField } from "@/components/shared/PasswordField"
 import { useEditUserMutation, useMeQuery } from "@/generated/graphql"
-import { Alert, Box, Button, Heading, useColorModeValue } from "@chakra-ui/core"
+import { Alert, Box, Button, useColorModeValue } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRef, useState } from "react"
 import * as Yup from "yup"
@@ -20,10 +20,7 @@ const AccountPage = () => {
   if (loading || editLoading) return null
 
   return (
-    <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={4}>
-      <Heading as="h3" mb={3}>
-        Account
-      </Heading>
+    <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={3}>
       <Formik
         initialValues={{
           username: data?.me?.username,

@@ -10,7 +10,7 @@ import {
   Text
 } from "@chakra-ui/core"
 import { useField } from "formik"
-import React, { useState } from "react"
+import { useState } from "react"
 
 type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   name: string

@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Property } from "@mikro-orm/core"
+import { Cascade, Entity, ManyToOne, Property } from "@mikro-orm/core"
 import { Field, Int, ObjectType } from "type-graphql"
 import { BaseEntity } from "./BaseEntity"
 import { Post } from "./Post"
@@ -15,6 +15,8 @@ export class Vote extends BaseEntity {
   @ManyToOne(() => User)
   castBy: User
 
-  @ManyToOne(() => Post)
+  @ManyToOne(() => Post, {
+    cascade: [Cascade.ALL]
+  })
   post: Post
 }

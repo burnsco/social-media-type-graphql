@@ -14,7 +14,7 @@ import {
   useDisclosure
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-import React, { useRef } from "react"
+import { useRef } from "react"
 
 function LoginDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()

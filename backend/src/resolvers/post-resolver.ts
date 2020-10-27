@@ -130,6 +130,27 @@ export class PostResolver {
     return { post }
   }
 
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deletePost(
+    @Arg("data") { postId }: PostInput,
+    @Ctx() { em }: ContextType
+  ): Promise<Boolean> {
+    const post = await em.findOne(Post, postId, {
+      populate: ["comments", "votes"]
+    })
+
+    if (post && post.comments) {
+      post.comments.removeAll()
+      if (post.votes) {
+        post.votes.removeAll()
+      }
+      em.removeAndFlush(post)
+      return true
+    }
+    return false
+  }
+
   @Mutation(() => CommentMutationResponse)
   @UseMiddleware(isAuth)
   async createComment(
@@ -149,6 +170,7 @@ export class PostResolver {
       body: body,
       createdBy: em.getReference(User, req.session.userId)
     })
+
     post.comments.add(comment)
 
     await em.persistAndFlush(post)

@@ -2,7 +2,7 @@ import PostList from "@/components/PostList"
 import SEO from "@/components/shared/seo"
 import { PostsDocument, PostsQuery } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
-import { allPostsQueryVars } from "@/types/post"
+import { allPostsQueryVars } from "@/types/pagination"
 
 const Index = () => {
   return (

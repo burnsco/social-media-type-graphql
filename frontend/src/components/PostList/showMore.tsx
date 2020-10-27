@@ -1,5 +1,5 @@
 import { Box, Button } from "@chakra-ui/core"
-import React, { memo } from "react"
+import { memo } from "react"
 
 type MorePostsProps = {
   loadMorePosts: () => void

@@ -4,7 +4,6 @@ import { useCreateSubredditMutation } from "@/generated/graphql"
 import { gql } from "@apollo/client"
 import { Button, Skeleton, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-import React from "react"
 import { useIsAuth } from "src/hooks/useIsAuth"
 import * as Yup from "yup"
 

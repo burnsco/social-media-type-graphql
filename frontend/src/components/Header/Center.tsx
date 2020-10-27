@@ -10,7 +10,6 @@ import {
   MenuList
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import React from "react"
 import { FaHome } from "react-icons/fa"
 import { ImArrowDown } from "react-icons/im"
 

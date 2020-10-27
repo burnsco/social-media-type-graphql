@@ -11,10 +11,10 @@ import {
   PopoverHeader,
   PopoverTrigger
 } from "@chakra-ui/core"
-import * as React from "react"
+import { useRef } from "react"
 
-function AlertDialog() {
-  const initialFocusRef = React.useRef<HTMLButtonElement | null>(null)
+export const AlertDialog = () => {
+  const initialFocusRef = useRef<HTMLButtonElement | null>(null)
   return (
     <Popover
       initialFocusRef={initialFocusRef}

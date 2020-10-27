@@ -1,4 +1,5 @@
 import {
+  Cascade,
   Collection,
   Entity,
   ManyToOne,
@@ -16,8 +17,8 @@ import { Vote } from "./Vote"
 @Entity()
 @ObjectType()
 export class Post extends BaseEntity {
-  @Field()
-  @Property()
+  @Field(() => String, { nullable: true })
+  @Property({ nullable: true })
   title: string
 
   @Field(() => String, { nullable: true })
@@ -37,18 +38,24 @@ export class Post extends BaseEntity {
   video?: string
 
   @Field(() => User)
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: "cascade" })
   author: User
 
   @Field(() => Category)
-  @ManyToOne(() => Category)
+  @ManyToOne(() => Category, { onDelete: "cascade" })
   category: Category
 
   @Field(() => [Vote], { nullable: true })
-  @OneToMany(() => Vote, vote => vote.post)
+  @OneToMany(() => Vote, vote => vote.post, {
+    cascade: [Cascade.ALL],
+    orphanRemoval: true
+  })
   votes = new Collection<Vote>(this)
 
   @Field(() => [Comment], { nullable: true })
-  @OneToMany(() => Comment, comment => comment.post)
+  @OneToMany(() => Comment, comment => comment.post, {
+    cascade: [Cascade.ALL],
+    orphanRemoval: true
+  })
   comments = new Collection<Comment>(this)
 }
