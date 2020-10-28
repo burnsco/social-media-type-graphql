@@ -4,13 +4,15 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Text
+  Text,
+  Textarea
 } from "@chakra-ui/core"
 import { useField } from "formik"
 import { useState } from "react"
 
 type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   name: string
+  textarea?: boolean
   label: string
   helperText?: string
   size?: string
@@ -20,6 +22,7 @@ export const ChakraField: React.FC<ChakraFieldProps> = ({
   label,
   type,
   size,
+  textarea = false,
   helperText,
   ...props
 }) => {
@@ -30,7 +33,7 @@ export const ChakraField: React.FC<ChakraFieldProps> = ({
 
   return (
     <FormControl isInvalid={!!error}>
-      <FormLabel fontSize={`${size}` || "sm"} htmlFor={props.name || props.id}>
+      <FormLabel fontSize={`${size}` || "sm"} htmlFor={props.name}>
         {label}{" "}
         {showFeedback ? (
           <Text
@@ -45,17 +48,28 @@ export const ChakraField: React.FC<ChakraFieldProps> = ({
           </Text>
         ) : null}
       </FormLabel>
-
-      <Input
-        {...field}
-        {...props}
-        focusBorderColor="red.300"
-        aria-describedby={`${props.id}-feedback ${props.id}-help`}
-        type={type}
-        onFocus={handleFocus}
-        id={field.name}
-        placeholder={props.placeholder}
-      />
+      {textarea ? (
+        <Textarea
+          {...field}
+          focusBorderColor="red.300"
+          aria-describedby={`${props.id}-feedback ${props.id}-help`}
+          type={type}
+          onFocus={handleFocus}
+          id={field.name}
+          placeholder={props.placeholder}
+        />
+      ) : (
+        <Input
+          {...field}
+          {...props}
+          focusBorderColor="red.300"
+          aria-describedby={`${props.id}-feedback ${props.id}-help`}
+          type={type}
+          onFocus={handleFocus}
+          id={field.name}
+          placeholder={props.placeholder}
+        />
+      )}
 
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
 

@@ -1,12 +1,13 @@
+import { GraphQLEmail } from "graphql-custom-types"
 import { Field, InputType } from "type-graphql"
 import { User } from "../../entities/User"
 
 @InputType()
 export class RegisterInput implements Partial<User> {
-  @Field()
+  @Field(() => GraphQLEmail)
   email: string
 
-  @Field()
+  @Field(() => String)
   username: string
 
   @Field()
@@ -20,17 +21,26 @@ export class RegisterInput implements Partial<User> {
 }
 
 @InputType()
+export class LoginInput implements Partial<User> {
+  @Field(() => GraphQLEmail, { nullable: true })
+  email: string
+
+  @Field(() => String, { nullable: true })
+  password: string
+}
+
+@InputType()
 export class CheckAvailability implements Partial<User> {
-  @Field()
+  @Field(() => String, { nullable: true })
   username?: string
 
-  @Field()
+  @Field(() => GraphQLEmail, { nullable: true })
   email?: string
 }
 
 @InputType()
 export class EditUserInput implements Partial<User> {
-  @Field(() => String, { nullable: true })
+  @Field(() => GraphQLEmail, { nullable: true })
   email?: string
 
   @Field(() => String, { nullable: true })
@@ -44,13 +54,4 @@ export class EditUserInput implements Partial<User> {
 
   @Field(() => String, { nullable: true })
   about?: string
-}
-
-@InputType()
-export class LoginInput implements Partial<User> {
-  @Field()
-  email: string
-
-  @Field()
-  password: string
 }

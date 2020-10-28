@@ -5,7 +5,7 @@ import {
 } from "@mikro-orm/core"
 import { PostgreSqlDriver } from "@mikro-orm/postgresql/PostgreSqlDriver"
 import path from "path"
-import { BaseEntity } from "../entities/BaseEntity"
+import { Base } from "../entities/Base"
 import { Category } from "../entities/Category"
 import { Comment } from "../entities/Comment"
 import { Post } from "../entities/Post"
@@ -22,7 +22,7 @@ export async function testConnection() {
       pattern: /^[\w-]+\d+\.[tj]s$/
     },
     clientUrl: "postgres://postgres:postgres@127.0.0.1:5432/maple-testing",
-    entities: [BaseEntity, Category, User, Post, Comment, Vote],
+    entities: [Base, Category, User, Post, Comment, Vote],
     baseDir: BASE_DIR,
     type: "postgresql",
     debug: true,
@@ -34,7 +34,7 @@ export async function testConnection() {
 }
 
 export async function wipeDatabase(em: EntityManager) {
-  await em.getRepository(BaseEntity).nativeDelete({})
+  await em.getRepository(Base).nativeDelete({})
   await em.getRepository(Category).nativeDelete({})
   await em.getRepository(User).nativeDelete({})
   await em.getRepository(Post).nativeDelete({})

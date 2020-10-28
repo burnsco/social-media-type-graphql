@@ -1,6 +1,7 @@
 import { ChakraField } from "@/components/shared/ChakraField"
 import { MeDocument, MeQuery, useLoginMutation } from "@/generated/graphql"
-import { LoginSchema } from "@/types/Schemas"
+import { LoginSchema } from "@/types/User/schemas"
+import { LoginUserInputType } from "@/types/User/types"
 import {
   Button,
   Drawer,
@@ -43,7 +44,7 @@ function LoginDrawer() {
           <DrawerCloseButton />
           <DrawerHeader>Login</DrawerHeader>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={LoginUserInputType}
             validationSchema={LoginSchema}
             onSubmit={async (values, actions) => {
               setTimeout(async () => {

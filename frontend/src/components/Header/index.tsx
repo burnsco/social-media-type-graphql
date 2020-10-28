@@ -46,7 +46,7 @@ const Header: React.FC = () => {
       zIndex="sticky"
       boxShadow="sm"
       width="full"
-      p={[1]}
+      p={1}
       align="center"
     >
       <Flex justify="space-between" width="98%">
@@ -83,7 +83,7 @@ const Header: React.FC = () => {
                   color="black"
                 >
                   <IconButton
-                    onClick={() => router.push("/submit")}
+                    onClick={() => router.push("/post/create")}
                     colorScheme="green"
                     size="md"
                     aria-label="Create Post"
@@ -113,11 +113,11 @@ const Header: React.FC = () => {
                 </MenuButton>
                 <MenuList opacity="0.9">
                   <MenuGroup>
-                    <MenuItem onClick={() => router.push("/profile")}>
+                    <MenuItem onClick={() => router.push("/user/profile")}>
                       <FaUserCircle />
                       <Box ml={1}>Profile</Box>
                     </MenuItem>
-                    <MenuItem onClick={() => router.push("/account")}>
+                    <MenuItem onClick={() => router.push("/user/account")}>
                       <MdSettings />
                       <Box ml={1}>Account</Box>
                     </MenuItem>

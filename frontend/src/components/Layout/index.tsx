@@ -10,8 +10,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
       <Header />
-      <Box minH="100vh" bg={bg}>
-        <Stack isInline spacing={8} py="6em" px={["0em", "2em", "2em", "4em"]}>
+      <Box minH="100vh" bg={bg} px={["0em", "2em", "4em", "6em"]} py="6em">
+        <Stack isInline spacing={14}>
           <Box as="main" width="full">
             {children}
           </Box>

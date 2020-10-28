@@ -1,9 +1,9 @@
 import { ChakraField } from "@/components/shared/ChakraField"
 import { useEditUserMutation, useMeQuery } from "@/generated/graphql"
+import { EditUserSchema } from "@/types/User/schemas"
 import { Alert, Box, Button, Heading, useColorModeValue } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRef, useState } from "react"
-import * as Yup from "yup"
 
 const ProfilePage = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,20 +23,13 @@ const ProfilePage = () => {
       <Heading>Profile</Heading>
       <Formik
         initialValues={{
-          username: data?.me?.username,
-          about: "",
-          email: data?.me?.email,
+          username: data?.me?.username ?? "",
+          about: data?.me?.about ?? "",
+          email: data?.me?.email ?? "",
           password: "",
-          avatar: ""
+          avatar: data?.me?.avatar ?? ""
         }}
-        validationSchema={Yup.object().shape({
-          userId: Yup.string().notRequired(),
-          username: Yup.string().notRequired(),
-          about: Yup.string().min(5).max(150).notRequired(),
-          email: Yup.string().notRequired(),
-          password: Yup.string().notRequired(),
-          avatar: Yup.string().notRequired()
-        })}
+        validationSchema={EditUserSchema}
         onSubmit={async (values, actions) => {
           setTimeout(async () => {
             actions.setSubmitting(false)

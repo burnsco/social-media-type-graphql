@@ -14,3 +14,11 @@ export const clearDatabase = async (
   // this way we can just create 1 migration after development
   await orm.getSchemaGenerator().updateSchema()
 }
+
+// const orm = await MikroORM.init(MikroConfig)
+
+// const migrator = orm.getMigrator()
+// const migrations = await migrator.getPendingMigrations()
+// if (migrations && migrations.length > 0) {
+//   await migrator.up()
+// }

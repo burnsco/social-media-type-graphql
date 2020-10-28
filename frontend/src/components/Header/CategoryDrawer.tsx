@@ -1,4 +1,5 @@
 import { useCreateSubredditMutation } from "@/generated/graphql"
+import { CategoryInputType } from "@/types/Category/types"
 import { toErrorMap } from "@/utils/toErrorMap"
 import { gql } from "@apollo/client"
 import {
@@ -14,13 +15,11 @@ import {
   useToast
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-import { useRouter } from "next/router"
 import { useRef } from "react"
-import * as Yup from "yup"
+import { CategorySchema } from "../../types/Category/schemas"
 import { ChakraField } from "../shared/ChakraField"
 
 function CreateCategoryDrawer() {
-  const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
   const [createCategory] = useCreateSubredditMutation()
@@ -42,10 +41,8 @@ function CreateCategoryDrawer() {
           <DrawerCloseButton />
           <DrawerHeader>Subreddit</DrawerHeader>
           <Formik
-            initialValues={{ name: "" }}
-            validationSchema={Yup.object().shape({
-              name: Yup.string().required("Required")
-            })}
+            initialValues={CategoryInputType}
+            validationSchema={CategorySchema}
             onSubmit={async (values, actions) => {
               actions.setSubmitting(false)
               let response

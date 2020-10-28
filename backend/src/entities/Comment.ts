@@ -1,12 +1,12 @@
 import { Cascade, Entity, ManyToOne, Property } from "@mikro-orm/core"
 import { Field, ObjectType } from "type-graphql"
-import { BaseEntity } from "./BaseEntity"
+import { Base } from "./Base"
 import { Post } from "./Post"
 import { User } from "./User"
 
 @Entity()
 @ObjectType()
-export class Comment extends BaseEntity {
+export class Comment extends Base<Comment> {
   @Field(() => String)
   @Property()
   body: string

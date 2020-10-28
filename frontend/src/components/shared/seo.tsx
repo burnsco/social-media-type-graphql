@@ -1,12 +1,22 @@
 import { NextSeo } from "next-seo"
 import siteConfig from "../../configs/site-config"
 
-const SEO = (props: { title: string; description: string }) => (
-  <NextSeo
-    title={props.title}
-    description={props.description}
-    titleTemplate={siteConfig.seo.titleTemplate}
-  />
-)
+interface SEOProps {
+  title?: string | null
+  description?: string | null
+}
+
+const SEO: React.FC<SEOProps> = props => {
+  if (props) {
+    return (
+      <NextSeo
+        title={props.title}
+        description={props.description}
+        titleTemplate={siteConfig.seo.titleTemplate}
+      />
+    )
+  }
+  return null
+}
 
 export default SEO

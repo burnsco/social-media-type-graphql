@@ -1,7 +1,7 @@
 import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/pagination"
 import { NetworkStatus } from "@apollo/client"
-import { Box } from "@chakra-ui/core"
+import { Box, Text, VStack } from "@chakra-ui/core"
 import { useEffect, useState } from "react"
 import NewPost from "../Post"
 import ShowMorePosts from "./showMore"
@@ -16,7 +16,6 @@ const PostList = () => {
   const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
     variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true,
-    partialRefetch: true,
     skip: !isMounted
   })
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
@@ -42,20 +41,21 @@ const PostList = () => {
   const ViewPosts = () => {
     if (allPosts.length > 0) {
       return (
-        <ul>
+        <VStack spacing={4}>
           {allPosts.map((post, index) => (
             <NewPost key={`post-${post.id}-${index}`} post={post} />
           ))}
-        </ul>
+        </VStack>
       )
     }
-    return <div>No posts here.</div>
+    return <Text>No posts here.</Text>
   }
 
   if (isMounted) {
     return (
       <Box>
         <ViewPosts />
+
         <ShowMorePosts
           loadMorePosts={loadMorePosts}
           areMorePosts={areMorePosts}

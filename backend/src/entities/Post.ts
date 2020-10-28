@@ -8,7 +8,7 @@ import {
 } from "@mikro-orm/core"
 import { ObjectType } from "type-graphql"
 import { Field } from "type-graphql/dist/decorators/Field"
-import { BaseEntity } from "./BaseEntity"
+import { Base } from "./Base"
 import { Category } from "./Category"
 import { Comment } from "./Comment"
 import { User } from "./User"
@@ -16,9 +16,9 @@ import { Vote } from "./Vote"
 
 @Entity()
 @ObjectType()
-export class Post extends BaseEntity {
-  @Field(() => String, { nullable: true })
-  @Property({ nullable: true })
+export class Post extends Base<Post> {
+  @Field(() => String)
+  @Property()
   title: string
 
   @Field(() => String, { nullable: true })

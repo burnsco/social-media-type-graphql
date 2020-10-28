@@ -1,10 +1,15 @@
+import { ApolloError } from "@apollo/client"
 import { Alert, AlertIcon } from "@chakra-ui/core"
 
-export const AlertError: React.FC<{ error: string }> = ({ error }) => {
+const AlertError: React.FC<{ error: ApolloError | undefined }> = ({
+  error
+}) => {
   return (
     <Alert status="error">
       <AlertIcon />
-      {error}
+      {error?.message}
     </Alert>
   )
 }
+
+export default AlertError

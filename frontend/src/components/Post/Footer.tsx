@@ -7,7 +7,7 @@ const PostFooter: React.FC<{
   commentsCount?: number
 }> = ({ category, id, commentsCount }) => {
   return (
-    <Box mt={2} display="flex" width="100%">
+    <Box display="flex" width="100%">
       <Box borderRadius="sm" fontSize="12px" p={1} mb={1} color="gray.400">
         <NextChakraLink href="/r/[category]/[id]" as={`/r/${category}/${id}`}>
           {commentsCount} Comments

@@ -1,4 +1,4 @@
-import { QueryOrder } from "@mikro-orm/core"
+import { QueryOrder, wrap } from "@mikro-orm/core"
 import {
   Arg,
   Args,
@@ -10,7 +10,6 @@ import {
   Root,
   UseMiddleware
 } from "type-graphql"
-import { invalidPostOrId } from "../constants"
 import { Category } from "../entities/Category"
 import { Comment } from "../entities/Comment"
 import { Post } from "../entities/Post"
@@ -21,7 +20,7 @@ import { isAuth } from "../utils/isAuth"
 import { PostArgs } from "./args/post-args"
 import { _QueryMeta } from "./args/_QueryMeta"
 import { CommentInput } from "./inputs/comment-input"
-import { PostIdInput, PostInput } from "./inputs/post-input"
+import { CreatePostInput, EditPostInput } from "./inputs/post-input"
 import { VoteInput } from "./inputs/vote-input"
 import { CommentMutationResponse } from "./response/comment-response"
 import { PostMutationResponse } from "./response/post-response"
@@ -54,7 +53,7 @@ export class PostResolver {
     @Args() { postId }: PostArgs,
     @Ctx() { em }: ContextType
   ): Promise<Post | null> {
-    return await em.findOneOrFail(Post, { id: postId })
+    return await em.findOne(Post, { id: postId })
   }
 
   @Query(() => [Post], { nullable: true })
@@ -113,7 +112,8 @@ export class PostResolver {
   @Mutation(() => PostMutationResponse)
   @UseMiddleware(isAuth)
   async createPost(
-    @Arg("data") { title, text, image, video, link, categoryId }: PostInput,
+    @Arg("data")
+    { title, text, image, video, link, categoryId }: CreatePostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse> {
     const post = em.create(Post, {
@@ -126,14 +126,72 @@ export class PostResolver {
       category: em.getReference(Category, categoryId)
     })
     await em.persistAndFlush(post)
-
     return { post }
+  }
+
+  @Mutation(() => PostMutationResponse)
+  @UseMiddleware(isAuth)
+  async editPost(
+    @Arg("data")
+    { title, text, image, video, link, postId, categoryId }: EditPostInput,
+    @Ctx() { em }: ContextType
+  ): Promise<PostMutationResponse> {
+    const errors = []
+    const post = await em.findOne(Post, { id: postId })
+
+    if (post) {
+      if (categoryId) {
+        wrap(post).assign({
+          category: em.getReference(Category, categoryId)
+        })
+      }
+      if (title) {
+        wrap(post).assign({
+          title
+        })
+      }
+      if (text) {
+        wrap(post).assign({
+          text
+        })
+      }
+      if (image) {
+        wrap(post).assign({
+          image
+        })
+      }
+      if (video) {
+        wrap(post).assign({
+          video
+        })
+      }
+      if (link) {
+        wrap(post).assign({
+          link
+        })
+      }
+
+      await em.persistAndFlush(post)
+
+      return {
+        post
+      }
+    }
+
+    errors.push({
+      field: "title",
+      message: "post not found"
+    })
+
+    return {
+      errors
+    }
   }
 
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deletePost(
-    @Arg("data") { postId }: PostIdInput,
+    @Arg("data") { postId }: EditPostInput,
     @Ctx() { em }: ContextType
   ): Promise<Boolean> {
     const post = await em.findOne(Post, postId, {
@@ -156,29 +214,28 @@ export class PostResolver {
   async createComment(
     @Arg("data") { body, postId }: CommentInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<CommentMutationResponse> {
+  ): Promise<CommentMutationResponse | null> {
     const post = await em.findOne(Post, postId, {
       populate: ["comments"]
     })
 
-    if (!post) {
-      return invalidPostOrId
+    if (post) {
+      const comment = em.create(Comment, {
+        post,
+        body: body,
+        createdBy: em.getReference(User, req.session.userId)
+      })
+
+      post.comments.add(comment)
+
+      await em.persistAndFlush(post)
+      console.log(post)
+      return {
+        post,
+        comment
+      }
     }
-
-    const comment = em.create(Comment, {
-      post,
-      body: body,
-      createdBy: em.getReference(User, req.session.userId)
-    })
-
-    post.comments.add(comment)
-
-    await em.persistAndFlush(post)
-    console.log(post)
-    return {
-      post,
-      comment
-    }
+    return null
   }
 
   @Mutation(() => VoteMutationResponse)
@@ -186,13 +243,13 @@ export class PostResolver {
   async vote(
     @Arg("data") { postId, value }: VoteInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<VoteMutationResponse> {
+  ): Promise<VoteMutationResponse | null> {
     const post = await em.findOne(Post, postId, {
       populate: ["votes"]
     })
 
     if (!post) {
-      return invalidPostOrId
+      return null
     }
 
     const vote = em.create(Vote, {

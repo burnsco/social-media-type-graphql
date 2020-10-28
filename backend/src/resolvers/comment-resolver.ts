@@ -31,26 +31,7 @@ export class CommentResolver {
     if (comment) {
       comment.body = body
 
-      await em.flush()
-
-      return {
-        comment
-      }
-    }
-    return {
-      comment: undefined
-    }
-  }
-
-  @Mutation(() => CommentMutationResponse)
-  @UseMiddleware(isAuth)
-  async deleteComment(
-    @Arg("data") { postId }: CommentInput,
-    @Ctx() { em }: ContextType
-  ): Promise<CommentMutationResponse> {
-    const comment = await em.findOne(Comment, { post: { id: postId } })
-    if (comment) {
-      em.removeAndFlush
+      await em.persistAndFlush(comment)
 
       return {
         comment
@@ -74,7 +55,6 @@ export class CommentResolver {
     @Args() { first, skip, orderBy, postId }: PostArgs,
     @Ctx() { em }: ContextType
   ): Promise<Comment[] | null> {
-    // TODO pagination
     const [comments] = await em.findAndCount(
       Comment,
       { post: { id: postId } },
@@ -93,15 +73,15 @@ export class CommentResolver {
   async createdBy(
     @Root() comment: Comment,
     @Ctx() { em }: ContextType
-  ): Promise<User> {
-    return await em.findOneOrFail(User, comment.createdBy.id)
+  ): Promise<User | null> {
+    return await em.findOne(User, comment.createdBy.id)
   }
 
   @FieldResolver()
   async post(
     @Root() comment: Comment,
     @Ctx() { em }: ContextType
-  ): Promise<Post> {
-    return await em.findOneOrFail(Post, comment.post.id)
+  ): Promise<Post | null> {
+    return await em.findOne(Post, comment.post.id)
   }
 }

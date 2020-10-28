@@ -4,12 +4,11 @@ import {
   Alert,
   Box,
   Button,
-  FormControl,
   Skeleton,
-  Textarea,
   useColorModeValue
 } from "@chakra-ui/core"
-import { Field, Formik } from "formik"
+import { Formik } from "formik"
+import { ChakraField } from "../shared/ChakraField"
 
 interface CreateSubredditProps {
   postId: string
@@ -62,7 +61,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
     <Box bg={bg} borderWidth="1px" rounded="md">
       <Skeleton isLoaded={!mutationLoading}>
         <Formik
-          initialValues={{ body: "", postId: postId }}
+          initialValues={{ body: "", postId }}
           onSubmit={(values, actions) => {
             setTimeout(() => {
               actions.setSubmitting(false)
@@ -72,18 +71,11 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
         >
           {formik => (
             <form onSubmit={formik.handleSubmit}>
-              <Field name="body">
-                {({ field, form }: any) => (
-                  <FormControl
-                    isInvalid={form.errors.body && form.touched.body}
-                  >
-                    <Textarea {...field} id="body" placeholder="body" />
-                  </FormControl>
-                )}
-              </Field>
+              <ChakraField id="body" name="body" label="" textarea />
               <Button
                 size="sm"
-                colorScheme="teal"
+                colorScheme="orange"
+                isDisabled={formik.isSubmitting}
                 isLoading={formik.isSubmitting}
                 type="submit"
               >

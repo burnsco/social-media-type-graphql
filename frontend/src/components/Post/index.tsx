@@ -1,5 +1,5 @@
 import { PostQuery, useMeQuery } from "@/generated/graphql"
-import { Box, useColorModeValue } from "@chakra-ui/core"
+import { Flex, useColorModeValue } from "@chakra-ui/core"
 import PostBody from "./Body"
 import PostContainer from "./Container"
 import PostFooter from "./Footer"
@@ -7,33 +7,26 @@ import PostHeader from "./Header"
 import VoteBox from "./VoteBox"
 
 const NewPost: React.FC<PostQuery> = props => {
-  const { data } = useMeQuery()
   const bg = useColorModeValue("white", "#1A1A1B")
+  const { data } = useMeQuery()
   const { post } = props
-  const postId = (post?.id as string) ?? "1"
-  const postScore = post?.totalVotes?.score ?? 0
-  const postCategory = post?.category.name ?? null
-  const postAuthor = post?.author.username ?? null
-  const postCreatedTime = post?.createdAt ?? null
-  const postTitle = post?.title ?? null
-  const postText = post?.text ?? null
-  const postLink = post?.link ?? null
-  const postCommentsCount = post?.totalComments?.count ?? 0
-
-  const isOwner = data?.me?.id === post?.author.id ?? false
 
   if (post) {
+    const postId = post.id
+    const postScore = post?.totalVotes?.score ?? 0
+    const postCategory = post?.category.name
+    const postAuthor = post?.author.username
+    const postCreatedTime = post?.createdAt
+    const postTitle = post?.title
+    const postText = post?.text
+    const postLink = post?.link
+    const postCommentsCount = post?.totalComments?.count ?? 0
+    const isOwner = data?.me?.id === post?.author.id ?? false
+
     return (
       <PostContainer bg={bg}>
         <VoteBox postId={postId} postScore={postScore} />
-        <Box
-          minH="100px"
-          p={1}
-          width="100%"
-          display="flex"
-          flexDir="column"
-          justifyContent="space-evenly"
-        >
+        <Flex minH="140px" width="100%" flexDir="column" ml={2}>
           {isOwner ? (
             <PostHeader
               postId={postId}
@@ -55,7 +48,7 @@ const NewPost: React.FC<PostQuery> = props => {
             id={postId}
             commentsCount={postCommentsCount}
           />
-        </Box>
+        </Flex>
       </PostContainer>
     )
   }

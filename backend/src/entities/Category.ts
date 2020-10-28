@@ -1,11 +1,11 @@
 import { Entity, Property } from "@mikro-orm/core"
-import { ObjectType, Field } from "type-graphql"
-import { BaseEntity } from "./BaseEntity"
+import { Field, ObjectType } from "type-graphql"
+import { Base } from "./Base"
 
 @Entity()
 @ObjectType()
-export class Category extends BaseEntity {
-  @Field(() => String)
+export class Category extends Base<Category> {
+  @Field()
   @Property({ unique: true })
   name: string
 }

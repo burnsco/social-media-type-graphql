@@ -1,4 +1,5 @@
 import { useDeletePostMutation } from "@/generated/graphql"
+import { sleep } from "@/utils/sleepy"
 import {
   AlertDialog,
   AlertDialogBody,
@@ -13,7 +14,10 @@ import {
 import * as React from "react"
 import { AiFillDelete } from "react-icons/ai"
 
-export const DeletePostDialog: React.FC<{ postId?: string }> = ({ postId }) => {
+export const DeletePostDialog: React.FC<{
+  postId?: string | null
+  category?: string | null
+}> = ({ postId, category }) => {
   const [deletePost] = useDeletePostMutation()
   const [isOpen, setIsOpen] = React.useState(false)
   const onClose = () => setIsOpen(false)
@@ -31,7 +35,6 @@ export const DeletePostDialog: React.FC<{ postId?: string }> = ({ postId }) => {
         >
           <IconButton
             onClick={() => setIsOpen(true)}
-            variant="outline"
             size="xs"
             aria-label="Delete Post"
             icon={<AiFillDelete />}
@@ -64,7 +67,7 @@ export const DeletePostDialog: React.FC<{ postId?: string }> = ({ postId }) => {
                 </Button>
                 <Button
                   onClick={() => {
-                    console.log("delete post")
+                    sleep(1000)
                     deletePost({
                       variables: {
                         data: {

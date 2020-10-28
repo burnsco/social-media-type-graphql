@@ -8,7 +8,13 @@ import {
   Resolver,
   UseMiddleware
 } from "type-graphql"
-import { COOKIE_NAME } from "../constants"
+import {
+  COOKIE_NAME,
+  emailAvailable,
+  emailInUse,
+  usernameAvailable,
+  usernameInUse
+} from "../constants"
 import { User } from "../entities/User"
 import { ContextType } from "../types"
 import { isAuth } from "../utils/isAuth"
@@ -20,15 +26,12 @@ import {
 } from "./inputs/user-input"
 import { LogoutMutationResponse } from "./response/logout-response"
 import { UserMutationResponse } from "./response/user-response"
-import { validateLoginUser } from "./validation/login-schema"
 
 @Resolver(() => User)
 export class UserResolver {
   @Query(() => User, { nullable: true })
+  @UseMiddleware(isAuth)
   async me(@Ctx() { req, em }: ContextType) {
-    if (!req.session.userId) {
-      return null
-    }
     return await em.findOne(User, req.session.userId)
   }
 
@@ -42,30 +45,17 @@ export class UserResolver {
     const isEmailTaken = await em.findOne(User, { email: data.email })
 
     if (isUserTaken) {
-      errors.push({
-        field: "username",
-        message: "Username taken."
-      })
+      errors.push(usernameInUse)
     }
     if (isEmailTaken) {
-      errors.push({
-        field: "email",
-        message: "Email in use."
-      })
+      errors.push(emailInUse)
     }
     if (!isEmailTaken) {
-      errors.push({
-        field: "email",
-        message: "Email not in use."
-      })
+      errors.push(emailAvailable)
     }
     if (!isUserTaken) {
-      errors.push({
-        field: "username",
-        message: "Username available."
-      })
+      errors.push(usernameAvailable)
     }
-
     return {
       errors
     }
@@ -75,13 +65,13 @@ export class UserResolver {
   async user(
     @Arg("data") data: EditUserInput,
     @Ctx() { em }: ContextType
-  ): Promise<User> {
-    return await em.findOneOrFail(User, { username: data.username })
+  ): Promise<User | null> {
+    return await em.findOne(User, { username: data.username })
   }
 
   @Query(() => [User])
-  users(@Ctx() { em }: ContextType): Promise<User[]> {
-    return em.find(User, {})
+  async users(@Ctx() { em }: ContextType): Promise<User[]> {
+    return await em.find(User, {})
   }
 
   @Mutation(() => UserMutationResponse)
@@ -95,16 +85,10 @@ export class UserResolver {
 
     if (isUserTaken || isEmailTaken) {
       if (isUserTaken) {
-        errors.push({
-          field: "username",
-          message: "Username taken."
-        })
+        errors.push(usernameInUse)
       }
       if (isEmailTaken) {
-        errors.push({
-          field: "email",
-          message: "Email in use."
-        })
+        errors.push(emailInUse)
       }
       return {
         errors
@@ -116,6 +100,7 @@ export class UserResolver {
       username,
       password: await argon2.hash(password)
     })
+
     await em.persistAndFlush(user)
 
     req.session.userId = user.id
@@ -136,11 +121,9 @@ export class UserResolver {
 
     if (data.username) {
       const checkUser = await em.findOne(User, { username: data.username })
+
       if (checkUser) {
-        errors.push({
-          field: "username",
-          message: "Username taken."
-        })
+        errors.push(usernameInUse)
       } else if (!checkUser) {
         wrap(user).assign({
           username: data.username
@@ -150,11 +133,9 @@ export class UserResolver {
 
     if (data.email) {
       const checkEmail = await em.findOne(User, { email: data.email })
+
       if (checkEmail) {
-        errors.push({
-          field: "email",
-          message: "Email taken."
-        })
+        errors.push(emailInUse)
       } else if (!checkEmail) {
         wrap(user).assign({
           email: data.email
@@ -173,6 +154,7 @@ export class UserResolver {
         password: await argon2.hash(data.password)
       })
     }
+
     if (data.avatar) {
       wrap(user).assign({
         avatar: data.avatar
@@ -196,16 +178,10 @@ export class UserResolver {
   async login(
     @Arg("data") { email, password }: LoginInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<UserMutationResponse> {
+  ): Promise<UserMutationResponse | null> {
     const user = await em.findOne(User, { email: email })
-    if (!user) return {}
+    if (!user) return null
 
-    const errors = await validateLoginUser({ email, password })
-    if (errors !== null) {
-      return {
-        errors
-      }
-    }
     const valid = await argon2.verify(user.password, password)
     if (valid) {
       req.session.userId = user.id

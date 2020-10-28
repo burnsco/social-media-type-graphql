@@ -1,5 +1,6 @@
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
-import { RegisterSchema } from "@/types/Schemas"
+import { RegisterSchema } from "@/types/User/schemas"
+import { RegisterUserInputType } from "@/types/User/types"
 import { toErrorMap } from "@/utils/toErrorMap"
 import {
   Button,
@@ -44,7 +45,7 @@ function RegisterDrawer() {
           <DrawerCloseButton />
           <DrawerHeader>Join the Community!</DrawerHeader>
           <Formik
-            initialValues={{ username: "", email: "", password: "" }}
+            initialValues={RegisterUserInputType}
             validationSchema={RegisterSchema}
             onSubmit={async (values, { setErrors }) => {
               const response = await register({

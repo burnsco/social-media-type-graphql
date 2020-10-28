@@ -3,7 +3,7 @@ import { Field, ID, InputType, Int } from "type-graphql"
 @InputType()
 export class VoteInput {
   @Field(() => ID)
-  postId: number
+  postId: string
 
   @Field(() => Int)
   value: number

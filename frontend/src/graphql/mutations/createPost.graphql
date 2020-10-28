@@ -1,4 +1,4 @@
-mutation createPost($data: PostInput!) {
+mutation createPost($data: CreatePostInput!) {
   createPost(data: $data) {
     post {
       id

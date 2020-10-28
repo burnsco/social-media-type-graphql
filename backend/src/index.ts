@@ -1,5 +1,6 @@
 import { MikroORM } from "@mikro-orm/core"
 import { ApolloServer } from "apollo-server-express"
+import chalk from "chalk"
 import connectRedis from "connect-redis"
 import cors from "cors"
 import "dotenv-safe/config"
@@ -18,14 +19,18 @@ import { VoteResolver } from "./resolvers/vote-resolver"
 
 const main = async () => {
   const orm = await MikroORM.init(MikroConfig)
+
   const migrator = orm.getMigrator()
   const migrations = await migrator.getPendingMigrations()
   if (migrations && migrations.length > 0) {
     await migrator.up()
   }
 
+  console.log(chalk.blueBright("Starting DB..."))
+
   const app = express()
 
+  console.log(chalk.green("Initializing Redis..."))
   const redisStore = connectRedis(session)
   const redisClient = new Redis(process.env.REDIS_URL)
 
@@ -56,6 +61,7 @@ const main = async () => {
     })
   )
 
+  console.log(chalk.yellow("Starting ApolloServer..."))
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [
@@ -79,7 +85,13 @@ const main = async () => {
 
   app.listen(process.env.PORT, () => {
     console.log(
-      `🚀🚀  Server ready at http://localhost:${process.env.PORT}${server.graphqlPath} 🚀 🚀 `
+      chalk.red(
+        `Server ready at ` +
+          chalk.blue.underline.bold(
+            `http://localhost:${process.env.PORT}${server.graphqlPath}`
+          ) +
+          ` `
+      )
     )
   })
 }

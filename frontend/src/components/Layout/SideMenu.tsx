@@ -27,7 +27,7 @@ const SideMenu: React.FC = () => {
     return (
       <Box
         bg={bg}
-        minW="200px"
+        minW="220px"
         borderWidth="1px"
         borderColor=""
         borderStyle="dotted"

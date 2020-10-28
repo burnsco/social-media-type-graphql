@@ -3,9 +3,9 @@ import { Comment } from "../../entities/Comment"
 
 @InputType()
 export class CommentInput implements Partial<Comment> {
-  @Field()
+  @Field(() => String)
   body: string
 
   @Field(() => ID)
-  postId: number
+  postId: string
 }

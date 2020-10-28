@@ -35,10 +35,11 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   })
 
   const loadingMoreComments = networkStatus === NetworkStatus.fetchMore
+
   if (router.isFallback) {
     return <Spinner />
   }
-  if (error) return <div>error loading posts</div>
+  if (error) return <div>error loading comments</div>
   if (loading && !loadingMoreComments) return <ImSpinner />
 
   const comments = data?.comments ?? []
@@ -91,7 +92,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   await apolloClient.query<PostsQuery>({
     query: PostsDocument,
     variables: {
-      category: params?.category ?? "funny",
+      category: params?.category ?? "react",
       skip: 0,
       first: 4
     }

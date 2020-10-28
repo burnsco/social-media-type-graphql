@@ -5,11 +5,10 @@ import { PostOrderBy } from "../inputs/posts-order-by"
 @ArgsType()
 export class PostArgs {
   @Field(() => Int, { nullable: true })
-  @Min(0)
   first?: number
 
   @Field(() => ID, { nullable: true })
-  postId?: number
+  postId?: string
 
   @Field(() => PostOrderBy, { nullable: true })
   orderBy?: PostOrderBy

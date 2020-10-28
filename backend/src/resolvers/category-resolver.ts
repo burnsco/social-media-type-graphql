@@ -6,6 +6,7 @@ import {
   Resolver,
   UseMiddleware
 } from "type-graphql"
+import { subRedditNameInUse } from "../constants"
 import { Category } from "../entities/Category"
 import { ContextType } from "../types"
 import { isAuth } from "../utils/isAuth"
@@ -15,8 +16,8 @@ import { CategoryMutationResponse } from "./response/category-response"
 @Resolver(() => Category)
 export class CategoryResolver {
   @Query(() => [Category])
-  categories(@Ctx() { em }: ContextType): Promise<Category[]> {
-    return em.find(Category, {})
+  async categories(@Ctx() { em }: ContextType): Promise<Category[]> {
+    return await em.find(Category, {})
   }
 
   @Mutation(() => CategoryMutationResponse)
@@ -39,10 +40,7 @@ export class CategoryResolver {
       return { category }
     }
 
-    errors.push({
-      field: "name",
-      message: "title/name is already in use."
-    })
+    errors.push(subRedditNameInUse)
 
     return {
       errors

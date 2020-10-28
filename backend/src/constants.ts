@@ -1,16 +1,30 @@
 export const __prod__ = process.env.NODE_ENV === "production"
+
 export const COOKIE_NAME = "reddit"
 
-export const invalidPostOrId = {
-  errors: [
-    { field: "postId", message: "postId invalid or post does not exist." }
-  ]
+// USER
+export const usernameInUse = {
+  field: "username",
+  message: "Username is in use."
 }
 
+export const usernameAvailable = {
+  field: "username",
+  message: "Username available."
+}
+
+export const emailInUse = {
+  field: "email",
+  message: "Email is in use."
+}
+
+export const emailAvailable = {
+  field: "email",
+  message: "Email not in use."
+}
+
+// CATEGORY
 export const subRedditNameInUse = {
-  errors: [{ field: "name", message: "Subreddit name already in use." }]
-}
-
-export const userNotFound = {
-  errors: [{ field: "email", message: "Not Found." }]
+  field: "name",
+  message: "Subreddit name is already in use."
 }

@@ -3,6 +3,7 @@ import { ChakraField } from "@/components/shared/ChakraField"
 import SEO from "@/components/shared/seo"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { RegisterSchema } from "@/types/Schemas"
+import { RegisterUserInputType } from "@/types/User/types"
 import { toErrorMap } from "@/utils/toErrorMap"
 import { Box, Button, useColorModeValue, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
@@ -14,14 +15,12 @@ const RegisterPage: React.FC = () => {
   const toast = useToast()
   const [register, { data }] = useRegisterMutation()
 
-  console.log(data)
-
   return (
     <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={2}>
-      <SEO title="Register" description="Register here to post on the site." />
+      <SEO title="Register" description="Register to post on the site!" />
       <Wrapper variant="small">
         <Formik
-          initialValues={{ username: "", email: "", password: "" }}
+          initialValues={RegisterUserInputType}
           validationSchema={RegisterSchema}
           onSubmit={async (values, { setErrors }) => {
             const response = await register({
@@ -40,7 +39,6 @@ const RegisterPage: React.FC = () => {
                 })
               }
             })
-            console.log(response)
             if (response.data?.register?.user) {
               toast({
                 id: "success",

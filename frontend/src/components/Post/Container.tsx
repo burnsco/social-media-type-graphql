@@ -11,8 +11,7 @@ const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
       rounded="md"
       overflow="hidden"
       display="flex"
-      mb="20px"
-      minH="100px"
+      minH="140px"
       width="100%"
       _hover={{
         borderWidth: "1px",
