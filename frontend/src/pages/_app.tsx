@@ -2,10 +2,8 @@ import Layout from "@/components/Layout"
 import { useApollo } from "@/lib/apolloClient"
 import { ApolloProvider } from "@apollo/client"
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/core"
-import { DefaultSeo } from "next-seo"
 import { AppProps } from "next/dist/next-server/lib/router/router"
 import Head from "next/head"
-import siteConfig from "../configs/site-config"
 import theme from "../styles/theme"
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -46,7 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
           content="A Reddit clone to learn typescript, graphql, testing and more."
         />
       </Head>
-      <DefaultSeo {...siteConfig.seo} />
+
       <ApolloProvider client={apolloClient}>
         <ChakraProvider resetCSS theme={theme}>
           <ColorModeScript initialColorMode="dark" />

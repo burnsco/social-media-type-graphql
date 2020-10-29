@@ -15,6 +15,7 @@ query Posts($first: Int, $orderBy: String, $skip: Int, $category: String) {
       updatedAt
       body
       createdBy {
+        id
         username
       }
     }

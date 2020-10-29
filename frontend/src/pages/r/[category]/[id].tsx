@@ -1,21 +1,14 @@
 import CommentsPageWithData from "@/components/Comment/Data"
 import SubmitCommentForm from "@/components/Comment/Form"
 import NewPost from "@/components/Post"
-import SEO from "@/components/shared/seo"
 import { usePostQuery } from "@/generated/graphql"
 import { Skeleton, Stack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
 
 const PostAndCommentsPage: React.FC = () => {
-  const [isMounted, setIsMounted] = useState(false)
-
   const router = useRouter()
-  const postId = router.query.id as string
 
-  useEffect(() => {
-    setIsMounted(true)
-  }, [isMounted])
+  const postId = router.query.id as string
 
   const { loading, data, error } = usePostQuery({ variables: { postId } })
 
@@ -32,7 +25,6 @@ const PostAndCommentsPage: React.FC = () => {
     const { id, title } = data.post
     return (
       <>
-        <SEO title={category} description={title} />
         <Skeleton isLoaded={!loading}>
           <Stack spacing={4}>
             <NewPost key={`post-${id}-${title}`} post={data.post} />

@@ -1,13 +1,11 @@
 import { ChakraField } from "@/components/shared/ChakraField"
 import { ChakraSelect } from "@/components/shared/ChakraSelect"
-import SEO from "@/components/shared/seo"
 import {
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@/generated/graphql"
 import { CreatePostSchema } from "@/types/Post/schemas"
 import { CreatePostInputType } from "@/types/Post/types"
-import { gql } from "@apollo/client"
 import {
   Alert,
   Box,
@@ -22,12 +20,14 @@ import {
   useToast
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
 import { FaSpinner } from "react-icons/fa"
 import { useIsAuth } from "src/hooks/useIsAuth"
 
 const SubmitPage: React.FunctionComponent = () => {
   useIsAuth()
 
+  const router = useRouter()
   const bg = useColorModeValue("white", "#1A1A1B")
   const toast = useToast()
 
@@ -47,7 +47,6 @@ const SubmitPage: React.FunctionComponent = () => {
 
   return (
     <>
-      <SEO title="Create Post" description="Submit a post to the site." />
       <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={2}>
         <Formik
           initialValues={CreatePostInputType}
@@ -60,24 +59,8 @@ const SubmitPage: React.FunctionComponent = () => {
                   ...values
                 }
               },
-              update(cache, { data }) {
-                cache.modify({
-                  fields: {
-                    posts(existingPosts = []) {
-                      const newPostRef = cache.writeFragment({
-                        data: data?.createPost.post,
-                        fragment: gql`
-                          fragment NewPost on Post {
-                            id
-                            title
-                            text
-                          }
-                        `
-                      })
-                      return [newPostRef, ...existingPosts]
-                    }
-                  }
-                })
+              update: cache => {
+                cache.evict({ fieldName: "posts:{}" })
               }
             })
 
@@ -90,15 +73,7 @@ const SubmitPage: React.FunctionComponent = () => {
                 duration: 9000,
                 isClosable: true
               })
-            } else if (response.data?.createPost.errors) {
-              toast({
-                id: "error",
-                title: `This was an error processing your post.`,
-                description: `Please try again.`,
-                status: "error",
-                duration: 9000,
-                isClosable: true
-              })
+              router.push("/")
             }
           }}
         >

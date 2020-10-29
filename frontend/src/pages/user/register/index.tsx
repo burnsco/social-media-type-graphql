@@ -1,6 +1,5 @@
 import { Wrapper } from "@/components/Layout/wrapper"
 import { ChakraField } from "@/components/shared/ChakraField"
-import SEO from "@/components/shared/seo"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { RegisterSchema } from "@/types/User/schemas"
 import { RegisterUserInputType } from "@/types/User/types"
@@ -17,7 +16,6 @@ const RegisterPage: React.FC = () => {
 
   return (
     <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={2}>
-      <SEO title="Register" description="Register to post on the site!" />
       <Wrapper variant="small">
         <Formik
           initialValues={RegisterUserInputType}

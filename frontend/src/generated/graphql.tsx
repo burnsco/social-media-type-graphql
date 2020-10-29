@@ -369,7 +369,10 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
                 Comment,
                 "id" | "createdAt" | "updatedAt" | "body"
               > & {
-                  createdBy: { __typename?: "User" } & Pick<User, "username">
+                  createdBy: { __typename?: "User" } & Pick<
+                    User,
+                    "id" | "username"
+                  >
                 }
             >
           >
@@ -382,11 +385,6 @@ export type CreatePostMutation = { __typename?: "Mutation" } & {
             { __typename?: "_QueryMeta" } & Pick<_QueryMeta, "score" | "count">
           >
         }
-    >
-    errors?: Maybe<
-      Array<
-        { __typename?: "FieldError" } & Pick<FieldError, "field" | "message">
-      >
     >
   }
 }
@@ -613,7 +611,12 @@ export type PostQuery = { __typename?: "Query" } & {
             { __typename?: "Comment" } & Pick<
               Comment,
               "id" | "createdAt" | "updatedAt" | "body"
-            > & { createdBy: { __typename?: "User" } & Pick<User, "username"> }
+            > & {
+                createdBy: { __typename?: "User" } & Pick<
+                  User,
+                  "id" | "username"
+                >
+              }
           >
         >
         author: { __typename?: "User" } & Pick<User, "id" | "username">
@@ -655,7 +658,10 @@ export type PostsQuery = { __typename?: "Query" } & {
                 Comment,
                 "id" | "createdAt" | "updatedAt" | "body"
               > & {
-                  createdBy: { __typename?: "User" } & Pick<User, "username">
+                  createdBy: { __typename?: "User" } & Pick<
+                    User,
+                    "id" | "username"
+                  >
                 }
             >
           >
@@ -792,6 +798,7 @@ export const CreatePostDocument = gql`
           updatedAt
           body
           createdBy {
+            id
             username
           }
         }
@@ -810,10 +817,6 @@ export const CreatePostDocument = gql`
           score
           count
         }
-      }
-      errors {
-        field
-        message
       }
     }
   }
@@ -1582,6 +1585,7 @@ export const PostDocument = gql`
         updatedAt
         body
         createdBy {
+          id
           username
         }
       }
@@ -1656,6 +1660,7 @@ export const PostsDocument = gql`
         updatedAt
         body
         createdBy {
+          id
           username
         }
       }

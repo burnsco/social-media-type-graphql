@@ -9,6 +9,7 @@
     "generate": "graphql-codegen",
     "prestart": "yarn generate",
     "predev": "yarn generate",
+    "start": "next start",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write \"**/*.{js,ts,tsx}\"",
     "lint": "eslint . --ext ts --ext tsx --ext js",

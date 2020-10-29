@@ -1,6 +1,5 @@
 import AlertError from "@/components/shared/AlertError"
 import { ChakraField } from "@/components/shared/ChakraField"
-import SEO from "@/components/shared/seo"
 import { useEditPostMutation, usePostLazyQuery } from "@/generated/graphql"
 import { EditPostSchema } from "@/types/Post/schemas"
 import {
@@ -45,7 +44,6 @@ const EditPostPage = () => {
   if (data && data.post) {
     return (
       <>
-        <SEO title="Edit Post" description="Change the values of your post." />
         <Skeleton isLoaded={!loading}>
           <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={2}>
             <Formik

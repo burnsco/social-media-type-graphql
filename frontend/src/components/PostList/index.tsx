@@ -1,12 +1,14 @@
 import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/pagination"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Text, VStack } from "@chakra-ui/core"
+import { Box, Spinner, Text, VStack } from "@chakra-ui/core"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import NewPost from "../Post"
 import ShowMorePosts from "./showMore"
 
 const PostList = () => {
+  const router = useRouter()
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -20,6 +22,9 @@ const PostList = () => {
   })
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
+  if (router.isFallback) {
+    return <Spinner />
+  }
   if (error) return <div>error loading posts</div>
 
   if (loading && !loadingMorePosts) {

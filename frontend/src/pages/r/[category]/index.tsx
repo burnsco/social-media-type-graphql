@@ -1,6 +1,5 @@
 import NewPost from "@/components/Post"
 import ShowMorePosts from "@/components/PostList/showMore"
-import SEO from "@/components/shared/seo"
 import {
   CategoriesDocument,
   Category,
@@ -10,34 +9,22 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Alert, AlertIcon, Skeleton, VStack } from "@chakra-ui/core"
+import { Alert, AlertIcon, Skeleton, Spinner, VStack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
-import { useEffect, useState } from "react"
 import { FaSpider } from "react-icons/fa"
 
 const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const router = useRouter()
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [isMounted])
-
   const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
     variables: {
       category: category,
       skip: 0,
       first: 4
     },
-    notifyOnNetworkStatusChange: true,
-    skip: !isMounted
+    notifyOnNetworkStatusChange: true
   })
-
-  if (router.isFallback) {
-    return <div>Loading....</div>
-  }
 
   if (error) {
     return (
@@ -59,6 +46,10 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
     })
   }
 
+  if (router.isFallback) {
+    return <Spinner />
+  }
+
   const postsBySubreddit = data?.posts ?? []
   const _categoryPostsMeta = data?._categoryPostsMeta
   const areMorePosts =
@@ -77,13 +68,9 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
     return <div>No posts here.</div>
   }
 
-  if (isMounted) {
+  if (data && data.posts) {
     return (
       <>
-        <SEO
-          title={category}
-          description="A typescript/react clone to learn graphql, postgres, apollo and more."
-        />
         <Skeleton isLoaded={!loading}>
           <ViewPosts />
           <ShowMorePosts

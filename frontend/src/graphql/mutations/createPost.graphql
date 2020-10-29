@@ -9,34 +9,36 @@ mutation createPost($data: CreatePostInput!) {
       image
       video
       link
+
       comments {
         id
         createdAt
         updatedAt
         body
         createdBy {
+          id
           username
         }
       }
+
       author {
         id
         username
       }
+
       category {
         id
         name
       }
+
       totalComments {
         count
       }
+
       totalVotes {
         score
         count
       }
-    }
-    errors {
-      field
-      message
     }
   }
 }
