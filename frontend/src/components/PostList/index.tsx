@@ -11,9 +11,6 @@ const PostList = () => {
 
   useEffect(() => {
     setIsMounted(true)
-    return () => {
-      setIsMounted(false)
-    }
   }, [isMounted])
 
   const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
