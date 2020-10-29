@@ -7,6 +7,7 @@ import {
 } from "@/generated/graphql"
 import { CreatePostSchema } from "@/types/Post/schemas"
 import { CreatePostInputType } from "@/types/Post/types"
+import { gql } from "@apollo/client"
 import {
   Alert,
   Box,
@@ -58,6 +59,25 @@ const SubmitPage: React.FunctionComponent = () => {
                 data: {
                   ...values
                 }
+              },
+              update(cache, { data }) {
+                cache.modify({
+                  fields: {
+                    posts(existingPosts = []) {
+                      const newPostRef = cache.writeFragment({
+                        data: data?.createPost.post,
+                        fragment: gql`
+                          fragment NewPost on Post {
+                            id
+                            title
+                            text
+                          }
+                        `
+                      })
+                      return [newPostRef, ...existingPosts]
+                    }
+                  }
+                })
               }
             })
 

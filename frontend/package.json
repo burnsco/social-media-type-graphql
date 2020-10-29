@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "@apollo/client": "3.3.0-beta.14",
+    "@apollo/client": "3.3.0-beta.16",
     "@chakra-ui/core": "^1.0.0-rc.7",
     "@chakra-ui/theme": "^1.0.0-rc.7",
     "@chakra-ui/theme-tools": "^1.0.0-rc.7",
@@ -39,19 +39,17 @@
     "formik": "^2.2.1",
     "framer-motion": "^2.9.4",
     "graphql": "^15.3.0",
-    "graphql-config": "^3.0.3",
     "memoize-one": "^5.1.1",
     "next": "^10.0.0",
     "next-seo": "^4.14.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-focus-lock": "^2.4.1",
-    "react-helmet": "^6.1.0",
     "react-icons": "^3.11.0",
-    "typeface-roboto": "^1.1.13",
     "yup": "^0.29.3"
   },
   "devDependencies": {
+    "graphql-config": "^3.0.3",
     "@graphql-codegen/cli": "^1.19.0",
     "@graphql-codegen/plugin-helpers": "^1.18.0",
     "@graphql-codegen/typescript": "^1.17.11",
