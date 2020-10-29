@@ -2,8 +2,8 @@ import { NextSeo } from "next-seo"
 import siteConfig from "../../configs/site-config"
 
 interface SEOProps {
-  title?: string | null
-  description?: string | null
+  title?: string
+  description?: string
 }
 
 const SEO: React.FC<SEOProps> = props => {
