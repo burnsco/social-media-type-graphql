@@ -27,37 +27,30 @@ const SideMenu: React.FC = () => {
     return (
       <Box
         bg={bg}
-        minW="220px"
+        minW="200px"
         borderWidth="1px"
-        borderColor=""
-        borderStyle="dotted"
-        rounded="md"
         overflow="hidden"
+        boxShadow="inner"
         p={3}
       >
-        <List borderWidth="xs" minH="100%" spacing={3}>
+        <List minH="100%" spacing={3}>
           {data?.categories.map(subreddit => (
             <ListItem key={`subreddit-${subreddit.id}`}>
-              <Box
-                rounded="md"
-                overflow="hidden"
+              <NextChakraLink
+                p={1}
                 bg={category === subreddit.name ? linkbg : linkbg2}
+                fontWeight={category === subreddit.name ? 500 : 400}
+                color={category === subreddit.name ? hover : color}
+                _hover={{
+                  color: hover,
+                  bg: linkbg,
+                  marginLeft: 1
+                }}
+                href="/r/[category]"
+                as={`/r/${subreddit.name}`}
               >
-                <NextChakraLink
-                  p={1}
-                  fontWeight={category === subreddit.name ? 500 : 400}
-                  color={category === subreddit.name ? hover : color}
-                  _hover={{
-                    color: hover,
-                    bg: linkbg,
-                    marginLeft: 1
-                  }}
-                  href="/r/[category]"
-                  as={`/r/${subreddit.name}`}
-                >
-                  {subreddit.name}
-                </NextChakraLink>
-              </Box>
+                {subreddit.name}
+              </NextChakraLink>
             </ListItem>
           ))}
         </List>

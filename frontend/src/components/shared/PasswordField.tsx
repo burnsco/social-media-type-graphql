@@ -47,7 +47,7 @@ export const PasswordField: React.FC<ChakraFieldProps> = ({
             display="inline"
             color="greenyellow"
           >
-            {!error && "✓"}
+            {!error && field.value.trim().length > 6 && "✓"}
           </Text>
         ) : null}
       </FormLabel>

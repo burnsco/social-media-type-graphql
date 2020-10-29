@@ -12,6 +12,7 @@ import {
   COOKIE_NAME,
   emailAvailable,
   emailInUse,
+  emailOrPasswordIsIncorrect,
   usernameAvailable,
   usernameInUse
 } from "../constants"
@@ -116,61 +117,38 @@ export class UserResolver {
     @Arg("data") data: EditUserInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse> {
-    const errors = []
-    const user = await em.findOne(User, { id: req.session.userId })
+    const user = await em.findOneOrFail(User, { id: req.session.userId })
 
     if (data.username) {
-      const checkUser = await em.findOne(User, { username: data.username })
-
-      if (checkUser) {
-        errors.push(usernameInUse)
-      } else if (!checkUser) {
-        wrap(user).assign({
-          username: data.username
-        })
-      }
+      wrap(user).assign({
+        username: data.username
+      })
     }
-
-    if (data.email) {
-      const checkEmail = await em.findOne(User, { email: data.email })
-
-      if (checkEmail) {
-        errors.push(emailInUse)
-      } else if (!checkEmail) {
-        wrap(user).assign({
-          email: data.email
-        })
-      }
-    }
-
     if (data.about) {
       wrap(user).assign({
         about: data.about
       })
     }
-
+    if (data.email) {
+      wrap(user).assign({
+        email: data.email
+      })
+    }
     if (data.password) {
       wrap(user).assign({
         password: await argon2.hash(data.password)
       })
     }
-
     if (data.avatar) {
       wrap(user).assign({
         avatar: data.avatar
       })
     }
 
-    if (user && errors.length < 1) {
-      await em.persistAndFlush(user)
-
-      return {
-        user
-      }
-    }
+    await em.persistAndFlush(user)
 
     return {
-      errors
+      user
     }
   }
 
@@ -183,6 +161,11 @@ export class UserResolver {
     if (!user) return null
 
     const valid = await argon2.verify(user.password, password)
+    if (!valid) {
+      const errors = []
+      errors.push(emailOrPasswordIsIncorrect)
+      return { errors }
+    }
     if (valid) {
       req.session.userId = user.id
     }

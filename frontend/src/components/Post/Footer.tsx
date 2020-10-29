@@ -1,4 +1,6 @@
-import { Box } from "@chakra-ui/core"
+import { Flex, HStack } from "@chakra-ui/core"
+import React from "react"
+import { RiMessage2Fill } from "react-icons/ri"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 const PostFooter: React.FC<{
@@ -7,13 +9,14 @@ const PostFooter: React.FC<{
   commentsCount?: number
 }> = ({ category, id, commentsCount }) => {
   return (
-    <Box display="flex" width="100%">
-      <Box borderRadius="sm" fontSize="12px" p={1} mb={1} color="gray.400">
+    <Flex width="100%" fontSize="12px" p={1} color="gray.400">
+      <HStack>
+        <RiMessage2Fill />
         <NextChakraLink href="/r/[category]/[id]" as={`/r/${category}/${id}`}>
           {commentsCount} Comments
         </NextChakraLink>
-      </Box>
-    </Box>
+      </HStack>
+    </Flex>
   )
 }
 

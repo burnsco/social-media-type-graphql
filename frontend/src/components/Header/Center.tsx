@@ -7,13 +7,15 @@ import {
   MenuButton,
   MenuGroup,
   MenuItem,
-  MenuList
+  MenuList,
+  useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { FaHome } from "react-icons/fa"
 import { ImArrowDown } from "react-icons/im"
 
 function HomeSearch() {
+  const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
 
   const { data, loading, error } = useCategoriesQuery()

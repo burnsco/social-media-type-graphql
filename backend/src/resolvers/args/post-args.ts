@@ -1,6 +1,5 @@
 import { Max, Min } from "class-validator"
 import { ArgsType, Field, ID, Int } from "type-graphql"
-import { PostOrderBy } from "../inputs/posts-order-by"
 
 @ArgsType()
 export class PostArgs {
@@ -10,8 +9,8 @@ export class PostArgs {
   @Field(() => ID, { nullable: true })
   postId?: string
 
-  @Field(() => PostOrderBy, { nullable: true })
-  orderBy?: PostOrderBy
+  @Field(() => String, { nullable: true })
+  orderBy?: string
 
   @Field(() => String, { nullable: true })
   category?: string

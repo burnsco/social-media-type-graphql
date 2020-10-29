@@ -41,9 +41,9 @@ const Header: React.FC = () => {
   return (
     <Flex
       position="fixed"
+      zIndex="sticky"
       as="header"
       bg={bg}
-      zIndex="sticky"
       boxShadow="sm"
       width="full"
       p={1}
@@ -63,7 +63,7 @@ const Header: React.FC = () => {
               mr={4}
               display={{ base: "none", md: "flex" }}
               size="md"
-              fontWeight="600"
+              fontWeight="bold"
             >
               reddit
             </Heading>
@@ -115,11 +115,11 @@ const Header: React.FC = () => {
                   <MenuGroup>
                     <MenuItem onClick={() => router.push("/user/profile")}>
                       <FaUserCircle />
-                      <Box ml={1}>Profile</Box>
+                      <Box ml={2}>Profile</Box>
                     </MenuItem>
                     <MenuItem onClick={() => router.push("/user/account")}>
                       <MdSettings />
-                      <Box ml={1}>Account</Box>
+                      <Box ml={2}>Account</Box>
                     </MenuItem>
                   </MenuGroup>
                   <MenuDivider />

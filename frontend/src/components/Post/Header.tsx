@@ -2,6 +2,7 @@ import { timeDifferenceForDate } from "@/utils/timeDifferenceForDate"
 import {
   Box,
   Flex,
+  HStack,
   IconButton,
   Spacer,
   Tooltip,
@@ -23,8 +24,15 @@ const PostHeader: React.FC<{
   const fontColor = useColorModeValue("#1A1A1B", "gray.200")
   const router = useRouter()
   return (
-    <Flex fontSize="sm" color={fontColor} w="full" h="10px" mt={1} flexGrow={1}>
-      <Flex>
+    <HStack
+      fontSize="sm"
+      color={fontColor}
+      w="full"
+      h="10px"
+      mt={1}
+      flexGrow={1}
+    >
+      <HStack>
         <PostCategory category={category} />
         <Box ml="2" textDecoration="none">
           Posted by{" "}
@@ -32,7 +40,7 @@ const PostHeader: React.FC<{
             onClick={() => router.push(`/user/${author}`)}
             fontWeight="500"
             display="inline"
-            color="blue.400"
+            color="gray.400"
             _hover={{
               textDecoration: "underline",
               cursor: "pointer"
@@ -44,7 +52,7 @@ const PostHeader: React.FC<{
             {timeDifferenceForDate(Number(createdAt))}
           </Box>
         </Box>
-      </Flex>
+      </HStack>
       <Spacer />
       {postId && (
         <Flex mr={1}>
@@ -67,7 +75,7 @@ const PostHeader: React.FC<{
           <DeletePostDialog postId={postId} category={category} />
         </Flex>
       )}
-    </Flex>
+    </HStack>
   )
 }
 

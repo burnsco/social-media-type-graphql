@@ -10,7 +10,7 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Alert, AlertIcon, Skeleton } from "@chakra-ui/core"
+import { Alert, AlertIcon, Skeleton, VStack } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
@@ -67,11 +67,11 @@ const CategoryPage: React.FC<{ category: string }> = ({ category }) => {
   const ViewPosts = () => {
     if (postsBySubreddit.length > 0) {
       return (
-        <ul>
+        <VStack spacing={4}>
           {postsBySubreddit.map((post, index) => (
             <NewPost key={`post-${post.id}-${index}`} post={post} />
           ))}
-        </ul>
+        </VStack>
       )
     }
     return <div>No posts here.</div>

@@ -13,6 +13,11 @@ export const usernameAvailable = {
   message: "Username available."
 }
 
+export const emailOrPasswordIsIncorrect = {
+  field: "email",
+  message: "Email and/or Password is incorrect."
+}
+
 export const emailInUse = {
   field: "email",
   message: "Email is in use."

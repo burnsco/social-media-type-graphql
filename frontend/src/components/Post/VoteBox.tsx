@@ -1,5 +1,5 @@
 import { useCreateVoteMutation } from "@/generated/graphql"
-import { Box, Flex, IconButton, useColorModeValue } from "@chakra-ui/core"
+import { Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/core"
 import { ImArrowDown, ImArrowUp } from "react-icons/im"
 
 const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
@@ -20,6 +20,7 @@ const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
         minH="100%"
       >
         <IconButton
+          size="sm"
           isDisabled={loading}
           onClick={async () => {
             await vote({
@@ -31,8 +32,11 @@ const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
           aria-label="UpVote"
           icon={<ImArrowUp />}
         />
-        <Box>{postScore}</Box>
+        <Text fontSize="sm" fontWeight="bold" opacity="0.9">
+          {postScore}
+        </Text>
         <IconButton
+          size="sm"
           isDisabled={loading}
           onClick={async () => {
             await vote({
