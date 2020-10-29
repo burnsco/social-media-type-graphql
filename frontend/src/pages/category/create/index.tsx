@@ -1,4 +1,4 @@
-import { AlertError } from "@/components/shared/AlertError"
+import AlertError from "@/components/shared/AlertError"
 import { ChakraField } from "@/components/shared/ChakraField"
 import { useCreateSubredditMutation } from "@/generated/graphql"
 import { gql } from "@apollo/client"
@@ -73,7 +73,7 @@ const CreateSubreddit: React.FC = () => {
           )}
         </Formik>
       </Skeleton>
-      {mutationError ? <AlertError error={mutationError.message} /> : null}
+      {mutationError ? <AlertError error={mutationError} /> : null}
     </>
   )
 }
