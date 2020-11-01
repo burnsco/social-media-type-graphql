@@ -58,7 +58,7 @@ const PostHeader: React.FC<{
         <Flex mr={1}>
           <NextChakraLink href="/post/edit/[id]" as={`/post/edit/${postId}}`}>
             <Tooltip
-              placement="top"
+              placement="bottom"
               hasArrow
               label="Edit Post"
               bg="gray.200"

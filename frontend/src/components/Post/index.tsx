@@ -7,7 +7,7 @@ import PostHeader from "./Header"
 import VoteBox from "./VoteBox"
 
 const NewPost: React.FC<PostQuery> = props => {
-  const bg = useColorModeValue("white", "#1A1A1B")
+  const bg = useColorModeValue("white", "#202020")
   const { data } = useMeQuery()
   const { post } = props
 

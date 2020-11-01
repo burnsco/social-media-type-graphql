@@ -1,36 +1,9 @@
-import { Flex, Heading, useColorModeValue } from "@chakra-ui/core"
+import { Flex, useColorModeValue } from "@chakra-ui/core"
 import dynamic from "next/dynamic"
-import { useRouter } from "next/router"
-import Logo from "./Logo"
 import AuthMenu from "./Menu"
 
 const CategoriesMenu = dynamic(() => import("./Center"))
-
-const LogoSection = () => {
-  const router = useRouter()
-
-  return (
-    <Flex cursor="pointer" flexGrow={1} onClick={() => router.push("/")}>
-      <Flex
-        onClick={() => router.push("/")}
-        aria-label="Home"
-        align="center"
-        mx="1em"
-        p={1}
-      >
-        <Logo mr={2} />{" "}
-        <Heading
-          mr={4}
-          display={{ base: "none", md: "flex" }}
-          size="md"
-          fontWeight="bold"
-        >
-          reddit
-        </Heading>
-      </Flex>
-    </Flex>
-  )
-}
+const LogoSection = dynamic(() => import("./LogoSection"))
 
 const Header = (props: any) => {
   const bg = useColorModeValue("white", "#202020")
@@ -42,10 +15,10 @@ const Header = (props: any) => {
       bg={bg}
       left="0"
       right="0"
-      borderBottomWidth="1px"
+      boxShadow="base"
       width="full"
       as="header"
-      p={1}
+      p={2}
       align="center"
       {...props}
     >

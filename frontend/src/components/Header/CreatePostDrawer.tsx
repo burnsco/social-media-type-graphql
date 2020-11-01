@@ -70,7 +70,7 @@ function CreatePostDrawer() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Join the Community!</DrawerHeader>
+          <DrawerHeader>Submit a Post!</DrawerHeader>
           <Formik
             initialValues={CreatePostInputType}
             validationSchema={CreatePostSchema}

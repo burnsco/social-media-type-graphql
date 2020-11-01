@@ -16,7 +16,7 @@ const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
       _hover={{
         boxShadow: "sm",
         borderWidth: "1px",
-        borderColor: "gray.400"
+        borderColor: "#313131"
       }}
     >
       {children}

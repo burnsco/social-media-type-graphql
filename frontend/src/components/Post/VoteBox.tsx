@@ -6,7 +6,7 @@ const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
   postId,
   postScore
 }) => {
-  const bg = useColorModeValue("gray.50", "gray.900")
+  const bg = useColorModeValue("gray.50", "#313131")
   const [vote, { loading }] = useCreateVoteMutation()
 
   if (postId) {

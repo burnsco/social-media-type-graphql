@@ -9,7 +9,7 @@ const SideMenu: React.FC = () => {
 
   const color = useColorModeValue("gray.700", "gray.300")
   const hover = useColorModeValue("black", "white")
-  const bg = useColorModeValue("white", "#1A1A1B")
+  const bg = useColorModeValue("white", "#202020")
   const linkbg = useColorModeValue("#ebedf0", "#3661ed")
   const linkbg2 = useColorModeValue("translucent", "translucent")
 
