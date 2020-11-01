@@ -22,8 +22,9 @@ export const LoginSchema = Yup.object({
 })
 
 export const EditUserSchema = Yup.object({
+  userId: Yup.string().notRequired(),
   username: Yup.string().notRequired(),
-  about: Yup.string().min(5).max(150).notRequired(),
+  about: Yup.string().notRequired(),
   email: Yup.string().notRequired(),
   password: Yup.string().notRequired(),
   avatar: Yup.string().notRequired()

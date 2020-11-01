@@ -7,15 +7,13 @@ import {
   MenuButton,
   MenuGroup,
   MenuItem,
-  MenuList,
-  useColorModeValue
+  MenuList
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { FaHome } from "react-icons/fa"
 import { ImArrowDown } from "react-icons/im"
 
 function HomeSearch() {
-  const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
 
   const { data, loading, error } = useCategoriesQuery()
@@ -42,21 +40,19 @@ function HomeSearch() {
         >
           Home
         </MenuButton>
-        {data && (
-          <>
-            <MenuList opacity="0.9">
-              <MenuGroup>
-                {data.categories.map(item => (
-                  <MenuItem
-                    key={`subreddit-menu-${item.id}`}
-                    onClick={() => router.push(`/r/${item.name}`)}
-                  >
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </MenuGroup>
-            </MenuList>
-          </>
+        {data && data.categories && (
+          <MenuList opacity="0.9">
+            <MenuGroup>
+              {data.categories.map(item => (
+                <MenuItem
+                  key={`subreddit-menu-${item.id}`}
+                  onClick={() => router.push(`/r/${item.name}`)}
+                >
+                  {item.name}
+                </MenuItem>
+              ))}
+            </MenuGroup>
+          </MenuList>
         )}
       </Menu>
     </Flex>

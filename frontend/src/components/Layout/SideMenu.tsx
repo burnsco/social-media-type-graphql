@@ -1,36 +1,29 @@
 import { useCategoriesQuery } from "@/generated/graphql"
 import { Box, List, ListItem, useColorModeValue } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import { memo, useEffect, useState } from "react"
+import { memo } from "react"
 import { NextChakraLink } from "../shared/NextChakraLink"
 
 const SideMenu: React.FC = () => {
   const router = useRouter()
-  const [isMounted, setIsMounted] = useState(false)
+
   const color = useColorModeValue("gray.700", "gray.300")
   const hover = useColorModeValue("black", "white")
   const bg = useColorModeValue("white", "#1A1A1B")
   const linkbg = useColorModeValue("#ebedf0", "#3661ed")
   const linkbg2 = useColorModeValue("translucent", "translucent")
 
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
   const { category } = router.query
-  const { data, loading, error } = useCategoriesQuery({ skip: !isMounted })
+  const { data, loading, error } = useCategoriesQuery()
 
-  if (error) return <div>Error loading subreddits.</div>
-  if (loading) return <div>loading...</div>
-
-  if (isMounted) {
+  if (!loading) {
     return (
       <Box
         bg={bg}
         minW="200px"
         borderWidth="1px"
         overflow="hidden"
-        boxShadow="inner"
+        boxShadow="xs"
         p={3}
       >
         <List minH="100%" spacing={3}>

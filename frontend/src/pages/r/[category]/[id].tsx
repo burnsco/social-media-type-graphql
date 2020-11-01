@@ -1,42 +1,56 @@
-import CommentsPageWithData from "@/components/Comment/Data"
-import SubmitCommentForm from "@/components/Comment/Form"
-import NewPost from "@/components/Post"
-import { usePostQuery } from "@/generated/graphql"
-import { Skeleton, Stack } from "@chakra-ui/core"
-import { useRouter } from "next/router"
+import {
+  Post,
+  PostDocument,
+  PostQuery,
+  PostsDocument
+} from "@/generated/graphql"
+import { initializeApollo } from "@/lib/apolloClient"
+import { GetStaticPaths, GetStaticProps } from "next"
+import dynamic from "next/dynamic"
+
+const DynamicSinglePostPage = dynamic(
+  () => import("@/components/SinglePost/SingePostPage")
+)
 
 const PostAndCommentsPage: React.FC = () => {
-  const router = useRouter()
+  return <DynamicSinglePostPage />
+}
 
-  const postId = router.query.id as string
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const apolloClient = initializeApollo()
 
-  const { loading, data, error } = usePostQuery({ variables: { postId } })
+  await apolloClient.query<PostQuery>({
+    query: PostDocument,
+    variables: {
+      postId: params?.id ?? "1"
+    }
+  })
 
-  if (loading) {
-    return <div>loading...</div>
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+      postId: params?.id ?? "1"
+    },
+    revalidate: 1
   }
+}
 
-  if (error) {
-    return <div>error loading post</div>
+export const getStaticPaths: GetStaticPaths = async () => {
+  const apolloClient = initializeApollo()
+
+  const { data } = await apolloClient.query({
+    query: PostsDocument
+  })
+
+  const paths =
+    data.posts.map(
+      (item: Post) => `/r/${item.category.name}/${item.category.id}`
+    ) || []
+
+  return {
+    paths,
+    fallback: "blocking"
   }
-
-  if (data && data.post) {
-    const { name: category } = data.post.category
-    const { id, title } = data.post
-    return (
-      <>
-        <Skeleton isLoaded={!loading}>
-          <Stack spacing={4}>
-            <NewPost key={`post-${id}-${title}`} post={data.post} />
-            <SubmitCommentForm postId={postId} />
-            <CommentsPageWithData postId={postId} />
-          </Stack>
-        </Skeleton>
-      </>
-    )
-  }
-
-  return null
 }
 
 export default PostAndCommentsPage

@@ -2,34 +2,16 @@ import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/pagination"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Spinner, Text, VStack } from "@chakra-ui/core"
-import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
 import NewPost from "../Post"
 import ShowMorePosts from "./showMore"
 
 const PostList = () => {
-  const router = useRouter()
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [isMounted])
-
-  const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
+  const { loading, data, fetchMore, networkStatus } = usePostsQuery({
     variables: allPostsQueryVars,
-    notifyOnNetworkStatusChange: true,
-    skip: !isMounted
+    notifyOnNetworkStatusChange: true
   })
+
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
-
-  if (router.isFallback) {
-    return <Spinner />
-  }
-  if (error) return <div>error loading posts</div>
-
-  if (loading && !loadingMorePosts) {
-    return <div>loading...</div>
-  }
 
   const allPosts = data?.posts ?? []
   const _allPostsMeta = data?._allPostsMeta
@@ -56,19 +38,20 @@ const PostList = () => {
     return <Text>No posts here.</Text>
   }
 
-  if (isMounted) {
-    return (
-      <Box>
-        <ViewPosts />
-        <ShowMorePosts
-          loadMorePosts={loadMorePosts}
-          areMorePosts={areMorePosts}
-          loadingMorePosts={loadingMorePosts}
-        />
-      </Box>
-    )
+  if (loading && !loadingMorePosts) {
+    return <Spinner />
   }
-  return null
+
+  return (
+    <Box as="section">
+      <ViewPosts />
+      <ShowMorePosts
+        loadMorePosts={loadMorePosts}
+        areMorePosts={areMorePosts}
+        loadingMorePosts={loadingMorePosts}
+      />
+    </Box>
+  )
 }
 
 export default PostList

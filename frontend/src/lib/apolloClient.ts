@@ -1,11 +1,11 @@
-import { Category, Post } from "@/generated/graphql"
+import { Category } from "@/generated/graphql"
 import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
   NormalizedCacheObject
 } from "@apollo/client"
-import { onError } from "@apollo/client/link/error"
+import { concatPagination } from "@apollo/client/utilities"
 import { useMemo } from "react"
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
@@ -16,41 +16,11 @@ function createApolloClient() {
     credentials: "include"
   })
 
-  const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-      graphQLErrors.map(({ message, locations, path }) =>
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        )
-      )
-
-    if (networkError) console.log(`[Network error]: ${networkError}`)
-  })
-
   const cacheOptions = new InMemoryCache({
     typePolicies: {
-      Post: {
-        fields: {
-          category: {
-            merge(existing, incoming) {
-              return { ...existing, ...incoming }
-            }
-          },
-          totalVotes: {
-            merge(existing, incoming) {
-              return { ...existing, ...incoming }
-            }
-          }
-        }
-      },
       Query: {
         fields: {
-          posts: {
-            keyArgs: [],
-            merge(existing: Post[] | undefined, incoming: Post[]): Post[] {
-              return existing ? [...existing, ...incoming] : [...incoming]
-            }
-          },
+          posts: concatPagination(),
           categories: {
             keyArgs: [],
             merge(
@@ -67,13 +37,8 @@ function createApolloClient() {
 
   const client = new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: errorLink.concat(httpLink),
-    cache: cacheOptions,
-    defaultOptions: {
-      watchQuery: { errorPolicy: "all" },
-      query: { errorPolicy: "all" },
-      mutate: { errorPolicy: "all" }
-    }
+    link: httpLink,
+    cache: cacheOptions
   })
 
   return client

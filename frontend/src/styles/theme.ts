@@ -9,6 +9,7 @@ const customTheme = extendTheme({
       },
       body: {
         fontSize: { base: "sm", sm: "md" },
+
         color: mode("gray.700", "whiteAlpha.900")(props)
       }
     })

@@ -1,15 +1,9 @@
-import { Box, Heading, Text, useColorModeValue } from "@chakra-ui/core"
+import dynamic from "next/dynamic"
 
-const UserPage = () => {
-  const bg = useColorModeValue("white", "#1A1A1B")
+const DynamicUserPage = dynamic(() => import("@/components/Me/Me"))
 
-  return (
-    <Box bg={bg}>
-      <Heading>User</Heading>
-
-      <Text>About Me: </Text>
-    </Box>
-  )
+const UserPage: React.FC = () => {
+  return <DynamicUserPage />
 }
 
 export default UserPage

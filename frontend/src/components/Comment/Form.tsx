@@ -58,7 +58,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
   }
 
   return (
-    <Box bg={bg} borderWidth="1px" rounded="md">
+    <Box bg={bg} borderWidth="1px" rounded="md" p={3}>
       <Skeleton isLoaded={!mutationLoading}>
         <Formik
           initialValues={{ body: "", postId }}

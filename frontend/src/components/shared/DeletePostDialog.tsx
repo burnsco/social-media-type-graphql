@@ -18,7 +18,7 @@ export const DeletePostDialog: React.FC<{
   postId?: string | null
   category?: string | null
 }> = ({ postId, category }) => {
-  const [deletePost] = useDeletePostMutation()
+  const [deletePost, { client }] = useDeletePostMutation()
   const [isOpen, setIsOpen] = React.useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = React.useRef<null | HTMLButtonElement>(null)
@@ -81,6 +81,7 @@ export const DeletePostDialog: React.FC<{
                         return null
                       }
                     })
+                    client.resetStore()
                     onClose()
                   }}
                   colorScheme="red"
