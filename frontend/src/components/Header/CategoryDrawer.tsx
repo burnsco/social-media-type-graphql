@@ -11,11 +11,13 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  IconButton,
   useDisclosure,
   useToast
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRef } from "react"
+import { BsFolderPlus } from "react-icons/bs"
 import { CategorySchema } from "../../types/Category/schemas"
 import { ChakraField } from "../shared/ChakraField"
 
@@ -27,9 +29,16 @@ function CreateCategoryDrawer() {
 
   return (
     <>
-      <Button ref={btnRef} size="md" colorScheme="blue" onClick={onOpen}>
+      <IconButton
+        variant="ghost"
+        aria-label="Create a Subreddit"
+        icon={<BsFolderPlus />}
+        ref={btnRef}
+        size="md"
+        onClick={onOpen}
+      >
         Subreddit
-      </Button>
+      </IconButton>
       <Drawer
         isOpen={isOpen}
         placement="bottom"

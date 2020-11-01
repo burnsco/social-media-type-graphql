@@ -13,6 +13,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  IconButton,
   Stack,
   Tab,
   TabList,
@@ -26,6 +27,7 @@ import {
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import React, { useRef } from "react"
+import { ImPencil2 } from "react-icons/im"
 import { useIsAuth } from "src/hooks/useIsAuth"
 import { CreatePostSchema } from "../../types/Post/schemas"
 import { CreatePostInputType } from "../../types/Post/types"
@@ -48,9 +50,16 @@ function CreatePostDrawer() {
 
   return (
     <>
-      <Button ref={btnRef} size="md" colorScheme="blue" onClick={onOpen}>
+      <IconButton
+        variant="ghost"
+        aria-label="Create a Post"
+        icon={<ImPencil2 />}
+        ref={btnRef}
+        size="md"
+        onClick={onOpen}
+      >
         Post
-      </Button>
+      </IconButton>
       <Drawer
         size="sm"
         isOpen={isOpen}
@@ -211,6 +220,7 @@ function CreatePostDrawer() {
                     </Button>
                     <Button
                       type="submit"
+                      isDisabled={formik.isSubmitting || loading}
                       isLoading={formik.isSubmitting}
                       color="blue"
                     >

@@ -45,7 +45,6 @@ export default function HeaderMenu() {
           <DynamicCreatePostDrawer />
 
           <DynamicCreateCategoryDrawer />
-          <ColorModeToggle />
         </ButtonGroup>
         <Menu>
           <MenuButton
@@ -64,6 +63,7 @@ export default function HeaderMenu() {
           >
             {data.me.username}
           </MenuButton>
+          <ColorModeToggle />
           <MenuList opacity="0.9">
             <MenuGroup>
               <MenuItem onClick={() => router.push("/user/profile")}>
@@ -102,6 +102,7 @@ export default function HeaderMenu() {
       <Stack spacing={4} direction="row" align="center">
         <DynamicRegisterDrawer />
         <DynamicLoginDrawer />
+        <ColorModeToggle />
       </Stack>
     </Menu>
   )
