@@ -1,3 +1,4 @@
+import { useLogoutMutation, useMeQuery } from "@/generated/graphql"
 import { sleep } from "@/utils/sleepy"
 import {
   Avatar,
@@ -19,20 +20,26 @@ import { useRouter } from "next/router"
 import { AiOutlineLogout } from "react-icons/ai"
 import { FaUserCircle } from "react-icons/fa"
 import { MdSettings } from "react-icons/md"
-import { useLogoutMutation, useMeQuery } from "../../generated/graphql"
 
-const DynamicRegisterDrawer = dynamic(() => import("../Drawers/RegisterDrawer"))
+const DynamicRegisterDrawer = dynamic(
+  () => import("../Drawers/RegisterDrawer"),
+  { ssr: false }
+)
 
-const DynamicLoginDrawer = dynamic(() => import("../Drawers/LoginDrawer"))
+const DynamicLoginDrawer = dynamic(() => import("../Drawers/LoginDrawer"), {
+  ssr: false
+})
 
 const DynamicCreateCategoryDrawer = dynamic(
-  () => import("../Drawers/CategoryDrawer")
+  () => import("../Drawers/CategoryDrawer"),
+  { ssr: false }
 )
 const DynamicCreatePostDrawer = dynamic(
-  () => import("../Drawers/CreatePostDrawer")
+  () => import("../Drawers/CreatePostDrawer"),
+  { ssr: false }
 )
 
-export default function HeaderMenu() {
+const HeaderMenu = () => {
   const router = useRouter()
   const bg = useColorModeValue("white", "#202020")
   const { data, loading, client } = useMeQuery({ ssr: false })
@@ -112,3 +119,5 @@ export default function HeaderMenu() {
     </Menu>
   )
 }
+
+export default HeaderMenu

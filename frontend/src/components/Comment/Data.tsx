@@ -13,7 +13,7 @@ import { useRouter } from "next/router"
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
 import { ImSpinner } from "react-icons/im"
-import CommentPage from "."
+import CommentPage from "./index"
 import ShowMoreComments from "./ShowMore"
 
 const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {

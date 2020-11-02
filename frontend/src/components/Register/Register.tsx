@@ -1,3 +1,4 @@
+import Layout from "@/components/Layout"
 import { Wrapper } from "@/components/Layout/wrapper"
 import { ChakraField } from "@/components/shared/ChakraField"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
@@ -7,7 +8,6 @@ import { toErrorMap } from "@/utils/toErrorMap"
 import { Box, Button, useColorModeValue, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
-import Layout from "../Layout"
 
 const RegisterPage: React.FC = () => {
   const bg = useColorModeValue("white", "#1A1A1B")

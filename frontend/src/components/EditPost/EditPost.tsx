@@ -1,5 +1,7 @@
 import { ChakraField } from "@/components/shared/ChakraField"
 import { useEditPostMutation, usePostLazyQuery } from "@/generated/graphql"
+import { useGetSubreddits } from "@/hooks/useGetSubreddits"
+import { useIsAuth } from "@/hooks/useIsAuth"
 import { EditPostSchema } from "@/types/Post/schemas"
 import {
   Box,
@@ -19,8 +21,6 @@ import {
 import { Field, Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-import { useGetSubreddits } from "src/hooks/useGetSubreddits"
-import { useIsAuth } from "src/hooks/useIsAuth"
 
 const EditPost = () => {
   useIsAuth()

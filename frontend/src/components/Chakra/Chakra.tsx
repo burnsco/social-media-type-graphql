@@ -1,14 +1,14 @@
+import theme from "@/styles/theme"
 import {
   ChakraProvider,
   cookieStorageManager,
   localStorageManager
 } from "@chakra-ui/core"
-import { ReactNode } from "react"
-import theme from "../../styles/theme"
+import * as React from "react"
 
 interface ChakraProps {
   cookies?: string
-  children: ReactNode
+  children: React.ReactNode
 }
 
 export const Chakra = ({ children, cookies }: ChakraProps) => {

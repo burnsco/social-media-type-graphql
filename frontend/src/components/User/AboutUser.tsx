@@ -1,14 +1,9 @@
 import Layout from "@/components/Layout"
+import { UsersDocument, UsersQuery, useUserQuery } from "@/generated/graphql"
+import { initializeApollo } from "@/lib/apolloClient"
 import { Box, Heading, Text } from "@chakra-ui/core"
-import { GetStaticPaths, GetStaticProps } from "next"
+import { GetStaticProps } from "next"
 import { useRouter } from "next/router"
-import {
-  User,
-  UsersDocument,
-  UsersQuery,
-  useUserQuery
-} from "../../generated/graphql"
-import { initializeApollo } from "../../lib/apolloClient"
 
 const AboutUserPage = () => {
   const router = useRouter()
@@ -41,31 +36,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   await apolloClient.query<UsersQuery>({
     query: UsersDocument,
     variables: {
-      userId: params?.id ?? "1"
+      userId: params?.username ?? "1"
     }
   })
 
   return {
     props: {
       initialApolloState: apolloClient.cache.extract(),
-      userId: params?.id ?? "1"
+      userId: params?.username ?? "1"
     },
     revalidate: 1
-  }
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const apolloClient = initializeApollo()
-
-  const { data } = await apolloClient.query({
-    query: UsersDocument
-  })
-
-  const paths = data.users.map((user: User) => `/users/${user.username}`) || []
-
-  return {
-    paths,
-    fallback: "blocking"
   }
 }
 

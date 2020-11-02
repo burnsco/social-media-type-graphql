@@ -1,4 +1,6 @@
+import { ChakraField } from "@/components/shared/ChakraField"
 import { useCreateSubredditMutation } from "@/generated/graphql"
+import { CategorySchema } from "@/types/Category/schemas"
 import { CategoryInputType } from "@/types/Category/types"
 import { toErrorMap } from "@/utils/toErrorMap"
 import { gql } from "@apollo/client"
@@ -19,8 +21,6 @@ import {
 import { Form, Formik } from "formik"
 import { useRef } from "react"
 import { BsFolderPlus } from "react-icons/bs"
-import { CategorySchema } from "../../types/Category/schemas"
-import { ChakraField } from "../shared/ChakraField"
 
 function CreateCategoryDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()

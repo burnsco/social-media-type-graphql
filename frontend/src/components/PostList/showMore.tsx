@@ -12,9 +12,9 @@ const ShowMorePosts = ({
   areMorePosts,
   loadingMorePosts
 }: MorePostsProps) => {
-  if (areMorePosts) {
-    return (
-      <Box m={2}>
+  return (
+    <Box m={2}>
+      {areMorePosts && (
         <Button
           colorScheme="blue"
           onClick={() => loadMorePosts()}
@@ -22,11 +22,9 @@ const ShowMorePosts = ({
         >
           {loadingMorePosts ? "Loading..." : "Show More"}
         </Button>
-      </Box>
-    )
-  } else {
-    return null
-  }
+      )}
+    </Box>
+  )
 }
 
 export default memo(ShowMorePosts)

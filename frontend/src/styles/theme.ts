@@ -2,6 +2,8 @@ import { extendTheme } from "@chakra-ui/core"
 import { mode } from "@chakra-ui/theme-tools"
 
 const customTheme = extendTheme({
+  useSystemColorMode: true,
+  initialColorMode: "dark",
   styles: {
     global: props => ({
       html: {

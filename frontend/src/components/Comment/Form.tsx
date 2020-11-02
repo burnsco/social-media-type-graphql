@@ -1,3 +1,4 @@
+import { InputField } from "@/components/shared/InputField"
 import { useCreateCommentMutation } from "@/generated/graphql"
 import { CreateCommentSchema } from "@/types/Comment/schemas"
 import { gql } from "@apollo/client"
@@ -9,7 +10,6 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { Formik } from "formik"
-import { InputField } from "../shared/InputField"
 
 interface CreateSubredditProps {
   postId: string

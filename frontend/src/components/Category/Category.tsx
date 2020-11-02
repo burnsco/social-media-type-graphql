@@ -1,10 +1,10 @@
+import Layout from "@/components/Layout"
 import NewPost from "@/components/Post"
 import ShowMorePosts from "@/components/PostList/showMore"
 import { usePostsQuery } from "@/generated/graphql"
 import { NetworkStatus } from "@apollo/client"
 import { Skeleton, Text, VStack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import Layout from "../Layout"
 
 const CategoryData = () => {
   const router = useRouter()

@@ -1,10 +1,10 @@
+import { Chakra } from "@/components/Chakra/Chakra"
+import Header from "@/components/Header"
 import { Box, Stack } from "@chakra-ui/core"
 import dynamic from "next/dynamic"
 import Head from "next/head"
 import PropTypes from "prop-types"
-import React from "react"
-import { Chakra } from "../Chakra/Chakra"
-import Header from "../Header"
+import * as React from "react"
 
 const NavigationRight = dynamic(() => import("@/components/Layout/SideMenu"))
 

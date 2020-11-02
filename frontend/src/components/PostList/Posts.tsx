@@ -2,10 +2,13 @@ import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/pagination"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Skeleton, Text, VStack } from "@chakra-ui/core"
+import { useRouter } from "next/router"
 import NewPost from "../Post"
 import ShowMorePosts from "./showMore"
 
 const Posts = () => {
+  const router = useRouter()
+
   const { loading, data, fetchMore, networkStatus } = usePostsQuery({
     variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true
@@ -40,7 +43,7 @@ const Posts = () => {
 
   return (
     <Box as="section">
-      <Skeleton isLoaded={!loading}>
+      <Skeleton isLoaded={!loading || router.isFallback}>
         <ViewPosts />
         <ShowMorePosts
           loadMorePosts={loadMorePosts}

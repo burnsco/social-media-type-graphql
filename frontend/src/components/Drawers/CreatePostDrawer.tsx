@@ -1,8 +1,12 @@
+import { ChakraField } from "@/components/shared/ChakraField"
 import { ChakraSelect } from "@/components/shared/ChakraSelect"
 import {
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@/generated/graphql"
+import { useIsAuth } from "@/hooks/useIsAuth"
+import { CreatePostSchema } from "@/types/Post/schemas"
+import { CreatePostInputType } from "@/types/Post/types"
 import { gql } from "@apollo/client"
 import {
   Button,
@@ -29,10 +33,6 @@ import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import React, { useRef } from "react"
 import { ImPencil2 } from "react-icons/im"
-import { useIsAuth } from "src/hooks/useIsAuth"
-import { CreatePostSchema } from "../../types/Post/schemas"
-import { CreatePostInputType } from "../../types/Post/types"
-import { ChakraField } from "../shared/ChakraField"
 
 function CreatePostDrawer() {
   useIsAuth()

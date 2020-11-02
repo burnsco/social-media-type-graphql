@@ -1,3 +1,4 @@
+import Layout from "@/components/Layout"
 import { EditUserField } from "@/components/shared/EditUserField"
 import { PasswordField } from "@/components/shared/PasswordField"
 import { useEditUserMutation, useMeQuery } from "@/generated/graphql"
@@ -5,7 +6,6 @@ import { EditUserSchema } from "@/types/User/schemas"
 import { toErrorMap } from "@/utils/toErrorMap"
 import { Box, Button, useColorModeValue, VStack } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-import Layout from "../Layout"
 
 const AccountPageView = () => {
   const bg = useColorModeValue("white", "#1A1A1B")

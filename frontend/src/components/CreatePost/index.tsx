@@ -4,6 +4,7 @@ import {
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@/generated/graphql"
+import { useIsAuth } from "@/hooks/useIsAuth"
 import { CreatePostSchema } from "@/types/Post/schemas"
 import { CreatePostInputType } from "@/types/Post/types"
 import { gql } from "@apollo/client"
@@ -21,7 +22,6 @@ import {
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
-import { useIsAuth } from "src/hooks/useIsAuth"
 
 const CreatePost: React.FunctionComponent = () => {
   useIsAuth()

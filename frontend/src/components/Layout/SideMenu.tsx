@@ -1,8 +1,8 @@
-import { useCategoriesQuery } from "@/generated/graphql"
+import { NextChakraLink } from "@/components/shared/NextChakraLink"
+import { PostsDocument, useCategoriesQuery } from "@/generated/graphql"
 import { Box, List, ListItem, useColorModeValue } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { memo } from "react"
-import { NextChakraLink } from "../shared/NextChakraLink"
 
 const SideMenu: React.FC = () => {
   const router = useRouter()
@@ -12,11 +12,10 @@ const SideMenu: React.FC = () => {
   const bg = useColorModeValue("white", "#202020")
   const linkbg = useColorModeValue("#ebedf0", "#3661ed")
   const linkbg2 = useColorModeValue("translucent", "translucent")
-  const headerbg = useColorModeValue("gray.50", "#313131")
 
   const { category } = router.query
 
-  const { data, loading, error } = useCategoriesQuery()
+  const { data, loading, error, client } = useCategoriesQuery()
 
   if (!loading && !error) {
     return (
@@ -32,6 +31,16 @@ const SideMenu: React.FC = () => {
             {data?.categories.map(subreddit => (
               <ListItem key={`subreddit-${subreddit.id}`}>
                 <NextChakraLink
+                  onMouseOver={() =>
+                    client.query({
+                      query: PostsDocument,
+                      variables: {
+                        skip: 0,
+                        first: 2,
+                        category: subreddit.name
+                      }
+                    })
+                  }
                   p={1}
                   bg={category === subreddit.name ? linkbg : linkbg2}
                   fontWeight={category === subreddit.name ? 500 : 400}

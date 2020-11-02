@@ -1,5 +1,5 @@
+import Layout from "@/components/Layout"
 import dynamic from "next/dynamic"
-import Layout from "../Layout"
 
 const DynamicPosts = dynamic(() => import("./Posts"))
 

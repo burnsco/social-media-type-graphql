@@ -1,8 +1,7 @@
-const NotFoundPage = () => (
-  <>
-    <h1>NOT FOUND</h1>
-    <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
-  </>
-)
+import dynamic from "next/dynamic"
+
+const DynamicSinglePostPage = dynamic(() => import("@/components/shared/404"))
+
+const NotFoundPage = () => <DynamicSinglePostPage />
 
 export default NotFoundPage

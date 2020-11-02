@@ -1,3 +1,5 @@
+import { ChakraField } from "@/components/shared/ChakraField"
+import { PasswordField } from "@/components/shared/PasswordField"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { RegisterSchema } from "@/types/User/schemas"
 import { RegisterUserInputType } from "@/types/User/types"
@@ -18,8 +20,6 @@ import {
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { useRef } from "react"
-import { ChakraField } from "../shared/ChakraField"
-import { PasswordField } from "../shared/PasswordField"
 
 function RegisterDrawer() {
   const router = useRouter()
