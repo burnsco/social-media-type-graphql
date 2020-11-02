@@ -12,8 +12,10 @@ const SideMenu: React.FC = () => {
   const bg = useColorModeValue("white", "#202020")
   const linkbg = useColorModeValue("#ebedf0", "#3661ed")
   const linkbg2 = useColorModeValue("translucent", "translucent")
+  const headerbg = useColorModeValue("gray.50", "#313131")
 
   const { category } = router.query
+
   const { data, loading, error } = useCategoriesQuery()
 
   if (!loading && !error) {
@@ -24,29 +26,30 @@ const SideMenu: React.FC = () => {
         borderWidth="1px"
         overflow="hidden"
         boxShadow="xs"
-        p={3}
       >
-        <List minH="100%" spacing={3}>
-          {data?.categories.map(subreddit => (
-            <ListItem key={`subreddit-${subreddit.id}`}>
-              <NextChakraLink
-                p={1}
-                bg={category === subreddit.name ? linkbg : linkbg2}
-                fontWeight={category === subreddit.name ? 500 : 400}
-                color={category === subreddit.name ? hover : color}
-                _hover={{
-                  color: hover,
-                  bg: linkbg,
-                  marginLeft: 1
-                }}
-                href="/r/[category]"
-                as={`/r/${subreddit.name}`}
-              >
-                {subreddit.name}
-              </NextChakraLink>
-            </ListItem>
-          ))}
-        </List>
+        <Box p={4}>
+          <List minH="100%" spacing={3}>
+            {data?.categories.map(subreddit => (
+              <ListItem key={`subreddit-${subreddit.id}`}>
+                <NextChakraLink
+                  p={1}
+                  bg={category === subreddit.name ? linkbg : linkbg2}
+                  fontWeight={category === subreddit.name ? 500 : 400}
+                  color={category === subreddit.name ? hover : color}
+                  _hover={{
+                    color: hover,
+                    bg: linkbg,
+                    marginLeft: 1
+                  }}
+                  href="/r/[category]"
+                  as={`/r/${subreddit.name}`}
+                >
+                  {subreddit.name}
+                </NextChakraLink>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Box>
     )
   }

@@ -4,7 +4,6 @@ import { usePostsQuery } from "@/generated/graphql"
 import { NetworkStatus } from "@apollo/client"
 import { Skeleton, Text, VStack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import { FaSpider } from "react-icons/fa"
 import Layout from "../Layout"
 
 const CategoryData = () => {
@@ -22,7 +21,6 @@ const CategoryData = () => {
   })
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
-  if (loading && !loadingMorePosts) return <FaSpider />
 
   const loadMorePosts = () => {
     fetchMore({
@@ -37,29 +35,26 @@ const CategoryData = () => {
   const areMorePosts =
     (postsBySubreddit?.length ?? 1) < (_categoryPostsMeta?.count ?? 0)
 
-  if (data && data.posts) {
-    return (
-      <Layout title={category}>
-        <Skeleton isLoaded={!loading}>
-          {postsBySubreddit.length > 0 ? (
-            <VStack spacing={4}>
-              {postsBySubreddit.map((post, index) => (
-                <NewPost key={`post-${post.id}-${index}`} post={post} />
-              ))}
-            </VStack>
-          ) : (
-            <Text>No posts here.</Text>
-          )}
-          <ShowMorePosts
-            loadMorePosts={loadMorePosts}
-            areMorePosts={areMorePosts}
-            loadingMorePosts={loadingMorePosts}
-          />
-        </Skeleton>
-      </Layout>
-    )
-  }
-  return null
+  return (
+    <Layout title={category}>
+      <Skeleton isLoaded={!loading || router.isFallback || !loadingMorePosts}>
+        {postsBySubreddit.length > 0 ? (
+          <VStack spacing={4}>
+            {postsBySubreddit.map((post, index) => (
+              <NewPost key={`post-${post.id}-${index}`} post={post} />
+            ))}
+          </VStack>
+        ) : (
+          <Text>No posts here.</Text>
+        )}
+        <ShowMorePosts
+          loadMorePosts={loadMorePosts}
+          areMorePosts={areMorePosts}
+          loadingMorePosts={loadingMorePosts}
+        />
+      </Skeleton>
+    </Layout>
+  )
 }
 
 export default CategoryData

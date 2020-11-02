@@ -17,7 +17,7 @@ const SinglePostPage: React.FC = () => {
     const { id, title } = data.post
     return (
       <Layout title="Post">
-        <Skeleton isLoaded={!loading}>
+        <Skeleton isLoaded={!loading || router.isFallback}>
           <Stack spacing={4}>
             <NewPost key={`post-${id}-${title}`} post={data.post} />
             <SubmitCommentForm postId={postId} />

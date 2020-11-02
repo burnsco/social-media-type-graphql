@@ -16,6 +16,7 @@ const PostFooter: React.FC<{
         p={1}
         borderRadius={2}
         _hover={{
+          transition: "0.3s all",
           bg: linkbg,
           color: linkcolor
         }}
