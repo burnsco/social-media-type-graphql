@@ -11,7 +11,7 @@ const CategoryData = () => {
 
   const category = router.query.category as string
 
-  const { loading, data, error, fetchMore, networkStatus } = usePostsQuery({
+  const { loading, data, fetchMore, networkStatus } = usePostsQuery({
     variables: {
       category: category,
       skip: 0,
