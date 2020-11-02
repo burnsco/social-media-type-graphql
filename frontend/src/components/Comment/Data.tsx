@@ -58,7 +58,7 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
     if (comments.length > 0) {
       return (
         <Box>
-          <Stack spacing={8}>
+          <Stack>
             {comments.map((comment, index) => (
               <CommentPage
                 key={`comment-${comment.id}-${index}`}

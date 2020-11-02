@@ -6,7 +6,7 @@ const PostBody: React.FC<{
   link?: string | null
 }> = ({ title, text, link }) => {
   return (
-    <Flex direction="column" flexGrow={2} width="60%">
+    <Flex direction="column" my={2} flexGrow={2} width="60%">
       <Heading fontWeight="500" fontSize="xl">
         {title}
       </Heading>

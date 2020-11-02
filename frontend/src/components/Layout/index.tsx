@@ -2,6 +2,7 @@ import { Box, Stack } from "@chakra-ui/core"
 import dynamic from "next/dynamic"
 import Head from "next/head"
 import PropTypes from "prop-types"
+import React from "react"
 import { Chakra } from "../Chakra/Chakra"
 import Header from "../Header"
 
@@ -50,18 +51,13 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
 
       <Chakra>
         <Header />
-
         <Box as="main" minH="100vh" px={["0em", "2em", "4em", "6em"]} py="6em">
           <Stack isInline spacing={14}>
             <Box as="main" width="full">
               {children}
             </Box>
 
-            <Box
-              as="aside"
-              width="200px"
-              display={["none", "none", "block", "block"]}
-            >
+            <Box as="aside" width="200px">
               <NavigationRight />
             </Box>
           </Stack>

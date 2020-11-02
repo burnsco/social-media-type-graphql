@@ -1,4 +1,4 @@
-import { Flex, HStack } from "@chakra-ui/core"
+import { Box, Flex, HStack, useColorModeValue } from "@chakra-ui/core"
 import React from "react"
 import { RiMessage2Fill } from "react-icons/ri"
 import { NextChakraLink } from "../shared/NextChakraLink"
@@ -8,14 +8,29 @@ const PostFooter: React.FC<{
   id?: string | null
   commentsCount?: number
 }> = ({ category, id, commentsCount }) => {
+  const linkbg = useColorModeValue("#ebedf0", "#3661ed")
+  const linkcolor = useColorModeValue("black", "white")
   return (
-    <Flex width="100%" fontSize="12px" p={1} color="gray.400">
-      <HStack>
-        <RiMessage2Fill />
-        <NextChakraLink href="/r/[category]/[id]" as={`/r/${category}/${id}`}>
-          {commentsCount} Comments
-        </NextChakraLink>
-      </HStack>
+    <Flex width="100%" fontSize="12px" p={1} color="gray.500">
+      <Box
+        p={1}
+        borderRadius={2}
+        _hover={{
+          bg: linkbg,
+          color: linkcolor
+        }}
+      >
+        <HStack>
+          <RiMessage2Fill />
+          <NextChakraLink
+            _hover={{ textTransform: "none" }}
+            href="/r/[category]/[id]"
+            as={`/r/${category}/${id}`}
+          >
+            {commentsCount} Comments
+          </NextChakraLink>
+        </HStack>
+      </Box>
     </Flex>
   )
 }

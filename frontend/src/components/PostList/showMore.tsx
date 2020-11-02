@@ -15,7 +15,11 @@ const ShowMorePosts = ({
   if (areMorePosts) {
     return (
       <Box m={2}>
-        <Button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
+        <Button
+          colorScheme="blue"
+          onClick={() => loadMorePosts()}
+          disabled={loadingMorePosts}
+        >
           {loadingMorePosts ? "Loading..." : "Show More"}
         </Button>
       </Box>

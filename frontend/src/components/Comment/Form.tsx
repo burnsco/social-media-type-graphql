@@ -1,4 +1,5 @@
 import { useCreateCommentMutation } from "@/generated/graphql"
+import { CreateCommentSchema } from "@/types/Comment/schemas"
 import { gql } from "@apollo/client"
 import {
   Alert,
@@ -58,10 +59,21 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
   }
 
   return (
-    <Box bg={bg} borderWidth="1px" rounded="md" p={3}>
+    <Box
+      bg={bg}
+      borderWidth="1px"
+      rounded="md"
+      p={3}
+      _hover={{
+        boxShadow: "lg",
+        borderWidth: "1px",
+        borderColor: useColorModeValue("gray.200", "gray.600")
+      }}
+    >
       <Skeleton isLoaded={!mutationLoading}>
         <Formik
           initialValues={{ body: "", postId }}
+          validationSchema={CreateCommentSchema}
           onSubmit={(values, actions) => {
             setTimeout(() => {
               actions.setSubmitting(false)
@@ -75,7 +87,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
               <Button
                 size="sm"
                 colorScheme="orange"
-                isDisabled={formik.isSubmitting}
+                isDisabled={formik.isSubmitting || mutationLoading}
                 isLoading={formik.isSubmitting}
                 type="submit"
               >

@@ -7,11 +7,11 @@ import { BsArrowDown, BsArrowUp } from "react-icons/bs"
 const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
   const bg = useColorModeValue("white", "#202020")
   const router = useRouter()
-
+  const votebg = useColorModeValue("gray.50", "#313131")
   if (comment) {
     return (
-      <Box bg={bg} display="flex" minH="100px" width="100%">
-        <Box mr={1}>
+      <Box bg={bg} display="flex" minH="80px" width="100%">
+        <Box bg={votebg}>
           <Flex
             width="45px"
             flexDir="column"
@@ -39,15 +39,16 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
 
         {/* Post Details Conatiner */}
         <Box
-          minH="100px"
+          minH="80px"
           width="100%"
           display="flex"
+          ml={3}
           flexDir="column"
           justifyContent="space-evenly"
         >
-          <Box fontSize="12px" display="flex" color="gray.300">
+          <Flex fontSize="xs" display="flex" color="gray.300">
             {/* Post created by */}
-            <Box textDecoration="none">
+            <Box textDecoration="none" align="flex-start">
               Posted by{" "}
               <Box
                 onClick={() =>
@@ -66,7 +67,7 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
                 {timeDifferenceForDate(Number(comment.createdAt))}
               </Box>
             </Box>
-          </Box>
+          </Flex>
 
           <Box mt={1}>{comment.body}</Box>
         </Box>

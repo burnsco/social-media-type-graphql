@@ -1,15 +1,9 @@
 import * as Yup from "yup"
 
 export const CreateCommentSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
+  body: Yup.string()
+    .min(5, "Must be at least 5 characters.")
+    .max(500, "Must be 500 characters or less.")
     .trim()
-    .required("Required"),
-  username: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .trim()
-    .required("Required"),
-  email: Yup.string().email("Invalid email").required("Required")
+    .required("Comment is empty")
 })

@@ -31,7 +31,7 @@ const NewPost: React.FC<PostQuery> = props => {
           postScore={postScore}
           isLoggedIn={isLoggedIn}
         />
-        <Flex minH="160px" width="100%" flexDir="column" ml={2}>
+        <Flex minH="160px" width="100%" flexDir="column" ml={3}>
           {isOwner ? (
             <PostHeader
               postId={postId}
