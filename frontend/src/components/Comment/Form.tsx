@@ -8,7 +8,7 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { Formik } from "formik"
-import { ChakraField } from "../shared/ChakraField"
+import { InputField } from "../shared/InputField"
 
 interface CreateSubredditProps {
   postId: string
@@ -16,7 +16,7 @@ interface CreateSubredditProps {
 }
 
 const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
-  const bg = useColorModeValue("white", "#1A1A1B")
+  const bg = useColorModeValue("white", "#202020")
   const [
     submitComment,
     { loading: mutationLoading, error: mutationError }
@@ -71,7 +71,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
         >
           {formik => (
             <form onSubmit={formik.handleSubmit}>
-              <ChakraField id="body" name="body" label="" textarea />
+              <InputField id="body" name="body" label="" textarea />
               <Button
                 size="sm"
                 colorScheme="orange"

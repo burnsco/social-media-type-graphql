@@ -22,11 +22,16 @@ const NewPost: React.FC<PostQuery> = props => {
     const postLink = post?.link
     const postCommentsCount = post?.totalComments?.count ?? 0
     const isOwner = data?.me?.id === post?.author.id ?? false
+    const isLoggedIn = data?.me?.username !== null
 
     return (
       <PostContainer bg={bg}>
-        <VoteBox postId={postId} postScore={postScore} />
-        <Flex minH="140px" width="100%" flexDir="column" ml={2}>
+        <VoteBox
+          postId={postId}
+          postScore={postScore}
+          isLoggedIn={isLoggedIn}
+        />
+        <Flex minH="160px" width="100%" flexDir="column" ml={2}>
           {isOwner ? (
             <PostHeader
               postId={postId}

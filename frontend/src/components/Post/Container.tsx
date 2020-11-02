@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/core"
+import { Box, useColorModeValue } from "@chakra-ui/core"
 
 const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
   children,
@@ -11,12 +11,13 @@ const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
       borderWidth="1px"
       overflow="hidden"
       display="flex"
-      minH="140px"
+      borderColor={useColorModeValue("gray.100", "gray.400")}
+      minH="160px"
       width="100%"
       _hover={{
-        boxShadow: "sm",
+        boxShadow: "lg",
         borderWidth: "1px",
-        borderColor: "#313131"
+        borderColor: useColorModeValue("gray.200", "gray.50")
       }}
     >
       {children}

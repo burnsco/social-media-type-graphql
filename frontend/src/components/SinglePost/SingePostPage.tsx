@@ -1,6 +1,6 @@
 import CommentsPageWithData from "@/components/Comment/Data"
 import SubmitCommentForm from "@/components/Comment/Form"
-import Layout from "@/components/Layout/Layout"
+import Layout from "@/components/Layout"
 import NewPost from "@/components/Post"
 import { usePostQuery } from "@/generated/graphql"
 import { Skeleton, Stack } from "@chakra-ui/core"

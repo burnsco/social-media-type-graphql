@@ -2,7 +2,7 @@ import { PostsDocument, PostsQuery } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { allPostsQueryVars } from "@/types/pagination"
 import dynamic from "next/dynamic"
-import Layout from "../components/Layout/Layout"
+import Layout from "../components/Layout"
 
 const DynamicPostList = dynamic(() => import("@/components/PostList/index"))
 

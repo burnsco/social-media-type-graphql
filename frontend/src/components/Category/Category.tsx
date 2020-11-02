@@ -5,7 +5,7 @@ import { NetworkStatus } from "@apollo/client"
 import { Skeleton, Text, VStack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { FaSpider } from "react-icons/fa"
-import Layout from "../Layout/Layout"
+import Layout from "../Layout"
 
 const CategoryData = () => {
   const router = useRouter()

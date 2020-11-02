@@ -1,6 +1,5 @@
 import { useCategoriesQuery } from "@/generated/graphql"
 import {
-  Alert,
   Button,
   Flex,
   Menu,
@@ -14,19 +13,17 @@ import { useRouter } from "next/router"
 import { FaHome } from "react-icons/fa"
 import { ImArrowDown } from "react-icons/im"
 
-function HomeSearch() {
+function HeaderNavigation() {
   const router = useRouter()
   const bg = useColorModeValue("white", "#202020")
   const { data, loading, error } = useCategoriesQuery()
 
   if (loading) return null
-
   if (error) {
-    return <Alert status="error">{error.message}</Alert>
+    console.log(error)
   }
-
   return (
-    <Flex justify="space-around" flexGrow={2}>
+    <Flex flexGrow={2}>
       <Menu>
         <MenuButton
           as={Button}
@@ -60,4 +57,4 @@ function HomeSearch() {
   )
 }
 
-export default HomeSearch
+export default HeaderNavigation

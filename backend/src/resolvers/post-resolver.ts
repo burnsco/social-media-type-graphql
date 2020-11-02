@@ -192,19 +192,21 @@ export class PostResolver {
   @UseMiddleware(isAuth)
   async deletePost(
     @Arg("data") { postId }: EditPostInput,
-    @Ctx() { em }: ContextType
+    @Ctx() { em, req }: ContextType
   ): Promise<Boolean> {
     const post = await em.findOne(Post, postId, {
       populate: ["comments", "votes"]
     })
-
-    if (post && post.comments) {
-      post.comments.removeAll()
-      if (post.votes) {
-        post.votes.removeAll()
+    if (post?.author.id === req.session.userId) {
+      if (post && post.comments) {
+        post.comments.removeAll()
+        if (post.votes) {
+          post.votes.removeAll()
+        }
+        em.removeAndFlush(post)
+        return true
       }
-      em.removeAndFlush(post)
-      return true
+      return false
     }
     return false
   }

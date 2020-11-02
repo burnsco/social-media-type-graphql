@@ -16,7 +16,7 @@ const SideMenu: React.FC = () => {
   const { category } = router.query
   const { data, loading, error } = useCategoriesQuery()
 
-  if (!loading) {
+  if (!loading && !error) {
     return (
       <Box
         bg={bg}

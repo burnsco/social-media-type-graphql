@@ -1,35 +1,57 @@
-import { Flex, useColorModeValue } from "@chakra-ui/core"
-import dynamic from "next/dynamic"
-import AuthMenu from "./Menu"
+import {
+  chakra,
+  Flex,
+  IconButton,
+  useColorMode,
+  useColorModeValue
+} from "@chakra-ui/core"
+import { FaMoon, FaSun } from "react-icons/fa"
+import NavSection from "./Center"
+import LogoSection from "./Left"
+import MenuIconsSection from "./Right"
 
-const CategoriesMenu = dynamic(() => import("./Center"))
-const LogoSection = dynamic(() => import("./LogoSection"))
+const HeaderContent = () => {
+  const { toggleColorMode: toggleMode } = useColorMode()
+  const text = useColorModeValue("dark", "light")
+  const SwitchIcon = useColorModeValue(FaMoon, FaSun)
+  return (
+    <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
+      <LogoSection />
+      <NavSection />
+      <MenuIconsSection />
+
+      <IconButton
+        size="md"
+        fontSize="lg"
+        aria-label={`Switch to ${text} mode`}
+        variant="ghost"
+        color="current"
+        ml="3"
+        onClick={toggleMode}
+        icon={<SwitchIcon />}
+      />
+    </Flex>
+  )
+}
 
 const Header = (props: any) => {
   const bg = useColorModeValue("white", "#202020")
   return (
-    <Flex
-      top="0"
+    <chakra.header
       pos="fixed"
+      top="0"
       zIndex="1"
       bg={bg}
       left="0"
       right="0"
       boxShadow="base"
       width="full"
-      as="header"
-      p={2}
-      align="center"
       {...props}
     >
-      <Flex justify="space-between" width="98%">
-        <LogoSection />
-        <CategoriesMenu />
-        <Flex flexGrow={1} maxW="720px" as="nav" justify="flex-end">
-          <AuthMenu />
-        </Flex>
-      </Flex>
-    </Flex>
+      <chakra.div height="3.5rem" mx="auto" maxW="1200px">
+        <HeaderContent />
+      </chakra.div>
+    </chakra.header>
   )
 }
 

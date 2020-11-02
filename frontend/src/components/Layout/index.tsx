@@ -5,7 +5,7 @@ import PropTypes from "prop-types"
 import { Chakra } from "../Chakra/Chakra"
 import Header from "../Header"
 
-const DynamicSideMenu = dynamic(() => import("@/components/Layout/SideMenu"))
+const NavigationRight = dynamic(() => import("@/components/Layout/SideMenu"))
 
 const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
   children,
@@ -62,7 +62,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
               width="200px"
               display={["none", "none", "block", "block"]}
             >
-              <DynamicSideMenu />
+              <NavigationRight />
             </Box>
           </Stack>
         </Box>

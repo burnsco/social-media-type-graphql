@@ -7,7 +7,7 @@ import {
 } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Spinner, Stack, Text } from "@chakra-ui/core"
+import { Box, Spinner, Stack, Text, useColorModeValue } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
 import PropTypes from "prop-types"
@@ -19,6 +19,7 @@ import ShowMoreComments from "./ShowMore"
 const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
   const router = useRouter()
   const [isMounted, setIsMounted] = useState(false)
+  const bg = useColorModeValue("white", "#202020")
 
   useEffect(() => {
     setIsMounted(true)

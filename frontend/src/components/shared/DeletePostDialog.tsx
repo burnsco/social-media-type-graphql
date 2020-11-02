@@ -27,7 +27,7 @@ export const DeletePostDialog: React.FC<{
     return (
       <>
         <Tooltip
-          placement="top"
+          placement="bottom"
           hasArrow
           label="Delete Post"
           bg="gray.200"

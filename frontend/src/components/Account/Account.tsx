@@ -5,7 +5,7 @@ import { EditUserSchema } from "@/types/User/schemas"
 import { toErrorMap } from "@/utils/toErrorMap"
 import { Box, Button, useColorModeValue, VStack } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-import Layout from "../Layout/Layout"
+import Layout from "../Layout"
 
 const AccountPageView = () => {
   const bg = useColorModeValue("white", "#1A1A1B")

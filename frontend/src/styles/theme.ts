@@ -5,13 +5,13 @@ const customTheme = extendTheme({
   styles: {
     global: props => ({
       html: {
-        fontSize: { base: "sm", sm: "md" },
+        fontSize: { base: "xs", sm: "sm" },
         background: mode("white", "#1A1A1B")(props)
       },
       body: {
         fontSize: { base: "sm", sm: "md" },
         color: mode("gray.700", "whiteAlpha.900")(props),
-        background: mode("white", "#1A1A1B")(props)
+        background: mode("gray.100", "#1A1A1B")(props)
       }
     })
   },

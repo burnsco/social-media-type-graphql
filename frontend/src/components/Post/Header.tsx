@@ -24,14 +24,7 @@ const PostHeader: React.FC<{
   const fontColor = useColorModeValue("#1A1A1B", "gray.200")
   const router = useRouter()
   return (
-    <HStack
-      fontSize="sm"
-      color={fontColor}
-      w="full"
-      h="10px"
-      mt={1}
-      flexGrow={1}
-    >
+    <HStack fontSize="sm" color={fontColor} w="full" h="10px" flexGrow={1}>
       <HStack>
         <PostCategory category={category} />
         <Box ml="2" textDecoration="none">
@@ -72,6 +65,7 @@ const PostHeader: React.FC<{
               />
             </Tooltip>
           </NextChakraLink>
+
           <DeletePostDialog postId={postId} category={category} />
         </Flex>
       )}

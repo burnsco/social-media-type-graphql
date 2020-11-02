@@ -2,10 +2,11 @@ import { useCreateVoteMutation } from "@/generated/graphql"
 import { Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/core"
 import { ImArrowDown, ImArrowUp } from "react-icons/im"
 
-const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
-  postId,
-  postScore
-}) => {
+const VoteBox: React.FC<{
+  postId: string
+  postScore: number
+  isLoggedIn: boolean
+}> = ({ postId, postScore, isLoggedIn }) => {
   const bg = useColorModeValue("gray.50", "#313131")
   const [vote, { loading }] = useCreateVoteMutation()
 
@@ -21,7 +22,7 @@ const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
       >
         <IconButton
           size="sm"
-          isDisabled={loading}
+          isDisabled={loading || !isLoggedIn}
           onClick={async () => {
             await vote({
               variables: { data: { value: 1, postId } }
@@ -29,15 +30,14 @@ const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
           }}
           variant="ghost"
           color="current"
-          aria-label="UpVote"
+          aria-label="Up Vote"
           icon={<ImArrowUp />}
         />
-        <Text fontSize="sm" fontWeight="bold" opacity="0.9">
-          {postScore}
-        </Text>
+
+        <Text fontSize="sm">{postScore}</Text>
         <IconButton
           size="sm"
-          isDisabled={loading}
+          isDisabled={loading || !isLoggedIn}
           onClick={async () => {
             await vote({
               variables: { data: { value: -1, postId } }
@@ -45,7 +45,7 @@ const VoteBox: React.FC<{ postId: string; postScore: number }> = ({
           }}
           variant="ghost"
           color="current"
-          aria-label="DownVote"
+          aria-label="Down Vote"
           icon={<ImArrowDown />}
         />
       </Flex>

@@ -20,6 +20,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Tooltip,
   useColorModeValue,
   useDisclosure,
   useToast
@@ -50,16 +51,23 @@ function CreatePostDrawer() {
 
   return (
     <>
-      <IconButton
-        variant="ghost"
-        aria-label="Create a Post"
-        icon={<ImPencil2 />}
-        ref={btnRef}
-        size="md"
-        onClick={onOpen}
+      <Tooltip
+        placement="bottom"
+        hasArrow
+        label="Create Post"
+        bg="gray.200"
+        color="black"
       >
-        Post
-      </IconButton>
+        <IconButton
+          variant="ghost"
+          aria-label="Create a Post"
+          icon={<ImPencil2 />}
+          ref={btnRef}
+          size="md"
+          onClick={onOpen}
+        />
+      </Tooltip>
+
       <Drawer
         size="sm"
         isOpen={isOpen}

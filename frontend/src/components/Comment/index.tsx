@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { BsArrowDown, BsArrowUp } from "react-icons/bs"
 
 const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
-  const bg = useColorModeValue("white", "#1A1A1B")
+  const bg = useColorModeValue("white", "#202020")
   const router = useRouter()
 
   if (comment) {

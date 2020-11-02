@@ -12,6 +12,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
   IconButton,
+  Tooltip,
   useDisclosure,
   useToast
 } from "@chakra-ui/core"
@@ -29,26 +30,32 @@ function CreateCategoryDrawer() {
 
   return (
     <>
-      <IconButton
-        variant="ghost"
-        aria-label="Create a Subreddit"
-        icon={<BsFolderPlus />}
-        ref={btnRef}
-        size="md"
-        onClick={onOpen}
+      <Tooltip
+        placement="bottom"
+        hasArrow
+        label="Create Subreddit"
+        bg="gray.200"
+        color="black"
       >
-        Subreddit
-      </IconButton>
+        <IconButton
+          variant="ghost"
+          aria-label="Create a Subreddit"
+          icon={<BsFolderPlus />}
+          ref={btnRef}
+          size="md"
+          onClick={onOpen}
+        />
+      </Tooltip>
       <Drawer
         isOpen={isOpen}
-        placement="bottom"
+        placement="right"
         onClose={onClose}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Subreddit</DrawerHeader>
+          <DrawerHeader>Create Subreddit</DrawerHeader>
           <Formik
             initialValues={CategoryInputType}
             validationSchema={CategorySchema}

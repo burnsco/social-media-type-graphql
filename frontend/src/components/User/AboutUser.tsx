@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout/Layout"
+import Layout from "@/components/Layout"
 import { Box, Heading, Text } from "@chakra-ui/core"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { useRouter } from "next/router"
