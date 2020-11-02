@@ -11,11 +11,11 @@ const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
       borderWidth="1px"
       overflow="hidden"
       display="flex"
-      borderColor={useColorModeValue("gray.100", "#202020")}
+      borderColor={useColorModeValue("gray.100", "#313131")}
       minH="160px"
       width="100%"
       _hover={{
-        boxShadow: "lg",
+        boxShadow: "md",
         borderWidth: "1px",
         borderColor: useColorModeValue("gray.200", "gray.600")
       }}

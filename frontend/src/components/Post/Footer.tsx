@@ -8,10 +8,10 @@ const PostFooter: React.FC<{
   id?: string | null
   commentsCount?: number
 }> = ({ category, id, commentsCount }) => {
-  const linkbg = useColorModeValue("#ebedf0", "#3661ed")
+  const linkbg = useColorModeValue("#ebedf0", "gray.600")
   const linkcolor = useColorModeValue("black", "white")
   return (
-    <Flex width="100%" fontSize="12px" p={1} color="gray.500">
+    <Flex width="100%" fontSize="12px" p={1}>
       <Box
         p={1}
         borderRadius={2}

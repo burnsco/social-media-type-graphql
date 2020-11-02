@@ -24,6 +24,7 @@ import { useLogoutMutation, useMeQuery } from "../../generated/graphql"
 const DynamicRegisterDrawer = dynamic(() => import("../Drawers/RegisterDrawer"))
 
 const DynamicLoginDrawer = dynamic(() => import("../Drawers/LoginDrawer"))
+
 const DynamicCreateCategoryDrawer = dynamic(
   () => import("../Drawers/CategoryDrawer")
 )

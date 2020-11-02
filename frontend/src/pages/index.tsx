@@ -2,16 +2,11 @@ import { PostsDocument, PostsQuery } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { allPostsQueryVars } from "@/types/pagination"
 import dynamic from "next/dynamic"
-import Layout from "../components/Layout"
 
 const DynamicPostList = dynamic(() => import("@/components/PostList/index"))
 
 const IndexPage = () => {
-  return (
-    <Layout title="Home">
-      <DynamicPostList />
-    </Layout>
-  )
+  return <DynamicPostList />
 }
 
 export async function getStaticProps() {

@@ -57,7 +57,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
               {children}
             </Box>
 
-            <Box as="aside" width="200px">
+            <Box as="aside" width="200px" display={["none", "none", "block"]}>
               <NavigationRight />
             </Box>
           </Stack>
