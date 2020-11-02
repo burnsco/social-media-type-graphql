@@ -8,6 +8,7 @@ const customTheme = extendTheme({
     global: props => ({
       html: {
         fontSize: { base: "xs", sm: "sm" },
+        color: mode("gray.700", "whiteAlpha.900")(props),
         background: mode("white", "#1A1A1B")(props)
       },
       body: {

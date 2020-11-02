@@ -1,6 +1,6 @@
 import { RegisterDocument } from "@/generated/graphql"
 import RegisterPage from "@/pages/user/register"
-import { fireEvent, render } from "@/utils/test-utils2"
+import { fireEvent, render } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 

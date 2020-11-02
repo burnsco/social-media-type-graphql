@@ -1,16 +1,14 @@
-import {
-  CategoriesDocument,
-  Category,
-  PostsDocument,
-  PostsQuery,
-  useCommentsQuery
-} from "@/generated/graphql"
-import { initializeApollo } from "@/lib/apolloClient"
+import { useCommentsQuery } from "@/generated/graphql"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Spinner, Stack, Text, useColorModeValue } from "@chakra-ui/core"
-import { GetStaticPaths, GetStaticProps } from "next"
+import {
+  Box,
+  Skeleton,
+  Spinner,
+  Stack,
+  Text,
+  useColorModeValue
+} from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
 import { ImSpinner } from "react-icons/im"
 import CommentPage from "./index"
@@ -29,7 +27,7 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
     variables: {
       postId: postId,
       skip: 0,
-      first: 4
+      first: 2
     },
     notifyOnNetworkStatusChange: true,
     skip: !isMounted
@@ -72,59 +70,18 @@ const CommentsPageWithData: React.FC<{ postId: string }> = ({ postId }) => {
     return <Text>No comments yet.</Text>
   }
 
-  if (isMounted) {
-    return (
-      <Box>
+  return (
+    <Box>
+      <Skeleton isLoaded={!loading}>
         <ViewComments />
         <ShowMoreComments
           loadMoreComments={loadMoreComments}
           areMoreComments={areMoreComments}
           loadingMoreComments={loadingMoreComments}
         />
-      </Box>
-    )
-  }
-  return null
-}
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const apolloClient = initializeApollo()
-
-  await apolloClient.query<PostsQuery>({
-    query: PostsDocument,
-    variables: {
-      category: params?.category ?? "react",
-      skip: 0,
-      first: 4
-    }
-  })
-
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-      category: params?.category
-    },
-    revalidate: 10
-  }
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const apolloClient = initializeApollo()
-
-  const { data } = await apolloClient.query({
-    query: CategoriesDocument
-  })
-
-  const paths = data.categories.map((item: Category) => `/r/${item.name}`)
-
-  return {
-    paths,
-    fallback: true
-  }
-}
-
-CommentsPageWithData.propTypes = {
-  postId: PropTypes.string.isRequired
+      </Skeleton>
+    </Box>
+  )
 }
 
 export default CommentsPageWithData

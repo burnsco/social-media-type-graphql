@@ -1,5 +1,5 @@
 import Header from "@/components/Header"
-import { render } from "@/utils/test-utils2"
+import { render } from "@/utils/test-utils"
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"

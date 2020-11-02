@@ -1,4 +1,4 @@
-import { Box, Button, Spinner } from "@chakra-ui/core"
+import { Box, Button, Skeleton, Spinner } from "@chakra-ui/core"
 import { memo } from "react"
 
 type MoreCommentsProps = {
@@ -12,21 +12,21 @@ const ShowMoreComments = ({
   areMoreComments,
   loadingMoreComments
 }: MoreCommentsProps) => {
-  if (areMoreComments) {
-    return (
-      <Box m={2}>
-        <Button
-          variant="outline"
-          onClick={() => loadMoreComments()}
-          disabled={loadingMoreComments}
-        >
-          {loadingMoreComments ? <Spinner /> : "Show More"}
-        </Button>
-      </Box>
-    )
-  } else {
-    return null
-  }
+  return (
+    <Box m={2}>
+      <Skeleton isLoaded={areMoreComments}>
+        {areMoreComments && (
+          <Button
+            variant="outline"
+            onClick={() => loadMoreComments()}
+            disabled={loadingMoreComments}
+          >
+            {loadingMoreComments ? <Spinner /> : "Show More"}
+          </Button>
+        )}
+      </Skeleton>
+    </Box>
+  )
 }
 
 export default memo(ShowMoreComments)

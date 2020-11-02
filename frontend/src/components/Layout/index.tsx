@@ -42,7 +42,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
           href="/favicon-16x16.png"
         />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-        <meta name="theme-color" content="#313131" />
+        <meta name="theme-color" content="#1A1A1B" />
         <meta
           name="description"
           content="A Reddit clone to learn typescript, graphql, testing and more."
@@ -51,7 +51,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
 
       <Chakra>
         <Header />
-        <Box as="main" minH="100vh" px={["0em", "2em", "4em", "6em"]} py="6em">
+        <Box minH="100vh" px={["0em", "2em", "4em", "6em"]} py="6em">
           <Stack isInline spacing={14}>
             <Box as="main" width="full">
               {children}

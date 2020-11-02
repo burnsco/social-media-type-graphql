@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout"
 import { UsersDocument, UsersQuery, useUserQuery } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
-import { Box, Heading, Text } from "@chakra-ui/core"
+import { Box, Heading, Skeleton, Text } from "@chakra-ui/core"
 import { GetStaticProps } from "next"
 import { useRouter } from "next/router"
 
@@ -12,22 +12,22 @@ const AboutUserPage = () => {
     variables: { data: { username: username as string } }
   })
 
-  if (loading) return null
-
   if (data && data.user) {
     return (
       <Layout title={data.user.username}>
-        <Box>
-          <Heading>User</Heading>
+        <Skeleton isLoaded={!loading}>
+          <Box>
+            <Heading>User</Heading>
 
-          <Text>{data.user.username} </Text>
-          <Text>{data.user.email} </Text>
-          <Text>{data.user.about} </Text>
-        </Box>
+            <Text>{data.user.username} </Text>
+            <Text>{data.user.email} </Text>
+            <Text>{data.user.about} </Text>
+          </Box>
+        </Skeleton>
       </Layout>
     )
   }
-  return null
+  return <Text>No user found</Text>
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {

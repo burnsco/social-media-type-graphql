@@ -1,6 +1,12 @@
 import { NextChakraLink } from "@/components/shared/NextChakraLink"
-import { PostsDocument, useCategoriesQuery } from "@/generated/graphql"
-import { Box, List, ListItem, useColorModeValue } from "@chakra-ui/core"
+import { useCategoriesQuery } from "@/generated/graphql"
+import {
+  Box,
+  List,
+  ListItem,
+  Skeleton,
+  useColorModeValue
+} from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { memo } from "react"
 
@@ -17,30 +23,21 @@ const SideMenu: React.FC = () => {
 
   const { data, loading, error, client } = useCategoriesQuery()
 
-  if (!loading && !error) {
-    return (
-      <Box
-        bg={bg}
-        minW="200px"
-        borderWidth="1px"
-        overflow="hidden"
-        boxShadow="xs"
-      >
+  return (
+    <Box
+      bg={bg}
+      minW="200px"
+      borderWidth="1px"
+      overflow="hidden"
+      boxShadow="xs"
+    >
+      {" "}
+      <Skeleton isLoaded={!loading && !error}>
         <Box p={4}>
           <List minH="100%" spacing={3}>
             {data?.categories.map(subreddit => (
               <ListItem key={`subreddit-${subreddit.id}`}>
                 <NextChakraLink
-                  onMouseOver={() =>
-                    client.query({
-                      query: PostsDocument,
-                      variables: {
-                        skip: 0,
-                        first: 2,
-                        category: subreddit.name
-                      }
-                    })
-                  }
                   p={1}
                   bg={category === subreddit.name ? linkbg : linkbg2}
                   fontWeight={category === subreddit.name ? 500 : 400}
@@ -59,10 +56,9 @@ const SideMenu: React.FC = () => {
             ))}
           </List>
         </Box>
-      </Box>
-    )
-  }
-  return null
+      </Skeleton>
+    </Box>
+  )
 }
 
 export default memo(SideMenu)

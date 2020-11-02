@@ -1,12 +1,10 @@
 import Layout from "@/components/Layout"
-import dynamic from "next/dynamic"
-
-const DynamicPosts = dynamic(() => import("./Posts"))
+import Posts from "./Posts"
 
 const PostList = () => {
   return (
     <Layout title="Home">
-      <DynamicPosts />
+      <Posts />
     </Layout>
   )
 }

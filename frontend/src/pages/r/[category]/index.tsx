@@ -22,7 +22,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     variables: {
       category: params?.category ?? "react",
       skip: 0,
-      first: 4
+      first: 2
     }
   })
 
@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       initialApolloState: apolloClient.cache.extract(),
       category: params?.category ?? "react"
     },
-    revalidate: 1
+    revalidate: 5
   }
 }
 

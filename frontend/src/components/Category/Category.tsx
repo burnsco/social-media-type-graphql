@@ -15,7 +15,7 @@ const CategoryData = () => {
     variables: {
       category: category,
       skip: 0,
-      first: 4
+      first: 2
     },
     notifyOnNetworkStatusChange: true
   })

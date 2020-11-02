@@ -13,21 +13,20 @@ const SinglePostPage: React.FC = () => {
 
   const { loading, data } = usePostQuery({ variables: { postId } })
 
-  if (data && data.post && !loading) {
-    const { id, title } = data.post
-    return (
-      <Layout title="Post">
-        <Skeleton isLoaded={!loading || router.isFallback}>
-          <Stack spacing={4}>
-            <NewPost key={`post-${id}-${title}`} post={data.post} />
-            <SubmitCommentForm postId={postId} />
-            <CommentsPageWithData postId={postId} />
-          </Stack>
-        </Skeleton>
-      </Layout>
-    )
-  }
-  return null
+  return (
+    <Layout title="Post">
+      <Skeleton isLoaded={!loading || router.isFallback}>
+        <Stack spacing={4}>
+          <NewPost
+            key={`post-${data?.post?.id}-${data?.post?.title}`}
+            post={data?.post}
+          />
+          <SubmitCommentForm postId={postId} />
+          <CommentsPageWithData postId={postId} />
+        </Stack>
+      </Skeleton>
+    </Layout>
+  )
 }
 
 export default SinglePostPage
