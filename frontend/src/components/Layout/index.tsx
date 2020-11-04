@@ -49,13 +49,17 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
       </Head>
 
       <Header />
-      <Box minH="100vh" px={["0em", "2em", "4em", "6em"]} py="6em">
+      <Box px={["0em", "1em", "3em", "6em"]} py="6em">
         <Stack isInline spacing={14}>
           <Box as="main" width="full">
             {children}
           </Box>
 
-          <Box as="aside" width="200px" display={["none", "none", "block"]}>
+          <Box
+            as="aside"
+            minW="300px"
+            display={["none", "none", "none", "block"]}
+          >
             <NavigationRight />
           </Box>
         </Stack>

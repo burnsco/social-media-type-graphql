@@ -1,7 +1,16 @@
 module.exports = {
   roots: ["<rootDir>"],
+  globals: {
+    "ts-jest": {
+      tsconfig: "tsconfig.json"
+    }
+  },
   moduleFileExtensions: ["js", "ts", "tsx", "json"],
   testPathIgnorePatterns: ["<rootDir>[/\\\\](node_modules|.next)[/\\\\]"],
+  watchPlugins: [
+    "jest-watch-typeahead/filename",
+    "jest-watch-typeahead/testname"
+  ],
   moduleNameMapper: {
     "^@/generated(.*)$": "<rootDir>/src/generated$1",
     "^@/pages(.*)$": "<rootDir>/src/pages$1",
@@ -20,5 +29,6 @@ module.exports = {
       "graphql-let/jestTransformer",
       { subsequentTransformer: "babel-jest" }
     ]
-  }
+  },
+  setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"]
 }

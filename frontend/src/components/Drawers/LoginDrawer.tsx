@@ -19,14 +19,10 @@ import { useRef } from "react"
 
 function LoginDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [login, { loading, error }] = useLoginMutation()
+  const [login, { loading }] = useLoginMutation()
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
   if (loading) return null
-
-  if (error) {
-    console.log(error)
-  }
 
   return (
     <>

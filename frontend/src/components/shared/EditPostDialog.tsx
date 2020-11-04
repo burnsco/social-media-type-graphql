@@ -6,8 +6,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  IconButton,
-  Tooltip
+  IconButton
 } from "@chakra-ui/core"
 import * as React from "react"
 import { FiEdit } from "react-icons/fi"
@@ -19,22 +18,14 @@ export const EditPostDialog = () => {
 
   return (
     <>
-      <Tooltip
-        placement="top"
-        hasArrow
-        label="Edit Post"
-        bg="gray.200"
-        color="black"
-      >
-        <IconButton
-          onClick={() => setIsOpen(true)}
-          mr={2}
-          variant="outline"
-          size="xs"
-          aria-label="Edit Post"
-          icon={<FiEdit />}
-        />
-      </Tooltip>
+      <IconButton
+        onClick={() => setIsOpen(true)}
+        mr={2}
+        variant="outline"
+        size="xs"
+        aria-label="Edit Post"
+        icon={<FiEdit />}
+      />
 
       <AlertDialog
         returnFocusOnClose={false}

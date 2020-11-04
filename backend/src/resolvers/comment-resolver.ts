@@ -52,7 +52,7 @@ export class CommentResolver {
 
   @Query(() => [Comment], { nullable: true })
   async comments(
-    @Args() { first, skip, orderBy, postId }: PostArgs,
+    @Args() { first, skip, postId }: PostArgs,
     @Ctx() { em }: ContextType
   ): Promise<Comment[] | null> {
     const [comments] = await em.findAndCount(
@@ -62,7 +62,7 @@ export class CommentResolver {
         limit: first,
         offset: skip,
         orderBy: {
-          createdAt: orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC
+          createdAt: QueryOrder.DESC
         }
       }
     )

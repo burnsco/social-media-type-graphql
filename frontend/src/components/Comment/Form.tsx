@@ -9,7 +9,7 @@ import {
   Skeleton,
   useColorModeValue
 } from "@chakra-ui/core"
-import { Formik } from "formik"
+import { Form, Formik } from "formik"
 
 interface CreateSubredditProps {
   postId: string
@@ -82,7 +82,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
           }}
         >
           {formik => (
-            <form onSubmit={formik.handleSubmit}>
+            <Form>
               <InputField id="body" name="body" label="" textarea />
               <Button
                 size="sm"
@@ -93,7 +93,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
               >
                 Submit
               </Button>
-            </form>
+            </Form>
           )}
         </Formik>
         {mutationError && <Alert>{mutationError.message}</Alert>}

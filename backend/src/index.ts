@@ -10,7 +10,6 @@ import Redis from "ioredis"
 import "reflect-metadata"
 import { buildSchema } from "type-graphql"
 import { COOKIE_NAME, __prod__ } from "./constants"
-import MikroConfig from "./mikro-orm.config"
 import { CategoryResolver } from "./resolvers/category-resolver"
 import { CommentResolver } from "./resolvers/comment-resolver"
 import { PostResolver } from "./resolvers/post-resolver"
@@ -18,7 +17,7 @@ import { UserResolver } from "./resolvers/user-resolver"
 import { VoteResolver } from "./resolvers/vote-resolver"
 
 const main = async () => {
-  const orm = await MikroORM.init(MikroConfig)
+  const orm = await MikroORM.init()
 
   const migrator = orm.getMigrator()
   const migrations = await migrator.getPendingMigrations()

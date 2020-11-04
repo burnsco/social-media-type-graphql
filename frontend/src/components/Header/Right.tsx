@@ -12,7 +12,6 @@ import {
   MenuItem,
   MenuList,
   Stack,
-  Tooltip,
   useColorModeValue
 } from "@chakra-ui/core"
 import dynamic from "next/dynamic"
@@ -50,31 +49,24 @@ const HeaderMenu = () => {
       <Menu>
         <ButtonGroup spacing="4" mr="4">
           <DynamicCreatePostDrawer />
+
           <DynamicCreateCategoryDrawer />
         </ButtonGroup>
 
         <Menu>
-          <Tooltip
-            placement="bottom"
-            hasArrow
-            label="My Menu"
-            bg="gray.200"
-            color="black"
-          >
-            <IconButton
-              as={MenuButton}
-              variant="ghost"
-              aria-label="Create a Subreddit"
-              icon={
-                <Avatar
-                  size="xs"
-                  name="Ryan Florence"
-                  src="https://bit.ly/ryan-florence"
-                />
-              }
-              size="md"
-            />
-          </Tooltip>
+          <IconButton
+            as={MenuButton}
+            variant="ghost"
+            aria-label="Create a Subreddit"
+            icon={
+              <Avatar
+                size="xs"
+                name="Ryan Florence"
+                src="https://bit.ly/ryan-florence"
+              />
+            }
+            size="md"
+          />
 
           <MenuList opacity="0.7" bg={bg}>
             <MenuGroup title={data.me.username} color="blue">

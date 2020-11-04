@@ -3,12 +3,11 @@ import NewPost from "@/components/Post"
 import ShowMorePosts from "@/components/PostList/showMore"
 import { usePostsQuery } from "@/generated/graphql"
 import { NetworkStatus } from "@apollo/client"
-import { Skeleton, Text, VStack } from "@chakra-ui/core"
+import { Text, VStack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
-const CategoryData = () => {
+const CategoryPosts = () => {
   const router = useRouter()
-
   const category = router.query.category as string
 
   const { loading, data, fetchMore, networkStatus } = usePostsQuery({
@@ -19,9 +18,7 @@ const CategoryData = () => {
     },
     notifyOnNetworkStatusChange: true
   })
-
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
-
   const loadMorePosts = () => {
     fetchMore({
       variables: {
@@ -30,6 +27,8 @@ const CategoryData = () => {
     })
   }
 
+  if (loading) return null
+
   const postsBySubreddit = data?.posts ?? []
   const _categoryPostsMeta = data?._categoryPostsMeta
   const areMorePosts =
@@ -37,24 +36,22 @@ const CategoryData = () => {
 
   return (
     <Layout title={category}>
-      <Skeleton isLoaded={!loading || router.isFallback || !loadingMorePosts}>
-        {postsBySubreddit.length > 0 ? (
-          <VStack spacing={4}>
-            {postsBySubreddit.map((post, index) => (
-              <NewPost key={`post-${post.id}-${index}`} post={post} />
-            ))}
-          </VStack>
-        ) : (
-          <Text>No posts here.</Text>
-        )}
-        <ShowMorePosts
-          loadMorePosts={loadMorePosts}
-          areMorePosts={areMorePosts}
-          loadingMorePosts={loadingMorePosts}
-        />
-      </Skeleton>
+      {postsBySubreddit.length > 0 ? (
+        <VStack spacing={4}>
+          {postsBySubreddit.map((post, index) => (
+            <NewPost key={`post-${post.id}-${index}`} post={post} />
+          ))}
+        </VStack>
+      ) : (
+        <Text>No posts here.</Text>
+      )}
+      <ShowMorePosts
+        loadMorePosts={loadMorePosts}
+        areMorePosts={areMorePosts}
+        loadingMorePosts={loadingMorePosts}
+      />
     </Layout>
   )
 }
 
-export default CategoryData
+export default CategoryPosts

@@ -3,7 +3,7 @@ import SubmitCommentForm from "@/components/Comment/Form"
 import Layout from "@/components/Layout"
 import NewPost from "@/components/Post"
 import { usePostQuery } from "@/generated/graphql"
-import { Skeleton, Stack } from "@chakra-ui/core"
+import { Stack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
 const SinglePostPage: React.FC = () => {
@@ -13,18 +13,18 @@ const SinglePostPage: React.FC = () => {
 
   const { loading, data } = usePostQuery({ variables: { postId } })
 
+  if (loading) return null
+
   return (
     <Layout title="Post">
-      <Skeleton isLoaded={!loading || router.isFallback}>
-        <Stack spacing={4}>
-          <NewPost
-            key={`post-${data?.post?.id}-${data?.post?.title}`}
-            post={data?.post}
-          />
-          <SubmitCommentForm postId={postId} />
-          <CommentsPageWithData postId={postId} />
-        </Stack>
-      </Skeleton>
+      <Stack spacing={4}>
+        <NewPost
+          key={`post-${data?.post?.id}-${data?.post?.title}`}
+          post={data?.post}
+        />
+        <SubmitCommentForm postId={postId} />
+        <CommentsPageWithData comments={data?.post?.comments} />
+      </Stack>
     </Layout>
   )
 }

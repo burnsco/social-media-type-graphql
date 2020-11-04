@@ -8,6 +8,7 @@ import VoteBox from "./VoteBox"
 
 const NewPost: React.FC<PostQuery> = props => {
   const bg = useColorModeValue("white", "#202020")
+
   const { data } = useMeQuery()
   const { post } = props
 
@@ -46,7 +47,6 @@ const NewPost: React.FC<PostQuery> = props => {
               category={postCategory}
             />
           )}
-
           <PostBody title={postTitle} text={postText} link={postLink} />
           <PostFooter
             category={postCategory}

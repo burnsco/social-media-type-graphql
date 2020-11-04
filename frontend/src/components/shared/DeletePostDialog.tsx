@@ -8,8 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  IconButton,
-  Tooltip
+  IconButton
 } from "@chakra-ui/core"
 import * as React from "react"
 import { AiFillDelete } from "react-icons/ai"
@@ -26,20 +25,12 @@ export const DeletePostDialog: React.FC<{
   if (postId) {
     return (
       <>
-        <Tooltip
-          placement="bottom"
-          hasArrow
-          label="Delete Post"
-          bg="gray.200"
-          color="black"
-        >
-          <IconButton
-            onClick={() => setIsOpen(true)}
-            size="xs"
-            aria-label="Delete Post"
-            icon={<AiFillDelete />}
-          />
-        </Tooltip>
+        <IconButton
+          onClick={() => setIsOpen(true)}
+          size="xs"
+          aria-label="Delete Post"
+          icon={<AiFillDelete />}
+        />
 
         <AlertDialog
           returnFocusOnClose={false}

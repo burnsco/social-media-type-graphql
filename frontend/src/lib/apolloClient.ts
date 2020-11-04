@@ -18,6 +18,20 @@ function createApolloClient() {
 
   const cacheOptions = new InMemoryCache({
     typePolicies: {
+      Post: {
+        fields: {
+          category: {
+            merge(existing, incoming) {
+              return { ...existing, ...incoming }
+            }
+          },
+          totalVotes: {
+            merge(existing, incoming) {
+              return { ...existing, ...incoming }
+            }
+          }
+        }
+      },
       Query: {
         fields: {
           posts: concatPagination(),

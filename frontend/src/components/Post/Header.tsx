@@ -5,7 +5,6 @@ import {
   HStack,
   IconButton,
   Spacer,
-  Tooltip,
   useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
@@ -50,20 +49,12 @@ const PostHeader: React.FC<{
       {postId && (
         <Flex mr={1}>
           <NextChakraLink href="/post/edit/[id]" as={`/post/edit/${postId}}`}>
-            <Tooltip
-              placement="bottom"
-              hasArrow
-              label="Edit Post"
-              bg="gray.200"
-              color="black"
-            >
-              <IconButton
-                mr={2}
-                size="xs"
-                aria-label="Edit Post"
-                icon={<FiEdit />}
-              />
-            </Tooltip>
+            <IconButton
+              mr={2}
+              size="xs"
+              aria-label="Edit Post"
+              icon={<FiEdit />}
+            />
           </NextChakraLink>
 
           <DeletePostDialog postId={postId} category={category} />

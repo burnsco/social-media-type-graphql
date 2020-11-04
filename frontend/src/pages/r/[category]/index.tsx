@@ -31,7 +31,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       initialApolloState: apolloClient.cache.extract(),
       category: params?.category ?? "react"
     },
-    revalidate: 5
+    revalidate: 1
   }
 }
 
@@ -46,7 +46,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: true
+    fallback: "blocking"
   }
 }
 

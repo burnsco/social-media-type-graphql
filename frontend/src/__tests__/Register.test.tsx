@@ -1,8 +1,9 @@
+import RegisterPage from "@/components/Register/Register"
 import { RegisterDocument } from "@/generated/graphql"
-import RegisterPage from "@/pages/user/register"
 import { fireEvent, render } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
+import preloadAll from "../lib/jest-next-dynamic/index"
 
 const mocks = [
   {
@@ -27,6 +28,10 @@ const mocks = [
     }
   }
 ]
+
+beforeAll(async () => {
+  await preloadAll()
+})
 
 describe("Register", () => {
   it("shows required when given empty values on each field", async () => {

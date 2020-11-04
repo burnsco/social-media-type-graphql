@@ -14,7 +14,6 @@ import {
   DrawerHeader,
   DrawerOverlay,
   IconButton,
-  Tooltip,
   useDisclosure,
   useToast
 } from "@chakra-ui/core"
@@ -30,22 +29,15 @@ function CreateCategoryDrawer() {
 
   return (
     <>
-      <Tooltip
-        placement="bottom"
-        hasArrow
-        label="Create Subreddit"
-        bg="gray.200"
-        color="black"
-      >
-        <IconButton
-          variant="ghost"
-          aria-label="Create a Subreddit"
-          icon={<BsFolderPlus />}
-          ref={btnRef}
-          size="md"
-          onClick={onOpen}
-        />
-      </Tooltip>
+      <IconButton
+        variant="ghost"
+        aria-label="Create a Subreddit"
+        icon={<BsFolderPlus />}
+        ref={btnRef}
+        size="md"
+        onClick={onOpen}
+      />
+
       <Drawer
         isOpen={isOpen}
         placement="right"

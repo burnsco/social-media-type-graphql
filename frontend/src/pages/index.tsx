@@ -21,7 +21,7 @@ export async function getStaticProps() {
     props: {
       initialApolloState: apolloClient.cache.extract()
     },
-    revalidate: 5
+    revalidate: 1
   }
 }
 
