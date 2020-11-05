@@ -3,9 +3,8 @@ import { Box, Stack } from "@chakra-ui/core"
 import dynamic from "next/dynamic"
 import Head from "next/head"
 import PropTypes from "prop-types"
-import * as React from "react"
 
-const NavigationRight = dynamic(() => import("@/components/Layout/SideMenu"))
+const SideMenu = dynamic(() => import("@/components/Layout/SideMenu"))
 
 const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
   children,
@@ -60,7 +59,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
             minW="300px"
             display={["none", "none", "none", "block"]}
           >
-            <NavigationRight />
+            <SideMenu />
           </Box>
         </Stack>
       </Box>

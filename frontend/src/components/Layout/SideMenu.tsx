@@ -1,25 +1,12 @@
 import { NextChakraLink } from "@/components/shared/NextChakraLink"
 import { useCategoriesQuery } from "@/generated/graphql"
-import {
-  Box,
-  List,
-  ListItem,
-  Text,
-  useColorModeValue,
-  useToken
-} from "@chakra-ui/core"
+import { Box, List, ListItem, useColorModeValue } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { memo } from "react"
 
 const SideMenu: React.FC = () => {
   const router = useRouter()
-  const [red100, blue200] = useToken(
-    // the key within the theme, in this case `theme.colors`
-    "colors",
-    // the subkey(s), resolving to `theme.colors.red.100`
-    ["red.400", "orange.500"]
-    // a single fallback or fallback array matching the length of the previous arg
-  )
+
   const color = useColorModeValue("gray.700", "gray.300")
   const hover = useColorModeValue("black", "white")
   const bg = useColorModeValue("white", "#202020")
@@ -28,7 +15,7 @@ const SideMenu: React.FC = () => {
 
   const { category } = router.query
 
-  const { data, loading, client } = useCategoriesQuery()
+  const { data, loading } = useCategoriesQuery()
 
   if (loading) return null
 
@@ -41,13 +28,6 @@ const SideMenu: React.FC = () => {
       boxShadow="xs"
     >
       <Box h="100%" w="100%">
-        <Text
-          textAlign="center"
-          p={2}
-          bg={`linear-gradient(${red100}, ${blue200})`}
-        >
-          Categories
-        </Text>
         <List minH="100%" spacing={3} fontSize="md" p={2}>
           {data?.categories.map(subreddit => (
             <ListItem key={`subreddit-${subreddit.id}`}>

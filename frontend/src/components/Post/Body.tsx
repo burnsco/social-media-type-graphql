@@ -6,18 +6,22 @@ const PostBody: React.FC<{
   link?: string | null
 }> = ({ title, text, link }) => {
   return (
-    <Flex direction="column" my={2} flexGrow={2} width="60%">
+    <Flex direction="column" my={1} flexGrow={2} width="80%">
       <Heading fontWeight="500" fontSize="xl">
         {title}
       </Heading>
 
-      <Text fontSize="sm" mt={1}>
-        {text}
-      </Text>
+      {text && (
+        <Text fontSize="sm" mt={1} noOfLines={4}>
+          {text}
+        </Text>
+      )}
 
-      <Box mt={1}>
-        <Link href={`https://${link}`}>{link}</Link>
-      </Box>
+      {link && (
+        <Box mt={1}>
+          <Link href={`https://${link}`}>{link}</Link>
+        </Box>
+      )}
     </Flex>
   )
 }
