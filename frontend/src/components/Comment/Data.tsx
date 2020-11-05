@@ -8,12 +8,14 @@ const CommentsPageWithData: React.FC<CommentsQuery> = data => {
       <Box>
         {data.comments.length > 0 ? (
           <Stack>
-            {data.comments.map((comment, index) => (
-              <CommentPage
-                key={`comment-${comment.id}-${index}`}
-                comment={comment}
-              />
-            ))}
+            {data.comments.map(
+              (comment, index): JSX.Element => (
+                <CommentPage
+                  key={`comment-${comment.id}-${index}`}
+                  comment={comment}
+                />
+              )
+            )}
           </Stack>
         ) : (
           <Text>No comments yet</Text>
