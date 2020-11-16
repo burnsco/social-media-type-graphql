@@ -23,18 +23,31 @@
       "version": "detect"
     },
     "import/resolver": {
-      "babel-module": {}
+      "babel-module": {},
+      "alias": [
+        ["@/generated/*", "src/generated/*"],
+        ["@/pages/*", "src/pages/*"],
+        ["@/components/*", "src/components/*"],
+        ["@/lib/*", "src/lib/*"],
+        ["@/hooks/*", "src/hooks/*"],
+        ["@/utils*", "src/utils*"],
+        ["@/types/*", "src/types/*"],
+        ["@/styles/*", "src/styles/*"],
+        ["@/assets/*", "src/assets/*"]
+      ]
     }
   },
   "parserOptions": {
-    "ecmaVersion": 2017,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "env": {
-    "es6": true,
     "browser": true,
-    "jest": true,
-    "node": true
+    "es2020": true,
+    "node": true,
+    "jest": true
   },
   "rules": {
     "react/react-in-jsx-scope": "off",
