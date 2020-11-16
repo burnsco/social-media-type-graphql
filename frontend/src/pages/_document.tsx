@@ -7,7 +7,7 @@ import NextDocument, {
   NextScript
 } from "next/document"
 
-class Document extends NextDocument {
+export default class Document extends NextDocument {
   static getInitialProps(ctx: DocumentContext) {
     return NextDocument.getInitialProps(ctx)
   }
@@ -26,5 +26,3 @@ class Document extends NextDocument {
     )
   }
 }
-
-export default Document

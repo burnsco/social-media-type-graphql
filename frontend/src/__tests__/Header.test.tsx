@@ -1,10 +1,16 @@
 import Header from "@/components/Header"
+import preloadAll from "@/lib/jest-next-dynamic/index"
 import { render } from "@/utils/test-utils"
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
-import { screen } from "@testing-library/react"
-import preloadAll from "../lib/jest-next-dynamic/index"
+import { cleanup, screen } from "@testing-library/react"
+
+afterEach(cleanup)
+
+beforeAll(async () => {
+  await preloadAll()
+})
 
 const notSignedInCache = new InMemoryCache()
 notSignedInCache.writeQuery({
@@ -45,9 +51,6 @@ signedInCache.writeQuery({
     }
   }
 })
-beforeAll(async () => {
-  await preloadAll()
-})
 
 describe("Header", () => {
   it("renders basic navbar layout when not logged in", async () => {
@@ -56,7 +59,6 @@ describe("Header", () => {
         <Header />
       </MockedProvider>
     )
-
     await screen.findByRole("button", { name: /register/i })
     await screen.findByRole("button", { name: /login/i })
     expect(screen.getByRole("button", { name: /register/i })).toBeInTheDocument
@@ -70,7 +72,7 @@ describe("Header", () => {
       </MockedProvider>
     )
 
-    const user = await screen.findByText(/Corey/i)
+    const user = screen.getByRole("group", { name: "Corey" })
     expect(user).toBeInTheDocument
   })
 

@@ -18,9 +18,9 @@ import { VoteResolver } from "./resolvers/vote-resolver"
 
 const main = async () => {
   const orm = await MikroORM.init()
-
   const migrator = orm.getMigrator()
   const migrations = await migrator.getPendingMigrations()
+
   if (migrations && migrations.length > 0) {
     await migrator.up()
   }

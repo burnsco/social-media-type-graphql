@@ -33,7 +33,10 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   @UseMiddleware(isAuth)
   async me(@Ctx() { req, em }: ContextType) {
-    return await em.findOne(User, req.session.userId)
+    if (req.session.userId) {
+      return await em.findOne(User, req.session.userId)
+    }
+    return null
   }
 
   @Query(() => UserMutationResponse)

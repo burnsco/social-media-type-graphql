@@ -1,5 +1,6 @@
 import SideMenu from "@/components/Layout/SideMenu"
 import { CategoriesDocument } from "@/generated/graphql"
+import preloadAll from "@/lib/jest-next-dynamic/index"
 import {
   cleanup,
   customRender,
@@ -7,16 +8,13 @@ import {
 } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
-import preloadAll from "../lib/jest-next-dynamic/index"
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter")
 
 afterEach(cleanup)
-
 beforeAll(async () => {
   await preloadAll()
 })
-
 const mocks = {
   request: {
     query: CategoriesDocument

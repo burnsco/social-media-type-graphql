@@ -2,13 +2,7 @@ import { InputField } from "@/components/shared/InputField"
 import { useCreateCommentMutation } from "@/generated/graphql"
 import { CreateCommentSchema } from "@/types/Comment/schemas"
 import { gql } from "@apollo/client"
-import {
-  Alert,
-  Box,
-  Button,
-  Skeleton,
-  useColorModeValue
-} from "@chakra-ui/core"
+import { Alert, Box, Button, useColorModeValue } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 
 interface CreateSubredditProps {
@@ -70,34 +64,32 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
         borderColor: useColorModeValue("gray.200", "gray.600")
       }}
     >
-      <Skeleton isLoaded={!mutationLoading}>
-        <Formik
-          initialValues={{ body: "", postId }}
-          validationSchema={CreateCommentSchema}
-          onSubmit={(values, actions) => {
-            setTimeout(() => {
-              actions.setSubmitting(false)
-              handleSubmit(values)
-            }, 1000)
-          }}
-        >
-          {formik => (
-            <Form>
-              <InputField id="body" name="body" label="" textarea />
-              <Button
-                size="sm"
-                colorScheme="orange"
-                isDisabled={formik.isSubmitting || mutationLoading}
-                isLoading={formik.isSubmitting}
-                type="submit"
-              >
-                Submit
-              </Button>
-            </Form>
-          )}
-        </Formik>
-        {mutationError && <Alert>{mutationError.message}</Alert>}
-      </Skeleton>
+      <Formik
+        initialValues={{ body: "", postId }}
+        validationSchema={CreateCommentSchema}
+        onSubmit={(values, actions) => {
+          actions.setSubmitting(false)
+          setTimeout(() => {
+            handleSubmit(values)
+          }, 1000)
+        }}
+      >
+        {formik => (
+          <Form>
+            <InputField id="body" name="body" label="" textarea />
+            <Button
+              size="sm"
+              colorScheme="orange"
+              isDisabled={formik.isSubmitting || mutationLoading}
+              isLoading={formik.isSubmitting}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </Form>
+        )}
+      </Formik>
+      {mutationError && <Alert>{mutationError.message}</Alert>}
     </Box>
   )
 }

@@ -1,7 +1,7 @@
 import Layout from "@/components/Layout"
 import { UsersDocument, UsersQuery, useUserQuery } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
-import { Box, Heading, Skeleton, Text } from "@chakra-ui/core"
+import { Box, Heading, Text } from "@chakra-ui/core"
 import { GetStaticProps } from "next"
 import { useRouter } from "next/router"
 
@@ -12,18 +12,16 @@ const AboutUserPage = () => {
     variables: { data: { username: username as string } }
   })
 
-  if (data && data.user) {
+  if (data && data.user && !loading) {
     return (
       <Layout title={data.user.username}>
-        <Skeleton isLoaded={!loading}>
-          <Box>
-            <Heading>User</Heading>
+        <Box>
+          <Heading>User</Heading>
 
-            <Text>{data.user.username} </Text>
-            <Text>{data.user.email} </Text>
-            <Text>{data.user.about} </Text>
-          </Box>
-        </Skeleton>
+          <Text>{data.user.username} </Text>
+          <Text>{data.user.email} </Text>
+          <Text>{data.user.about} </Text>
+        </Box>
       </Layout>
     )
   }

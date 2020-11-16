@@ -115,18 +115,21 @@ export class PostResolver {
     @Arg("data")
     { title, text, image, video, link, categoryId }: CreatePostInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<PostMutationResponse> {
-    const post = em.create(Post, {
-      title,
-      text,
-      image,
-      video,
-      link,
-      author: em.getReference(User, req.session.userId),
-      category: em.getReference(Category, categoryId)
-    })
-    await em.persistAndFlush(post)
-    return { post }
+  ): Promise<PostMutationResponse | null> {
+    if (req.session.userId) {
+      const post = em.create(Post, {
+        title,
+        text,
+        image,
+        video,
+        link,
+        author: em.getReference(User, req.session.userId),
+        category: em.getReference(Category, categoryId)
+      })
+      await em.persistAndFlush(post)
+      return { post }
+    }
+    return null
   }
 
   @Mutation(() => PostMutationResponse)
@@ -197,16 +200,18 @@ export class PostResolver {
     const post = await em.findOne(Post, postId, {
       populate: ["comments", "votes"]
     })
-    if (post?.author.id === req.session.userId) {
-      if (post && post.comments) {
-        post.comments.removeAll()
-        if (post.votes) {
-          post.votes.removeAll()
+    if (req.session.userId) {
+      if (post?.author.id === req.session.userId) {
+        if (post && post.comments) {
+          post.comments.removeAll()
+          if (post.votes) {
+            post.votes.removeAll()
+          }
+          em.removeAndFlush(post)
+          return true
         }
-        em.removeAndFlush(post)
-        return true
+        return false
       }
-      return false
     }
     return false
   }
@@ -221,7 +226,7 @@ export class PostResolver {
       populate: ["comments"]
     })
 
-    if (post) {
+    if (post && req.session.userId) {
       const comment = em.create(Comment, {
         post,
         body: body,
@@ -254,20 +259,23 @@ export class PostResolver {
       return null
     }
 
-    const vote = em.create(Vote, {
-      post,
-      value,
-      castBy: em.getReference(User, req.session.userId)
-    })
+    if (req.session.userId) {
+      const vote = em.create(Vote, {
+        post,
+        value,
+        castBy: em.getReference(User, req.session.userId)
+      })
 
-    post.votes.add(vote)
+      post.votes.add(vote)
 
-    await em.persistAndFlush(post)
+      await em.persistAndFlush(post)
 
-    return {
-      post,
-      vote
+      return {
+        post,
+        vote
+      }
     }
+    return null
   }
 
   @FieldResolver(() => _QueryMeta, { nullable: true })

@@ -1,11 +1,17 @@
 import PostAndCommentsPage from "@/components/SinglePost/SingePostPage"
 import { PostDocument } from "@/generated/graphql"
-import { customRender, waitForElementToBeRemoved } from "@/utils/test-utils"
+import preloadAll from "@/lib/jest-next-dynamic/index"
+import {
+  cleanup,
+  customRender,
+  waitForElementToBeRemoved
+} from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
-import preloadAll from "../lib/jest-next-dynamic/index"
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter")
+
+afterEach(cleanup)
 
 beforeAll(async () => {
   await preloadAll()
@@ -58,6 +64,7 @@ describe("Single Post", () => {
       query: { id: "1", category: "react" },
       asPath: "/r/react/1"
     }))
+
     const { getByText } = customRender(
       <MockedProvider
         defaultOptions={{
@@ -70,6 +77,7 @@ describe("Single Post", () => {
         <PostAndCommentsPage />
       </MockedProvider>
     )
+
     const loading = getByText(/loading.../i)
     expect(loading).toBeInTheDocument()
 

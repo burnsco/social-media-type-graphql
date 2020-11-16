@@ -7,11 +7,9 @@ import { toErrorMap } from "@/utils/toErrorMap"
 import { Box, Button, useColorModeValue, VStack } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 
-const AccountPageView = () => {
+const AccountPageView = (): JSX.Element => {
   const bg = useColorModeValue("white", "#1A1A1B")
-
   const { data, loading: meQueryLoading } = useMeQuery()
-
   const [editUser, { loading: editUserLoading }] = useEditUserMutation()
 
   return (
@@ -51,21 +49,18 @@ const AccountPageView = () => {
                   placeholder="email"
                   label="Email"
                 />
-
                 <EditUserField
                   id="username"
                   name="username"
                   placeholder="username"
                   label="Username"
                 />
-
                 <EditUserField
                   id="about"
                   name="about"
                   placeholder="about"
                   label="About"
                 />
-
                 <PasswordField
                   id="password"
                   name="password"

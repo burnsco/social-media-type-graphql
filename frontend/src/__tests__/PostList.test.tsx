@@ -1,9 +1,9 @@
 import PostList from "@/components/PostList"
 import { PostsDocument } from "@/generated/graphql"
+import preloadAll from "@/lib/jest-next-dynamic/index"
 import { cleanup, render, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
-import preloadAll from "../lib/jest-next-dynamic/index"
 
 afterEach(cleanup)
 beforeAll(async () => {
