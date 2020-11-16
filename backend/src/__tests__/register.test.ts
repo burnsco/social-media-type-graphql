@@ -10,6 +10,10 @@ mutation Register($data: RegisterInput! ) {
       email
       username
     }
+    errors {
+      field
+      message
+    }
   }
 }
 `
@@ -33,7 +37,7 @@ describe("Register", () => {
         }
       }
     })
-    console.log(response)
+
     expect(response).toMatchObject({
       data: {
         register: {
@@ -44,6 +48,31 @@ describe("Register", () => {
         }
       }
     })
+
+    const dbUser = orm.em.findOne(User, { email: user.email })
+    expect(dbUser).toBeDefined()
+  })
+
+  it("User res. is null when username taken.", async () => {
+    const orm = await testConnection()
+    const user = {
+      username: "testUser",
+      password: "testUser",
+      email: "testUser1@gmail.com"
+    }
+    const response = await gCall({
+      source: registerMutation,
+      userId: "1",
+      variableValues: {
+        data: {
+          email: user.email,
+          username: user.username,
+          password: user.password
+        }
+      }
+    })
+
+    expect(response.data?.user).toBeFalsy()
 
     const dbUser = orm.em.findOne(User, { email: user.email })
     expect(dbUser).toBeDefined()

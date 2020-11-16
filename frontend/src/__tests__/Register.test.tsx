@@ -1,40 +1,14 @@
 import RegisterPage from "@/components/Register/Register"
-import { RegisterDocument } from "@/generated/graphql"
-import preloadAll from "@/lib/jest-next-dynamic/index"
-import { cleanup, fireEvent, render } from "@/utils/test-utils"
+import { fireEvent, render } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 
-afterEach(cleanup)
-beforeAll(async () => {
-  await preloadAll()
+jest.mock("next/dynamic", () => () => {
+  const DynamicComponent = () => null
+  DynamicComponent.displayName = "LoadableComponent"
+  DynamicComponent.preload = jest.fn()
+  return DynamicComponent
 })
-
-const mocks = [
-  {
-    request: {
-      query: RegisterDocument,
-      variables: {
-        username: "",
-        password: "",
-        email: ""
-      }
-    },
-    result: {
-      data: {
-        register: {
-          user: null,
-          errors: {
-            field: null,
-            message: null
-          }
-        }
-      }
-    }
-  }
-]
-
-jest.mock("next/dynamic", () => () => "dynamicsidemenu")
 
 describe("Register", () => {
   it("shows required when given empty values on each field", async () => {

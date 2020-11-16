@@ -1,16 +1,8 @@
 import Header from "@/components/Header"
-import preloadAll from "@/lib/jest-next-dynamic/index"
 import { render } from "@/utils/test-utils"
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
-import { cleanup } from "@testing-library/react"
-
-afterEach(cleanup)
-
-beforeAll(async () => {
-  await preloadAll()
-})
 
 const notSignedInCache = new InMemoryCache()
 notSignedInCache.writeQuery({
@@ -50,6 +42,13 @@ signedInCache.writeQuery({
       email: "coreymburns@gmail.com"
     }
   }
+})
+
+jest.mock("next/dynamic", () => () => {
+  const DynamicComponent = () => null
+  DynamicComponent.displayName = "LoadableComponent"
+  DynamicComponent.preload = jest.fn()
+  return DynamicComponent
 })
 
 describe("Header", () => {

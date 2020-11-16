@@ -1,23 +1,17 @@
 import PostAndCommentsPage from "@/components/SinglePost/SingePostPage"
 import { PostDocument } from "@/generated/graphql"
-import preloadAll from "@/lib/jest-next-dynamic/index"
-import {
-  cleanup,
-  customRender,
-  waitForElementToBeRemoved
-} from "@/utils/test-utils"
+import { customRender, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter")
 
-afterEach(cleanup)
-
-beforeAll(async () => {
-  await preloadAll()
+jest.mock("next/dynamic", () => () => {
+  const DynamicComponent = () => null
+  DynamicComponent.displayName = "LoadableComponent"
+  DynamicComponent.preload = jest.fn()
+  return DynamicComponent
 })
-
-jest.mock("next/dynamic", () => () => "dynamicsidemenu")
 
 const mocks = {
   request: {
