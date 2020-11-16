@@ -1,6 +1,12 @@
 import { NextChakraLink } from "@/components/shared/NextChakraLink"
 import { useCategoriesQuery } from "@/generated/graphql"
-import { Box, List, ListItem, useColorModeValue } from "@chakra-ui/core"
+import {
+  Box,
+  List,
+  ListItem,
+  useColorModeValue,
+  VisuallyHidden
+} from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { memo } from "react"
 
@@ -17,7 +23,7 @@ const SideMenu: React.FC = () => {
 
   const { data, loading } = useCategoriesQuery()
 
-  if (loading) return null
+  if (loading) return <VisuallyHidden>loading</VisuallyHidden>
 
   return (
     <Box

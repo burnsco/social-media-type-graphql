@@ -4,7 +4,7 @@ import { render } from "@/utils/test-utils"
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
-import { cleanup, screen } from "@testing-library/react"
+import { cleanup } from "@testing-library/react"
 
 afterEach(cleanup)
 
@@ -54,42 +54,12 @@ signedInCache.writeQuery({
 
 describe("Header", () => {
   it("renders basic navbar layout when not logged in", async () => {
-    render(
+    const { getByRole, getByText } = render(
       <MockedProvider cache={notSignedInCache}>
         <Header />
       </MockedProvider>
     )
-    await screen.findByRole("button", { name: /register/i })
-    await screen.findByRole("button", { name: /login/i })
-    expect(screen.getByRole("button", { name: /register/i })).toBeInTheDocument
-    expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument
-  })
-
-  it("renders the username of logged in user in navbar", async () => {
-    render(
-      <MockedProvider cache={signedInCache}>
-        <Header />
-      </MockedProvider>
-    )
-
-    const user = screen.getByRole("group", { name: "Corey" })
-    expect(user).toBeInTheDocument
-  })
-
-  it("renders home, submit, category buttons", async () => {
-    render(
-      <MockedProvider cache={signedInCache}>
-        <Header />
-      </MockedProvider>
-    )
-
-    await screen.findByRole("button", { name: /create post/i })
-    await screen.findByText(/reddit/i)
-    await screen.findByRole("button", { name: /create subreddit/i })
-    expect(screen.getByRole("button", { name: /create post/i }))
-      .toBeInTheDocument
-    expect(screen.getByRole("button", { name: /reddit/i })).toBeInTheDocument
-    expect(screen.getByRole("button", { name: /create subreddit/i }))
-      .toBeInTheDocument
+    const loading = getByText(/loading header/i)
+    expect(loading).toBeInTheDocument()
   })
 })

@@ -3,7 +3,7 @@ import SubmitCommentForm from "@/components/Comment/Form"
 import Layout from "@/components/Layout"
 import NewPost from "@/components/Post"
 import { usePostQuery } from "@/generated/graphql"
-import { Stack } from "@chakra-ui/core"
+import { Stack, VisuallyHidden } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
 const SinglePostPage: React.FC = () => {
@@ -13,7 +13,7 @@ const SinglePostPage: React.FC = () => {
 
   const { loading, data } = usePostQuery({ variables: { postId } })
 
-  if (loading) return null
+  if (loading) return <VisuallyHidden>loading</VisuallyHidden>
 
   return (
     <Layout title="Post">

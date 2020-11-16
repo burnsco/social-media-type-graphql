@@ -12,7 +12,8 @@ import {
   MenuItem,
   MenuList,
   Stack,
-  useColorModeValue
+  useColorModeValue,
+  VisuallyHidden
 } from "@chakra-ui/core"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
@@ -43,6 +44,8 @@ const HeaderMenu = () => {
   const bg = useColorModeValue("white", "#202020")
   const { data, loading, client } = useMeQuery({ ssr: false })
   const [logout] = useLogoutMutation()
+
+  if (loading) return <VisuallyHidden>Loading Header</VisuallyHidden>
 
   if (data && data?.me?.username && !loading) {
     return (

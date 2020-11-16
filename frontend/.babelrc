@@ -2,16 +2,6 @@
   "presets": ["next/babel"],
   "env": {
     "test": {
-      "presets": [
-        [
-          "next/babel",
-          {
-            "transform-runtime": {
-              "corejs": false
-            }
-          }
-        ]
-      ],
       "plugins": ["babel-plugin-dynamic-import-node"]
     }
   },

@@ -34,11 +34,10 @@ export async function testConnection() {
 }
 
 export async function wipeDatabase(em: EntityManager) {
-  await em.getRepository(Base).nativeDelete({})
-  await em.getRepository(Category).nativeDelete({})
-  await em.getRepository(User).nativeDelete({})
-  await em.getRepository(Post).nativeDelete({})
-  await em.getRepository(Comment).nativeDelete({})
-  await em.getRepository(Vote).nativeDelete({})
+  await em.nativeDelete(Category, {})
+  await em.nativeDelete(User, {})
+  await em.nativeDelete(Post, {})
+  await em.nativeDelete(Comment, {})
+  await em.nativeDelete(Vote, {})
   em.clear()
 }

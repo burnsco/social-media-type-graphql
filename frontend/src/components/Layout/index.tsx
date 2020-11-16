@@ -4,7 +4,7 @@ import dynamic from "next/dynamic"
 import Head from "next/head"
 import PropTypes from "prop-types"
 
-const SideMenu = dynamic(() => import("@/components/Layout/SideMenu"))
+const DynamicSideMenu = dynamic(() => import("@/components/Layout/SideMenu"))
 
 const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
   children,
@@ -59,7 +59,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
             minW="300px"
             display={["none", "none", "none", "block"]}
           >
-            <SideMenu />
+            <DynamicSideMenu />
           </Box>
         </Stack>
       </Box>

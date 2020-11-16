@@ -17,6 +17,8 @@ beforeAll(async () => {
   await preloadAll()
 })
 
+jest.mock("next/dynamic", () => () => "dynamicsidemenu")
+
 const mocks = {
   request: {
     query: PostDocument,
@@ -78,7 +80,7 @@ describe("Single Post", () => {
       </MockedProvider>
     )
 
-    const loading = getByText(/loading.../i)
+    const loading = getByText(/loading/i)
     expect(loading).toBeInTheDocument()
 
     await waitForElementToBeRemoved(loading).then(() => {

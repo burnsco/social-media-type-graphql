@@ -1,9 +1,7 @@
 import Layout from "@/components/Layout"
 import { Wrapper } from "@/components/Layout/wrapper"
 import { ChakraField } from "@/components/shared/ChakraField"
-import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
-import { RegisterSchema } from "@/types/User/schemas"
-import { RegisterUserInputType } from "@/types/User/types"
+import { MeDocument, MeQuery } from "@/generated/graphql"
 import { toErrorMap } from "@/utils/toErrorMap"
 import {
   Box,
@@ -14,24 +12,27 @@ import {
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
+import { useLoginMutation } from "../../generated/graphql"
+import { LoginSchema } from "../../types/User/schemas"
+import { LoginUserInputType } from "../../types/User/types"
 
-const RegisterPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
   const toast = useToast()
-  const [register, { loading }] = useRegisterMutation()
+  const [Login, { loading }] = useLoginMutation()
 
-  if (loading) return <VisuallyHidden>Attempting to Register...</VisuallyHidden>
+  if (loading) return <VisuallyHidden>Attempting to Login</VisuallyHidden>
 
   return (
-    <Layout title="Register">
+    <Layout title="Login">
       <Box shadow="sm" borderWidth="1px" rounded="md" bg={bg} p={2}>
         <Wrapper variant="small">
           <Formik
-            initialValues={RegisterUserInputType}
-            validationSchema={RegisterSchema}
+            initialValues={LoginUserInputType}
+            validationSchema={LoginSchema}
             onSubmit={async (values, { setErrors }) => {
-              const response = await register({
+              const response = await Login({
                 variables: {
                   data: {
                     ...values
@@ -42,36 +43,29 @@ const RegisterPage: React.FC = () => {
                     query: MeDocument,
                     data: {
                       __typename: "Query",
-                      me: data?.register.user
+                      me: data?.login.user
                     }
                   })
                 }
               })
-              if (response.data?.register?.user) {
+              if (response.data?.login?.user) {
                 toast({
                   id: "success",
-                  title: `Welcome ${response.data.register.user.username}!`,
+                  title: `Welcome ${response.data.login.user.username}!`,
                   description: "Your account was created successfully.",
                   status: "success",
                   duration: 9000,
                   isClosable: true
                 })
                 router.push("/")
-              } else if (response.data?.register.errors) {
-                setErrors(toErrorMap(response.data.register.errors))
+              } else if (response.data?.login.errors) {
+                setErrors(toErrorMap(response.data.login.errors))
               }
             }}
           >
             {({ isSubmitting }) => (
               <Form>
                 <ChakraField name="email" placeholder="email" label="Email" />
-                <Box my="4">
-                  <ChakraField
-                    name="username"
-                    placeholder="username"
-                    label="Username"
-                  />
-                </Box>
                 <Box my="4">
                   <ChakraField
                     name="password"
@@ -98,4 +92,4 @@ const RegisterPage: React.FC = () => {
   )
 }
 
-export default RegisterPage
+export default LoginPage

@@ -1,5 +1,5 @@
-import RegisterPage from "@/components/Register/Register"
-import { RegisterDocument } from "@/generated/graphql"
+import LoginPage from "@/components/Login/Login"
+import { LoginDocument } from "@/generated/graphql"
 import preloadAll from "@/lib/jest-next-dynamic/index"
 import { cleanup, fireEvent, render } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
@@ -13,16 +13,15 @@ beforeAll(async () => {
 const mocks = [
   {
     request: {
-      query: RegisterDocument,
+      query: LoginDocument,
       variables: {
-        username: "",
-        password: "",
-        email: ""
+        email: "coreymburns@gmail.com",
+        password: "opiate15150"
       }
     },
     result: {
       data: {
-        register: {
+        login: {
           user: null,
           errors: {
             field: null,
@@ -36,11 +35,11 @@ const mocks = [
 
 jest.mock("next/dynamic", () => () => "dynamicsidemenu")
 
-describe("Register", () => {
+describe("Login", () => {
   it("shows required when given empty values on each field", async () => {
     const { getByRole, getByText, findAllByText } = render(
       <MockedProvider mocks={[]} addTypename={false}>
-        <RegisterPage />
+        <LoginPage />
       </MockedProvider>
     )
     const submit = getByRole("button", { name: /submit/i })
@@ -51,6 +50,6 @@ describe("Register", () => {
     expect(loading).toBeInTheDocument()
 
     const warning = await findAllByText(/required/i)
-    expect(warning).toHaveLength(3)
+    expect(warning).toHaveLength(2)
   })
 })

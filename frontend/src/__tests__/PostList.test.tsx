@@ -10,6 +10,8 @@ beforeAll(async () => {
   await preloadAll()
 })
 
+jest.mock("next/dynamic", () => () => "dynamicsidemenu")
+
 const mocks = {
   request: {
     query: PostsDocument,
@@ -79,7 +81,7 @@ const mocks = {
 }
 
 describe("PostList", () => {
-  it("Renders 'loading' then 2 posts.' ", async () => {
+  it("Renders 'loading' then 'no posts here'.' ", async () => {
     const { debug, getByText } = render(
       <MockedProvider
         defaultOptions={{
@@ -92,14 +94,14 @@ describe("PostList", () => {
         <PostList />
       </MockedProvider>
     )
-    const loading = getByText(/loading/i)
+    const loading = getByText("loading")
     expect(loading).toBeInTheDocument()
 
     await waitForElementToBeRemoved(loading).then(() =>
       console.log("element is no longer in DOM")
     )
 
-    const post1 = getByText(/react rocks!/i)
+    const post1 = getByText(/no posts here/i)
     expect(post1).toBeInTheDocument()
   })
 })

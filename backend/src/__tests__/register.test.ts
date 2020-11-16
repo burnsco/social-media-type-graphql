@@ -14,8 +14,8 @@ mutation Register($data: RegisterInput! ) {
 }
 `
 
-describe("Registers", () => {
-  it("User and can query user data in db.", async () => {
+describe("Register", () => {
+  it("User response and found in DB.", async () => {
     const orm = await testConnection()
     const user = {
       username: faker.fake("{{internet.userName}}"),
@@ -27,11 +27,13 @@ describe("Registers", () => {
       userId: "1",
       variableValues: {
         data: {
-          ...user
+          email: user.email,
+          username: user.username,
+          password: user.password
         }
       }
     })
-
+    console.log(response)
     expect(response).toMatchObject({
       data: {
         register: {
