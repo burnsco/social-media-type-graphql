@@ -1,9 +1,9 @@
+import Layout from "@/components/Layout"
 import { ChakraField } from "@/components/shared/ChakraField"
 import { useEditUserMutation, useMeQuery } from "@/generated/graphql"
 import { EditUserSchema } from "@/types/User/schemas"
 import { Box, Button, Spinner, useColorModeValue } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-import Layout from "../Layout"
 
 const ProfilePage = () => {
   const bg = useColorModeValue("white", "#202020")

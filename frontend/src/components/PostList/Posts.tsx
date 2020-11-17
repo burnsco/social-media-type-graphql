@@ -1,8 +1,8 @@
+import NewPost from "@/components/Post"
 import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/pagination"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/core"
-import NewPost from "../Post"
 import ShowMorePosts from "./showMore"
 
 const Posts = () => {
