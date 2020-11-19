@@ -5,7 +5,7 @@ import { NetworkStatus } from "@apollo/client"
 import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/core"
 import ShowMorePosts from "./showMore"
 
-const Posts = () => {
+const Posts = (): JSX.Element => {
   const { loading, data, fetchMore, networkStatus } = usePostsQuery({
     variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true

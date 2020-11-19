@@ -18,10 +18,10 @@ mutation CreateCategory($data: CategoryInput! ) {
 `
 
 describe("Category", () => {
-  it("User can create a category", async () => {
+  it("User can create a category and is found in DB.", async () => {
     const orm = await testConnection()
     const category = {
-      name: faker.fake("{{internet.userName}}")
+      name: faker.fake("{{random.word}}")
     }
     const response = await gCall({
       source: createCategoryMutation,

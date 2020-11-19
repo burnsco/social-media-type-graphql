@@ -65,7 +65,7 @@ const HeaderMenu = () => {
               <Avatar
                 size="xs"
                 name="Ryan Florence"
-                src="https://bit.ly/ryan-florence"
+                src={"https://bit.ly/ryan-florence" || data?.me.avatar}
               />
             }
             size="md"

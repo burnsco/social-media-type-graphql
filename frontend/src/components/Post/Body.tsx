@@ -19,7 +19,7 @@ const PostBody: React.FC<{
 
       {link && (
         <Box mt={1}>
-          <Link href={`https://${link}`}>{link}</Link>
+          <Link href={`${link}`}>{link}</Link>
         </Box>
       )}
     </Flex>

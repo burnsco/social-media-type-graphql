@@ -9,6 +9,7 @@ mutation Register($data: RegisterInput! ) {
     user {
       email
       username
+      avatar
     }
     errors {
       field
@@ -23,6 +24,7 @@ describe("Register", () => {
     const orm = await testConnection()
     const user = {
       username: faker.fake("{{internet.userName}}"),
+      avatar: faker.fake("{{image.avatar}}"),
       password: faker.fake("{{internet.password}}"),
       email: faker.fake("{{internet.email}}")
     }

@@ -1,5 +1,5 @@
 import Header from "@/components/Header"
-import { render } from "@/utils/test-utils"
+import { render, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
@@ -53,12 +53,14 @@ jest.mock("next/dynamic", () => () => {
 
 describe("Header", () => {
   it("renders basic navbar layout when not logged in", async () => {
-    const { getByRole, getByText } = render(
+    const { getByText, debug } = render(
       <MockedProvider cache={notSignedInCache}>
         <Header />
       </MockedProvider>
     )
     const loading = getByText(/loading header/i)
     expect(loading).toBeInTheDocument()
+
+    await waitForElementToBeRemoved(loading).then(() => debug())
   })
 })

@@ -14,7 +14,7 @@ mutation CreatePost($data: CreatePostInput! ) {
 describe("Post", () => {
   it("User can create a Post", async () => {
     const post = {
-      title: faker.fake("{{internet.userName}}")
+      title: faker.fake("{{random.words}")
     }
     const response = await gCall({
       source: createPostMutation,

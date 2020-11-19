@@ -25,8 +25,8 @@ const AccountPageView = (): JSX.Element => {
           }}
           validationSchema={EditUserSchema}
           onSubmit={async (values, actions) => {
+            actions.setSubmitting(false)
             setTimeout(async () => {
-              actions.setSubmitting(false)
               const response = await editUser({
                 variables: {
                   data: {

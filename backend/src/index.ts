@@ -16,7 +16,7 @@ import { PostResolver } from "./resolvers/post-resolver"
 import { UserResolver } from "./resolvers/user-resolver"
 import { VoteResolver } from "./resolvers/vote-resolver"
 
-const main = async () => {
+const main = async (): Promise<void> => {
   const orm = await MikroORM.init()
   const migrator = orm.getMigrator()
   const migrations = await migrator.getPendingMigrations()
@@ -30,6 +30,7 @@ const main = async () => {
   const app = express()
 
   console.log(chalk.green("Initializing Redis..."))
+
   const redisStore = connectRedis(session)
   const redisClient = new Redis(process.env.REDIS_URL)
 
@@ -61,6 +62,7 @@ const main = async () => {
   )
 
   console.log(chalk.yellow("Starting ApolloServer..."))
+
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [

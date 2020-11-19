@@ -3,7 +3,7 @@ import NewPost from "@/components/Post"
 import ShowMorePosts from "@/components/PostList/showMore"
 import { usePostsQuery } from "@/generated/graphql"
 import { NetworkStatus } from "@apollo/client"
-import { Text, VStack } from "@chakra-ui/core"
+import { Text, VisuallyHidden, VStack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
 const CategoryPosts = () => {
@@ -27,7 +27,7 @@ const CategoryPosts = () => {
     })
   }
 
-  if (loading) return null
+  if (loading) return <VisuallyHidden>Loading</VisuallyHidden>
 
   const postsBySubreddit = data?.posts ?? []
   const _categoryPostsMeta = data?._categoryPostsMeta
