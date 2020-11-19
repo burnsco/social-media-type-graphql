@@ -1,15 +1,12 @@
-import { Button, Flex, HStack, useColorModeValue } from "@chakra-ui/core"
-import React from "react"
+import { NextChakraLink } from "@/components/shared/NextChakraLink"
+import { Button, Flex, HStack } from "@chakra-ui/core"
 import { RiMessage2Fill } from "react-icons/ri"
-import { NextChakraLink } from "../shared/NextChakraLink"
 
 const PostFooter: React.FC<{
   category?: string | null
   id?: string | null
   commentsCount?: number
-}> = ({ category, id, commentsCount }) => {
-  const linkbg = useColorModeValue("gray.100", "gray.600")
-
+}> = ({ category, id, commentsCount }): JSX.Element => {
   return (
     <Flex width="100%" fontSize="sm" fontWeight="500" p={1}>
       <Button size="sm" p={1} variant="ghost" color="#818384" borderRadius={2}>

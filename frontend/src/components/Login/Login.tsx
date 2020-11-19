@@ -1,7 +1,9 @@
 import Layout from "@/components/Layout"
 import { Wrapper } from "@/components/Layout/wrapper"
 import { ChakraField } from "@/components/shared/ChakraField"
-import { MeDocument, MeQuery } from "@/generated/graphql"
+import { MeDocument, MeQuery, useLoginMutation } from "@/generated/graphql"
+import { LoginSchema } from "@/types/User/schemas"
+import { LoginUserInputType } from "@/types/User/types"
 import { toErrorMap } from "@/utils/toErrorMap"
 import {
   Box,
@@ -12,17 +14,14 @@ import {
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
-import { useLoginMutation } from "../../generated/graphql"
-import { LoginSchema } from "../../types/User/schemas"
-import { LoginUserInputType } from "../../types/User/types"
 
-const LoginPage: React.FC = () => {
+const LoginPage: React.FC = (): JSX.Element => {
   const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
   const toast = useToast()
-  const [Login, { loading }] = useLoginMutation()
+  const [Login, { loading: loginAttempt }] = useLoginMutation()
 
-  if (loading) return <VisuallyHidden>Attempting to Login</VisuallyHidden>
+  if (loginAttempt) return <VisuallyHidden>Attempting to Login</VisuallyHidden>
 
   return (
     <Layout title="Login">
@@ -78,7 +77,7 @@ const LoginPage: React.FC = () => {
                   mt={4}
                   colorScheme="red"
                   type="submit"
-                  isDisabled={loading || isSubmitting}
+                  isDisabled={isSubmitting}
                   isLoading={isSubmitting}
                 >
                   Submit

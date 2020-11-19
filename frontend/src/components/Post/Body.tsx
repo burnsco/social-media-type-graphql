@@ -4,7 +4,7 @@ const PostBody: React.FC<{
   title?: string | null
   text?: string | null
   link?: string | null
-}> = ({ title, text, link }) => {
+}> = ({ title, text, link }): JSX.Element => {
   return (
     <Flex direction="column" my={1} flexGrow={2} width="80%">
       <Heading fontWeight="500" fontSize="xl">

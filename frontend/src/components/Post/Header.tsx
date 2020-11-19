@@ -1,3 +1,5 @@
+import { DeletePostDialog } from "@/components/shared/DeletePostDialog"
+import { NextChakraLink } from "@/components/shared/NextChakraLink"
 import { timeDifferenceForDate } from "@/utils/timeDifferenceForDate"
 import {
   Box,
@@ -8,10 +10,7 @@ import {
   useColorModeValue
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
-import React from "react"
 import { FiEdit } from "react-icons/fi"
-import { DeletePostDialog } from "../shared/DeletePostDialog"
-import { NextChakraLink } from "../shared/NextChakraLink"
 import PostCategory from "./Category"
 
 const PostHeader: React.FC<{

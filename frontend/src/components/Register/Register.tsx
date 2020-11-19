@@ -15,13 +15,14 @@ import {
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 
-const RegisterPage: React.FC = () => {
+const RegisterPage: React.FC = (): JSX.Element => {
   const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
   const toast = useToast()
-  const [register, { loading }] = useRegisterMutation()
+  const [register, { loading: registerAttempt }] = useRegisterMutation()
 
-  if (loading) return <VisuallyHidden>Attempting to Register...</VisuallyHidden>
+  if (registerAttempt)
+    return <VisuallyHidden>Attempting to Register...</VisuallyHidden>
 
   return (
     <Layout title="Register">
@@ -84,7 +85,7 @@ const RegisterPage: React.FC = () => {
                   mt={4}
                   colorScheme="red"
                   type="submit"
-                  isDisabled={loading || isSubmitting}
+                  isDisabled={isSubmitting}
                   isLoading={isSubmitting}
                 >
                   Submit

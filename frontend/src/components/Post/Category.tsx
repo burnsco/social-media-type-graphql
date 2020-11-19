@@ -1,11 +1,11 @@
+import { NextChakraLink } from "@/components/shared/NextChakraLink"
 import { Box } from "@chakra-ui/core"
-import { NextChakraLink } from "../shared/NextChakraLink"
 
 type PostCategoryProps = {
   category?: string | null
 }
 
-const PostCategory = (props: PostCategoryProps) => (
+const PostCategory = (props: PostCategoryProps): JSX.Element => (
   <Box
     fontWeight="600"
     color="orange.500"

@@ -24,20 +24,19 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useColorModeValue,
   useDisclosure,
   useToast
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { ImPencil2 } from "react-icons/im"
 
 function CreatePostDrawer() {
   useIsAuth()
 
   const router = useRouter()
-  const bg = useColorModeValue("white", "#1A1A1B")
+
   const toast = useToast()
 
   const [getSubreddits, { data }] = useCategoriesLazyQuery()

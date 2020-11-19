@@ -3,7 +3,7 @@ import { Box, useColorModeValue } from "@chakra-ui/core"
 const PostContainer: React.FC<{ children: React.ReactNode; bg: string }> = ({
   children,
   bg
-}) => {
+}): JSX.Element => {
   return (
     <Box
       boxShadow="sm"
