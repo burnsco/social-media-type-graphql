@@ -92,7 +92,7 @@ const CreatePost: React.FunctionComponent = () => {
                   name="categoryId"
                   label=""
                 >
-                  {data?.categories.map(subreddit => (
+                  {data?.categories?.map(subreddit => (
                     <option
                       key={`subreddit-${subreddit.name}-sidemenu`}
                       value={subreddit.id}
