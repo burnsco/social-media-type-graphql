@@ -17,7 +17,7 @@ export type Scalars = {
 
 export type Query = {
   __typename?: "Query"
-  categories: Array<Category>
+  categories?: Maybe<Array<Category>>
   comment?: Maybe<Comment>
   comments?: Maybe<Array<Comment>>
   _allPostsMeta: _QueryMeta
@@ -29,6 +29,13 @@ export type Query = {
   isUserOrEmailTaken: UserMutationResponse
   user: User
   users: Array<User>
+}
+
+export type QueryCategoriesArgs = {
+  first?: Maybe<Scalars["Int"]>
+  skip?: Maybe<Scalars["Int"]>
+  orderBy?: Maybe<Scalars["String"]>
+  name?: Maybe<Scalars["String"]>
 }
 
 export type QueryCommentArgs = {
@@ -524,10 +531,17 @@ export type RegisterMutation = { __typename?: "Mutation" } & {
   }
 }
 
-export type CategoriesQueryVariables = Exact<{ [key: string]: never }>
+export type CategoriesQueryVariables = Exact<{
+  first?: Maybe<Scalars["Int"]>
+  orderBy?: Maybe<Scalars["String"]>
+  skip?: Maybe<Scalars["Int"]>
+  name?: Maybe<Scalars["String"]>
+}>
 
 export type CategoriesQuery = { __typename?: "Query" } & {
-  categories: Array<{ __typename?: "Category" } & Pick<Category, "id" | "name">>
+  categories?: Maybe<
+    Array<{ __typename?: "Category" } & Pick<Category, "id" | "name">>
+  >
 }
 
 export type CommentQueryVariables = Exact<{
@@ -1297,8 +1311,8 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<
   RegisterMutationVariables
 >
 export const CategoriesDocument = gql`
-  query Categories {
-    categories {
+  query Categories($first: Int, $orderBy: String, $skip: Int, $name: String) {
+    categories(first: $first, orderBy: $orderBy, skip: $skip, name: $name) {
       id
       name
     }
@@ -1317,6 +1331,10 @@ export const CategoriesDocument = gql`
  * @example
  * const { data, loading, error } = useCategoriesQuery({
  *   variables: {
+ *      first: // value for 'first'
+ *      orderBy: // value for 'orderBy'
+ *      skip: // value for 'skip'
+ *      name: // value for 'name'
  *   },
  * });
  */
@@ -1350,6 +1368,9 @@ export type CategoriesQueryResult = Apollo.QueryResult<
   CategoriesQuery,
   CategoriesQueryVariables
 >
+export function refetchCategoriesQuery(variables?: CategoriesQueryVariables) {
+  return { query: CategoriesDocument, variables: variables }
+}
 export const CommentDocument = gql`
   query Comment($postId: ID) {
     comment(postId: $postId) {
@@ -1403,6 +1424,9 @@ export type CommentQueryResult = Apollo.QueryResult<
   CommentQuery,
   CommentQueryVariables
 >
+export function refetchCommentQuery(variables?: CommentQueryVariables) {
+  return { query: CommentDocument, variables: variables }
+}
 export const CommentsDocument = gql`
   query Comments($first: Int, $orderBy: String, $skip: Int, $postId: ID) {
     comments(first: $first, orderBy: $orderBy, skip: $skip, postId: $postId) {
@@ -1464,6 +1488,9 @@ export type CommentsQueryResult = Apollo.QueryResult<
   CommentsQuery,
   CommentsQueryVariables
 >
+export function refetchCommentsQuery(variables?: CommentsQueryVariables) {
+  return { query: CommentsDocument, variables: variables }
+}
 export const IsUserOrEmailTakenDocument = gql`
   query IsUserOrEmailTaken($data: CheckAvailability!) {
     isUserOrEmailTaken(data: $data) {
@@ -1528,6 +1555,11 @@ export type IsUserOrEmailTakenQueryResult = Apollo.QueryResult<
   IsUserOrEmailTakenQuery,
   IsUserOrEmailTakenQueryVariables
 >
+export function refetchIsUserOrEmailTakenQuery(
+  variables?: IsUserOrEmailTakenQueryVariables
+) {
+  return { query: IsUserOrEmailTakenDocument, variables: variables }
+}
 export const MeDocument = gql`
   query Me {
     me {
@@ -1568,6 +1600,9 @@ export function useMeLazyQuery(
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>
+export function refetchMeQuery(variables?: MeQueryVariables) {
+  return { query: MeDocument, variables: variables }
+}
 export const PostDocument = gql`
   query Post($postId: ID) {
     post(postId: $postId) {
@@ -1643,6 +1678,9 @@ export function usePostLazyQuery(
 export type PostQueryHookResult = ReturnType<typeof usePostQuery>
 export type PostLazyQueryHookResult = ReturnType<typeof usePostLazyQuery>
 export type PostQueryResult = Apollo.QueryResult<PostQuery, PostQueryVariables>
+export function refetchPostQuery(variables?: PostQueryVariables) {
+  return { query: PostDocument, variables: variables }
+}
 export const PostsDocument = gql`
   query Posts($first: Int, $orderBy: String, $skip: Int, $category: String) {
     posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
@@ -1730,6 +1768,9 @@ export type PostsQueryResult = Apollo.QueryResult<
   PostsQuery,
   PostsQueryVariables
 >
+export function refetchPostsQuery(variables?: PostsQueryVariables) {
+  return { query: PostsDocument, variables: variables }
+}
 export const UpdateMetaDocument = gql`
   query UpdateMeta($category: String) {
     _allPostsMeta {
@@ -1787,6 +1828,9 @@ export type UpdateMetaQueryResult = Apollo.QueryResult<
   UpdateMetaQuery,
   UpdateMetaQueryVariables
 >
+export function refetchUpdateMetaQuery(variables?: UpdateMetaQueryVariables) {
+  return { query: UpdateMetaDocument, variables: variables }
+}
 export const UserDocument = gql`
   query User($data: EditUserInput!) {
     user(data: $data) {
@@ -1832,6 +1876,9 @@ export function useUserLazyQuery(
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>
+export function refetchUserQuery(variables?: UserQueryVariables) {
+  return { query: UserDocument, variables: variables }
+}
 export const UsersDocument = gql`
   query Users {
     users {
@@ -1879,3 +1926,6 @@ export type UsersQueryResult = Apollo.QueryResult<
   UsersQuery,
   UsersQueryVariables
 >
+export function refetchUsersQuery(variables?: UsersQueryVariables) {
+  return { query: UsersDocument, variables: variables }
+}

@@ -1,5 +1,7 @@
+import { QueryOrder } from "@mikro-orm/core"
 import {
   Arg,
+  Args,
   Ctx,
   Mutation,
   Query,
@@ -10,14 +12,47 @@ import { subRedditNameInUse } from "../constants"
 import { Category } from "../entities/Category"
 import { ContextType } from "../types"
 import { isAuth } from "../utils/isAuth"
+import { CategoryArgs } from "./args/category-args"
 import { CategoryInput } from "./inputs/category-input"
 import { CategoryMutationResponse } from "./response/category-response"
 
 @Resolver(() => Category)
 export class CategoryResolver {
-  @Query(() => [Category])
-  async categories(@Ctx() { em }: ContextType): Promise<Category[]> {
-    return await em.find(Category, {})
+  @Query(() => [Category], { nullable: true })
+  async categories(
+    @Args() { first, skip, name, orderBy }: CategoryArgs,
+    @Ctx() { em }: ContextType
+  ): Promise<Category[] | null> {
+    if (name) {
+      const [categories] = await em.findAndCount(
+        Category,
+        {},
+        {
+          limit: first,
+          offset: skip,
+          orderBy: {
+            createdAt: orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC
+          }
+        }
+      )
+      if (categories) {
+        return categories.filter(cat => cat.name.includes(name))
+      }
+      return categories
+    }
+
+    const [categories] = await em.findAndCount(
+      Category,
+      {},
+      {
+        limit: first,
+        offset: skip,
+        orderBy: {
+          createdAt: orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC
+        }
+      }
+    )
+    return categories
   }
 
   @Mutation(() => CategoryMutationResponse)

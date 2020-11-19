@@ -6,7 +6,7 @@ import { NetworkStatus } from "@apollo/client"
 import { Text, VisuallyHidden, VStack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
-const CategoryPosts = () => {
+const CategoryPosts = (): JSX.Element => {
   const router = useRouter()
   const category = router.query.category as string
 

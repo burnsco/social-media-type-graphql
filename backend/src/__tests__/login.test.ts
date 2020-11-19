@@ -10,10 +10,6 @@ mutation Login($data: LoginInput! ) {
   }
 }
 `
-// afterAll(async () => {
-//   const orm = await testConnection()
-//   await wipeDatabase(orm.em)
-// })
 
 describe("Login", () => {
   it("User can login successfully.", async () => {

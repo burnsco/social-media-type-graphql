@@ -1,5 +1,5 @@
-query Categories {
-  categories {
+query Categories($first: Int, $orderBy: String, $skip: Int, $name: String) {
+  categories(first: $first, orderBy: $orderBy, skip: $skip, name: $name) {
     id
     name
   }

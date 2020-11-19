@@ -14,14 +14,14 @@ mutation CreateComment($data: CommentInput! ) {
 describe("Category", () => {
   it("User can create a category", async () => {
     const comment = {
-      body: faker.fake("{{internet.userName}}")
+      body: faker.fake("{{random.word}}")
     }
     const response = await gCall({
       source: createCommentMutation,
-      userId: "87584d89-fc02-4a12-ba8e-24657162555a",
+      userId: "14afd9b0-c36c-40b1-961b-fcd057ceb749",
       variableValues: {
         data: {
-          postId: "e27fe7ed-495e-42e2-962a-3d6df5077ab9",
+          postId: "69f8ed4b-be3f-4363-838e-2c1c50897ee3",
           body: comment.body
         }
       }
