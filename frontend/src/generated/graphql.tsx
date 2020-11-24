@@ -787,9 +787,7 @@ export function useCreateCommentMutation(
 export type CreateCommentMutationHookResult = ReturnType<
   typeof useCreateCommentMutation
 >
-export type CreateCommentMutationResult = Apollo.MutationResult<
-  CreateCommentMutation
->
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>
 export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<
   CreateCommentMutation,
   CreateCommentMutationVariables
@@ -926,9 +924,7 @@ export function useCreateSubredditMutation(
 export type CreateSubredditMutationHookResult = ReturnType<
   typeof useCreateSubredditMutation
 >
-export type CreateSubredditMutationResult = Apollo.MutationResult<
-  CreateSubredditMutation
->
+export type CreateSubredditMutationResult = Apollo.MutationResult<CreateSubredditMutation>
 export type CreateSubredditMutationOptions = Apollo.BaseMutationOptions<
   CreateSubredditMutation,
   CreateSubredditMutationVariables

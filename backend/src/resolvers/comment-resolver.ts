@@ -1,4 +1,4 @@
-import { QueryOrder } from "@mikro-orm/core"
+import { QueryOrder, wrap } from "@mikro-orm/core"
 import {
   Arg,
   Args,
@@ -29,7 +29,9 @@ export class CommentResolver {
   ): Promise<CommentMutationResponse> {
     const comment = await em.findOne(Comment, { post: { id: postId } })
     if (comment) {
-      comment.body = body
+      wrap(comment).assign({
+        body
+      })
 
       await em.persistAndFlush(comment)
 

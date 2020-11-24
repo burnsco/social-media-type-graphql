@@ -10,10 +10,8 @@ import {
 } from "type-graphql"
 import {
   COOKIE_NAME,
-  emailAvailable,
   emailInUse,
   emailOrPasswordIsIncorrect,
-  usernameAvailable,
   usernameInUse
 } from "../constants"
 import { User } from "../entities/User"
@@ -39,30 +37,16 @@ export class UserResolver {
     return null
   }
 
-  @Query(() => UserMutationResponse)
-  async isUserOrEmailTaken(
-    @Arg("data") data: CheckAvailability,
+  @Mutation(() => Boolean)
+  async forgotPassword(
+    @Arg("email") data: CheckAvailability,
     @Ctx() { em }: ContextType
-  ): Promise<UserMutationResponse> {
-    const errors = []
-    const isUserTaken = await em.findOne(User, { username: data.username })
-    const isEmailTaken = await em.findOne(User, { email: data.email })
-
-    if (isUserTaken) {
-      errors.push(usernameInUse)
+  ): Promise<boolean> {
+    const user = await em.findOne(User, { email: data.email })
+    if (user) {
+      return true
     }
-    if (isEmailTaken) {
-      errors.push(emailInUse)
-    }
-    if (!isEmailTaken) {
-      errors.push(emailAvailable)
-    }
-    if (!isUserTaken) {
-      errors.push(usernameAvailable)
-    }
-    return {
-      errors
-    }
+    return false
   }
 
   @Query(() => User)
@@ -160,8 +144,15 @@ export class UserResolver {
     @Arg("data") { email, password }: LoginInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse | null> {
+    const errors = []
     const user = await em.findOne(User, { email: email })
-    if (!user) return null
+
+    if (!user) {
+      errors.push(emailOrPasswordIsIncorrect)
+      return {
+        errors
+      }
+    }
 
     const valid = await argon2.verify(user.password, password)
     if (!valid) {

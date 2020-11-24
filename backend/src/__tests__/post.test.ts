@@ -1,5 +1,7 @@
 import faker from "faker"
 import { gCall } from "../testing/gCall"
+import { testConnection } from "../testing/testConn"
+import { Post } from "./../entities/Post"
 
 const createPostMutation = `
 mutation CreatePost($data: CreatePostInput! ) {
@@ -12,7 +14,8 @@ mutation CreatePost($data: CreatePostInput! ) {
 `
 
 describe("Post", () => {
-  it("User can create a Post", async () => {
+  it("User can create a post and is found in DB", async () => {
+    const orm = await testConnection()
     const post = {
       title: faker.fake("{{random.word}}")
     }
@@ -35,5 +38,7 @@ describe("Post", () => {
         }
       }
     })
+    const newPost = await orm.em.findOne(Post, { title: post.title })
+    expect(newPost).toBeDefined()
   })
 })

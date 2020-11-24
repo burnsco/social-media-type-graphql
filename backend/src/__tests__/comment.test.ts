@@ -1,5 +1,7 @@
 import faker from "faker"
 import { gCall } from "../testing/gCall"
+import { testConnection } from "../testing/testConn"
+import { Comment } from "./../entities/Comment"
 
 const createCommentMutation = `
 mutation CreateComment($data: CommentInput! ) {
@@ -11,8 +13,9 @@ mutation CreateComment($data: CommentInput! ) {
 }
 `
 
-describe("Category", () => {
-  it("User can create a category", async () => {
+describe("Comment", () => {
+  it("user can create a comment", async () => {
+    const orm = await testConnection()
     const comment = {
       body: faker.fake("{{random.word}}")
     }
@@ -35,5 +38,7 @@ describe("Category", () => {
         }
       }
     })
+    const newComment = orm.em.findOne(Comment, { body: comment.body })
+    expect(newComment).toBeDefined()
   })
 })

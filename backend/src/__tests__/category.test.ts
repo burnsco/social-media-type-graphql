@@ -25,7 +25,7 @@ describe("Category", () => {
     }
     const response = await gCall({
       source: createCategoryMutation,
-      userId: "1",
+      userId: "7dd263db-895a-42ee-bb67-4454b67180c9",
       variableValues: {
         data: {
           name: category.name

@@ -64,10 +64,10 @@ function HeaderNavigation() {
             <MenuDivider />
 
             <MenuOptionGroup title="categories">
-              {data.categories.map(item => (
+              {data.categories.map((item, i) => (
                 <MenuItem
                   value={item.name}
-                  key={`subreddit-menu-${item.id}`}
+                  key={`subreddit-center-menu-${item.id}-${i}`}
                   onClick={() => router.push(`/r/${item.name}`)}
                 >
                   {item.name}

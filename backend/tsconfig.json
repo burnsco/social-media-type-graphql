@@ -23,6 +23,6 @@
     "resolveJsonModule": true,
     "baseUrl": "."
   },
-  "include": ["**/*.ts", "**/*.tsx", "./src/**/*"],
+  "include": ["**/*.ts", "**/*.tsx", "./src/**/*", "./src/index.d.ts"],
   "exclude": ["node_modules"]
 }

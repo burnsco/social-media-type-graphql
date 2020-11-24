@@ -35,8 +35,8 @@ const SideMenu: React.FC = () => {
     >
       <Box h="100%" w="100%">
         <List minH="100%" spacing={3} fontSize="md" p={2}>
-          {data?.categories.map(subreddit => (
-            <ListItem key={`subreddit-${subreddit.id}`}>
+          {data?.categories?.map((subreddit, i) => (
+            <ListItem key={`subreddit-${subreddit.id}-${i}`}>
               <NextChakraLink
                 p={1}
                 bg={category === subreddit.name ? linkbg : linkbg2}

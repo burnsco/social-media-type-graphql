@@ -20,7 +20,7 @@ mutation Register($data: RegisterInput! ) {
 `
 
 describe("Register", () => {
-  it("User response and found in DB.", async () => {
+  it("user +  response and found in DB", async () => {
     const orm = await testConnection()
     const user = {
       username: faker.fake("{{internet.userName}}"),

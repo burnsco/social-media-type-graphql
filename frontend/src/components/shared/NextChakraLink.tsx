@@ -17,7 +17,6 @@ export const NextChakraLink = ({
   replace,
   scroll,
   shallow,
-  prefetch,
   children,
   ...chakraProps
 }: NextChakraLinkProps) => {
@@ -29,7 +28,7 @@ export const NextChakraLink = ({
       replace={replace}
       scroll={scroll}
       shallow={shallow}
-      prefetch={prefetch}
+      prefetch={false}
     >
       <ChakraLink {...chakraProps}>{children}</ChakraLink>
     </NextLink>

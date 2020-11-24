@@ -3,6 +3,7 @@ import { render, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
+import { signedInUserCache } from "./../utils/signed-in-user-cache"
 
 const notSignedInCache = new InMemoryCache()
 notSignedInCache.writeQuery({
@@ -54,13 +55,16 @@ jest.mock("next/dynamic", () => () => {
 describe("Header", () => {
   it("renders basic navbar layout when not logged in", async () => {
     const { getByText, debug } = render(
-      <MockedProvider cache={notSignedInCache}>
+      <MockedProvider cache={signedInUserCache}>
         <Header />
       </MockedProvider>
     )
     const loading = getByText(/loading header/i)
     expect(loading).toBeInTheDocument()
 
-    await waitForElementToBeRemoved(loading).then(() => debug())
+    await waitForElementToBeRemoved(loading).then(async () => {
+      const siteHeading = getByText(/reddit/i)
+      expect(siteHeading).toBeInTheDocument()
+    })
   })
 })

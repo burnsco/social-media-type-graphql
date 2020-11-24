@@ -6,13 +6,6 @@ import "@testing-library/jest-dom"
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter")
 
-jest.mock("next/dynamic", () => () => {
-  const DynamicComponent = () => null
-  DynamicComponent.displayName = "LoadableComponent"
-  DynamicComponent.preload = jest.fn()
-  return DynamicComponent
-})
-
 const mocks = {
   request: {
     query: PostDocument,
@@ -51,6 +44,13 @@ const mocks = {
     }
   }
 }
+
+jest.mock("next/dynamic", () => () => {
+  const DynamicComponent = () => null
+  DynamicComponent.displayName = "LoadableComponent"
+  DynamicComponent.preload = jest.fn()
+  return DynamicComponent
+})
 
 describe("Single Post", () => {
   it("Author/Category/Text/Title renders.' ", async () => {
