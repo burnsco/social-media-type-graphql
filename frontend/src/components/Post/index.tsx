@@ -13,58 +13,51 @@ const NewPost: React.FC<PostQuery> = props => {
   const { data } = useMeQuery()
   const { post } = props
 
-  if (post) {
-    const postId = post.id
-    const postScore = post?.totalVotes?.score ?? 0
-    const postCategory = post?.category.name
-    const postAuthor = post?.author.username
-    const postCreatedTime = post?.createdAt
-    const postTitle = post?.title
-    const postText = post?.text
-    const postImage = post?.image
-    const postLink = post?.link
-    const postCommentsCount = post?.totalComments?.count ?? 0
-    const isOwner = data?.me?.id === post?.author.id ?? false
-    const isLoggedIn = data?.me?.username !== null
+  const postId = post?.id
+  const postScore = post?.totalVotes?.score ?? 0
+  const postCategory = post?.category.name
+  const postAuthor = post?.author.username
+  const postCreatedTime = post?.createdAt
+  const postTitle = post?.title
+  const postText = post?.text
+  const postImage = post?.image
+  const postLink = post?.link
+  const postCommentsCount = post?.totalComments?.count ?? 0
+  const isOwner = data?.me?.id === post?.author.id ?? false
+  const isLoggedIn = data?.me?.username !== null
 
-    return (
-      <PostContainer bg={bg}>
-        <VoteBox
-          postId={postId}
-          postScore={postScore}
-          isLoggedIn={isLoggedIn}
-        />
-        <Flex minH="160px" width="100%" flexDir="column" ml={3}>
-          {isOwner ? (
-            <PostHeader
-              postId={postId}
-              author={postAuthor}
-              createdAt={postCreatedTime}
-              category={postCategory}
-            />
-          ) : (
-            <PostHeader
-              author={postAuthor}
-              createdAt={postCreatedTime}
-              category={postCategory}
-            />
-          )}
-          <PostBody
-            image={postImage}
-            title={postTitle}
-            text={postText}
-            link={postLink}
-          />
-          <PostFooter
+  return (
+    <PostContainer bg={bg}>
+      <VoteBox postId={postId} postScore={postScore} isLoggedIn={isLoggedIn} />
+      <Flex minH="160px" width="100%" flexDir="column" ml={3}>
+        {isOwner ? (
+          <PostHeader
+            postId={postId}
+            author={postAuthor}
+            createdAt={postCreatedTime}
             category={postCategory}
-            id={postId}
-            commentsCount={postCommentsCount}
           />
-        </Flex>
-      </PostContainer>
-    )
-  }
-  return null
+        ) : (
+          <PostHeader
+            author={postAuthor}
+            createdAt={postCreatedTime}
+            category={postCategory}
+          />
+        )}
+        <PostBody
+          image={postImage}
+          title={postTitle}
+          text={postText}
+          link={postLink}
+        />
+        <PostFooter
+          category={postCategory}
+          id={postId}
+          commentsCount={postCommentsCount}
+        />
+      </Flex>
+    </PostContainer>
+  )
 }
 
 export default memo(NewPost)

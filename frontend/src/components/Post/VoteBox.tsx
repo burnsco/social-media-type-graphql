@@ -3,9 +3,9 @@ import { Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/core"
 import { ImArrowDown, ImArrowUp } from "react-icons/im"
 
 const VoteBox: React.FC<{
-  postId: string
-  postScore: number
-  isLoggedIn: boolean
+  postId?: string
+  postScore?: number
+  isLoggedIn?: boolean
 }> = ({ postId, postScore, isLoggedIn }) => {
   const bg = useColorModeValue("gray.50", "#313131")
   const [vote, { loading }] = useCreateVoteMutation()

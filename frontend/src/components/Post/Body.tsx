@@ -14,6 +14,7 @@ const PostBody: React.FC<{
 
       {image && (
         <Image
+          ignoreFallback={true}
           boxSize="100%"
           src={`${image}`}
           alt={`image-${title}`}

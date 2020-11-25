@@ -1,5 +1,5 @@
-import { NextChakraLink } from "@/components/shared/NextChakraLink"
-import { Button, Flex, HStack } from "@chakra-ui/core"
+import { Box, Button, Flex, HStack } from "@chakra-ui/core"
+import { useRouter } from "next/router"
 import { RiMessage2Fill } from "react-icons/ri"
 
 const PostFooter: React.FC<{
@@ -7,18 +7,18 @@ const PostFooter: React.FC<{
   id?: string | null
   commentsCount?: number
 }> = ({ category, id, commentsCount }): JSX.Element => {
+  const router = useRouter()
   return (
     <Flex width="100%" fontSize="sm" fontWeight="500" p={1}>
       <Button size="sm" p={1} variant="ghost" color="#818384" borderRadius={2}>
         <HStack>
           <RiMessage2Fill />
-          <NextChakraLink
+          <Box
             _hover={{ textTransform: "none" }}
-            href="/r/[category]/[id]"
-            as={`/r/${category}/${id}`}
+            onClick={() => router.push(`/r/${category}/${id}`)}
           >
             {commentsCount} Comments
-          </NextChakraLink>
+          </Box>
         </HStack>
       </Button>
     </Flex>
