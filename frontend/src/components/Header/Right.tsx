@@ -65,7 +65,7 @@ const HeaderMenu = () => {
               <Avatar
                 size="xs"
                 name="Ryan Florence"
-                src={"https://bit.ly/ryan-florence" || data?.me.avatar}
+                src={data?.me.avatar || "https://bit.ly/ryan-florence"}
               />
             }
             size="md"
@@ -74,7 +74,7 @@ const HeaderMenu = () => {
           <MenuList opacity="0.7" bg={bg}>
             <MenuGroup title={data.me.username} color="blue">
               <MenuDivider />
-              <MenuItem onClick={() => router.push("/user/profile")}>
+              <MenuItem onClick={() => router.push("/user")}>
                 <FaUserCircle />
                 <Box ml={3}>Profile</Box>
               </MenuItem>

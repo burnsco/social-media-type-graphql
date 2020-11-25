@@ -21,7 +21,7 @@ describe("Category", () => {
   it("User can create a category and is found in DB.", async () => {
     const orm = await testConnection()
     const category = {
-      name: faker.fake("{{random.word}}")
+      name: faker.fake("{{lorem.word}}")
     }
     const response = await gCall({
       source: createCategoryMutation,

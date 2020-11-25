@@ -26,7 +26,6 @@ export type Query = {
   posts?: Maybe<Array<Post>>
   postsByCategory?: Maybe<Array<Post>>
   me?: Maybe<User>
-  isUserOrEmailTaken: UserMutationResponse
   user: User
   users: Array<User>
 }
@@ -90,10 +89,6 @@ export type QueryPostsByCategoryArgs = {
   category?: Maybe<Scalars["String"]>
   skip?: Maybe<Scalars["Int"]>
   name?: Maybe<Scalars["String"]>
-}
-
-export type QueryIsUserOrEmailTakenArgs = {
-  data: CheckAvailability
 }
 
 export type QueryUserArgs = {
@@ -162,23 +157,6 @@ export type _QueryMeta = {
   score?: Maybe<Scalars["Int"]>
 }
 
-export type UserMutationResponse = {
-  __typename?: "UserMutationResponse"
-  errors?: Maybe<Array<FieldError>>
-  user?: Maybe<User>
-}
-
-export type FieldError = {
-  __typename?: "FieldError"
-  field: Scalars["String"]
-  message: Scalars["String"]
-}
-
-export type CheckAvailability = {
-  username?: Maybe<Scalars["String"]>
-  email?: Maybe<Scalars["Email"]>
-}
-
 export type EditUserInput = {
   email?: Maybe<Scalars["Email"]>
   username?: Maybe<Scalars["String"]>
@@ -196,6 +174,7 @@ export type Mutation = {
   deletePost: Scalars["Boolean"]
   createComment: CommentMutationResponse
   vote: VoteMutationResponse
+  forgotPassword: Scalars["Boolean"]
   register: UserMutationResponse
   editUser: UserMutationResponse
   login: UserMutationResponse
@@ -230,6 +209,10 @@ export type MutationVoteArgs = {
   data: VoteInput
 }
 
+export type MutationForgotPasswordArgs = {
+  email: CheckAvailability
+}
+
 export type MutationRegisterArgs = {
   data: RegisterInput
 }
@@ -246,6 +229,12 @@ export type CategoryMutationResponse = {
   __typename?: "CategoryMutationResponse"
   errors?: Maybe<Array<FieldError>>
   category?: Maybe<Category>
+}
+
+export type FieldError = {
+  __typename?: "FieldError"
+  field: Scalars["String"]
+  message: Scalars["String"]
 }
 
 export type CategoryInput = {
@@ -299,6 +288,17 @@ export type VoteMutationResponse = {
 export type VoteInput = {
   postId: Scalars["ID"]
   value: Scalars["Int"]
+}
+
+export type CheckAvailability = {
+  username?: Maybe<Scalars["String"]>
+  email?: Maybe<Scalars["Email"]>
+}
+
+export type UserMutationResponse = {
+  __typename?: "UserMutationResponse"
+  errors?: Maybe<Array<FieldError>>
+  user?: Maybe<User>
 }
 
 export type RegisterInput = {
@@ -573,23 +573,6 @@ export type CommentsQuery = { __typename?: "Query" } & {
       > & { createdBy: { __typename?: "User" } & Pick<User, "id" | "username"> }
     >
   >
-}
-
-export type IsUserOrEmailTakenQueryVariables = Exact<{
-  data: CheckAvailability
-}>
-
-export type IsUserOrEmailTakenQuery = { __typename?: "Query" } & {
-  isUserOrEmailTaken: { __typename?: "UserMutationResponse" } & {
-    errors?: Maybe<
-      Array<
-        { __typename?: "FieldError" } & Pick<FieldError, "field" | "message">
-      >
-    >
-    user?: Maybe<
-      { __typename?: "User" } & Pick<User, "id" | "email" | "username">
-    >
-  }
 }
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>
@@ -1486,75 +1469,6 @@ export type CommentsQueryResult = Apollo.QueryResult<
 >
 export function refetchCommentsQuery(variables?: CommentsQueryVariables) {
   return { query: CommentsDocument, variables: variables }
-}
-export const IsUserOrEmailTakenDocument = gql`
-  query IsUserOrEmailTaken($data: CheckAvailability!) {
-    isUserOrEmailTaken(data: $data) {
-      errors {
-        field
-        message
-      }
-      user {
-        id
-        email
-        username
-      }
-    }
-  }
-`
-
-/**
- * __useIsUserOrEmailTakenQuery__
- *
- * To run a query within a React component, call `useIsUserOrEmailTakenQuery` and pass it any options that fit your needs.
- * When your component renders, `useIsUserOrEmailTakenQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useIsUserOrEmailTakenQuery({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useIsUserOrEmailTakenQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    IsUserOrEmailTakenQuery,
-    IsUserOrEmailTakenQueryVariables
-  >
-) {
-  return Apollo.useQuery<
-    IsUserOrEmailTakenQuery,
-    IsUserOrEmailTakenQueryVariables
-  >(IsUserOrEmailTakenDocument, baseOptions)
-}
-export function useIsUserOrEmailTakenLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    IsUserOrEmailTakenQuery,
-    IsUserOrEmailTakenQueryVariables
-  >
-) {
-  return Apollo.useLazyQuery<
-    IsUserOrEmailTakenQuery,
-    IsUserOrEmailTakenQueryVariables
-  >(IsUserOrEmailTakenDocument, baseOptions)
-}
-export type IsUserOrEmailTakenQueryHookResult = ReturnType<
-  typeof useIsUserOrEmailTakenQuery
->
-export type IsUserOrEmailTakenLazyQueryHookResult = ReturnType<
-  typeof useIsUserOrEmailTakenLazyQuery
->
-export type IsUserOrEmailTakenQueryResult = Apollo.QueryResult<
-  IsUserOrEmailTakenQuery,
-  IsUserOrEmailTakenQueryVariables
->
-export function refetchIsUserOrEmailTakenQuery(
-  variables?: IsUserOrEmailTakenQueryVariables
-) {
-  return { query: IsUserOrEmailTakenDocument, variables: variables }
 }
 export const MeDocument = gql`
   query Me {

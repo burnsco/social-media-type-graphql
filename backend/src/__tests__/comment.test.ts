@@ -14,7 +14,7 @@ mutation CreateComment($data: CommentInput! ) {
 `
 
 describe("Comment", () => {
-  it("user can create a comment", async () => {
+  it("user can create a comment + found in db", async () => {
     const orm = await testConnection()
     const comment = {
       body: faker.fake("{{random.word}}")

@@ -1,13 +1,29 @@
 import { UsersDocument, UsersQuery } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
-import { GetStaticProps } from "next"
+import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
+import { User } from "../../generated/graphql"
 
 const DynamicAboutUserPage = dynamic(
   () => import("@/components/User/AboutUser")
 )
 
 const AboutUser = () => <DynamicAboutUserPage />
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const apolloClient = initializeApollo()
+
+  const { data } = await apolloClient.query({
+    query: UsersDocument
+  })
+
+  const paths = data.users.map((item: User) => `/user/${item.username}`) || []
+
+  return {
+    paths,
+    fallback: "blocking"
+  }
+}
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo()

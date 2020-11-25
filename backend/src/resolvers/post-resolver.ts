@@ -14,9 +14,9 @@ import { Category } from "../entities/Category"
 import { Comment } from "../entities/Comment"
 import { Post } from "../entities/Post"
 import { User } from "../entities/User"
-import { Vote } from "../entities/Vote"
 import { ContextType } from "../types"
 import { isAuth } from "../utils/isAuth"
+import { Vote } from "./../entities/Vote"
 import { PostArgs } from "./args/post-args"
 import { _QueryMeta } from "./args/_QueryMeta"
 import { CommentInput } from "./inputs/comment-input"
@@ -62,7 +62,7 @@ export class PostResolver {
     @Ctx() { em }: ContextType
   ): Promise<Post[] | null> {
     if (category) {
-      const [posts] = await em.findAndCount(
+      const posts = await em.find(
         Post,
         { category: { name: category } },
         {
@@ -76,7 +76,7 @@ export class PostResolver {
       return posts
     }
 
-    const [posts] = await em.findAndCount(
+    const posts = await em.find(
       Post,
       {},
       {
@@ -95,7 +95,7 @@ export class PostResolver {
     @Args() data: PostArgs,
     @Ctx() { em }: ContextType
   ): Promise<Post[] | null> {
-    const [posts] = await em.findAndCount(
+    const posts = await em.find(
       Post,
       { category: { name: data.category } },
       {

@@ -4,11 +4,7 @@ import { CreateCommentSchema } from "@/types/Comment/schemas"
 import { gql } from "@apollo/client"
 import { Alert, Box, Button, useColorModeValue } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-
-interface CreateSubredditProps {
-  postId: string
-  body: string
-}
+import { CommentInput } from "../../generated/graphql"
 
 const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
   const bg = useColorModeValue("white", "#202020")
@@ -17,7 +13,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
     { loading: mutationLoading, error: mutationError }
   ] = useCreateCommentMutation()
 
-  const handleSubmit = (values: CreateSubredditProps) => {
+  const handleSubmit = (values: CommentInput) => {
     submitComment({
       variables: {
         data: {
@@ -72,6 +68,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
           setTimeout(() => {
             handleSubmit(values)
           }, 1000)
+          actions.resetForm()
         }}
       >
         {formik => (

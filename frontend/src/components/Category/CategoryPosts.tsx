@@ -1,9 +1,8 @@
-import Layout from "@/components/Layout"
 import NewPost from "@/components/Post"
 import ShowMorePosts from "@/components/PostList/showMore"
 import { usePostsQuery } from "@/generated/graphql"
 import { NetworkStatus } from "@apollo/client"
-import { Text, VisuallyHidden, VStack } from "@chakra-ui/core"
+import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 
 const CategoryPosts = (): JSX.Element => {
@@ -27,30 +26,37 @@ const CategoryPosts = (): JSX.Element => {
     })
   }
 
-  if (loading) return <VisuallyHidden>Loading</VisuallyHidden>
-
   const postsBySubreddit = data?.posts ?? []
   const _categoryPostsMeta = data?._categoryPostsMeta
   const areMorePosts =
     (postsBySubreddit?.length ?? 1) < (_categoryPostsMeta?.count ?? 0)
 
-  return (
-    <Layout title={category}>
-      {postsBySubreddit.length > 0 ? (
+  const ViewPosts = () => {
+    if (postsBySubreddit.length > 0) {
+      return (
         <VStack spacing={4}>
           {postsBySubreddit.map((post, index) => (
             <NewPost key={`post-${post.id}-${index}`} post={post} />
           ))}
         </VStack>
-      ) : (
-        <Text>No posts here.</Text>
-      )}
+      )
+    }
+    return <Text>No posts here.</Text>
+  }
+
+  if (loading && !loadingMorePosts) {
+    return <VisuallyHidden>loading</VisuallyHidden>
+  }
+
+  return (
+    <Box as="section">
+      <ViewPosts />
       <ShowMorePosts
         loadMorePosts={loadMorePosts}
         areMorePosts={areMorePosts}
         loadingMorePosts={loadingMorePosts}
       />
-    </Layout>
+    </Box>
   )
 }
 

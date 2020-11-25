@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/core"
 import { useRouter } from "next/router"
 import { FiEdit } from "react-icons/fi"
-import PostCategory from "./Category"
 
 const PostHeader: React.FC<{
   category?: string | null
@@ -24,7 +23,23 @@ const PostHeader: React.FC<{
   return (
     <HStack fontSize="sm" my={1} color={fontColor} w="full">
       <HStack>
-        <PostCategory category={category} />
+        <Box
+          fontWeight="600"
+          color="orange.500"
+          _hover={{
+            textDecoration: "underline"
+          }}
+        >
+          <Box
+            _hover={{
+              textDecoration: "underline",
+              cursor: "pointer"
+            }}
+            onClick={() => router.push(`/r/${category}`)}
+          >
+            /r/{category}
+          </Box>
+        </Box>
         <Box ml="2" textDecoration="none">
           Posted by{" "}
           <Box

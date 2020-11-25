@@ -40,7 +40,7 @@ describe("Login", () => {
       }
     })
   })
-  it("User response when email/pass is correct", async () => {
+  it("User works +  response when email/pass is correct", async () => {
     const response = await gCall({
       source: loginMutation,
       variableValues: {

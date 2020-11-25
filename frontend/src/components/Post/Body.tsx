@@ -1,15 +1,25 @@
-import { Box, Flex, Heading, Link, Text } from "@chakra-ui/core"
+import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/core"
 
 const PostBody: React.FC<{
   title?: string | null
   text?: string | null
   link?: string | null
-}> = ({ title, text, link }): JSX.Element => {
+  image?: string | null
+}> = ({ title, text, link, image }): JSX.Element => {
   return (
-    <Flex direction="column" my={1} flexGrow={2} width="80%">
+    <Flex direction="column" my={1} flexGrow={2} width="100%">
       <Heading fontWeight="500" fontSize="xl">
         {title}
       </Heading>
+
+      {image && (
+        <Image
+          boxSize="100%"
+          src={`${image}`}
+          alt={`image-${title}`}
+          objectFit="cover"
+        />
+      )}
 
       {text && (
         <Text fontSize="sm" mt={1} noOfLines={4}>
