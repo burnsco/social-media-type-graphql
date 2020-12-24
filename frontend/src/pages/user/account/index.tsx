@@ -1,6 +1,8 @@
 import dynamic from "next/dynamic"
 
-const DynamicAccountPage = dynamic(() => import("@/components/Account/Account"))
+const DynamicAccountPage = dynamic(
+  () => import("@/components/pages/Account/Account")
+)
 
 const AccountPage = () => <DynamicAccountPage />
 

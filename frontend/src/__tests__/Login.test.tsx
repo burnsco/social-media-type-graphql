@@ -1,4 +1,4 @@
-import LoginPage from "@/components/Login/Login"
+import LoginPage from "@/components/pages/Login/Login"
 import { fireEvent, render } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"

@@ -1,4 +1,4 @@
-import AboutUserPage from "@/components/User/AboutUser"
+import AboutUserPage from "@/components/pages/User/AboutUser"
 import { UserDocument } from "@/generated/graphql"
 import { customRender, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"

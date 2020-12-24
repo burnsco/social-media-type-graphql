@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic"
 
 const DynamicRegisterPage = dynamic(
-  () => import("@/components/Register/Register")
+  () => import("@/components/pages/Register/Register")
 )
 
 const RegisterPage = () => <DynamicRegisterPage />

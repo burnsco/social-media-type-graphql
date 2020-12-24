@@ -8,7 +8,9 @@ import { initializeApollo } from "@/lib/apolloClient"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
 
-const DynamicCategoryPage = dynamic(() => import("@/components/Category"))
+const DynamicCategoryPage = dynamic(
+  () => import("@/components/pages/Category/Container")
+)
 
 const CategoryPage = () => {
   return <DynamicCategoryPage />

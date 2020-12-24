@@ -1,4 +1,4 @@
-import PostAndCommentsPage from "@/components/SinglePost/SingePostPage"
+import PostAndCommentsPage from "@/components/pages/SinglePost/SingePostPage"
 import { PostDocument } from "@/generated/graphql"
 import { customRender, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"

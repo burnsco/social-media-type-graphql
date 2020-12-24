@@ -9,7 +9,7 @@ import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
 
 const DynamicSinglePostPage = dynamic(
-  () => import("@/components/SinglePost/SingePostPage")
+  () => import("@/components/pages/SinglePost/SingePostPage")
 )
 
 const PostAndCommentsPage: React.FC = () => {

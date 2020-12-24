@@ -1,4 +1,4 @@
-import PostList from "@/components/PostList"
+import PostList from "@/components/pages/PostList"
 import { PostsDocument } from "@/generated/graphql"
 import { render, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"

@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic"
 
 const DynamicEditPostPage = dynamic(
-  () => import("@/components/EditPost/EditPost")
+  () => import("@/components/pages/EditPost/EditPost")
 )
 
 const EditPostPage = () => <DynamicEditPostPage />

@@ -12,5 +12,7 @@ const AllProviders = ({ children }: { children?: React.ReactNode }) => (
   </ChakraProvider>
 )
 
-export const customRender = (ui: React.ReactElement, options?: RenderOptions) =>
+const customRender = (ui: React.ReactElement, options?: RenderOptions) =>
   render(ui, { wrapper: AllProviders, ...options })
+
+export default customRender

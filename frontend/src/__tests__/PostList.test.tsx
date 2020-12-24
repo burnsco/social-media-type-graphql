@@ -1,9 +1,9 @@
-import PostList from "@/components/PostList"
+import PostList from "@/components/pages/PostList"
 import { PostsDocument } from "@/generated/graphql"
+import { signedInUserCache } from "@/utils/signed-in-user-cache"
 import { render, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
-import { signedInUserCache } from "./../utils/signed-in-user-cache"
 
 jest.mock("next/dynamic", () => () => {
   const DynamicComponent = () => null

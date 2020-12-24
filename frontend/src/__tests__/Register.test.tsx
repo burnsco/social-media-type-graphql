@@ -1,4 +1,4 @@
-import RegisterPage from "@/components/Register/Register"
+import RegisterPage from "@/components/pages/Register/Register"
 import { fireEvent, render } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"

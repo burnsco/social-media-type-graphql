@@ -1,11 +1,10 @@
-import { UsersDocument, UsersQuery } from "@/generated/graphql"
+import { User, UsersDocument, UsersQuery } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
-import { User } from "../../generated/graphql"
 
 const DynamicAboutUserPage = dynamic(
-  () => import("@/components/User/AboutUser")
+  () => import("@/components/pages/User/AboutUser")
 )
 
 const AboutUser = () => <DynamicAboutUserPage />

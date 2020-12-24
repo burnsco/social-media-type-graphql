@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic"
 
-const DynamicSinglePostPage = dynamic(() => import("@/components/shared/404"))
+const DynamicSinglePostPage = dynamic(() => import("@/components/common/404"))
 
 const NotFoundPage = () => <DynamicSinglePostPage />
 
