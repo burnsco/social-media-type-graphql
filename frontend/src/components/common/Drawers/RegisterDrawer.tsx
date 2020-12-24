@@ -1,9 +1,8 @@
-import { ChakraField } from "@/components/common/ChakraField"
-import { PasswordField } from "@/components/common/PasswordField"
+import { ChakraField, PasswordField } from "@/components/common/index"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { RegisterSchema } from "@/types/User/schemas"
 import { RegisterUserInputType } from "@/types/User/types"
-import { toErrorMap } from "@/utils/toErrorMap"
+import { convertToErrorMap } from "@/utils/index"
 import {
   Button,
   Drawer,
@@ -75,7 +74,7 @@ function RegisterDrawer() {
                 })
                 router.push("/")
               } else if (response.data?.register.errors) {
-                setErrors(toErrorMap(response.data.register.errors))
+                setErrors(convertToErrorMap(response.data.register.errors))
               }
             }}
           >

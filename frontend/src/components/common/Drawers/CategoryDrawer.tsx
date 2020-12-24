@@ -2,7 +2,7 @@ import { ChakraField } from "@/components/common/index"
 import { useCreateSubredditMutation } from "@/generated/graphql"
 import { CategorySchema } from "@/types/Category/schemas"
 import { CategoryInputType } from "@/types/Category/types"
-import { toErrorMap } from "@/utils/toErrorMap"
+import { convertToErrorMap } from "@/utils/index"
 import { gql } from "@apollo/client"
 import {
   Button,
@@ -102,7 +102,7 @@ function CreateCategoryDrawer() {
                 onClose()
               } else if (response?.data?.createCategory.errors) {
                 actions.setErrors(
-                  toErrorMap(response.data.createCategory.errors)
+                  convertToErrorMap(response.data.createCategory.errors)
                 )
               }
             }}

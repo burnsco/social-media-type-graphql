@@ -1,5 +1,4 @@
-import { ChakraField } from "@/components/common/ChakraField"
-import { ChakraSelect } from "@/components/common/ChakraSelect"
+import { ChakraField, ChakraSelect } from "@/components/common/index"
 import {
   useCategoriesLazyQuery,
   useCreatePostMutation

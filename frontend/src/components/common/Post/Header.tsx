@@ -1,6 +1,6 @@
 import { DeletePostDialog } from "@/components/common/DeletePostDialog"
-import { NextChakraLink } from "@/components/common/NextChakraLink"
-import { timeDifferenceForDate } from "@/utils/timeDifferenceForDate"
+import { NextChakraLink } from "@/components/common/index"
+import { timeDifferenceForDate } from "@/utils/index"
 import {
   Box,
   Flex,
@@ -71,7 +71,7 @@ const PostHeader: React.FC<{
             />
           </NextChakraLink>
 
-          <DeletePostDialog postId={postId} category={category} />
+          <DeletePostDialog postId={postId} />
         </Flex>
       )}
     </HStack>
