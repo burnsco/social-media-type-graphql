@@ -1,6 +1,6 @@
 import SideMenu from "@/components/ui/Layout/SideMenu"
 import { CategoriesDocument } from "@/generated/graphql"
-import { customRender, waitForElementToBeRemoved } from "@/utils/test-utils"
+import { render, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 
@@ -29,7 +29,7 @@ describe("Sidebar", () => {
       query: { category: "react" },
       asPath: "/r/react"
     }))
-    const { getByText } = customRender(
+    const { getByText } = render(
       <MockedProvider
         defaultOptions={{
           watchQuery: { fetchPolicy: "no-cache" },

@@ -1,6 +1,6 @@
 import PostAndCommentsPage from "@/components/pages/SinglePost/SingePostPage"
 import { PostDocument } from "@/generated/graphql"
-import { customRender, waitForElementToBeRemoved } from "@/utils/test-utils"
+import { render, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
 
@@ -61,7 +61,7 @@ describe("Single Post", () => {
       asPath: "/r/react/1"
     }))
 
-    const { getByText } = customRender(
+    const { getByText } = render(
       <MockedProvider
         defaultOptions={{
           watchQuery: { fetchPolicy: "no-cache" },
