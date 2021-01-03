@@ -1,9 +1,10 @@
 import AboutUserPage from "@/components/pages/User/AboutUser"
 import { UserDocument } from "@/generated/graphql"
 import { customRender } from "@/utils/index"
-import { signedInUserCache } from "@/utils/signed-in-user-cache"
+import { waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
+import { signedInCache } from "./Header.test"
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter")
 
@@ -48,7 +49,7 @@ describe("About User", () => {
           query: { fetchPolicy: "no-cache" }
         }}
         mocks={[mocks]}
-        cache={signedInUserCache}
+        cache={signedInCache}
         addTypename={false}
       >
         <AboutUserPage />
