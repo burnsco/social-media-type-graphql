@@ -4,7 +4,6 @@ import { Wrapper } from "@/components/ui/Layout/wrapper"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { RegisterSchema } from "@/types/User/schemas"
 import { RegisterUserInputType } from "@/types/User/types"
-import { toErrorMap } from "@/utils/toErrorMap"
 import {
   Box,
   Button,
@@ -14,6 +13,7 @@ import {
 } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
+import convertToErrorMap from "../../../utils/toErrorMap"
 
 const RegisterPage: React.FC = (): JSX.Element => {
   const bg = useColorModeValue("white", "#1A1A1B")
@@ -59,7 +59,7 @@ const RegisterPage: React.FC = (): JSX.Element => {
                 })
                 router.push("/")
               } else if (response.data?.register.errors) {
-                setErrors(toErrorMap(response.data.register.errors))
+                setErrors(convertToErrorMap(response.data.register.errors))
               }
             }}
           >

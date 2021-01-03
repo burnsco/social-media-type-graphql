@@ -1,9 +1,9 @@
 import { InputField } from "@/components/common/index"
 import { CommentInput, useCreateCommentMutation } from "@/generated/graphql"
-import { CreateCommentSchema } from "@/types/Comment/schemas"
 import { gql } from "@apollo/client"
 import { Alert, Box, Button, useColorModeValue } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
+import CreateCommentSchema from "../../../types/Comment/schemas"
 
 const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
   const bg = useColorModeValue("white", "#202020")

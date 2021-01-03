@@ -7,9 +7,7 @@ const DynamicPostList = dynamic(
   () => import("@/components/pages/PostList/index")
 )
 
-const IndexPage = () => {
-  return <DynamicPostList />
-}
+const IndexPage = () => <DynamicPostList />
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo()

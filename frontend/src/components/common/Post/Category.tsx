@@ -1,4 +1,4 @@
-import { NextChakraLink } from "@/components/common/NextChakraLink"
+import { NextChakraLink } from "@/components/common/index"
 import { Box } from "@chakra-ui/core"
 import { memo } from "react"
 

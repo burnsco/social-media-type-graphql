@@ -1,9 +1,9 @@
 import AboutUserPage from "@/components/pages/User/AboutUser"
 import { UserDocument } from "@/generated/graphql"
-import { customRender, waitForElementToBeRemoved } from "@/utils/test-utils"
+import { customRender } from "@/utils/index"
+import { signedInUserCache } from "@/utils/signed-in-user-cache"
 import { MockedProvider } from "@apollo/client/testing"
 import "@testing-library/jest-dom"
-import { signedInUserCache } from "./../utils/signed-in-user-cache"
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter")
 
