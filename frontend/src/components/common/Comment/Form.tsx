@@ -1,52 +1,18 @@
 import { InputField } from "@/components/common/index"
-import { CommentInput, useCreateCommentMutation } from "@/generated/graphql"
+import { useCreateCommentMutation } from "@/generated/graphql"
+import CreateCommentSchema from "@/types/Comment/schemas"
 import { gql } from "@apollo/client"
-import { Alert, Box, Button, useColorModeValue } from "@chakra-ui/core"
+import { Box, Button, useColorModeValue, useToast } from "@chakra-ui/core"
 import { Form, Formik } from "formik"
-import CreateCommentSchema from "../../../types/Comment/schemas"
 
 const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
   const bg = useColorModeValue("white", "#202020")
+  const toast = useToast()
 
   const [
     submitComment,
     { loading: mutationLoading, error: mutationError }
   ] = useCreateCommentMutation()
-
-  const handleSubmit = (values: CommentInput) => {
-    submitComment({
-      variables: {
-        data: {
-          postId: values.postId,
-          body: values.body
-        }
-      },
-      update(cache, { data }) {
-        cache.modify({
-          fields: {
-            comments(existingComments = []) {
-              const newCommentRef = cache.writeFragment({
-                data: data?.createComment?.comment,
-                fragment: gql`
-                  fragment NewComment on Comment {
-                    id
-                    body
-                    createdAt
-                    updatedAt
-                    createdBy {
-                      id
-                      username
-                    }
-                  }
-                `
-              })
-              return [newCommentRef, ...existingComments]
-            }
-          }
-        })
-      }
-    })
-  }
 
   return (
     <Box
@@ -63,12 +29,49 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
       <Formik
         initialValues={{ body: "", postId }}
         validationSchema={CreateCommentSchema}
-        onSubmit={(values, actions) => {
+        onSubmit={async (values, actions) => {
           actions.setSubmitting(false)
-          setTimeout(() => {
-            handleSubmit(values)
-          }, 1000)
-          actions.resetForm()
+          const response = await submitComment({
+            variables: {
+              data: {
+                ...values
+              }
+            },
+            update(cache, { data }) {
+              cache.modify({
+                fields: {
+                  comments(existingComments = []) {
+                    const newCommentRef = cache.writeFragment({
+                      data: data?.createComment?.comment,
+                      fragment: gql`
+                        fragment NewComment on Comment {
+                          id
+                          body
+                          createdAt
+                          updatedAt
+                          createdBy {
+                            id
+                            username
+                          }
+                        }
+                      `
+                    })
+                    return [newCommentRef, ...existingComments]
+                  }
+                }
+              })
+            }
+          })
+          if (response.data?.createComment?.comment) {
+            toast({
+              id: "success",
+              title: "Your comment was posted successfully.",
+              status: "success",
+              duration: 9000,
+              isClosable: true
+            })
+            actions.resetForm()
+          }
         }}
       >
         {formik => (
@@ -77,8 +80,8 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
             <Button
               size="sm"
               colorScheme="orange"
-              isDisabled={formik.isSubmitting || mutationLoading}
-              isLoading={formik.isSubmitting}
+              isLoading={mutationLoading || formik.isSubmitting}
+              isDisabled={mutationLoading || formik.isSubmitting}
               type="submit"
             >
               Submit
@@ -86,7 +89,15 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
           </Form>
         )}
       </Formik>
-      {mutationError && <Alert>{mutationError.message}</Alert>}
+      {mutationError &&
+        toast({
+          id: "error",
+          title: "An error occurred.",
+          description: "There was an error trying to submit your comment",
+          status: "error",
+          duration: 9000,
+          isClosable: true
+        })}
     </Box>
   )
 }

@@ -6,7 +6,6 @@ import {
   ButtonGroup,
   IconButton,
   Menu,
-  MenuButton,
   MenuDivider,
   MenuGroup,
   MenuItem,
@@ -45,7 +44,7 @@ const DynamicCreatePostDrawer = dynamic(
 const HeaderMenu = () => {
   const router = useRouter()
   const bg = useColorModeValue("white", "#202020")
-  const { data, loading, client } = useMeQuery({ ssr: false })
+  const { data, loading, client } = useMeQuery({ ssr: true })
   const [logout] = useLogoutMutation()
 
   if (loading) return <VisuallyHidden>Loading Header</VisuallyHidden>
@@ -61,7 +60,6 @@ const HeaderMenu = () => {
 
         <Menu>
           <IconButton
-            as={MenuButton}
             variant="ghost"
             aria-label="Create a Subreddit"
             icon={

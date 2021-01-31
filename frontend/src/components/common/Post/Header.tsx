@@ -20,47 +20,49 @@ const PostHeader: React.FC<{
 }> = ({ category, author, createdAt, postId }) => {
   const fontColor = useColorModeValue("#1A1A1B", "gray.200")
   const router = useRouter()
-  return (
-    <HStack fontSize="sm" my={1} color={fontColor} w="full">
-      <HStack>
-        <Box
-          fontWeight="600"
-          color="orange.500"
-          _hover={{
-            textDecoration: "underline"
-          }}
-        >
+
+  if (postId) {
+    return (
+      <HStack fontSize="sm" my={1} color={fontColor} w="full">
+        <HStack>
           <Box
+            fontWeight="600"
+            color="orange.500"
             _hover={{
-              textDecoration: "underline",
-              cursor: "pointer"
-            }}
-            onClick={() => router.push(`/r/${category}`)}
-          >
-            /r/{category}
-          </Box>
-        </Box>
-        <Box ml="2" textDecoration="none">
-          Posted by{" "}
-          <Box
-            onClick={() => router.push(`/user/${author}`)}
-            fontWeight="500"
-            display="inline"
-            color="gray.400"
-            _hover={{
-              textDecoration: "underline",
-              cursor: "pointer"
+              textDecoration: "underline"
             }}
           >
-            {author}
+            <Box
+              _hover={{
+                textDecoration: "underline",
+                cursor: "pointer"
+              }}
+              onClick={() => router.push(`/r/${category}`)}
+            >
+              /r/{category}
+            </Box>
           </Box>
-          <Box display="inline" ml="2">
-            {timeDifferenceForDate(Number(createdAt))}
+          <Box ml="2" textDecoration="none">
+            Posted by{" "}
+            <Box
+              onClick={() => router.push(`/user/${author}`)}
+              fontWeight="500"
+              display="inline"
+              color="gray.400"
+              _hover={{
+                textDecoration: "underline",
+                cursor: "pointer"
+              }}
+            >
+              {author}
+            </Box>
+            <Box display="inline" ml="2">
+              {timeDifferenceForDate(createdAt)}
+            </Box>
           </Box>
-        </Box>
-      </HStack>
-      <Spacer />
-      {postId && (
+        </HStack>
+        <Spacer />
+
         <Flex mr={1}>
           <NextChakraLink href="/post/edit/[id]" as={`/post/edit/${postId}}`}>
             <IconButton
@@ -73,9 +75,10 @@ const PostHeader: React.FC<{
 
           <DeletePostDialog postId={postId} />
         </Flex>
-      )}
-    </HStack>
-  )
+      </HStack>
+    )
+  }
+  return null
 }
 
 export default PostHeader

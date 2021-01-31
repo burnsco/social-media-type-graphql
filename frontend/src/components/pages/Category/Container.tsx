@@ -1,9 +1,9 @@
 import Layout from "@/components/ui/Layout"
 import CategoryPosts from "./Category"
 
-const CategoryPostListContainer = () => {
+const CategoryPostListContainer: React.FC<{ title: string }> = ({ title }) => {
   return (
-    <Layout title="Category Posts">
+    <Layout title={title}>
       <CategoryPosts />
     </Layout>
   )

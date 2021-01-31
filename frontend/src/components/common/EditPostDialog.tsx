@@ -8,13 +8,13 @@ import {
   Button,
   IconButton
 } from "@chakra-ui/core"
-import * as React from "react"
+import { useRef, useState } from "react"
 import { FiEdit } from "react-icons/fi"
 
 export const EditPostDialog = () => {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
-  const cancelRef = React.useRef<null | HTMLButtonElement>(null)
+  const cancelRef = useRef<null | HTMLButtonElement>(null)
 
   return (
     <>

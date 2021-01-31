@@ -12,7 +12,7 @@ const PostBody: React.FC<{
         {title}
       </Heading>
 
-      {image && (
+      {image ? (
         <Image
           ignoreFallback={true}
           boxSize="100%"
@@ -20,19 +20,19 @@ const PostBody: React.FC<{
           alt={`image-${title}`}
           objectFit="cover"
         />
-      )}
+      ) : null}
 
-      {text && (
+      {text ? (
         <Text fontSize="sm" mt={1} noOfLines={4}>
           {text}
         </Text>
-      )}
+      ) : null}
 
-      {link && (
+      {link ? (
         <Box mt={1}>
           <Link href={`${link}`}>{link}</Link>
         </Box>
-      )}
+      ) : null}
     </Flex>
   )
 }

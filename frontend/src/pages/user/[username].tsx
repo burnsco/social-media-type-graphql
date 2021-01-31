@@ -2,6 +2,7 @@ import { User, UsersDocument, UsersQuery } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
+import { addApolloState } from "../../lib/apolloClient"
 
 const DynamicAboutUserPage = dynamic(
   () => import("@/components/pages/User/AboutUser")
@@ -30,16 +31,20 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   await apolloClient.query<UsersQuery>({
     query: UsersDocument,
     variables: {
-      userId: params?.username ?? "1"
+      userId: params?.username ?? null
     }
   })
 
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-      userId: params?.username ?? "1"
-    },
-    revalidate: 1
+  if (params && params.username) {
+    const state = await addApolloState(apolloClient, {
+      props: {
+        userId: params.username
+      },
+      revalidate: 10
+    })
+    return state
+  } else {
+    return null
   }
 }
 

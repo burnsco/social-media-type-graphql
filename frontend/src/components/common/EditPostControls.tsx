@@ -7,7 +7,7 @@ import {
   IconButton
 } from "@chakra-ui/core"
 
-const CustomControls: React.FC<{ title: string }> = ({ title }) => {
+const EditPostControls: React.FC<{ title: string }> = ({ title }) => {
   function EditableControls({ isEditing, onSubmit, onCancel, onEdit }: any) {
     return isEditing ? (
       <ButtonGroup justifyContent="center" size="sm">
@@ -40,4 +40,4 @@ const CustomControls: React.FC<{ title: string }> = ({ title }) => {
   )
 }
 
-export default CustomControls
+export default EditPostControls

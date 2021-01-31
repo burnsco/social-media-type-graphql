@@ -3,6 +3,11 @@ import { Response } from "express"
 
 export interface ContextType {
   em: EntityManager<any> & EntityManager<IDatabaseDriver<Connection>>
-  req: Request & Express.Request
+  req: CustomSessionRequest & Express.Request
   res: Response
+}
+
+type CustomSessionRequest = Request & {
+  session: Express.Session
+  sessionID: string
 }

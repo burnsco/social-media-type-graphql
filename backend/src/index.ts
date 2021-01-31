@@ -32,7 +32,10 @@ const main = async (): Promise<void> => {
   console.log(chalk.green("Initializing Redis..."))
 
   const redisStore = connectRedis(session)
-  const redisClient = new Redis(process.env.REDIS_URL)
+  const redisClient = new Redis({
+    port: 6379,
+    host: process.env.REDIS_HOST
+  })
 
   app.set("trust proxy", 1)
   app.use(

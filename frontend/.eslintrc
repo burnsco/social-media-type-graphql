@@ -54,6 +54,7 @@
     "testing-library/no-debug": "off",
     "react/display-name": "off",
     "react/prop-types": "off",
+    "react/no-children-prop": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "off",
