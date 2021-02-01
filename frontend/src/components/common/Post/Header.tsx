@@ -21,64 +21,61 @@ const PostHeader: React.FC<{
   const fontColor = useColorModeValue("#1A1A1B", "gray.200")
   const router = useRouter()
 
-  if (postId) {
-    return (
-      <HStack fontSize="sm" my={1} color={fontColor} w="full">
-        <HStack>
+  return (
+    <HStack fontSize="sm" my={1} color={fontColor} w="full">
+      <HStack>
+        <Box
+          fontWeight="600"
+          color="orange.500"
+          _hover={{
+            textDecoration: "underline"
+          }}
+        >
           <Box
-            fontWeight="600"
-            color="orange.500"
             _hover={{
-              textDecoration: "underline"
+              textDecoration: "underline",
+              cursor: "pointer"
+            }}
+            onClick={() => router.push(`/r/${category}`)}
+          >
+            /r/{category}
+          </Box>
+        </Box>
+        <Box ml="2" textDecoration="none">
+          Posted by{" "}
+          <Box
+            onClick={() => router.push(`/user/${author}`)}
+            fontWeight="500"
+            display="inline"
+            color="gray.400"
+            _hover={{
+              textDecoration: "underline",
+              cursor: "pointer"
             }}
           >
-            <Box
-              _hover={{
-                textDecoration: "underline",
-                cursor: "pointer"
-              }}
-              onClick={() => router.push(`/r/${category}`)}
-            >
-              /r/{category}
-            </Box>
+            {author}
           </Box>
-          <Box ml="2" textDecoration="none">
-            Posted by{" "}
-            <Box
-              onClick={() => router.push(`/user/${author}`)}
-              fontWeight="500"
-              display="inline"
-              color="gray.400"
-              _hover={{
-                textDecoration: "underline",
-                cursor: "pointer"
-              }}
-            >
-              {author}
-            </Box>
-            <Box display="inline" ml="2">
-              {timeDifferenceForDate(createdAt)}
-            </Box>
+          <Box display="inline" ml="2">
+            {timeDifferenceForDate(createdAt)}
           </Box>
-        </HStack>
-        <Spacer />
-
-        <Flex mr={1}>
-          <NextChakraLink href="/post/edit/[id]" as={`/post/edit/${postId}}`}>
-            <IconButton
-              mr={2}
-              size="xs"
-              aria-label="Edit Post"
-              icon={<FiEdit />}
-            />
-          </NextChakraLink>
-
-          <DeletePostDialog postId={postId} />
-        </Flex>
+        </Box>
       </HStack>
-    )
-  }
-  return null
+      <Spacer />
+
+      <Flex mr={1}>
+        <NextChakraLink href="/post/edit/[id]" as={`/post/edit/${postId}}`}>
+          <IconButton
+            mr={2}
+            size="xs"
+            aria-label="Edit Post"
+            icon={<FiEdit />}
+          />
+        </NextChakraLink>
+
+        <DeletePostDialog postId={postId} />
+      </Flex>
+    </HStack>
+  )
 }
 
 export default PostHeader

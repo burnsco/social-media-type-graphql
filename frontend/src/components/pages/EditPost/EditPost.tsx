@@ -1,6 +1,9 @@
 import { ChakraField } from "@/components/common/index"
-import { useEditPostMutation, usePostQuery } from "@/generated/graphql"
-import { useGetSubreddits } from "@/hooks/useGetSubreddits"
+import {
+  useCategoriesQuery,
+  useEditPostMutation,
+  usePostQuery
+} from "@/generated/graphql"
 import { EditPostSchema } from "@/types/Post/schemas"
 import {
   Box,
@@ -27,7 +30,7 @@ const EditPost = () => {
   const router = useRouter()
   const postId = (router?.query?.id as string) ?? "1"
 
-  const categories = useGetSubreddits()
+  const { data: categories } = useCategoriesQuery()
 
   const { data, loading: getPostLoading } = usePostQuery({
     variables: { postId }
@@ -97,7 +100,7 @@ const EditPost = () => {
                             size="lg"
                             width="50%"
                           >
-                            {categories.map(subreddit => (
+                            {categories?.categories?.map((subreddit): any => (
                               <option
                                 key={`subreddit-${subreddit.name}-sidemenu`}
                                 value={Number(subreddit.id)}

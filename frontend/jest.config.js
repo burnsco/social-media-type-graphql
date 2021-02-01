@@ -19,8 +19,7 @@ module.exports = {
     "^@/lib(.*)$": "<rootDir>/src/lib$1",
     "^@/utils(.*)$": "<rootDir>/src/utils$1",
     "^@/types(.*)$": "<rootDir>/src/types$1",
-    "^@/styles(.*)$": "<rootDir>/src/assets$1",
-    "^@/assets(.*)$": "<rootDir>/src/assets$1"
+    "^@/styles(.*)$": "<rootDir>/src/styles$1"
   },
   transformIgnorePatterns: ["[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$"],
   transform: {

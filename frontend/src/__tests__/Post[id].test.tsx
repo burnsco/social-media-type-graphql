@@ -18,7 +18,7 @@ const mocks = {
       post: {
         author: {
           id: "1",
-          username: "Bob"
+          username: "bob"
         },
         category: {
           id: "1",
