@@ -40,7 +40,7 @@ function timeDifference(curr?: number, prev?: number) {
   return `${Math.round(elapsed / milliSecondsPerYear)} years ago`
 }
 
-export default function timeDifferenceForDate(date?: string | null) {
+export default function timeDifferenceForDate(date?: string | null | number) {
   const conv = Number(date)
   const now = new Date().getTime()
   const updated = new Date(conv).getTime()
