@@ -22,11 +22,19 @@ function createApolloClient() {
 
   const cacheOptions = new InMemoryCache({
     typePolicies: {
-      Category: {
-        merge: true
-      },
-      TotalVotes: {
-        merge: true
+      Post: {
+        fields: {
+          category: {
+            merge(existing, incoming) {
+              return { ...existing, ...incoming }
+            }
+          },
+          totalVotes: {
+            merge(existing, incoming) {
+              return { ...existing, ...incoming }
+            }
+          }
+        }
       },
       Query: {
         fields: {
