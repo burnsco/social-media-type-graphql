@@ -1,18 +1,10 @@
 mutation EditPost($data: EditPostInput!) {
   editPost(data: $data) {
     post {
-      id
-      createdAt
-      updatedAt
-      title
-      text
-      image
-      video
-      link
+      ...PostDetails
 
       category {
-        id
-        name
+        ...CategoryDetails
       }
     }
 

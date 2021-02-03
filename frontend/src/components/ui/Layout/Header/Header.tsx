@@ -4,7 +4,7 @@ import {
   IconButton,
   useColorMode,
   useColorModeValue
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { FaMoon, FaSun } from "react-icons/fa"
 import NavSection from "./Center"
 import LogoSection from "./Left"

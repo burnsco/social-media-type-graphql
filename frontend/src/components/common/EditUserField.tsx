@@ -8,7 +8,7 @@ import {
   InputGroup,
   InputRightElement,
   Text
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { useField } from "formik"
 import { useState } from "react"
 

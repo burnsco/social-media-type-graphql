@@ -1,5 +1,5 @@
 import { CommentsQuery } from "@/generated/graphql"
-import { Stack, Text } from "@chakra-ui/core"
+import { Stack, Text } from "@chakra-ui/react"
 import CommentPage from "./index"
 
 const CommentsPageWithData: React.FC<CommentsQuery> = data => {

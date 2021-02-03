@@ -17,7 +17,7 @@ import {
   Tabs,
   useColorModeValue,
   useToast
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { LinkPost, MediaPost, RegularPost } from "./PostTypes"

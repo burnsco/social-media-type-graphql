@@ -1,4 +1,4 @@
-import { Heading, Text } from "@chakra-ui/core"
+import { Heading, Text } from "@chakra-ui/react"
 
 const NotFoundPage = () => (
   <>

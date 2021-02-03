@@ -1,4 +1,4 @@
-import { Box, Button, Skeleton, Spinner } from "@chakra-ui/core"
+import { Box, Button, Skeleton, Spinner } from "@chakra-ui/react"
 import { memo } from "react"
 
 type MoreCommentsProps = {

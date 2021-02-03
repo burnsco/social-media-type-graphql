@@ -15,7 +15,7 @@ import {
   Stack,
   useDisclosure,
   useToast
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { useRef } from "react"

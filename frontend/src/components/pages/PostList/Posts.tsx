@@ -2,7 +2,7 @@ import NewPost from "@/components/common/Post"
 import { usePostsQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/pagination"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/core"
+import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/react"
 import ShowMorePosts from "./showMore"
 
 const Posts = (): JSX.Element => {

@@ -3,7 +3,7 @@ import SubmitCommentForm from "@/components/common/Comment/Form"
 import NewPost from "@/components/common/Post"
 import Layout from "@/components/ui/Layout"
 import { usePostQuery } from "@/generated/graphql"
-import { Stack, VisuallyHidden } from "@chakra-ui/core"
+import { Stack, VisuallyHidden } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 
 const SinglePostPage: React.FC = () => {

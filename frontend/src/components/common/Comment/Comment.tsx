@@ -1,6 +1,6 @@
 import { CommentQuery } from "@/generated/graphql"
 import { timeDifferenceForDate } from "@/utils/index"
-import { Box, Flex, IconButton, useColorModeValue } from "@chakra-ui/core"
+import { Box, Flex, IconButton, useColorModeValue } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { BsArrowDown, BsArrowUp } from "react-icons/bs"
 

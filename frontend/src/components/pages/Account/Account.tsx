@@ -2,7 +2,7 @@ import { EditUserField, PasswordField } from "@/components/common/index"
 import { useEditUserMutation, useMeQuery } from "@/generated/graphql"
 import { EditUserSchema } from "@/types/User/schemas"
 import { convertToErrorMap } from "@/utils/index"
-import { Box, Button, useColorModeValue, VStack } from "@chakra-ui/core"
+import { Box, Button, useColorModeValue, VStack } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 
 const AccountContent = (): JSX.Element => {

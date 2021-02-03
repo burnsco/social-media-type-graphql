@@ -4,6 +4,7 @@ mutation createComment($data: CommentInput!) {
       id
       body
       createdBy {
+        id
         username
       }
       post {

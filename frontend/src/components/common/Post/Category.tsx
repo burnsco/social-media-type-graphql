@@ -1,5 +1,5 @@
 import { NextChakraLink } from "@/components/common/index"
-import { Box } from "@chakra-ui/core"
+import { Box } from "@chakra-ui/react"
 import { memo } from "react"
 
 type PostCategoryProps = {

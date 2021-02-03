@@ -1,5 +1,5 @@
 import theme from "@/styles/theme"
-import { ChakraProvider, ColorModeScript } from "@chakra-ui/core"
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react"
 import * as React from "react"
 
 interface ChakraProps {

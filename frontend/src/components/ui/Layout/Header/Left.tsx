@@ -1,5 +1,5 @@
 import Logo from "@/components/common/Logo"
-import { Flex, Heading } from "@chakra-ui/core"
+import { Flex, Heading } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 
 const LogoSection = () => {

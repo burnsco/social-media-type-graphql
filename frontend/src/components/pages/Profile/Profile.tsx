@@ -2,7 +2,7 @@ import { ChakraField } from "@/components/common/index"
 import Layout from "@/components/ui/Layout"
 import { useEditUserMutation, useMeQuery } from "@/generated/graphql"
 import { EditUserSchema } from "@/types/User/schemas"
-import { Box, Button, Spinner, useColorModeValue } from "@chakra-ui/core"
+import { Box, Button, Spinner, useColorModeValue } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 
 const ProfilePage = () => {

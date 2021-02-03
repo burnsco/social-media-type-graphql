@@ -1,5 +1,5 @@
 import Header from "@/components/ui/Layout/Header"
-import { Box, Stack } from "@chakra-ui/core"
+import { Box, Stack } from "@chakra-ui/react"
 import dynamic from "next/dynamic"
 import Head from "next/head"
 import PropTypes from "prop-types"

@@ -1,5 +1,6 @@
 import { useDeletePostMutation } from "@/generated/graphql"
 import { sleep } from "@/utils/sleepy"
+import { gql } from "@apollo/client"
 import {
   AlertDialog,
   AlertDialogBody,
@@ -9,9 +10,17 @@ import {
   AlertDialogOverlay,
   Button,
   IconButton
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { useRef, useState } from "react"
 import { AiFillDelete } from "react-icons/ai"
+
+const PostFragment = gql`
+  fragment ClientBicycle on Bicycle {
+    id
+    title
+    _deleted @client
+  }
+`
 
 export const DeletePostDialog: React.FC<{
   postId?: string | null
@@ -64,9 +73,30 @@ export const DeletePostDialog: React.FC<{
                           postId
                         }
                       },
-                      update(cache, { data }) {
+                      optimisticResponse: {
+                        __typename: "Mutation",
+                        deletePost: {
+                          post: {
+                            id: postId
+                          }
+                        }
+                      },
+                      update(_, { data }) {
                         if (data?.deletePost) {
-                          cache.evict({ id: "Post:" + postId })
+                          const deletedPost = client.readFragment({
+                            id: `Post:${postId}`,
+                            fragment: PostFragment
+                          })
+                          if (deletedPost) {
+                            client.writeFragment({
+                              id: `Post:${data?.deletePost?.post?.id}`,
+                              fragment: PostFragment,
+                              data: {
+                                ...deletedPost,
+                                _deleted: true
+                              }
+                            })
+                          }
                         }
                         return null
                       }

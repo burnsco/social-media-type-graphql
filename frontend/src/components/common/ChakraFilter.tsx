@@ -1,4 +1,4 @@
-import { Input } from "@chakra-ui/core"
+import { Input } from "@chakra-ui/react"
 import { ChangeEvent, useState } from "react"
 import { useCategoriesQuery } from "../../generated/graphql"
 

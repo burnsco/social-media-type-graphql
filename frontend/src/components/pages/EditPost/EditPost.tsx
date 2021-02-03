@@ -18,7 +18,7 @@ import {
   Tabs,
   useColorModeValue,
   useToast
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { Field, Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { ImSpinner5 } from "react-icons/im"

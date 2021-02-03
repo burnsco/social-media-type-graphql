@@ -1,7 +1,5 @@
 query User($data: EditUserInput!) {
   user(data: $data) {
-    username
-    email
-    about
+    ...UserMeDetails
   }
 }

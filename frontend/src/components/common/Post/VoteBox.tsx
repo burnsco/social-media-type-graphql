@@ -1,5 +1,5 @@
 import { useCreateVoteMutation } from "@/generated/graphql"
-import { Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/core"
+import { Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/react"
 import { ImArrowDown, ImArrowUp } from "react-icons/im"
 
 const VoteBox: React.FC<{

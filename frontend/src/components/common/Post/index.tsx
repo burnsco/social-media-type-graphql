@@ -1,5 +1,5 @@
 import { PostQuery, useMeQuery } from "@/generated/graphql"
-import { Flex, useColorModeValue } from "@chakra-ui/core"
+import { Flex, useColorModeValue } from "@chakra-ui/react"
 import { memo } from "react"
 import PostBody from "./Body"
 import PostContainer from "./Container"

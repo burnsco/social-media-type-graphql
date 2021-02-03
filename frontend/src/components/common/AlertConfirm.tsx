@@ -10,7 +10,7 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { useRef } from "react"
 
 export const AlertDialog = () => {

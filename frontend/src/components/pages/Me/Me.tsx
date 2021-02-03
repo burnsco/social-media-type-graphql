@@ -6,7 +6,7 @@ import {
   Text,
   useColorModeValue,
   VisuallyHidden
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 
 const MePage = (): JSX.Element => {
   const { data, loading } = useMeQuery()

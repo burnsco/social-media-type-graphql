@@ -1,12 +1,8 @@
 query Comment($postId: ID) {
   comment(postId: $postId) {
-    id
-    createdAt
-    updatedAt
-    body
+    ...CommentDetails
     createdBy {
-      id
-      username
+      ...UserDetails
     }
   }
 }

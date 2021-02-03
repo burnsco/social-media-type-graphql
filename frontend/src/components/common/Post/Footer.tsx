@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack } from "@chakra-ui/core"
+import { Box, Button, Flex, HStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { RiMessage2Fill } from "react-icons/ri"
 

@@ -1,6 +1,6 @@
 import Layout from "@/components/ui/Layout"
 import { useUserQuery } from "@/generated/graphql"
-import { Box, Heading, Text, VisuallyHidden } from "@chakra-ui/core"
+import { Box, Heading, Text, VisuallyHidden } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 
 const AboutUserPage = () => {

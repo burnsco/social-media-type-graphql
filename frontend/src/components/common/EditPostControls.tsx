@@ -5,7 +5,7 @@ import {
   EditablePreview,
   Flex,
   IconButton
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 
 const EditPostControls: React.FC<{ title: string }> = ({ title }) => {
   function EditableControls({ isEditing, onSubmit, onCancel, onEdit }: any) {

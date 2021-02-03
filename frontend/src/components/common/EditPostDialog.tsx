@@ -7,7 +7,7 @@ import {
   AlertDialogOverlay,
   Button,
   IconButton
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { useRef, useState } from "react"
 import { FiEdit } from "react-icons/fi"
 

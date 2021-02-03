@@ -3,9 +3,10 @@ import { sleep } from "@/utils/sleepy"
 import {
   Avatar,
   Box,
+  Button,
   ButtonGroup,
-  IconButton,
   Menu,
+  MenuButton,
   MenuDivider,
   MenuGroup,
   MenuItem,
@@ -13,7 +14,7 @@ import {
   Stack,
   useColorModeValue,
   VisuallyHidden
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { AiOutlineLogout } from "react-icons/ai"
@@ -59,23 +60,22 @@ const HeaderMenu = () => {
         </ButtonGroup>
 
         <Menu>
-          <IconButton
-            variant="ghost"
-            aria-label="Create a Subreddit"
-            icon={
+          <MenuButton
+            as={Button}
+            rightIcon={
               <Avatar
+                loading="eager"
                 size="xs"
                 name="Ryan Florence"
-                src={data?.me.avatar || "https://bit.ly/ryan-florence"}
+                src={"https://bit.ly/ryan-florence" || data?.me.avatar}
               />
             }
-            size="md"
-          />
+          ></MenuButton>
 
           <MenuList opacity="0.7" bg={bg}>
             <MenuGroup title={data.me.username} color="blue">
               <MenuDivider />
-              <MenuItem onClick={() => router.push("/user")}>
+              <MenuItem onClick={() => router.push("/user/profile")}>
                 <FaUserCircle />
                 <Box ml={3}>Profile</Box>
               </MenuItem>

@@ -2,7 +2,7 @@ import { InputField } from "@/components/common/index"
 import { useCreateCommentMutation } from "@/generated/graphql"
 import CreateCommentSchema from "@/types/Comment/schemas"
 import { gql } from "@apollo/client"
-import { Box, Button, useColorModeValue, useToast } from "@chakra-ui/core"
+import { Box, Button, useColorModeValue, useToast } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 
 const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {

@@ -6,7 +6,7 @@ import {
   Input,
   Textarea,
   useColorModeValue
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { useField } from "formik"
 
 type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {

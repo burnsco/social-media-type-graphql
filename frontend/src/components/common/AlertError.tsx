@@ -1,5 +1,5 @@
 import { ApolloError } from "@apollo/client"
-import { Alert, AlertIcon } from "@chakra-ui/core"
+import { Alert, AlertIcon } from "@chakra-ui/react"
 
 const AlertError: React.FC<{ error: ApolloError | undefined }> = ({
   error

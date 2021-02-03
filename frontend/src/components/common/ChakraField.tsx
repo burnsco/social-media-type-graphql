@@ -6,7 +6,7 @@ import {
   Input,
   Text,
   Textarea
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { useField } from "formik"
 import { useState } from "react"
 

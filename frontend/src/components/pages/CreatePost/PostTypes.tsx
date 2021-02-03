@@ -1,5 +1,5 @@
 import { ChakraField } from "@/components/common/index"
-import { TabPanel } from "@chakra-ui/core"
+import { TabPanel } from "@chakra-ui/react"
 
 export const RegularPost = () => (
   <TabPanel>

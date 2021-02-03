@@ -22,19 +22,11 @@ function createApolloClient() {
 
   const cacheOptions = new InMemoryCache({
     typePolicies: {
-      Post: {
-        fields: {
-          category: {
-            merge(existing, incoming) {
-              return { ...existing, ...incoming }
-            }
-          },
-          totalVotes: {
-            merge(existing, incoming) {
-              return { ...existing, ...incoming }
-            }
-          }
-        }
+      Category: {
+        merge: true
+      },
+      TotalVotes: {
+        merge: true
       },
       Query: {
         fields: {
@@ -56,7 +48,12 @@ function createApolloClient() {
   const client = new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: httpLink,
-    cache: cacheOptions
+    cache: cacheOptions,
+    resolvers: {
+      Post: {
+        _deleted: post => Boolean(post._deleted)
+      }
+    }
   })
 
   return client

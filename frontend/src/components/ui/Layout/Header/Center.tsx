@@ -1,5 +1,5 @@
 import { useCategoriesQuery } from "@/generated/graphql"
-import { Flex, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/core"
+import { Flex, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react"
 
 function HeaderNavigation() {
   const { loading, data } = useCategoriesQuery()
@@ -11,9 +11,6 @@ function HeaderNavigation() {
           <MenuButton>Menu</MenuButton>
           <MenuList>
             <MenuItem>Download</MenuItem>
-            <MenuItem onClick={() => alert("Kagebunshin")}>
-              Create a Copy
-            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>

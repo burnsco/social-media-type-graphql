@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/core"
+import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/react"
 
 const PostBody: React.FC<{
   title?: string | null

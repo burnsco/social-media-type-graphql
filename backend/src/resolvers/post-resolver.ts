@@ -191,28 +191,30 @@ export class PostResolver {
     }
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => PostMutationResponse)
   @UseMiddleware(isAuth)
   async deletePost(
     @Arg("data") { postId }: EditPostInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<Boolean> {
+  ): Promise<PostMutationResponse | boolean> {
     const post = await em.findOne(Post, postId, {
       populate: ["comments", "votes"]
     })
-    if (req.session.userId) {
-      if (post?.author.id === req.session.userId) {
-        if (post && post.comments) {
-          post.comments.removeAll()
-          if (post.votes) {
-            post.votes.removeAll()
-          }
-          em.removeAndFlush(post)
-          return true
+
+    if (post?.author.id === req.session.userId) {
+      if (post && post.comments) {
+        post.comments.removeAll()
+        if (post.votes) {
+          post.votes.removeAll()
         }
-        return false
+        em.removeAndFlush(post)
+        return {
+          post
+        }
       }
+      return false
     }
+
     return false
   }
 

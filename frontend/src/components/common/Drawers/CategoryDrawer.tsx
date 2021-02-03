@@ -16,7 +16,7 @@ import {
   IconButton,
   useDisclosure,
   useToast
-} from "@chakra-ui/core"
+} from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { useRef } from "react"
 import { BsFolderPlus } from "react-icons/bs"

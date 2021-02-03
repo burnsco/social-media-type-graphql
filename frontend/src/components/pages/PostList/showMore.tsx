@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/core"
+import { Box, Button } from "@chakra-ui/react"
 import { memo } from "react"
 
 type MorePostsProps = {

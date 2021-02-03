@@ -2,7 +2,7 @@ import NewPost from "@/components/common/Post"
 import ShowMorePosts from "@/components/pages/PostList/showMore"
 import { usePostsQuery } from "@/generated/graphql"
 import { NetworkStatus } from "@apollo/client"
-import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/core"
+import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 
 const CategoryPosts = (): JSX.Element => {

@@ -1,3 +1,7 @@
 mutation DeletePost($data: EditPostInput!) {
-  deletePost(data: $data)
+  deletePost(data: $data) {
+    post {
+      id
+    }
+  }
 }

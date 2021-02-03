@@ -1,49 +1,29 @@
 query Posts($first: Int, $orderBy: String, $skip: Int, $category: String) {
   posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
-    id
-    createdAt
-    updatedAt
-    title
-    text
-    image
-    video
-    link
-
+    ...PostDetails
     comments {
-      id
-      createdAt
-      updatedAt
-      body
+      ...CommentDetails
       createdBy {
-        id
-        username
+        ...UserDetails
       }
     }
-
     category {
-      id
-      name
+      ...CategoryDetails
     }
-
     author {
-      id
-      username
+      ...UserDetails
     }
-
     totalComments {
       count
     }
-
     totalVotes {
       score
       count
     }
   }
-
   _allPostsMeta {
     count
   }
-
   _categoryPostsMeta(name: $category) {
     count
   }
