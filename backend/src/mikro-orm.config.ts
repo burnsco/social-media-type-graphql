@@ -12,10 +12,7 @@ export default {
   entities: ["./dist/entities/**/*.js"],
   entitiesTs: ["./src/entities/**/*.ts"],
   tsNode: process.env.NODE_DEV === "true" ? true : false,
-  host: process.env.POSTGRES_HOST,
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  dbName: process.env.POSTGRES_DB,
+  clientUrl: process.env.DB_URL,
   type: "postgresql",
   debug: !__prod__
 } as Parameters<typeof MikroORM.init>[0]
