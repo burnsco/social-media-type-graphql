@@ -40,7 +40,7 @@ const SideMenu: React.FC = () => {
               <NextChakraLink
                 p={1}
                 bg={category === subreddit.name ? linkbg : linkbg2}
-                fontWeight={category === subreddit.name ? 500 : 400}
+                fontWeight={category === subreddit.name ? "500" : "400"}
                 color={category === subreddit.name ? hover : color}
                 _hover={{
                   color: hover,
