@@ -11,6 +11,8 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
+  Skeleton,
+  SkeletonCircle,
   Stack,
   useColorModeValue,
   VisuallyHidden
@@ -23,23 +25,19 @@ import { MdSettings } from "react-icons/md"
 
 const DynamicRegisterDrawer = dynamic(
   () => import("@/components/common/Drawers/RegisterDrawer"),
-  { ssr: false }
+  { loading: () => <SkeletonCircle size="10" /> }
 )
-
 const DynamicLoginDrawer = dynamic(
   () => import("@/components/common/Drawers/LoginDrawer"),
-  {
-    ssr: false
-  }
+  { loading: () => <SkeletonCircle size="10" /> }
 )
-
 const DynamicCreateCategoryDrawer = dynamic(
   () => import("@/components/common/Drawers/CategoryDrawer"),
-  { ssr: false }
+  { loading: () => <SkeletonCircle size="10" /> }
 )
 const DynamicCreatePostDrawer = dynamic(
   () => import("@/components/common/Drawers/CreatePostDrawer"),
-  { ssr: false }
+  { loading: () => <SkeletonCircle size="10" /> }
 )
 
 const HeaderMenu = () => {
@@ -59,50 +57,52 @@ const HeaderMenu = () => {
           <DynamicCreateCategoryDrawer />
         </ButtonGroup>
 
-        <Menu>
-          <MenuButton
-            as={Button}
-            rightIcon={
-              <Avatar
-                loading="eager"
-                size="xs"
-                name="Ryan Florence"
-                src={"https://bit.ly/ryan-florence" || data?.me.avatar}
-              />
-            }
-          ></MenuButton>
+        <Skeleton isLoaded={!loading}>
+          <Menu>
+            <MenuButton
+              as={Button}
+              rightIcon={
+                <Avatar
+                  loading="eager"
+                  size="xs"
+                  name="Ryan Florence"
+                  src={"https://bit.ly/ryan-florence" || data?.me.avatar}
+                />
+              }
+            ></MenuButton>
 
-          <MenuList opacity="0.7" bg={bg}>
-            <MenuGroup title={data.me.username} color="blue">
+            <MenuList opacity="0.7" bg={bg}>
+              <MenuGroup title={data.me.username} color="blue">
+                <MenuDivider />
+                <MenuItem onClick={() => router.push("/user/profile")}>
+                  <FaUserCircle />
+                  <Box ml={3}>Profile</Box>
+                </MenuItem>
+                <MenuItem onClick={() => router.push("/user/account")}>
+                  <MdSettings />
+                  <Box ml={3}>Account</Box>
+                </MenuItem>
+              </MenuGroup>
               <MenuDivider />
-              <MenuItem onClick={() => router.push("/user/profile")}>
-                <FaUserCircle />
-                <Box ml={3}>Profile</Box>
-              </MenuItem>
-              <MenuItem onClick={() => router.push("/user/account")}>
-                <MdSettings />
-                <Box ml={3}>Account</Box>
-              </MenuItem>
-            </MenuGroup>
-            <MenuDivider />
-            <MenuGroup>
-              <MenuItem
-                mr={2}
-                onClick={() => {
-                  logout().then(() => {
-                    client.resetStore().then(async () => {
-                      await sleep(1000)
-                      router.push("/")
+              <MenuGroup>
+                <MenuItem
+                  mr={2}
+                  onClick={() => {
+                    logout().then(() => {
+                      client.resetStore().then(async () => {
+                        await sleep(1000)
+                        router.push("/")
+                      })
                     })
-                  })
-                }}
-              >
-                <AiOutlineLogout />
-                <Box ml={3}>Logout</Box>
-              </MenuItem>
-            </MenuGroup>
-          </MenuList>
-        </Menu>
+                  }}
+                >
+                  <AiOutlineLogout />
+                  <Box ml={3}>Logout</Box>
+                </MenuItem>
+              </MenuGroup>
+            </MenuList>
+          </Menu>
+        </Skeleton>
       </Menu>
     )
   }

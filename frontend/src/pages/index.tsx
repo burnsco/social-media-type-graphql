@@ -5,8 +5,7 @@ import dynamic from "next/dynamic"
 import { addApolloState } from "../lib/apolloClient"
 
 const DynamicPostList = dynamic(
-  () => import("@/components/pages/PostList/index"),
-  { ssr: false }
+  () => import("@/components/pages/PostList/index")
 )
 
 const IndexPage = () => <DynamicPostList />

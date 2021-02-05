@@ -238,7 +238,7 @@ export class PostResolver {
       post.comments.add(comment)
 
       await em.persistAndFlush(post)
-      console.log(post)
+
       return {
         post,
         comment
@@ -273,8 +273,8 @@ export class PostResolver {
       await em.persistAndFlush(post)
 
       return {
-        post,
-        vote
+        vote,
+        post
       }
     }
     return null
@@ -293,7 +293,7 @@ export class PostResolver {
     })
     if (count > 0) {
       const score = votes.map(item => item.value).reduce((a, b) => a + b)
-      console.log(score)
+
       return { count, score }
     }
     return { count }

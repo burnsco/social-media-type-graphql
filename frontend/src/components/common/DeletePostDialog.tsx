@@ -15,9 +15,8 @@ import { useRef, useState } from "react"
 import { AiFillDelete } from "react-icons/ai"
 
 const PostFragment = gql`
-  fragment ClientBicycle on Bicycle {
+  fragment ClientPost on Post {
     id
-    title
     _deleted @client
   }
 `
@@ -65,9 +64,9 @@ export const DeletePostDialog: React.FC<{
                   Cancel
                 </Button>
                 <Button
-                  onClick={() => {
+                  onClick={async () => {
                     sleep(1000)
-                    deletePost({
+                    await deletePost({
                       variables: {
                         data: {
                           postId
@@ -76,6 +75,7 @@ export const DeletePostDialog: React.FC<{
                       optimisticResponse: {
                         __typename: "Mutation",
                         deletePost: {
+                          __typename: "PostMutationResponse",
                           post: {
                             id: postId
                           }
@@ -89,7 +89,7 @@ export const DeletePostDialog: React.FC<{
                           })
                           if (deletedPost) {
                             client.writeFragment({
-                              id: `Post:${data?.deletePost?.post?.id}`,
+                              id: `Post:${postId}`,
                               fragment: PostFragment,
                               data: {
                                 ...deletedPost,

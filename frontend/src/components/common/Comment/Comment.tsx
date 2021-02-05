@@ -8,7 +8,7 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
   const bg = useColorModeValue("white", "#202020")
   const router = useRouter()
   const votebg = useColorModeValue("gray.50", "#313131")
-
+  // TODO up/down voting not working yet
   return (
     <Box bg={bg} display="flex" minH="80px" width="100%">
       <Box bg={votebg}>
