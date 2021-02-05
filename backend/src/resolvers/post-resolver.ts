@@ -62,7 +62,7 @@ export class PostResolver {
     @Ctx() { em }: ContextType
   ): Promise<Post[] | null> {
     if (category) {
-      const posts = await em.find(
+      const [posts] = await em.findAndCount(
         Post,
         { category: { name: category } },
         {
@@ -76,7 +76,7 @@ export class PostResolver {
       return posts
     }
 
-    const posts = await em.find(
+    const [posts] = await em.findAndCount(
       Post,
       {},
       {
@@ -84,25 +84,6 @@ export class PostResolver {
         offset: skip,
         orderBy: {
           createdAt: orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC
-        }
-      }
-    )
-    return posts
-  }
-
-  @Query(() => [Post], { nullable: true })
-  async postsByCategory(
-    @Args() data: PostArgs,
-    @Ctx() { em }: ContextType
-  ): Promise<Post[] | null> {
-    const posts = await em.find(
-      Post,
-      { category: { name: data.category } },
-      {
-        limit: data.first,
-        offset: data.skip,
-        orderBy: {
-          createdAt: data.orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC
         }
       }
     )

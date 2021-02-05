@@ -7,7 +7,6 @@ import {
 import { initializeApollo } from "@/lib/apolloClient"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
-import { addApolloState } from "../../../lib/apolloClient"
 
 const DynamicSinglePostPage = dynamic(
   () => import("@/components/pages/SinglePost/SingePostPage"),
@@ -28,12 +27,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   })
 
-  return addApolloState(apolloClient, {
+  return {
     props: {
-      postId: params?.id ?? null
+      initialApolloState: apolloClient.cache.extract(),
+      postId: params?.id ?? "1"
     },
     revalidate: 1
-  })
+  }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

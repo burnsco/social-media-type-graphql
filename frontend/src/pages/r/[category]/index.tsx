@@ -4,21 +4,15 @@ import {
   PostsDocument,
   PostsQuery
 } from "@/generated/graphql"
-import { addApolloState, initializeApollo } from "@/lib/apolloClient"
+import { initializeApollo } from "@/lib/apolloClient"
 import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
-import { useRouter } from "next/router"
 
 const DynamicCategoryPage = dynamic(
-  () => import("@/components/pages/Category/index"),
-  { ssr: false }
+  () => import("@/components/pages/Category/Category")
 )
 
-const CategoryPage = () => {
-  const router = useRouter()
-
-  return <DynamicCategoryPage title={router.asPath} />
-}
+const CategoryPage = () => <DynamicCategoryPage />
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo()
@@ -32,12 +26,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   })
 
-  return addApolloState(apolloClient, {
+  return {
     props: {
-      category: params?.category ?? null
+      initialApolloState: apolloClient.cache.extract(),
+      category: params?.category ?? "react"
     },
     revalidate: 1
-  })
+  }
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

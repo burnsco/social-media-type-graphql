@@ -2,7 +2,6 @@ import { PostsDocument, PostsQuery } from "@/generated/graphql"
 import { initializeApollo } from "@/lib/apolloClient"
 import { allPostsQueryVars } from "@/types/pagination"
 import dynamic from "next/dynamic"
-import { addApolloState } from "../lib/apolloClient"
 
 const DynamicPostList = dynamic(
   () => import("@/components/pages/PostList/index")
@@ -18,10 +17,12 @@ export async function getStaticProps() {
     variables: allPostsQueryVars
   })
 
-  return addApolloState(apolloClient, {
-    props: {},
-    revalidate: 10
-  })
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract()
+    },
+    revalidate: 1
+  }
 }
 
 export default IndexPage
