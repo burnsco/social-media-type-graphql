@@ -1,5 +1,6 @@
 import { ChakraField, ChakraSelect } from "@/components/common/index"
 import {
+  CreatePostInput,
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@/generated/graphql"
@@ -26,25 +27,69 @@ import {
   useDisclosure,
   useToast
 } from "@chakra-ui/react"
-import { Form, Formik } from "formik"
+import { Form, Formik, FormikHelpers } from "formik"
 import { useRouter } from "next/router"
 import { useRef } from "react"
 import { ImPencil2 } from "react-icons/im"
+
+const cloudinaryUrl = "https://api.cloudinary.com/v1_1/dmztdsduf/upload"
+const cloudinaryPreset = "qapnebg6"
 
 function CreatePostDrawer() {
   useIsAuth()
 
   const router = useRouter()
-
   const toast = useToast()
 
   const [getSubreddits, { data }] = useCategoriesLazyQuery()
-
   const [submitPost, { loading }] = useCreatePostMutation()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-
   const btnRef = useRef<HTMLButtonElement | null>(null)
+
+  const createPostHandler = async (
+    values: typeof CreatePostInputType,
+    actions: FormikHelpers<CreatePostInput>
+  ) => {
+    actions.setSubmitting(false)
+    const response = await submitPost({
+      variables: {
+        data: {
+          ...values
+        }
+      },
+      update(cache, { data }) {
+        cache.modify({
+          fields: {
+            posts(existingPosts = []) {
+              const newPostRef = cache.writeFragment({
+                data: data?.createPost.post,
+                fragment: gql`
+                  fragment NewPost on Post {
+                    id
+                    title
+                  }
+                `
+              })
+              return [newPostRef, ...existingPosts]
+            }
+          }
+        })
+      }
+    })
+    if (response.data?.createPost.post) {
+      toast({
+        id: `success-${response.data?.createPost.post.title}`,
+        title: `${response.data?.createPost?.post.title}!`,
+        description: "Your post was submitted successfully.",
+        status: "success",
+        duration: 9000,
+        isClosable: true
+      })
+      router.push("/")
+      onClose()
+    }
+  }
 
   return (
     <>
@@ -71,47 +116,7 @@ function CreatePostDrawer() {
           <Formik
             initialValues={CreatePostInputType}
             validationSchema={CreatePostSchema}
-            onSubmit={async (values, actions) => {
-              actions.setSubmitting(false)
-              const response = await submitPost({
-                variables: {
-                  data: {
-                    ...values
-                  }
-                },
-                update(cache, { data }) {
-                  cache.modify({
-                    fields: {
-                      posts(existingPosts = []) {
-                        const newPostRef = cache.writeFragment({
-                          data: data?.createPost.post,
-                          fragment: gql`
-                            fragment NewPost on Post {
-                              id
-                              title
-                            }
-                          `
-                        })
-                        return [newPostRef, ...existingPosts]
-                      }
-                    }
-                  })
-                }
-              })
-
-              if (response.data?.createPost.post) {
-                toast({
-                  id: "success",
-                  title: `${response.data?.createPost?.post.title}!`,
-                  description: "Your post was submitted successfully.",
-                  status: "success",
-                  duration: 9000,
-                  isClosable: true
-                })
-                router.push("/")
-                onClose()
-              }
-            }}
+            onSubmit={(actions, values) => createPostHandler(actions, values)}
           >
             {formik => {
               return (

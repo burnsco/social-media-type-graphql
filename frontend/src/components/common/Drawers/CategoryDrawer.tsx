@@ -89,10 +89,10 @@ function CreateCategoryDrawer() {
                 console.log(ex)
               }
 
-              if (response?.data?.createCategory?.category) {
+              if (response && response.data) {
                 toast({
-                  id: "success",
-                  title: `${response.data.createCategory.category.name}!`,
+                  id: `create-category-${response?.data?.createCategory?.category?.id}`,
+                  title: `${response?.data?.createCategory?.category?.name}!`,
                   description:
                     "Your subreddit/category was created successfully.",
                   status: "success",

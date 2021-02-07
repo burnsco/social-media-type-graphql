@@ -1,11 +1,20 @@
-import { Box, Flex, Heading, Image, Link, Text } from "@chakra-ui/react"
+import {
+  AspectRatio,
+  Box,
+  Flex,
+  Heading,
+  Image,
+  Link,
+  Text
+} from "@chakra-ui/react"
 
 const PostBody: React.FC<{
   title?: string | null
   text?: string | null
   link?: string | null
   image?: string | null
-}> = ({ title, text, link, image }): JSX.Element => {
+  video?: string | null
+}> = ({ title, text, link, image, video }): JSX.Element => {
   return (
     <Flex direction="column" my={1} flexGrow={2} width="100%">
       <Heading fontWeight="500" fontSize="xl">
@@ -13,13 +22,15 @@ const PostBody: React.FC<{
       </Heading>
 
       {image ? (
-        <Image
-          ignoreFallback={true}
-          boxSize="100%"
-          src={`${image}`}
-          alt={`image-${title}`}
-          objectFit="cover"
-        />
+        <AspectRatio mt={2} maxW="400px" ratio={4 / 3}>
+          <Image objectFit="cover" src={`${image}`} alt={`image-${title}`} />
+        </AspectRatio>
+      ) : null}
+
+      {video ? (
+        <AspectRatio maxW="560px" ratio={1}>
+          <iframe title="test" src={video} allowFullScreen />
+        </AspectRatio>
       ) : null}
 
       {text ? (

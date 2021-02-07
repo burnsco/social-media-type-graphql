@@ -1,22 +1,17 @@
-import { useCategoriesQuery } from "@/generated/graphql"
-import { Flex, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react"
+import NavigationDrawer from "@/components/common/Drawers/NavigationDrawer"
+import { Flex } from "@chakra-ui/react"
 
 function HeaderNavigation() {
-  const { loading, data } = useCategoriesQuery()
-
-  if (!loading && data && data.categories) {
-    return (
-      <Flex flexGrow={2} mr={5}>
-        <Menu>
-          <MenuButton>Menu</MenuButton>
-          <MenuList>
-            <MenuItem>Download</MenuItem>
-          </MenuList>
-        </Menu>
-      </Flex>
-    )
-  }
-  return null
+  return (
+    <Flex
+      display={["block", "block", "none", "none"]}
+      flexGrow={2}
+      w={120}
+      mr={5}
+    >
+      <NavigationDrawer />
+    </Flex>
+  )
 }
 
 export default HeaderNavigation
