@@ -1,12 +1,5 @@
-import {
-  AspectRatio,
-  Box,
-  Flex,
-  Heading,
-  Image,
-  Link,
-  Text
-} from "@chakra-ui/react"
+import { AspectRatio, Box, Flex, Heading, Link, Text } from "@chakra-ui/react"
+import Image from "next/image"
 
 const PostBody: React.FC<{
   title?: string | null
@@ -22,9 +15,15 @@ const PostBody: React.FC<{
       </Heading>
 
       {image ? (
-        <AspectRatio mt={2} maxW="400px" ratio={4 / 3}>
-          <Image objectFit="cover" src={`${image}`} alt={`image-${title}`} />
-        </AspectRatio>
+        <Box p={2} mt={2}>
+          <Image
+            layout="intrinsic"
+            src={image}
+            width={700}
+            height={475}
+            alt={`image-${title}`}
+          />
+        </Box>
       ) : null}
 
       {video ? (

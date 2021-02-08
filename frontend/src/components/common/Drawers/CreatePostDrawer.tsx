@@ -5,10 +5,10 @@ import {
   useCreatePostMutation
 } from "@/generated/graphql"
 import { useIsAuth } from "@/hooks/useIsAuth"
-import { CreatePostSchema } from "@/types/Post/schemas"
 import { CreatePostInputType } from "@/types/Post/types"
 import { gql } from "@apollo/client"
 import {
+  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -18,6 +18,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
   IconButton,
+  Progress,
   Stack,
   Tab,
   TabList,
@@ -29,14 +30,23 @@ import {
 } from "@chakra-ui/react"
 import { Form, Formik, FormikHelpers } from "formik"
 import { useRouter } from "next/router"
-import { useRef } from "react"
+import { useCallback, useRef, useState } from "react"
+import { useDropzone } from "react-dropzone"
 import { ImPencil2 } from "react-icons/im"
+import request from "superagent"
 
-const cloudinaryUrl = "https://api.cloudinary.com/v1_1/dmztdsduf/upload"
-const cloudinaryPreset = "qapnebg6"
+// TODO
+// upload the video or image
+// validate that is is uploaded
+// send that public_id to the image/video value in formik
 
 function CreatePostDrawer() {
   useIsAuth()
+
+  const [uploadProgress, setUploadProgress] = useState(0)
+
+  const [imageUrl, setImageUrl] = useState(null)
+  const [videoUrl, setVideoUrl] = useState(null)
 
   const router = useRouter()
   const toast = useToast()
@@ -55,7 +65,9 @@ function CreatePostDrawer() {
     const response = await submitPost({
       variables: {
         data: {
-          ...values
+          categoryId: values.categoryId,
+          title: values.title,
+          image: imageUrl
         }
       },
       update(cache, { data }) {
@@ -91,6 +103,46 @@ function CreatePostDrawer() {
     }
   }
 
+  const onDrop = useCallback(acceptedFile => {
+    const cloudinaryUrl = "https://api.cloudinary.com/v1_1/dmztdsduf/upload"
+    const cloudinaryPreset = "qapnebg6"
+
+    request
+      .post(cloudinaryUrl)
+      .field("upload_preset", cloudinaryPreset)
+      .field("file", acceptedFile)
+      .field("multiple", false)
+      .on("progress", progress => {
+        console.log(progress)
+        if (progress && progress.percent) {
+          setUploadProgress(progress.percent)
+        }
+      })
+      .end((error, response) => {
+        console.log(response)
+        if (response.body.public_id) {
+          setImageUrl(response.body.public_id)
+        }
+        // public_id
+        // convert .jpg to .webp
+        // add a srcSet in the image component
+        // with jpg and webP
+        if (error) {
+          console.log(error)
+        }
+      })
+  }, [])
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    acceptedFiles
+  } = useDropzone({
+    onDrop,
+    maxFiles: 1
+  })
+
   return (
     <>
       <IconButton
@@ -101,7 +153,6 @@ function CreatePostDrawer() {
         size="md"
         onClick={onOpen}
       />
-
       <Drawer
         size="sm"
         isOpen={isOpen}
@@ -115,10 +166,15 @@ function CreatePostDrawer() {
           <DrawerHeader>Submit a Post!</DrawerHeader>
           <Formik
             initialValues={CreatePostInputType}
-            validationSchema={CreatePostSchema}
             onSubmit={(actions, values) => createPostHandler(actions, values)}
           >
             {formik => {
+              console.log(formik)
+              const test = formik.getFieldHelpers("image")
+              console.log(test)
+              if (videoUrl !== null) {
+                test.setValue(videoUrl)
+              }
               return (
                 <Form>
                   <DrawerBody>
@@ -196,20 +252,61 @@ function CreatePostDrawer() {
                               placeholder="title"
                               aria-placeholder="Post Title"
                             />
-                            <ChakraField
-                              label=""
-                              id="image"
-                              name="image"
-                              placeholder="image"
-                              aria-placeholder="Post Image"
-                            />
-                            <ChakraField
-                              label=""
-                              id="video"
-                              name="video"
-                              placeholder="video"
-                              aria-placeholder="Post Video"
-                            />
+                            {isDragActive ? (
+                              <p>Drop the files here ...</p>
+                            ) : (
+                              <p>
+                                Drag and drop some files here, or click to
+                                select files
+                              </p>
+                            )}
+                            <div
+                              {...getRootProps({
+                                onClick: e => console.log(e)
+                              })}
+                            >
+                              <Box
+                                id="upload-media"
+                                border="3px dashed"
+                                p={4}
+                                my={2}
+                              >
+                                <ChakraField
+                                  label=""
+                                  id="image"
+                                  name="image"
+                                  placeholder="image"
+                                  aria-placeholder="Post Image"
+                                />
+                                <input
+                                  {...getInputProps({
+                                    onDrop: e => console.log(e)
+                                  })}
+                                />
+                                <ChakraField
+                                  label=""
+                                  id="video"
+                                  name="video"
+                                  placeholder="video"
+                                  aria-placeholder="Post Video"
+                                />
+                                <input
+                                  {...getInputProps({
+                                    onDrop: e => console.log(e)
+                                  })}
+                                />
+                                {uploadProgress === 100 ? "COMPLETE" : null}
+                                {uploadProgress !== 0 &&
+                                uploadProgress !== 100 ? (
+                                  <Progress
+                                    my={4}
+                                    size="lg"
+                                    hasStripe
+                                    value={uploadProgress}
+                                  />
+                                ) : null}
+                              </Box>
+                            </div>
                           </TabPanel>
                         </TabPanels>
                       </Tabs>

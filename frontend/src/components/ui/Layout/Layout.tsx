@@ -56,7 +56,8 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
 
           <Box
             as="aside"
-            minW="300px"
+            minW="200px"
+            maxW="260px"
             display={["none", "none", "block", "block"]}
           >
             <DynamicSideMenu />

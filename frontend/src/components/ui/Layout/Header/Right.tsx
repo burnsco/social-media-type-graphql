@@ -41,9 +41,12 @@ const DynamicCreatePostDrawer = dynamic(
 )
 
 const HeaderMenu = () => {
-  const router = useRouter()
   const bg = useColorModeValue("white", "#202020")
+
+  const router = useRouter()
+
   const { data, loading, client } = useMeQuery({ ssr: true })
+
   const [logout] = useLogoutMutation()
 
   if (loading) return <VisuallyHidden>Loading Header</VisuallyHidden>

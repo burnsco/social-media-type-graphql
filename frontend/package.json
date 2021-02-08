@@ -37,6 +37,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.6.3",
+    "@types/react-dropzone": "^5.1.0",
     "faker": "^5.3.1",
     "formik": "^2.2.6",
     "framer-motion": "^3.3.0",
@@ -46,9 +47,11 @@
     "next-seo": "^4.19.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-dropzone": "^11.3.1",
     "react-focus-lock": "^2.5.0",
     "react-icons": "^4.2.0",
     "react-test-renderer": "^17.0.1",
+    "superagent": "^6.1.0",
     "yup": "^0.32.8"
   },
   "devDependencies": {
@@ -62,6 +65,7 @@
     "@types/node": "^14.14.25",
     "@types/react": "^17.0.1",
     "@types/react-test-renderer": "^17.0.0",
+    "@types/superagent": "^4.1.10",
     "@types/yup": "^0.29.11",
     "@typescript-eslint/eslint-plugin": "^4.14.2",
     "@typescript-eslint/parser": "^4.14.2",
