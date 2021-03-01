@@ -23,12 +23,6 @@ import { ImArrowDown, ImArrowRight } from "react-icons/im"
 export default function NavigationDrawer() {
   const [input, setInput] = useState("")
 
-  const color = useColorModeValue("gray.700", "gray.300")
-  const hover = useColorModeValue("black", "white")
-
-  const linkbg = useColorModeValue("#ebedf0", "#3661ed")
-  const linkbg2 = useColorModeValue("translucent", "translucent")
-
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [getCategories, { loading, data }] = useCategoriesLazyQuery()
@@ -58,7 +52,7 @@ export default function NavigationDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
           <DrawerCloseButton />
           <DrawerHeader>Search Subreddits</DrawerHeader>
           <DrawerBody>
@@ -79,12 +73,12 @@ export default function NavigationDrawer() {
                         <ListItem p={1} key={`sideNav-${cat.name}-${cat.id}`}>
                           <NextChakraLink
                             p={1}
-                            bg={linkbg2}
+                            bg={useColorModeValue("translucent", "translucent")}
                             fontWeight="400"
-                            color={color}
+                            color={useColorModeValue("gray.700", "gray.300")}
                             _hover={{
-                              color: hover,
-                              bg: linkbg,
+                              color: useColorModeValue("black", "white"),
+                              bg: useColorModeValue("#ebedf0", "#3661ed"),
                               marginLeft: 1
                             }}
                             href="/r/[category]"

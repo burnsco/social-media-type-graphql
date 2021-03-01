@@ -13,6 +13,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Stack,
+  useColorModeValue,
   useDisclosure,
   useToast
 } from "@chakra-ui/react"
@@ -29,7 +30,7 @@ function RegisterDrawer() {
 
   return (
     <>
-      <Button ref={btnRef} size="md" colorScheme="blue" onClick={onOpen}>
+      <Button ref={btnRef} size="md" colorScheme="orange" onClick={onOpen}>
         Register
       </Button>
       <Drawer
@@ -40,7 +41,7 @@ function RegisterDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
           <DrawerCloseButton />
           <DrawerHeader>Join the Community!</DrawerHeader>
           <Formik

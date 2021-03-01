@@ -2,6 +2,7 @@ import { ChakraField } from "@/components/common/index"
 import { MeDocument, MeQuery, useLoginMutation } from "@/generated/graphql"
 import { LoginSchema } from "@/types/User/schemas"
 import { LoginUserInputType } from "@/types/User/types"
+import { convertToErrorMap } from "@/utils/index"
 import {
   Button,
   Drawer,
@@ -12,22 +13,21 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Stack,
-  useDisclosure
+  useColorModeValue,
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
 import { useRef } from "react"
-import { ImSpinner11 } from "react-icons/im"
 
 function LoginDrawer() {
+  const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const [login, { loading: attemptingLogin }] = useLoginMutation()
+  const toast = useToast()
+  const [login] = useLoginMutation()
 
   const btnRef = useRef<HTMLButtonElement | null>(null)
-
-  if (attemptingLogin) {
-    return <ImSpinner11 />
-  }
 
   return (
     <>
@@ -41,33 +41,44 @@ function LoginDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
           <DrawerCloseButton />
           <DrawerHeader>Login</DrawerHeader>
           <Formik
             initialValues={LoginUserInputType}
             validationSchema={LoginSchema}
-            onSubmit={async (values, actions) => {
-              actions.setSubmitting(false)
-              setTimeout(async () => {
-                await login({
-                  variables: {
-                    data: {
-                      email: values.email,
-                      password: values.password
-                    }
-                  },
-                  update: (cache, { data }) => {
-                    cache.writeQuery<MeQuery>({
-                      query: MeDocument,
-                      data: {
-                        __typename: "Query",
-                        me: data?.login.user
-                      }
-                    })
+            onSubmit={async (values, { setErrors }) => {
+              const response = await login({
+                variables: {
+                  data: {
+                    email: values.email,
+                    password: values.password
                   }
+                },
+                update: (cache, { data }) => {
+                  cache.writeQuery<MeQuery>({
+                    query: MeDocument,
+                    data: {
+                      __typename: "Query",
+                      me: data?.login.user
+                    }
+                  })
+                }
+              })
+
+              if (response?.data?.login?.errors) {
+                setErrors(convertToErrorMap(response?.data?.login?.errors))
+              } else {
+                toast({
+                  id: "success",
+                  title: `Welcome ${response?.data?.login?.user?.username}!`,
+                  description: "Your account was created successfully.",
+                  status: "success",
+                  duration: 9000,
+                  isClosable: true
                 })
-              }, 1000)
+                router.push("/")
+              }
             }}
           >
             {({ isSubmitting }) => (

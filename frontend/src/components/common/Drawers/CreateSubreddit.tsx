@@ -16,20 +16,20 @@ import {
   DrawerOverlay,
   IconButton,
   Tooltip,
+  useColorModeValue,
   useDisclosure,
   useToast
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
 import { useRef } from "react"
 import { MdCreateNewFolder } from "react-icons/md"
 
 function CreateCategoryDrawer() {
+  const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
-
   const toast = useToast()
-
-  const [createCategory] = useCreateSubredditMutation()
-
+  const [createCategory, { loading }] = useCreateSubredditMutation()
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
   return (
@@ -59,7 +59,7 @@ function CreateCategoryDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
           <DrawerCloseButton />
           <DrawerHeader>Create Subreddit</DrawerHeader>
           <Formik
@@ -72,7 +72,7 @@ function CreateCategoryDrawer() {
                 response = await createCategory({
                   variables: {
                     data: {
-                      ...values
+                      name: values.name
                     }
                   },
                   update(cache, { data }) {
@@ -100,10 +100,10 @@ function CreateCategoryDrawer() {
                 console.log(ex)
               }
 
-              if (response && response.data) {
+              if (response?.data?.createCategory?.category) {
                 toast({
-                  id: `create-category-${response?.data?.createCategory?.category?.id}`,
-                  title: `${response?.data?.createCategory?.category?.name}!`,
+                  id: "success",
+                  title: `${response.data.createCategory.category.name}!`,
                   description:
                     "Your subreddit/category was created successfully.",
                   status: "success",
@@ -129,7 +129,11 @@ function CreateCategoryDrawer() {
                     <Button variant="outline" mr={3} onClick={onClose}>
                       Cancel
                     </Button>
-                    <Button type="submit" isLoading={isSubmitting} color="blue">
+                    <Button
+                      type="submit"
+                      isLoading={isSubmitting || loading}
+                      colorScheme="orange"
+                    >
                       Submit
                     </Button>
                   </DrawerFooter>

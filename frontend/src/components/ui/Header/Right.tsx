@@ -22,23 +22,23 @@ import { FaUserCircle } from "react-icons/fa"
 import { MdSettings } from "react-icons/md"
 
 const DynamicRegisterDrawer = dynamic(
-  () => import("@/components/common/Drawers/RegisterDrawer"),
+  () => import("@/components/common/Drawers/Register"),
   { ssr: false }
 )
 
 const DynamicLoginDrawer = dynamic(
-  () => import("@/components/common/Drawers/LoginDrawer"),
+  () => import("@/components/common/Drawers/Login"),
   {
     ssr: false
   }
 )
 
 const DynamicCreateCategoryDrawer = dynamic(
-  () => import("@/components/common/Drawers/CategoryDrawer"),
+  () => import("@/components/common/Drawers/CreateSubreddit"),
   { ssr: false }
 )
 const DynamicCreatePostDrawer = dynamic(
-  () => import("@/components/common/Drawers/CreatePostDrawer"),
+  () => import("@/components/common/Drawers/CreatePost"),
   { ssr: false }
 )
 

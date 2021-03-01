@@ -29,7 +29,6 @@ import { UserMutationResponse } from "./response/user-response"
 @Resolver(() => User)
 export class UserResolver {
   @Query(() => User, { nullable: true })
-  @UseMiddleware(isAuth)
   async me(@Ctx() { req, em }: ContextType) {
     if (req.session.userId) {
       return await em.findOne(User, req.session.userId)

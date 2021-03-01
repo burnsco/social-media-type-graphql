@@ -26,6 +26,7 @@ import {
   TabPanels,
   Tabs,
   Tooltip,
+  useColorModeValue,
   useDisclosure,
   useToast
 } from "@chakra-ui/react"
@@ -166,7 +167,7 @@ function CreatePostDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
           <DrawerCloseButton />
           <DrawerHeader>Submit a Post!</DrawerHeader>
           <Formik
@@ -174,9 +175,7 @@ function CreatePostDrawer() {
             onSubmit={(actions, values) => createPostHandler(actions, values)}
           >
             {formik => {
-              console.log(formik)
               const test = formik.getFieldHelpers("image")
-              console.log(test)
               if (imageUrl !== null) {
                 test.setValue(imageUrl)
               }
@@ -307,7 +306,7 @@ function CreatePostDrawer() {
                       type="submit"
                       isDisabled={formik.isSubmitting || loading}
                       isLoading={formik.isSubmitting}
-                      color="blue"
+                      colorScheme="orange"
                     >
                       Submit
                     </Button>
