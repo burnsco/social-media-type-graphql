@@ -31,34 +31,36 @@ const NewPost: React.FC<PostQuery> = props => {
       <VoteBox postId={postId} postScore={postScore} isLoggedIn={isLoggedIn} />
       <Flex minH="160px" width="100%" flexDir="column" ml={3}>
         {isOwner ? (
-          <PostHeader
-            postId={postId}
-            author={postAuthor}
-            createdAt={postCreatedTime}
-            category={postCategory}
-          />
+          <>
+            <PostHeader
+              postId={postId}
+              author={postAuthor}
+              createdAt={postCreatedTime}
+              category={postCategory}
+            />
+            <PostBody
+              postId={postId}
+              image={postImage}
+              title={postTitle}
+              text={postText}
+              link={postLink}
+            />
+          </>
         ) : (
-          <PostHeader
-            author={postAuthor}
-            createdAt={postCreatedTime}
-            category={postCategory}
-          />
-        )}
-        {isOwner ? (
-          <PostBody
-            postId={postId}
-            image={postImage}
-            title={postTitle}
-            text={postText}
-            link={postLink}
-          />
-        ) : (
-          <PostBody
-            image={postImage}
-            title={postTitle}
-            text={postText}
-            link={postLink}
-          />
+          <>
+            <PostHeader
+              author={postAuthor}
+              createdAt={postCreatedTime}
+              category={postCategory}
+            />
+
+            <PostBody
+              image={postImage}
+              title={postTitle}
+              text={postText}
+              link={postLink}
+            />
+          </>
         )}
 
         <PostFooter

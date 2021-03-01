@@ -72,9 +72,9 @@ function LoginDrawer() {
                 toast({
                   id: "success",
                   title: `Welcome ${response?.data?.login?.user?.username}!`,
-                  description: "Your account was created successfully.",
+                  description: "You were logged in successfully",
                   status: "success",
-                  duration: 9000,
+                  duration: 2000,
                   isClosable: true
                 })
                 router.push("/")

@@ -75,7 +75,7 @@ const HeaderMenu = () => {
           />
 
           <MenuList opacity="0.7" bg={bg}>
-            <MenuGroup title={data.me.username} color="blue">
+            <MenuGroup title={data.me.username} color="lightsteelblue">
               <MenuDivider />
               <MenuItem onClick={() => router.push("/user")}>
                 <FaUserCircle />

@@ -11,6 +11,7 @@ import {
   Text
 } from "@chakra-ui/react"
 import Image from "next/image"
+import { memo } from "react"
 
 type PostBodyType = {
   title?: string | null
@@ -29,8 +30,9 @@ const PostBody: React.FC<PostBodyType> = ({
 }): JSX.Element => {
   const [editPost, { loading: submittingEditedPost }] = useEditPostMutation()
 
-  function EditItemControls({ title, postId }: PostBodyType) {
-    if (title) {
+  // #TODO optimize this so can use on title, text or link
+  function EditItemControls({ title, text, link, postId }: PostBodyType) {
+    if (title || text || link) {
       if (postId) {
         return (
           <Heading fontWeight="500" fontSize="xl" px={1}>
@@ -86,8 +88,8 @@ const PostBody: React.FC<PostBodyType> = ({
       ) : null}
 
       {text ? (
-        <Text fontSize="sm" mt={1} noOfLines={4}>
-          <EditItemControls text={text} />
+        <Text fontSize="sm" mt={2} noOfLines={4}>
+          {text}
         </Text>
       ) : null}
 
@@ -100,4 +102,4 @@ const PostBody: React.FC<PostBodyType> = ({
   )
 }
 
-export default PostBody
+export default memo(PostBody)
