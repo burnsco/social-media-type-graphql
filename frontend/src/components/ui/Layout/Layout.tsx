@@ -1,4 +1,4 @@
-import Header from "@/components/ui/Layout/Header"
+import { Header } from "@/components/ui"
 import { Box, Stack } from "@chakra-ui/react"
 import dynamic from "next/dynamic"
 import Head from "next/head"

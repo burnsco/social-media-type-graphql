@@ -33,10 +33,6 @@ export class Post extends Base<Post> {
   @Property({ nullable: true })
   image?: string
 
-  @Field(() => String, { nullable: true })
-  @Property({ nullable: true })
-  video?: string
-
   @Field(() => User)
   @ManyToOne(() => User, { onDelete: "cascade" })
   author: User

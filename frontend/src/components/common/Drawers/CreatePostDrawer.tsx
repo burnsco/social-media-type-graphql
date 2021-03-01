@@ -4,12 +4,12 @@ import {
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@/generated/graphql"
-import { useIsAuth } from "@/hooks/useIsAuth"
 import { CreatePostInputType } from "@/types/Post/types"
 import { gql } from "@apollo/client"
 import {
   Box,
   Button,
+  chakra,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -25,6 +25,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Tooltip,
   useDisclosure,
   useToast
 } from "@chakra-ui/react"
@@ -32,21 +33,13 @@ import { Form, Formik, FormikHelpers } from "formik"
 import { useRouter } from "next/router"
 import { useCallback, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
-import { ImPencil2 } from "react-icons/im"
+import { BsPencilSquare } from "react-icons/bs"
 import request from "superagent"
 
-// TODO
-// upload the video or image
-// validate that is is uploaded
-// send that public_id to the image/video value in formik
-
 function CreatePostDrawer() {
-  useIsAuth()
-
   const [uploadProgress, setUploadProgress] = useState(0)
 
   const [imageUrl, setImageUrl] = useState(null)
-  const [videoUrl, setVideoUrl] = useState(null)
 
   const router = useRouter()
   const toast = useToast()
@@ -67,6 +60,8 @@ function CreatePostDrawer() {
         data: {
           categoryId: values.categoryId,
           title: values.title,
+          text: values.text,
+          link: values.link,
           image: imageUrl
         }
       },
@@ -145,14 +140,24 @@ function CreatePostDrawer() {
 
   return (
     <>
-      <IconButton
-        variant="ghost"
-        aria-label="Create a Post"
-        icon={<ImPencil2 />}
-        ref={btnRef}
-        size="md"
-        onClick={onOpen}
-      />
+      <Tooltip
+        hasArrow
+        label="Create Post"
+        fontSize="md"
+        bg="black"
+        color="whitesmoke"
+      >
+        <chakra.span>
+          <IconButton
+            variant="ghost"
+            aria-label="Create a Post"
+            icon={<BsPencilSquare size="1.5em" />}
+            ref={btnRef}
+            size="md"
+            onClick={onOpen}
+          />
+        </chakra.span>
+      </Tooltip>
       <Drawer
         size="sm"
         isOpen={isOpen}
@@ -172,8 +177,8 @@ function CreatePostDrawer() {
               console.log(formik)
               const test = formik.getFieldHelpers("image")
               console.log(test)
-              if (videoUrl !== null) {
-                test.setValue(videoUrl)
+              if (imageUrl !== null) {
+                test.setValue(imageUrl)
               }
               return (
                 <Form>
@@ -260,11 +265,7 @@ function CreatePostDrawer() {
                                 select files
                               </p>
                             )}
-                            <div
-                              {...getRootProps({
-                                onClick: e => console.log(e)
-                              })}
-                            >
+                            <div {...getRootProps({})}>
                               <Box
                                 id="upload-media"
                                 border="3px dashed"
@@ -278,23 +279,8 @@ function CreatePostDrawer() {
                                   placeholder="image"
                                   aria-placeholder="Post Image"
                                 />
-                                <input
-                                  {...getInputProps({
-                                    onDrop: e => console.log(e)
-                                  })}
-                                />
-                                <ChakraField
-                                  label=""
-                                  id="video"
-                                  name="video"
-                                  placeholder="video"
-                                  aria-placeholder="Post Video"
-                                />
-                                <input
-                                  {...getInputProps({
-                                    onDrop: e => console.log(e)
-                                  })}
-                                />
+                                <input {...getInputProps({})} />
+
                                 {uploadProgress === 100 ? "COMPLETE" : null}
                                 {uploadProgress !== 0 &&
                                 uploadProgress !== 100 ? (

@@ -50,7 +50,9 @@ function RegisterDrawer() {
               const response = await register({
                 variables: {
                   data: {
-                    ...values
+                    username: values.username,
+                    email: values.email,
+                    password: values.password
                   }
                 },
                 update: (cache, { data }) => {
@@ -63,18 +65,19 @@ function RegisterDrawer() {
                   })
                 }
               })
-              if (response.data?.register?.user) {
+
+              if (response?.data?.register?.errors) {
+                setErrors(convertToErrorMap(response?.data?.register?.errors))
+              } else {
                 toast({
                   id: "success",
-                  title: `Welcome ${response.data.register.user.username}!`,
+                  title: `Welcome ${response?.data?.register?.user?.username}!`,
                   description: "Your account was created successfully.",
                   status: "success",
                   duration: 9000,
                   isClosable: true
                 })
                 router.push("/")
-              } else if (response.data?.register.errors) {
-                setErrors(convertToErrorMap(response.data.register.errors))
               }
             }}
           >
@@ -111,7 +114,11 @@ function RegisterDrawer() {
                     <Button variant="outline" mr={3} onClick={onClose}>
                       Cancel
                     </Button>
-                    <Button type="submit" isLoading={isSubmitting} color="blue">
+                    <Button
+                      type="submit"
+                      isLoading={isSubmitting}
+                      color="orange"
+                    >
                       Submit
                     </Button>
                   </DrawerFooter>

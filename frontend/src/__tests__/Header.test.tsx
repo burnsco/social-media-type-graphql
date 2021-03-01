@@ -1,4 +1,4 @@
-import Header from "@/components/ui/Layout/Header"
+import Header from "@/components/ui/Header"
 import { render, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { gql, InMemoryCache } from "@apollo/client"
 import { MockedProvider } from "@apollo/client/testing"

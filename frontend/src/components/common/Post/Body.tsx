@@ -1,18 +1,77 @@
-import { AspectRatio, Box, Flex, Heading, Link, Text } from "@chakra-ui/react"
+import { useEditPostMutation } from "@/generated/graphql"
+import {
+  Box,
+  Editable,
+  EditableInput,
+  EditablePreview,
+  Flex,
+  Heading,
+  Link,
+  Skeleton,
+  Text
+} from "@chakra-ui/react"
 import Image from "next/image"
 
-const PostBody: React.FC<{
+type PostBodyType = {
   title?: string | null
   text?: string | null
   link?: string | null
   image?: string | null
-  video?: string | null
-}> = ({ title, text, link, image, video }): JSX.Element => {
+  postId?: string | null | undefined
+}
+
+const PostBody: React.FC<PostBodyType> = ({
+  title,
+  text,
+  postId,
+  link,
+  image
+}): JSX.Element => {
+  const [editPost, { loading: submittingEditedPost }] = useEditPostMutation()
+
+  function EditItemControls({ title, postId }: PostBodyType) {
+    if (title) {
+      if (postId) {
+        return (
+          <Heading fontWeight="500" fontSize="xl" px={1}>
+            <Editable
+              defaultValue={title || "Error"}
+              submitOnBlur
+              onSubmit={async props => {
+                try {
+                  const response = await editPost({
+                    variables: {
+                      data: {
+                        title: props,
+                        postId
+                      }
+                    }
+                  })
+                } catch (error) {
+                  console.log(error)
+                }
+              }}
+            >
+              <EditablePreview />
+              <EditableInput />
+            </Editable>
+          </Heading>
+        )
+      }
+      return (
+        <Heading fontWeight="500" fontSize="xl" px={1}>
+          {title}
+        </Heading>
+      )
+    }
+    return null
+  }
+
   return (
     <Flex direction="column" my={1} flexGrow={2} width="100%">
-      <Heading fontWeight="500" fontSize="xl">
-        {title}
-      </Heading>
+      <Skeleton isLoaded={!submittingEditedPost}>
+        <EditItemControls title={title} postId={postId} />
+      </Skeleton>
 
       {image ? (
         <Box p={2} mt={2}>
@@ -26,15 +85,9 @@ const PostBody: React.FC<{
         </Box>
       ) : null}
 
-      {video ? (
-        <AspectRatio maxW="560px" ratio={1}>
-          <iframe title="test" src={video} allowFullScreen />
-        </AspectRatio>
-      ) : null}
-
       {text ? (
         <Text fontSize="sm" mt={1} noOfLines={4}>
-          {text}
+          <EditItemControls text={text} />
         </Text>
       ) : null}
 

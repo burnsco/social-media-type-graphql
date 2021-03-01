@@ -3,7 +3,6 @@ import {
   useCategoriesLazyQuery,
   useCreatePostMutation
 } from "@/generated/graphql"
-import { useIsAuth } from "@/hooks/useIsAuth"
 import { CreatePostSchema } from "@/types/Post/schemas"
 import { CreatePostInputType } from "@/types/Post/types"
 import { gql } from "@apollo/client"
@@ -23,8 +22,6 @@ import { useRouter } from "next/router"
 import { LinkPost, MediaPost, RegularPost } from "./PostTypes"
 
 const CreatePost: React.FunctionComponent = () => {
-  useIsAuth()
-
   const router = useRouter()
   const bg = useColorModeValue("white", "#1A1A1B")
   const toast = useToast()

@@ -6,6 +6,7 @@ import { convertToErrorMap } from "@/utils/index"
 import { gql } from "@apollo/client"
 import {
   Button,
+  chakra,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -14,12 +15,13 @@ import {
   DrawerHeader,
   DrawerOverlay,
   IconButton,
+  Tooltip,
   useDisclosure,
   useToast
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { useRef } from "react"
-import { BsFolderPlus } from "react-icons/bs"
+import { MdCreateNewFolder } from "react-icons/md"
 
 function CreateCategoryDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -32,15 +34,24 @@ function CreateCategoryDrawer() {
 
   return (
     <>
-      <IconButton
-        variant="ghost"
-        aria-label="Create a Subreddit"
-        icon={<BsFolderPlus />}
-        ref={btnRef}
-        size="md"
-        onClick={onOpen}
-      />
-
+      <Tooltip
+        hasArrow
+        label="Create Subreddit"
+        fontSize="md"
+        bg="black"
+        color="whitesmoke"
+      >
+        <chakra.span>
+          <IconButton
+            variant="ghost"
+            aria-label="Create a Subreddit"
+            icon={<MdCreateNewFolder size="1.5em" />}
+            ref={btnRef}
+            size="md"
+            onClick={onOpen}
+          />
+        </chakra.span>
+      </Tooltip>
       <Drawer
         isOpen={isOpen}
         placement="right"

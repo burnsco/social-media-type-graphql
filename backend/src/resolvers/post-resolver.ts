@@ -212,7 +212,7 @@ export class PostResolver {
     if (post && req.session.userId) {
       const comment = em.create(Comment, {
         post,
-        body: body,
+        body,
         createdBy: em.getReference(User, req.session.userId)
       })
 

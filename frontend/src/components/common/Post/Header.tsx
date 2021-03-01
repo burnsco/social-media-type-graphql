@@ -1,16 +1,7 @@
 import { DeletePostDialog } from "@/components/common/DeletePostDialog"
-import { NextChakraLink } from "@/components/common/index"
 import { timeDifferenceForDate } from "@/utils/index"
-import {
-  Box,
-  Flex,
-  HStack,
-  IconButton,
-  Spacer,
-  useColorModeValue
-} from "@chakra-ui/react"
+import { Box, Flex, HStack, Spacer, useColorModeValue } from "@chakra-ui/react"
 import { useRouter } from "next/router"
-import { FiEdit } from "react-icons/fi"
 
 const PostHeader: React.FC<{
   category?: string | null
@@ -63,15 +54,6 @@ const PostHeader: React.FC<{
       <Spacer />
 
       <Flex mr={1}>
-        <NextChakraLink href="/post/edit/[id]" as={`/post/edit/${postId}}`}>
-          <IconButton
-            mr={2}
-            size="xs"
-            aria-label="Edit Post"
-            icon={<FiEdit />}
-          />
-        </NextChakraLink>
-
         <DeletePostDialog postId={postId} />
       </Flex>
     </HStack>

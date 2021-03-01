@@ -1,7 +1,3 @@
-import dynamic from "next/dynamic"
-
-const DynamicSinglePostPage = dynamic(() => import("@/components/common/404"))
-
-const NotFoundPage = () => <DynamicSinglePostPage />
+const NotFoundPage = () => <h1>Not Found</h1>
 
 export default NotFoundPage

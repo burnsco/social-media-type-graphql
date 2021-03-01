@@ -44,12 +44,23 @@ const NewPost: React.FC<PostQuery> = props => {
             category={postCategory}
           />
         )}
-        <PostBody
-          image={postImage}
-          title={postTitle}
-          text={postText}
-          link={postLink}
-        />
+        {isOwner ? (
+          <PostBody
+            postId={postId}
+            image={postImage}
+            title={postTitle}
+            text={postText}
+            link={postLink}
+          />
+        ) : (
+          <PostBody
+            image={postImage}
+            title={postTitle}
+            text={postText}
+            link={postLink}
+          />
+        )}
+
         <PostFooter
           category={postCategory}
           id={postId}

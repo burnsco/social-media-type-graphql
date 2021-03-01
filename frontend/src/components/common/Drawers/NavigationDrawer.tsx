@@ -1,6 +1,7 @@
 import { NextChakraLink } from "@/components/common/index"
 import { useCategoriesLazyQuery } from "@/generated/graphql"
 import {
+  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -9,16 +10,17 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Heading,
   Input,
   List,
   ListItem,
+  Skeleton,
   useColorModeValue,
   useDisclosure
 } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
+import { ImArrowDown, ImArrowRight } from "react-icons/im"
 
-function NavigationDrawer() {
+export default function NavigationDrawer() {
   const [input, setInput] = useState("")
 
   const color = useColorModeValue("gray.700", "gray.300")
@@ -37,68 +39,72 @@ function NavigationDrawer() {
 
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
-  if (loading) return null
-
-  if (data && data.categories) {
-    return (
-      <>
-        <Button variant="outline" size="md" ref={btnRef} onClick={onOpen}>
-          Navigation
-        </Button>
-        <Drawer
-          isOpen={isOpen}
-          placement="right"
-          onClose={onClose}
-          finalFocusRef={btnRef}
-        >
-          <DrawerOverlay />
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>
-              <Input
-                placeholder="Search subreddits"
-                value={input}
-                onChange={e => setInput(e.target.value)}
-              />
-            </DrawerHeader>
-            <DrawerBody>
+  return (
+    <Box border="2px solid orange">
+      <Button
+        colorScheme="blue"
+        size="md"
+        flexGrow={2}
+        ref={btnRef}
+        onClick={onOpen}
+        leftIcon={isOpen ? <ImArrowRight /> : <ImArrowDown />}
+      >
+        NAVIGATION
+      </Button>
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Search Subreddits</DrawerHeader>
+          <DrawerBody>
+            <Input
+              mb={2}
+              placeholder="Search subreddits"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+            />
+            <Skeleton isLoaded={!loading}>
               <List>
-                {data.categories
-                  .filter(c =>
-                    c.name.toLowerCase().includes(input.toLowerCase())
-                  )
-                  .map(cat => (
-                    <ListItem p={1} key={`sideNav-${cat.name}-${cat.id}`}>
-                      <NextChakraLink
-                        p={1}
-                        bg={linkbg2}
-                        fontWeight="400"
-                        color={color}
-                        _hover={{
-                          color: hover,
-                          bg: linkbg,
-                          marginLeft: 1
-                        }}
-                        href="/r/[category]"
-                        as={`/r/${cat.name}`}
-                      >
-                        {cat.name}
-                      </NextChakraLink>
-                    </ListItem>
-                  ))}
+                {data && data.categories
+                  ? data.categories
+                      .filter(c =>
+                        c.name.toLowerCase().includes(input.toLowerCase())
+                      )
+                      .map(cat => (
+                        <ListItem p={1} key={`sideNav-${cat.name}-${cat.id}`}>
+                          <NextChakraLink
+                            p={1}
+                            bg={linkbg2}
+                            fontWeight="400"
+                            color={color}
+                            _hover={{
+                              color: hover,
+                              bg: linkbg,
+                              marginLeft: 1
+                            }}
+                            href="/r/[category]"
+                            as={`/r/${cat.name}`}
+                          >
+                            {cat.name}
+                          </NextChakraLink>
+                        </ListItem>
+                      ))
+                  : null}
               </List>
-            </DrawerBody>
-            <DrawerFooter>
-              <Button variant="outline" mr={3} onClick={onClose}>
-                Cancel
-              </Button>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-      </>
-    )
-  }
-  return <Heading>Error Loading Subreddits</Heading>
+            </Skeleton>
+          </DrawerBody>
+          <DrawerFooter>
+            <Button variant="outline" mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </Box>
+  )
 }
-
-export default NavigationDrawer

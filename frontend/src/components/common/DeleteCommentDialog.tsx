@@ -1,4 +1,4 @@
-import { useDeletePostMutation } from "@/generated/graphql"
+import { Post, useDeletePostMutation } from "@/generated/graphql"
 import { sleep } from "@/utils/sleepy"
 import {
   AlertDialog,
@@ -8,16 +8,15 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  chakra,
-  IconButton,
-  Tooltip
+  IconButton
 } from "@chakra-ui/react"
 import { useRef, useState } from "react"
 import { AiFillDelete } from "react-icons/ai"
 
 export const DeletePostDialog: React.FC<{
   postId?: string | null
-}> = ({ postId }) => {
+  post: Post
+}> = ({ postId, post }) => {
   const [deletePost, { client }] = useDeletePostMutation()
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
@@ -26,22 +25,12 @@ export const DeletePostDialog: React.FC<{
   if (postId) {
     return (
       <>
-        <Tooltip
-          hasArrow
-          label="Delete Post"
-          fontSize="md"
-          bg="black"
-          color="whitesmoke"
-        >
-          <chakra.span>
-            <IconButton
-              onClick={() => setIsOpen(true)}
-              size="xs"
-              aria-label="Delete Post"
-              icon={<AiFillDelete />}
-            />
-          </chakra.span>
-        </Tooltip>
+        <IconButton
+          onClick={() => setIsOpen(true)}
+          size="xs"
+          aria-label="Delete Comment"
+          icon={<AiFillDelete />}
+        />
 
         <AlertDialog
           returnFocusOnClose={false}
@@ -56,7 +45,7 @@ export const DeletePostDialog: React.FC<{
                 fontSize="lg"
                 fontWeight="bold"
               >
-                Delete Post
+                Delete Comment
               </AlertDialogHeader>
 
               <AlertDialogBody>
@@ -78,12 +67,21 @@ export const DeletePostDialog: React.FC<{
                       },
                       update(cache, { data }) {
                         if (data?.deletePost) {
-                          cache.evict({ id: "Post:" + postId })
+                          cache.modify({
+                            id: cache.identify(post),
+                            fields: {
+                              comments(existingCommentRefs, { readField }) {
+                                return existingCommentRefs.filter(
+                                  (commentRef: any) =>
+                                    postId !== readField("id", commentRef)
+                                )
+                              }
+                            }
+                          })
                         }
                         return null
                       }
                     })
-                    client.resetStore()
                     onClose()
                   }}
                   colorScheme="red"

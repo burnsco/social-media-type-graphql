@@ -5,6 +5,5 @@ fragment PostDetails on Post {
   title
   text
   image
-  video
   link
 }

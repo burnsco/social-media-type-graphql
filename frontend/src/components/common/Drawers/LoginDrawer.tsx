@@ -16,15 +16,18 @@ import {
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { useRef } from "react"
+import { ImSpinner11 } from "react-icons/im"
 
 function LoginDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [login, { loading }] = useLoginMutation()
+  const [login, { loading: attemptingLogin }] = useLoginMutation()
 
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
-  if (loading) return null
+  if (attemptingLogin) {
+    return <ImSpinner11 />
+  }
 
   return (
     <>
@@ -45,12 +48,13 @@ function LoginDrawer() {
             initialValues={LoginUserInputType}
             validationSchema={LoginSchema}
             onSubmit={async (values, actions) => {
+              actions.setSubmitting(false)
               setTimeout(async () => {
-                actions.setSubmitting(false)
                 await login({
                   variables: {
                     data: {
-                      ...values
+                      email: values.email,
+                      password: values.password
                     }
                   },
                   update: (cache, { data }) => {
@@ -91,9 +95,9 @@ function LoginDrawer() {
                   </Button>
                   <Button
                     type="submit"
-                    isDisabled={isSubmitting}
                     isLoading={isSubmitting}
-                    color="blue"
+                    loadingText="Submitting"
+                    colorScheme="orange"
                   >
                     Submit
                   </Button>
