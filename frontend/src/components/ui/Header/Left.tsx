@@ -20,7 +20,7 @@ const LogoSection = () => {
           mr={4}
           display={{ base: "none", sm: "none", md: "flex" }}
           size="md"
-          fontWeight="500"
+          fontWeight="600"
         >
           reddit
         </Heading>

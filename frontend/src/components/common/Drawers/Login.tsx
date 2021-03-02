@@ -108,7 +108,7 @@ function LoginDrawer() {
                     type="submit"
                     isLoading={isSubmitting}
                     loadingText="Submitting"
-                    colorScheme="orange"
+                    colorScheme={useColorModeValue("purple", "blue")}
                   >
                     Submit
                   </Button>

@@ -30,7 +30,12 @@ function RegisterDrawer() {
 
   return (
     <>
-      <Button ref={btnRef} size="md" colorScheme="orange" onClick={onOpen}>
+      <Button
+        ref={btnRef}
+        size="md"
+        colorScheme={useColorModeValue("purple", "orange")}
+        onClick={onOpen}
+      >
         Register
       </Button>
       <Drawer
@@ -116,9 +121,10 @@ function RegisterDrawer() {
                       Cancel
                     </Button>
                     <Button
+                      variant="solid"
                       type="submit"
                       isLoading={isSubmitting}
-                      color="orange"
+                      colorScheme={useColorModeValue("purple", "blue")}
                     >
                       Submit
                     </Button>

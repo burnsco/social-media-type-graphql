@@ -132,7 +132,7 @@ function CreateCategoryDrawer() {
                     <Button
                       type="submit"
                       isLoading={isSubmitting || loading}
-                      colorScheme="orange"
+                      colorScheme={useColorModeValue("purple", "blue")}
                     >
                       Submit
                     </Button>

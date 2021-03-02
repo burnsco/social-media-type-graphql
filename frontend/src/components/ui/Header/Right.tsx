@@ -4,6 +4,7 @@ import {
   Avatar,
   Box,
   ButtonGroup,
+  HStack,
   IconButton,
   Menu,
   MenuButton,
@@ -52,7 +53,7 @@ const HeaderMenu = () => {
 
   if (data && data?.me?.username && !loading) {
     return (
-      <Menu>
+      <HStack spacing={2}>
         <ButtonGroup spacing="4" mr="4">
           <DynamicCreatePostDrawer />
 
@@ -105,16 +106,14 @@ const HeaderMenu = () => {
             </MenuGroup>
           </MenuList>
         </Menu>
-      </Menu>
+      </HStack>
     )
   }
   return (
-    <Menu>
-      <Stack spacing={4} direction="row" align="center">
-        <DynamicRegisterDrawer />
-        <DynamicLoginDrawer />
-      </Stack>
-    </Menu>
+    <Stack spacing={4} direction="row" align="center">
+      <DynamicRegisterDrawer />
+      <DynamicLoginDrawer />
+    </Stack>
   )
 }
 

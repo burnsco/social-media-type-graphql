@@ -14,10 +14,10 @@ const customTheme = extendTheme({
       },
       body: {
         width: "100%",
-        minHeight: "95vh",
+        minHeight: "100vh",
         fontSize: { base: "sm", sm: "md" },
         color: mode("gray.700", "whiteAlpha.900")(props),
-        background: mode("gray.100", "#1A1A1B")(props)
+        background: mode("gray.200", "#1A1A1B")(props)
       }
     })
   }

@@ -119,7 +119,7 @@ const CreatePost: React.FunctionComponent = () => {
               </Stack>
               <Button
                 m={2}
-                colorScheme="orange"
+                colorScheme="purple"
                 isDisabled={loading}
                 isLoading={formik.isSubmitting}
                 type="submit"

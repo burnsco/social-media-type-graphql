@@ -115,17 +115,13 @@ function CreatePostDrawer() {
         }
       })
       .end((error, response) => {
-        console.log(response)
-        if (response.body.public_id) {
-          setImageUrl(response.body.public_id)
-        }
-        // public_id
-        // convert .jpg to .webp
-        // add a srcSet in the image component
-        // with jpg and webP
         if (error) {
+          console.log(`error`)
           console.log(error)
         }
+        console.log("response")
+        console.log(response)
+        setImageUrl(response.body.public_id)
       })
   }, [])
 
@@ -175,10 +171,6 @@ function CreatePostDrawer() {
             onSubmit={(actions, values) => createPostHandler(actions, values)}
           >
             {formik => {
-              const test = formik.getFieldHelpers("image")
-              if (imageUrl !== null) {
-                test.setValue(imageUrl)
-              }
               return (
                 <Form>
                   <DrawerBody>
@@ -281,6 +273,7 @@ function CreatePostDrawer() {
                                 <input {...getInputProps({})} />
 
                                 {uploadProgress === 100 ? "COMPLETE" : null}
+
                                 {uploadProgress !== 0 &&
                                 uploadProgress !== 100 ? (
                                   <Progress

@@ -18,8 +18,8 @@ const HeaderContent = () => {
     <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
       <LogoSection />
       <NavSection />
-      <MenuIconsSection />
 
+      <MenuIconsSection />
       <IconButton
         size="md"
         fontSize="lg"
@@ -35,16 +35,15 @@ const HeaderContent = () => {
 }
 
 const Header = () => {
-  const bg = useColorModeValue("white", "#202020")
   return (
     <chakra.header
       pos="fixed"
       top="0"
       zIndex="1"
-      bg={bg}
+      bg={useColorModeValue("white", "#202020")}
       left="0"
       right="0"
-      boxShadow="base"
+      boxShadow={useColorModeValue("md", "dark-lg")}
       width="full"
     >
       <chakra.div height="3.5rem" mx="auto" maxW="1200px">

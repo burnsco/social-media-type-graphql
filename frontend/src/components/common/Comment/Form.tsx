@@ -67,7 +67,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
               id: "success",
               title: "Your comment was posted successfully.",
               status: "success",
-              duration: 9000,
+              duration: 3000,
               isClosable: true
             })
             actions.resetForm()
@@ -78,8 +78,11 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
           <Form>
             <InputField id="body" name="body" label="" textarea />
             <Button
+              borderTopLeftRadius="none"
+              borderBottomLeftRadius="lg"
+              mt={1}
               size="sm"
-              colorScheme="orange"
+              colorScheme={useColorModeValue("purple", "orange")}
               isLoading={mutationLoading || formik.isSubmitting}
               isDisabled={mutationLoading || formik.isSubmitting}
               type="submit"
@@ -95,7 +98,7 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
           title: "An error occurred.",
           description: "There was an error trying to submit your comment",
           status: "error",
-          duration: 9000,
+          duration: 3000,
           isClosable: true
         })}
     </Box>
