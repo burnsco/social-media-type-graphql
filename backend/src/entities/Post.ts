@@ -8,15 +8,11 @@ import {
 } from "@mikro-orm/core"
 import { ObjectType } from "type-graphql"
 import { Field } from "type-graphql/dist/decorators/Field"
-import { Base } from "./Base"
-import { Category } from "./Category"
-import { Comment } from "./Comment"
-import { User } from "./User"
-import { Vote } from "./Vote"
+import { Base, Category, Comment, User, Vote } from "./index"
 
 @Entity()
 @ObjectType()
-export class Post extends Base<Post> {
+export default class Post extends Base<Post> {
   @Field(() => String)
   @Property()
   title: string
@@ -30,7 +26,6 @@ export class Post extends Base<Post> {
   link?: string
 
   @Field(() => String, { nullable: true })
-  @Property({ nullable: true })
   image?: string
 
   @Field(() => User)
@@ -51,7 +46,8 @@ export class Post extends Base<Post> {
   @Field(() => [Comment], { nullable: true })
   @OneToMany(() => Comment, comment => comment.post, {
     cascade: [Cascade.ALL],
-    orphanRemoval: true
+    orphanRemoval: true,
+    lazy: true
   })
   comments = new Collection<Comment>(this)
 }

@@ -7,6 +7,7 @@ import {
   MenuItem,
   MenuList,
   MenuOptionGroup,
+  SkeletonText,
   useColorModeValue
 } from "@chakra-ui/react"
 import { useRouter } from "next/router"
@@ -26,6 +27,8 @@ function HeaderNavigation() {
     if (router && router.pathname) {
       if (router.pathname === "/") {
         return "Home"
+      } else if (!router.query.category) {
+        return `${router.asPath}`
       } else {
         return `${router.query.category}`
       }
@@ -33,44 +36,47 @@ function HeaderNavigation() {
     return "Home"
   }
 
-  return (
-    <Flex flexGrow={2}>
-      <Menu closeOnSelect={false}>
-        {({ isOpen }) => (
-          <>
-            <MenuButton
-              as={Button}
-              mr={4}
-              maxW="280px"
-              fontSize="sm"
-              textAlign="left"
-              w="full"
-              leftIcon={<FaHome />}
-              rightIcon={isOpen ? <BsArrowDown /> : <BsArrowLeft />}
-              variant="outline"
-            >
-              {renderPath()}
-            </MenuButton>
-            {data && data.categories && (
-              <MenuList minWidth="240px" opacity="0.7" bg={bg}>
-                <MenuOptionGroup title="subreddits">
-                  {data.categories.map((item, i) => (
-                    <MenuItem
-                      value={item.name}
-                      key={`subreddit-center-menu-${item.id}-${i}`}
-                      onClick={() => router.push(`/r/${item.name}`)}
-                    >
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </MenuOptionGroup>
-              </MenuList>
-            )}
-          </>
-        )}
-      </Menu>
-    </Flex>
-  )
+  if (!loading) {
+    return (
+      <Flex flexGrow={2}>
+        <Menu closeOnSelect={true}>
+          {({ isOpen }) => (
+            <>
+              <MenuButton
+                as={Button}
+                mr={4}
+                maxW="280px"
+                fontSize="sm"
+                textAlign="left"
+                w="full"
+                leftIcon={<FaHome />}
+                rightIcon={isOpen ? <BsArrowDown /> : <BsArrowLeft />}
+                variant="outline"
+              >
+                {renderPath()}
+              </MenuButton>
+              {data && data.categories && (
+                <MenuList minWidth="240px" opacity="0.7" bg={bg}>
+                  <MenuOptionGroup title="subreddits">
+                    {data.categories.map((item, i) => (
+                      <MenuItem
+                        value={item.name}
+                        key={`subreddit-center-menu-${item.id}-${i}`}
+                        onClick={() => router.push(`/r/${item.name}`)}
+                      >
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </MenuOptionGroup>
+                </MenuList>
+              )}
+            </>
+          )}
+        </Menu>
+      </Flex>
+    )
+  }
+  return <SkeletonText />
 }
 
 export default HeaderNavigation

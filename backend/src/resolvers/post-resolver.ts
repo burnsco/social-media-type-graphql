@@ -5,26 +5,27 @@ import {
   Ctx,
   FieldResolver,
   Mutation,
+  Publisher,
+  PubSub,
   Query,
   Resolver,
+  ResolverFilterData,
   Root,
+  Subscription,
   UseMiddleware
 } from "type-graphql"
-import { Category } from "../entities/Category"
-import { Comment } from "../entities/Comment"
-import { Post } from "../entities/Post"
-import { User } from "../entities/User"
+import { Category, Comment, Post, User, Vote } from "../entities/index"
 import { ContextType } from "../types"
 import { isAuth } from "../utils/isAuth"
-import { Vote } from "./../entities/Vote"
 import { PostArgs } from "./args/post-args"
 import { _QueryMeta } from "./args/_QueryMeta"
+import { Topic } from "./enums/topics"
 import { CommentInput } from "./inputs/comment-input"
 import { CreatePostInput, EditPostInput } from "./inputs/post-input"
 import { VoteInput } from "./inputs/vote-input"
-import { CommentMutationResponse } from "./response/comment-response"
-import { PostMutationResponse } from "./response/post-response"
-import { VoteMutationResponse } from "./response/vote-response"
+import CommentMutationResponse from "./response/mutation/comment-mutation-response"
+import PostMutationResponse from "./response/mutation/post-mutation-response"
+import { VoteMutationResponse } from "./response/query/vote-response"
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -53,7 +54,7 @@ export class PostResolver {
     @Args() { postId }: PostArgs,
     @Ctx() { em }: ContextType
   ): Promise<Post | null> {
-    return await em.findOne(Post, { id: postId })
+    return await em.findOne(Post, { id: postId }, ["comments"])
   }
 
   @Query(() => [Post], { nullable: true })
@@ -94,7 +95,7 @@ export class PostResolver {
   @UseMiddleware(isAuth)
   async createPost(
     @Arg("data")
-    { title, text, image, video, link, categoryId }: CreatePostInput,
+    { title, text, image, link, categoryId }: CreatePostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse | null> {
     if (req.session.userId) {
@@ -102,12 +103,11 @@ export class PostResolver {
         title,
         text,
         image,
-        video,
         link,
         author: em.getReference(User, req.session.userId),
         category: em.getReference(Category, categoryId)
       })
-      await em.persistAndFlush(post)
+      await em.flush()
       return { post }
     }
     return null
@@ -117,7 +117,7 @@ export class PostResolver {
   @UseMiddleware(isAuth)
   async editPost(
     @Arg("data")
-    { title, text, image, video, link, postId, categoryId }: EditPostInput,
+    { title, text, image, link, postId, categoryId }: EditPostInput,
     @Ctx() { em }: ContextType
   ): Promise<PostMutationResponse> {
     const errors = []
@@ -144,18 +144,14 @@ export class PostResolver {
           image
         })
       }
-      if (video) {
-        wrap(post).assign({
-          video
-        })
-      }
+
       if (link) {
         wrap(post).assign({
           link
         })
       }
 
-      await em.persistAndFlush(post)
+      await em.flush()
 
       return {
         post
@@ -203,8 +199,10 @@ export class PostResolver {
   @UseMiddleware(isAuth)
   async createComment(
     @Arg("data") { body, postId }: CommentInput,
+    @PubSub(Topic.NewComment)
+    notifyAboutNewComment: Publisher<Partial<Comment>>,
     @Ctx() { em, req }: ContextType
-  ): Promise<CommentMutationResponse | null> {
+  ): Promise<CommentMutationResponse | null | boolean> {
     const post = await em.findOne(Post, postId, {
       populate: ["comments"]
     })
@@ -218,7 +216,14 @@ export class PostResolver {
 
       post.comments.add(comment)
 
-      await em.persistAndFlush(post)
+      await notifyAboutNewComment({
+        id: comment.id,
+        post: comment.post,
+        body: comment.body,
+        createdBy: comment.createdBy
+      })
+
+      await em.flush()
 
       return {
         post,
@@ -232,17 +237,15 @@ export class PostResolver {
   @UseMiddleware(isAuth)
   async vote(
     @Arg("data") { postId, value }: VoteInput,
+    @PubSub(Topic.NewVote)
+    notifyAboutNewVote: Publisher<Partial<Vote>>,
     @Ctx() { em, req }: ContextType
   ): Promise<VoteMutationResponse | null> {
     const post = await em.findOne(Post, postId, {
       populate: ["votes"]
     })
 
-    if (!post) {
-      return null
-    }
-
-    if (req.session.userId) {
+    if (post && req.session.userId) {
       const vote = em.create(Vote, {
         post,
         value,
@@ -251,7 +254,14 @@ export class PostResolver {
 
       post.votes.add(vote)
 
-      await em.persistAndFlush(post)
+      await notifyAboutNewVote({
+        id: vote.id,
+        post: vote.post,
+        value: vote.value,
+        castBy: vote.castBy
+      })
+
+      await em.flush()
 
       return {
         vote,
@@ -278,6 +288,34 @@ export class PostResolver {
       return { count, score }
     }
     return { count }
+  }
+
+  // SUBSCRIPTION STUFF
+  // *********************
+
+  // ---------COMMENTS--------------
+  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  @Subscription(() => Comment, {
+    topics: Topic.NewComment,
+    filter: ({ payload, args }: ResolverFilterData<Comment, PostArgs>) => {
+      return payload.post.id === args.postId
+    }
+  })
+  newComments(
+    @Root() newComment: Comment,
+    @Args() { postId }: PostArgs
+  ): Comment {
+    console.log(postId)
+    return newComment
+  }
+
+  // ---------VOTES--------------
+  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  @Subscription(() => Vote, {
+    topics: Topic.NewVote
+  })
+  newVotes(@Root() newVote: Vote): Vote {
+    return newVote
   }
 
   @FieldResolver({ nullable: true })

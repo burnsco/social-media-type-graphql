@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from "type-graphql"
-import { Post } from "../../entities/Post"
+import { Post } from "../../entities/index"
 
 @InputType()
 export class CreatePostInput implements Partial<Post> {
@@ -14,9 +14,6 @@ export class CreatePostInput implements Partial<Post> {
 
   @Field(() => String, { nullable: true })
   image?: string
-
-  @Field(() => String, { nullable: true })
-  video?: string
 
   @Field(() => String, { nullable: true })
   link?: string
@@ -53,9 +50,6 @@ export class CreateMediaPost implements Partial<Post> {
 
   @Field(() => String)
   image?: string
-
-  @Field(() => String)
-  video?: string
 }
 
 @InputType()
@@ -74,9 +68,6 @@ export class EditPostInput implements Partial<Post> {
 
   @Field(() => String, { nullable: true })
   image?: string
-
-  @Field(() => String, { nullable: true })
-  video?: string
 
   @Field(() => String, { nullable: true })
   link?: string

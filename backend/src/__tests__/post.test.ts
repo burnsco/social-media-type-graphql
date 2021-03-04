@@ -1,7 +1,7 @@
 import faker from "faker"
 import { gCall } from "../testing/gCall"
 import { testConnection } from "../testing/testConn"
-import { Post } from "./../entities/Post"
+import { Post } from "./../entities/index"
 
 const createPostMutation = `
 mutation CreatePost($data: CreatePostInput! ) {

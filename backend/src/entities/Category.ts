@@ -1,6 +1,6 @@
 import { Entity, Filter, Property } from "@mikro-orm/core"
 import { Field, ObjectType } from "type-graphql"
-import { Base } from "./Base"
+import { Base } from "./index"
 
 @Entity()
 @Filter({
@@ -14,7 +14,7 @@ import { Base } from "./Base"
   }
 })
 @ObjectType()
-export class Category extends Base<Category> {
+export default class Category extends Base<Category> {
   @Field()
   @Property({ unique: true })
   name: string

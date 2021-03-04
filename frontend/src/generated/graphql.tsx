@@ -119,8 +119,19 @@ export type User = {
   username: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
   about?: Maybe<Scalars['String']>;
+  messages?: Maybe<Array<Message>>;
 };
 
+
+export type Message = {
+  __typename?: 'Message';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  content: Scalars['String'];
+  sentBy: User;
+  sentTo: User;
+};
 
 export type Post = {
   __typename?: 'Post';
@@ -272,7 +283,6 @@ export type CreatePostInput = {
   title: Scalars['String'];
   text?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
-  video?: Maybe<Scalars['String']>;
   link?: Maybe<Scalars['String']>;
 };
 
@@ -282,7 +292,6 @@ export type EditPostInput = {
   title?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
-  video?: Maybe<Scalars['String']>;
   link?: Maybe<Scalars['String']>;
 };
 
@@ -326,6 +335,23 @@ export type LogoutMutationResponse = {
   __typename?: 'LogoutMutationResponse';
   message?: Maybe<Scalars['String']>;
   success?: Maybe<Scalars['String']>;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  newComments: Comment;
+  newVotes: Vote;
+  newUser: User;
+};
+
+
+export type SubscriptionNewCommentsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['ID']>;
+  orderBy?: Maybe<Scalars['String']>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type CategoryDetailsFragment = (
@@ -631,6 +657,26 @@ export type CommentsQuery = (
   )>> }
 );
 
+export type CommentsForPostQueryVariables = Exact<{
+  postId: Scalars['ID'];
+}>;
+
+
+export type CommentsForPostQuery = (
+  { __typename?: 'Query' }
+  & { post?: Maybe<(
+    { __typename?: 'Post' }
+    & { comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & { createdBy: (
+        { __typename?: 'User' }
+        & UserDetailsFragment
+      ) }
+      & CommentDetailsFragment
+    )>> }
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -651,14 +697,7 @@ export type PostQuery = (
   { __typename?: 'Query' }
   & { post?: Maybe<(
     { __typename?: 'Post' }
-    & { comments?: Maybe<Array<(
-      { __typename?: 'Comment' }
-      & { createdBy: (
-        { __typename?: 'User' }
-        & UserDetailsFragment
-      ) }
-      & CommentDetailsFragment
-    )>>, author: (
+    & { author: (
       { __typename?: 'User' }
       & UserDetailsFragment
     ), category: (
@@ -755,6 +794,37 @@ export type UsersQuery = (
     { __typename?: 'User' }
     & UserMeDetailsFragment
   )> }
+);
+
+export type NewCommentsSubscriptionVariables = Exact<{
+  postId: Scalars['ID'];
+}>;
+
+
+export type NewCommentsSubscription = (
+  { __typename?: 'Subscription' }
+  & { newComments: (
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'id' | 'body'>
+    & { createdBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ), post?: Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id' | 'title'>
+    )> }
+  ) }
+);
+
+export type NewUserSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NewUserSubscription = (
+  { __typename?: 'Subscription' }
+  & { newUser: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'email'>
+  ) }
 );
 
 export const CategoryDetailsFragmentDoc = gql`
@@ -1344,6 +1414,48 @@ export type CommentsQueryResult = Apollo.QueryResult<CommentsQuery, CommentsQuer
 export function refetchCommentsQuery(variables?: CommentsQueryVariables) {
       return { query: CommentsDocument, variables: variables }
     }
+export const CommentsForPostDocument = gql`
+    query CommentsForPost($postId: ID!) {
+  post(postId: $postId) {
+    comments {
+      ...CommentDetails
+      createdBy {
+        ...UserDetails
+      }
+    }
+  }
+}
+    ${CommentDetailsFragmentDoc}
+${UserDetailsFragmentDoc}`;
+
+/**
+ * __useCommentsForPostQuery__
+ *
+ * To run a query within a React component, call `useCommentsForPostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentsForPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentsForPostQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useCommentsForPostQuery(baseOptions: Apollo.QueryHookOptions<CommentsForPostQuery, CommentsForPostQueryVariables>) {
+        return Apollo.useQuery<CommentsForPostQuery, CommentsForPostQueryVariables>(CommentsForPostDocument, baseOptions);
+      }
+export function useCommentsForPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CommentsForPostQuery, CommentsForPostQueryVariables>) {
+          return Apollo.useLazyQuery<CommentsForPostQuery, CommentsForPostQueryVariables>(CommentsForPostDocument, baseOptions);
+        }
+export type CommentsForPostQueryHookResult = ReturnType<typeof useCommentsForPostQuery>;
+export type CommentsForPostLazyQueryHookResult = ReturnType<typeof useCommentsForPostLazyQuery>;
+export type CommentsForPostQueryResult = Apollo.QueryResult<CommentsForPostQuery, CommentsForPostQueryVariables>;
+export function refetchCommentsForPostQuery(variables?: CommentsForPostQueryVariables) {
+      return { query: CommentsForPostDocument, variables: variables }
+    }
 export const MeDocument = gql`
     query Me {
   me {
@@ -1383,12 +1495,6 @@ export const PostDocument = gql`
     query Post($postId: ID) {
   post(postId: $postId) {
     ...PostDetails
-    comments {
-      ...CommentDetails
-      createdBy {
-        ...UserDetails
-      }
-    }
     author {
       ...UserDetails
     }
@@ -1405,7 +1511,6 @@ export const PostDocument = gql`
   }
 }
     ${PostDetailsFragmentDoc}
-${CommentDetailsFragmentDoc}
 ${UserDetailsFragmentDoc}
 ${CategoryDetailsFragmentDoc}`;
 
@@ -1614,3 +1719,70 @@ export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariable
 export function refetchUsersQuery(variables?: UsersQueryVariables) {
       return { query: UsersDocument, variables: variables }
     }
+export const NewCommentsDocument = gql`
+    subscription NewComments($postId: ID!) {
+  newComments(postId: $postId) {
+    id
+    body
+    createdBy {
+      username
+    }
+    post {
+      id
+      title
+    }
+  }
+}
+    `;
+
+/**
+ * __useNewCommentsSubscription__
+ *
+ * To run a query within a React component, call `useNewCommentsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewCommentsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewCommentsSubscription({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useNewCommentsSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewCommentsSubscription, NewCommentsSubscriptionVariables>) {
+        return Apollo.useSubscription<NewCommentsSubscription, NewCommentsSubscriptionVariables>(NewCommentsDocument, baseOptions);
+      }
+export type NewCommentsSubscriptionHookResult = ReturnType<typeof useNewCommentsSubscription>;
+export type NewCommentsSubscriptionResult = Apollo.SubscriptionResult<NewCommentsSubscription>;
+export const NewUserDocument = gql`
+    subscription NewUser {
+  newUser {
+    id
+    username
+    email
+  }
+}
+    `;
+
+/**
+ * __useNewUserSubscription__
+ *
+ * To run a query within a React component, call `useNewUserSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewUserSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewUserSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNewUserSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewUserSubscription, NewUserSubscriptionVariables>) {
+        return Apollo.useSubscription<NewUserSubscription, NewUserSubscriptionVariables>(NewUserDocument, baseOptions);
+      }
+export type NewUserSubscriptionHookResult = ReturnType<typeof useNewUserSubscription>;
+export type NewUserSubscriptionResult = Apollo.SubscriptionResult<NewUserSubscription>;

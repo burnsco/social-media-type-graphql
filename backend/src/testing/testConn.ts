@@ -5,12 +5,7 @@ import {
 } from "@mikro-orm/core"
 import { PostgreSqlDriver } from "@mikro-orm/postgresql/PostgreSqlDriver"
 import path from "path"
-import { Base } from "../entities/Base"
-import { Category } from "../entities/Category"
-import { Comment } from "../entities/Comment"
-import { Post } from "../entities/Post"
-import { User } from "../entities/User"
-import { Vote } from "../entities/Vote"
+import { Base, Category, Comment, Post, User, Vote } from "../entities/index"
 
 export const BASE_DIR = __dirname
 

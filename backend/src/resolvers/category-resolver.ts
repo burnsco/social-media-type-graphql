@@ -9,12 +9,12 @@ import {
   UseMiddleware
 } from "type-graphql"
 import { subRedditNameInUse } from "../constants"
-import { Category } from "../entities/Category"
+import { Category } from "../entities/index"
 import { ContextType } from "../types"
 import { isAuth } from "../utils/isAuth"
 import { CategoryArgs } from "./args/category-args"
 import { CategoryInput } from "./inputs/category-input"
-import { CategoryMutationResponse } from "./response/category-response"
+import CategoryMutationResponse from "./response/mutation/category-mutation-response"
 
 @Resolver(() => Category)
 export class CategoryResolver {

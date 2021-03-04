@@ -18,6 +18,7 @@ const NewPost: React.FC<PostQuery> = props => {
   const postCategory = post?.category.name
   const postAuthor = post?.author.username
   const postCreatedTime = post?.createdAt
+  const postUpdatedTime = post?.updatedAt
   const postTitle = post?.title
   const postText = post?.text
   const postImage = post?.image
@@ -25,6 +26,14 @@ const NewPost: React.FC<PostQuery> = props => {
   const postCommentsCount = post?.totalComments?.count ?? 0
   const isOwner = data?.me?.id === post?.author.id ?? false
   const isLoggedIn = data?.me?.username !== null
+
+  if (post) {
+    console.log(post.title)
+    console.log("created")
+    console.log(post?.createdAt)
+    console.log("updated")
+    console.log(post?.updatedAt)
+  }
 
   return (
     <PostContainer bg={bg}>
@@ -36,6 +45,7 @@ const NewPost: React.FC<PostQuery> = props => {
               postId={postId}
               author={postAuthor}
               createdAt={postCreatedTime}
+              updatedAt={postUpdatedTime}
               category={postCategory}
             />
             <PostBody

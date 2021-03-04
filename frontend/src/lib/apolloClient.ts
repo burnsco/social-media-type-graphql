@@ -3,19 +3,23 @@ import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
-  NormalizedCacheObject
+  NormalizedCacheObject,
+  split
 } from "@apollo/client"
-import { concatPagination } from "@apollo/client/utilities"
+import { WebSocketLink } from "@apollo/client/link/ws"
+import { concatPagination, getMainDefinition } from "@apollo/client/utilities"
 import { useMemo } from "react"
+import { SubscriptionClient } from "subscriptions-transport-ws"
 
-let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
+let apolloClient: ApolloClient<NormalizedCacheObject>
+const WS_URI = `ws://localhost:4000/subscriptions`
 
 function createApolloClient() {
+  const ssrMode = typeof window === "undefined"
   const httpLink = new HttpLink({
     uri: process.env.NEXT_PUBLIC_API_URL as string,
     credentials: "include"
   })
-
   const cacheOptions = new InMemoryCache({
     typePolicies: {
       Post: {
@@ -49,13 +53,38 @@ function createApolloClient() {
     }
   })
 
-  const client = new ApolloClient({
-    ssrMode: typeof window === "undefined",
-    link: httpLink,
-    cache: cacheOptions
+  if (ssrMode) {
+    return new ApolloClient({
+      ssrMode,
+      link: httpLink,
+      cache: cacheOptions
+    })
+  }
+
+  const client = new SubscriptionClient(WS_URI, {
+    reconnect: true
   })
 
-  return client
+  const wsLink = new WebSocketLink(client)
+  const link = process.browser
+    ? split(
+        ({ query }) => {
+          const operations = getMainDefinition(query)
+          return (
+            operations.kind === "OperationDefinition" &&
+            operations.operation === "subscription"
+          )
+        },
+        wsLink,
+        httpLink
+      )
+    : httpLink
+
+  return new ApolloClient({
+    ssrMode,
+    link,
+    cache: cacheOptions
+  })
 }
 
 export function initializeApollo(initialState: any = null) {

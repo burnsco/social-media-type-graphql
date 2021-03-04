@@ -21,7 +21,7 @@ const VoteBox: React.FC<{
         minH="100%"
       >
         <IconButton
-          size="sm"
+          size="md"
           isDisabled={loading || !isLoggedIn}
           onClick={async () => {
             await vote({
@@ -34,9 +34,11 @@ const VoteBox: React.FC<{
           icon={<ImArrowUp />}
         />
 
-        <Text fontSize="sm">{postScore}</Text>
+        <Text fontSize="md" fontWeight="bold">
+          {postScore}
+        </Text>
         <IconButton
-          size="sm"
+          size="md"
           isDisabled={loading || !isLoggedIn}
           onClick={async () => {
             await vote({

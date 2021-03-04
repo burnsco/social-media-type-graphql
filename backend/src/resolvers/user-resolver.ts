@@ -4,8 +4,12 @@ import {
   Arg,
   Ctx,
   Mutation,
+  Publisher,
+  PubSub,
   Query,
   Resolver,
+  Root,
+  Subscription,
   UseMiddleware
 } from "type-graphql"
 import {
@@ -14,17 +18,18 @@ import {
   emailOrPasswordIsIncorrect,
   usernameInUse
 } from "../constants"
-import { User } from "../entities/User"
+import { User } from "../entities/index"
 import { ContextType } from "../types"
 import { isAuth } from "../utils/isAuth"
+import { Topic } from "./enums/topics"
 import {
   CheckAvailability,
   EditUserInput,
   LoginInput,
   RegisterInput
 } from "./inputs/user-input"
-import { LogoutMutationResponse } from "./response/logout-response"
-import { UserMutationResponse } from "./response/user-response"
+import LogoutMutationResponse from "./response/mutation/logout-response"
+import { UserMutationResponse } from "./response/query/user-response"
 
 @Resolver(() => User)
 export class UserResolver {
@@ -64,8 +69,10 @@ export class UserResolver {
   @Mutation(() => UserMutationResponse)
   async register(
     @Arg("data") { email, username, password }: RegisterInput,
+    @PubSub(Topic.NewUser)
+    notifyAboutNewUser: Publisher<Partial<User>>,
     @Ctx() { em, req }: ContextType
-  ): Promise<UserMutationResponse> {
+  ): Promise<UserMutationResponse | null | boolean> {
     const errors = []
     const isUserTaken = await em.findOne(User, { username: username })
     const isEmailTaken = await em.findOne(User, { email: email })
@@ -88,7 +95,11 @@ export class UserResolver {
       password: await argon2.hash(password)
     })
 
-    await em.persistAndFlush(user)
+    em.persist(user)
+
+    await notifyAboutNewUser(user)
+
+    await em.flush()
 
     req.session.userId = user.id
 
@@ -187,5 +198,22 @@ export class UserResolver {
         }
       })
     )
+  }
+
+  // **************************
+  //                          *
+  //    SUBSCRIPTION STUFF    *
+  //                          *
+  // **************************
+
+  // ```````````````````````````````
+  // ---------NEW USER--------------
+  // ...............................
+
+  @Subscription(() => User, {
+    topics: Topic.NewUser
+  })
+  newUser(@Root() newUser: User): User {
+    return newUser
   }
 }

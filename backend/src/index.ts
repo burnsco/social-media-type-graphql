@@ -1,11 +1,12 @@
 import { MikroORM } from "@mikro-orm/core"
 import { ApolloServer } from "apollo-server-express"
-import chalk from "chalk"
 import connectRedis from "connect-redis"
 import cors from "cors"
 import "dotenv-safe/config"
 import express from "express"
 import session from "express-session"
+import { RedisPubSub } from "graphql-redis-subscriptions"
+import http from "http"
 import Redis from "ioredis"
 import "reflect-metadata"
 import { buildSchema } from "type-graphql"
@@ -16,6 +17,14 @@ import { PostResolver } from "./resolvers/post-resolver"
 import { UserResolver } from "./resolvers/user-resolver"
 import { VoteResolver } from "./resolvers/vote-resolver"
 
+const REDIS_PORT = 6379
+
+const options: Redis.RedisOptions = {
+  host: process.env.REDIS_HOST,
+  port: REDIS_PORT,
+  retryStrategy: times => Math.max(times * 100, 3000)
+}
+
 const main = async (): Promise<void> => {
   const orm = await MikroORM.init()
   const migrator = orm.getMigrator()
@@ -25,14 +34,15 @@ const main = async (): Promise<void> => {
     await migrator.up()
   }
 
-  console.log(chalk.blueBright("Starting DB..."))
-
   const app = express()
-
-  console.log(chalk.green("Initializing Redis..."))
 
   const redisStore = connectRedis(session)
   const redisClient = new Redis(process.env.REDIS_URL)
+
+  const pubSub = new RedisPubSub({
+    publisher: new Redis(options),
+    subscriber: new Redis(options)
+  })
 
   app.set("trust proxy", 1)
   app.use(
@@ -61,8 +71,6 @@ const main = async (): Promise<void> => {
     })
   )
 
-  console.log(chalk.yellow("Starting ApolloServer..."))
-
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [
@@ -72,27 +80,40 @@ const main = async (): Promise<void> => {
         CategoryResolver,
         CommentResolver
       ],
-      validate: false
+      validate: false,
+      pubSub
     }),
     context: ({ req, res }) => ({
       em: orm.em.fork(),
       req,
       res,
       redis: redisClient
-    })
+    }),
+    subscriptions: {
+      path: "/subscriptions",
+      onConnect: async () => {
+        console.log(
+          `Subscription client connected using Apollo server's built-in SubscriptionServer.`
+        )
+      },
+      onDisconnect: async () => {
+        console.log(`Subscription client disconnected.`)
+      }
+    }
   })
 
   server.applyMiddleware({ app, cors: false })
 
-  app.listen(process.env.PORT, () => {
+  const httpServer = http.createServer(app)
+  server.installSubscriptionHandlers(httpServer)
+
+  // Make sure to call listen on httpServer, NOT on app.
+  httpServer.listen(process.env.PORT, () => {
     console.log(
-      chalk.red(
-        `Server ready at ` +
-          chalk.blue.underline.bold(
-            `http://localhost:${process.env.PORT}${server.graphqlPath}`
-          ) +
-          ` `
-      )
+      `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
+    )
+    console.log(
+      `🚀 Subscriptions ready at ws://localhost:${process.env.PORT}${server.subscriptionsPath}`
     )
   })
 }

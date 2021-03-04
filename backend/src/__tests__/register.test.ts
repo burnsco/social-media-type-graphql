@@ -1,5 +1,5 @@
 import faker from "faker"
-import { User } from "../entities/User"
+import { User } from "../entities/index"
 import { gCall } from "../testing/gCall"
 import { testConnection } from "../testing/testConn"
 

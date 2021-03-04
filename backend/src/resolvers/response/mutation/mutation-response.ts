@@ -9,7 +9,7 @@ export class FieldError {
 }
 
 @ObjectType()
-export abstract class MutationResponse {
+export default abstract class MutationResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[]
 }

@@ -4,10 +4,10 @@ import {
   Editable,
   EditableInput,
   EditablePreview,
-  Flex,
   Heading,
   Link,
   Skeleton,
+  Stack,
   Text
 } from "@chakra-ui/react"
 import Image from "next/image"
@@ -70,18 +70,17 @@ const PostBody: React.FC<PostBodyType> = ({
   }
 
   return (
-    <Flex direction="column" my={1} flexGrow={2} width="100%">
+    <Stack flexGrow={2} width="100%">
       <Skeleton isLoaded={!submittingEditedPost}>
         <EditItemControls title={title} postId={postId} />
       </Skeleton>
 
       {image ? (
-        <Box p={2} mt={2}>
+        <Box pos="relative" minW="full" minH="260px">
           <Image
-            layout="intrinsic"
+            layout="fill"
+            objectFit="cover"
             src={image}
-            width={700}
-            height={475}
             alt={`image-${title}`}
           />
         </Box>
@@ -98,7 +97,7 @@ const PostBody: React.FC<PostBodyType> = ({
           <Link href={`${link}`}>{link}</Link>
         </Box>
       ) : null}
-    </Flex>
+    </Stack>
   )
 }
 

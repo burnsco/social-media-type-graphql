@@ -22,8 +22,9 @@ const SinglePostPage: React.FC = () => {
           key={`post-${data?.post?.id}-${data?.post?.title}`}
           post={data?.post}
         />
+
         <SubmitCommentForm postId={postId} />
-        <CommentsPageWithData comments={data?.post?.comments} />
+        <CommentsPageWithData postId={postId} />
       </Stack>
     </Layout>
   )

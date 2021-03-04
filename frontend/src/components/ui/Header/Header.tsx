@@ -3,9 +3,12 @@ import {
   Flex,
   IconButton,
   useColorMode,
-  useColorModeValue
+  useColorModeValue,
+  useToast
 } from "@chakra-ui/react"
+import { useLayoutEffect } from "react"
 import { FaMoon, FaSun } from "react-icons/fa"
+import useNewUserNotification from "../../../hooks/useNewUserNotify"
 import NavSection from "./Center"
 import LogoSection from "./Left"
 import MenuIconsSection from "./Right"
@@ -35,6 +38,24 @@ const HeaderContent = () => {
 }
 
 const Header = () => {
+  const toast = useToast()
+  const user = useNewUserNotification()
+
+  console.log("user notifcations")
+  console.log(user)
+
+  useLayoutEffect(() => {
+    if (user) {
+      toast({
+        title: `${user}`,
+        description: "Has just joined the community!",
+        status: "success",
+        duration: 5000,
+        isClosable: true
+      })
+    }
+  }, [user])
+
   return (
     <chakra.header
       pos="fixed"

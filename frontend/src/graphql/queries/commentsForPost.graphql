@@ -1,0 +1,10 @@
+query CommentsForPost($postId: ID!) {
+  post(postId: $postId) {
+    comments {
+      ...CommentDetails
+      createdBy {
+        ...UserDetails
+      }
+    }
+  }
+}

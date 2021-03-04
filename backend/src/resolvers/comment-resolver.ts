@@ -10,14 +10,14 @@ import {
   Root,
   UseMiddleware
 } from "type-graphql"
-import { Comment } from "../entities/Comment"
-import { Post } from "../entities/Post"
-import { User } from "../entities/User"
+import Comment from "../entities/Comment"
+import Post from "../entities/Post"
+import User from "../entities/User"
 import { ContextType } from "../types"
 import { isAuth } from "../utils/isAuth"
 import { PostArgs } from "./args/post-args"
 import { CommentInput } from "./inputs/comment-input"
-import { CommentMutationResponse } from "./response/comment-response"
+import CommentMutationResponse from "./response/mutation/comment-mutation-response"
 
 @Resolver(() => Comment)
 export class CommentResolver {

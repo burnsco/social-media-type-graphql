@@ -1,0 +1,15 @@
+subscription NewComments($postId: ID!) {
+  newComments(postId: $postId) {
+    id
+    body
+
+    createdBy {
+      username
+    }
+
+    post {
+      id
+      title
+    }
+  }
+}
