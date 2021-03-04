@@ -4,9 +4,9 @@ import {
   IconButton,
   useColorMode,
   useColorModeValue,
+  useSafeLayoutEffect,
   useToast
 } from "@chakra-ui/react"
-import { useLayoutEffect } from "react"
 import { FaMoon, FaSun } from "react-icons/fa"
 import useNewUserNotification from "../../../hooks/useNewUserNotify"
 import NavSection from "./Center"
@@ -41,15 +41,13 @@ const Header = () => {
   const toast = useToast()
   const user = useNewUserNotification()
 
-  console.log("user notifcations")
-  console.log(user)
-
-  useLayoutEffect(() => {
+  useSafeLayoutEffect(() => {
     if (user) {
       toast({
-        title: `${user}`,
+        position: "bottom-left",
+        title: `User "${user}"`,
         description: "Has just joined the community!",
-        status: "success",
+        status: "warning",
         duration: 5000,
         isClosable: true
       })

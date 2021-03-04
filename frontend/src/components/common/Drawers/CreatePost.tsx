@@ -116,11 +116,9 @@ function CreatePostDrawer() {
       })
       .end((error, response) => {
         if (error) {
-          console.log(`error`)
-          console.log(error)
+          throw new Error(error.message)
         }
-        console.log("response")
-        console.log(response)
+
         setImageUrl(response.body.public_id)
       })
   }, [])

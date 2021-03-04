@@ -1,5 +1,6 @@
-query CommentsForPost($postId: ID!) {
-  post(postId: $postId) {
+query CommentsForPost($postId: ID!, $orderBy: String) {
+  post(postId: $postId, orderBy: $orderBy) {
+    id
     comments {
       ...CommentDetails
       createdBy {

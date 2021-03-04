@@ -21,8 +21,6 @@ function HeaderNavigation() {
 
   const bg = useColorModeValue("white", "#202020")
 
-  console.log(router)
-
   const renderPath = () => {
     if (router && router.pathname) {
       if (router.pathname === "/") {

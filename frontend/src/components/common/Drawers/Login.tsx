@@ -70,7 +70,7 @@ function LoginDrawer() {
                 setErrors(convertToErrorMap(response?.data?.login?.errors))
               } else {
                 toast({
-                  id: "success",
+                  id: `${response?.data?.login?.user?.username}-toast`,
                   title: `Welcome ${response?.data?.login?.user?.username}!`,
                   description: "You were logged in successfully",
                   status: "success",

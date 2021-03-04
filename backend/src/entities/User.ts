@@ -2,6 +2,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  ManyToMany,
   OneToMany,
   Property,
   Unique
@@ -32,6 +33,10 @@ export default class User extends Base<User> {
   @Field(() => String, { nullable: true })
   @Property({ nullable: true })
   about?: string
+
+  @Field(() => [User], { nullable: true })
+  @ManyToMany(() => User)
+  friends = new Collection<User>(this)
 
   @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, message => message.sentBy, {

@@ -65,7 +65,7 @@ const CreatePost: React.FunctionComponent = () => {
 
           if (response.data?.createPost.post) {
             toast({
-              id: "success",
+              id: `${response.data?.createPost?.post.title}-toast`,
               title: `${response.data?.createPost?.post.title}!`,
               description: "Your post was submitted successfully.",
               status: "success",

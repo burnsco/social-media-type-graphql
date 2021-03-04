@@ -659,6 +659,7 @@ export type CommentsQuery = (
 
 export type CommentsForPostQueryVariables = Exact<{
   postId: Scalars['ID'];
+  orderBy?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -666,6 +667,7 @@ export type CommentsForPostQuery = (
   { __typename?: 'Query' }
   & { post?: Maybe<(
     { __typename?: 'Post' }
+    & Pick<Post, 'id'>
     & { comments?: Maybe<Array<(
       { __typename?: 'Comment' }
       & { createdBy: (
@@ -1415,8 +1417,9 @@ export function refetchCommentsQuery(variables?: CommentsQueryVariables) {
       return { query: CommentsDocument, variables: variables }
     }
 export const CommentsForPostDocument = gql`
-    query CommentsForPost($postId: ID!) {
-  post(postId: $postId) {
+    query CommentsForPost($postId: ID!, $orderBy: String) {
+  post(postId: $postId, orderBy: $orderBy) {
+    id
     comments {
       ...CommentDetails
       createdBy {
@@ -1441,6 +1444,7 @@ ${UserDetailsFragmentDoc}`;
  * const { data, loading, error } = useCommentsForPostQuery({
  *   variables: {
  *      postId: // value for 'postId'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */

@@ -4,10 +4,14 @@ import CreateCommentSchema from "@/types/Comment/schemas"
 import { gql } from "@apollo/client"
 import { Box, Button, useColorModeValue, useToast } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
+import { useRouter } from "next/router"
 
-const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
+const SubmitCommentForm = () => {
   const bg = useColorModeValue("white", "#202020")
   const toast = useToast()
+
+  const router = useRouter()
+  const postId = router.query.id as string
 
   const [
     submitComment,
@@ -62,9 +66,14 @@ const SubmitCommentForm: React.FC<{ postId: string }> = ({ postId }) => {
               })
             }
           })
-          if (response.data?.createComment?.comment) {
+          if (
+            response &&
+            response.data &&
+            response.data.createComment &&
+            response.data.createComment.comment
+          ) {
             toast({
-              id: "success",
+              id: `${response.data.createComment.comment.body}-toast`,
               title: "Your comment was posted successfully.",
               status: "success",
               duration: 3000,

@@ -49,7 +49,7 @@ const LoginPage: React.FC = (): JSX.Element => {
               })
               if (response.data?.login?.user) {
                 toast({
-                  id: "success",
+                  id: `${response.data.login.user.username}-toast`,
                   title: `Welcome ${response.data.login.user.username}!`,
                   description: "Your account was created successfully.",
                   status: "success",

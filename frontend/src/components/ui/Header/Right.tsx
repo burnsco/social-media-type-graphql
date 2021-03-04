@@ -21,6 +21,7 @@ import { useRouter } from "next/router"
 import { AiOutlineLogout } from "react-icons/ai"
 import { FaUserCircle } from "react-icons/fa"
 import { MdSettings } from "react-icons/md"
+import ChatRoomDrawer from "../../common/Drawers/ChatDrawer"
 
 const DynamicRegisterDrawer = dynamic(
   () => import("@/components/common/Drawers/Register"),
@@ -55,8 +56,8 @@ const HeaderMenu = () => {
     return (
       <HStack spacing={2}>
         <ButtonGroup spacing="4" mr="4">
+          <ChatRoomDrawer />
           <DynamicCreatePostDrawer />
-
           <DynamicCreateCategoryDrawer />
         </ButtonGroup>
 
@@ -85,6 +86,14 @@ const HeaderMenu = () => {
               <MenuItem onClick={() => router.push("/user/account")}>
                 <MdSettings />
                 <Box ml={3}>Account</Box>
+              </MenuItem>
+              <MenuItem onClick={() => router.push("/user/account")}>
+                <MdSettings />
+                <Box ml={3}>Friends</Box>
+              </MenuItem>
+              <MenuItem onClick={() => router.push("/user/account")}>
+                <MdSettings />
+                <Box ml={3}>Messages</Box>
               </MenuItem>
             </MenuGroup>
             <MenuDivider />

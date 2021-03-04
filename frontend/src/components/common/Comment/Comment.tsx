@@ -1,16 +1,34 @@
 import { CommentQuery } from "@/generated/graphql"
 import { timeDifferenceForDate } from "@/utils/index"
-import { Box, Flex, IconButton, useColorModeValue } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuList,
+  Stack,
+  Text,
+  useColorModeValue
+} from "@chakra-ui/react"
 import { useRouter } from "next/router"
+import React from "react"
 import { BsArrowDown, BsArrowUp } from "react-icons/bs"
+import { FaUserCircle } from "react-icons/fa"
+import { IoAddCircle } from "react-icons/io5"
+import { MdEmail, MdMessage } from "react-icons/md"
 
 const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
   const bg = useColorModeValue("white", "#202020")
   const router = useRouter()
   const votebg = useColorModeValue("gray.50", "#313131")
-  // TODO up/down voting not working yet
+
   return (
-    <Box bg={bg} display="flex" minH="80px" width="100%">
+    <Flex bg={bg} minH="80px" width="100%">
       <Box bg={votebg}>
         <Flex
           width="45px"
@@ -39,38 +57,65 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
 
       {/* Comment Details Container */}
       <Box
+        p={2}
+        ml="1"
         minH="80px"
         width="100%"
         display="flex"
-        ml={3}
         flexDir="column"
-        justifyContent="space-evenly"
       >
-        <Flex fontSize="xs" display="flex" color="gray.300">
-          <Box textDecoration="none" align="flex-start">
-            Created by{" "}
+        <Stack fontSize="xs" color={useColorModeValue("gray.600", "gray.400")}>
+          <Box textDecoration="none" mb={2}>
+            Comment by
+            <Menu>
+              <Button ml={2} size="xs" variant="outline" as={MenuButton}>
+                {comment?.createdBy?.username}
+              </Button>
+
+              <MenuList opacity="0.7" bg={bg}>
+                <MenuGroup color="lightsteelblue">
+                  <MenuItem
+                    onClick={() =>
+                      router.push(`/user/${comment?.createdBy.username}`)
+                    }
+                  >
+                    <FaUserCircle />
+                    <Box ml={3}>Profile</Box>
+                  </MenuItem>
+                  <MenuDivider />
+                </MenuGroup>
+                <MenuItem onClick={() => router.push("/user/account")}>
+                  <IoAddCircle />
+                  <Box ml={3}>Add to Friends</Box>
+                </MenuItem>
+                <MenuItem onClick={() => router.push("/user/account")}>
+                  <MdEmail />
+                  <Box ml={3}>Message</Box>
+                </MenuItem>
+                <MenuItem onClick={() => router.push("/user/account")}>
+                  <MdMessage />
+                  <Box ml={3}>Chat</Box>
+                </MenuItem>
+              </MenuList>
+            </Menu>
             <Box
-              onClick={() =>
-                router.push(`/user/${comment?.createdBy?.username}`)
-              }
               display="inline"
-              color="gray.400"
+              color={useColorModeValue("darkblue", "lightblue")}
+              ml="1"
               _hover={{
                 textDecoration: "underline",
                 cursor: "pointer"
               }}
-            >
-              {comment?.createdBy?.username}
-            </Box>
+            ></Box>
             <Box display="inline" ml="2">
               {timeDifferenceForDate(Number(comment?.createdAt))}
             </Box>
           </Box>
-        </Flex>
+        </Stack>
 
-        <Box mt={1}>{comment?.body}</Box>
+        <Text>{comment?.body}</Text>
       </Box>
-    </Box>
+    </Flex>
   )
 }
 
