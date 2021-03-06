@@ -1,15 +1,20 @@
 import NewPost from "@/components/common/Post"
-import { usePostsQuery } from "@/generated/graphql"
+import { usePostsLazyQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/pagination"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/react"
+import { useEffect } from "react"
 import ShowMorePosts from "./showMore"
 
 const Posts = (): JSX.Element => {
-  const { loading, data, fetchMore, networkStatus } = usePostsQuery({
+  const [
+    fetchPosts,
+    { loading, data, fetchMore, networkStatus }
+  ] = usePostsLazyQuery({
     variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true
   })
+  useEffect(() => fetchPosts(), [])
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 
@@ -18,11 +23,13 @@ const Posts = (): JSX.Element => {
   const areMorePosts = (allPosts?.length ?? 1) < (_allPostsMeta?.count ?? 0)
 
   const loadMorePosts = () => {
-    fetchMore({
-      variables: {
-        skip: data?.posts?.length ?? 0
-      }
-    })
+    if (fetchMore) {
+      fetchMore({
+        variables: {
+          skip: data?.posts?.length ?? 0
+        }
+      })
+    }
   }
 
   const ViewPosts = () => {
@@ -39,7 +46,7 @@ const Posts = (): JSX.Element => {
   }
 
   if (loading && !loadingMorePosts) {
-    return <VisuallyHidden>loading</VisuallyHidden>
+    return <VisuallyHidden>loading all posts</VisuallyHidden>
   }
 
   return (

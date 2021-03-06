@@ -1,10 +1,4 @@
-import {
-  Cascade,
-  Entity,
-  IdentifiedReference,
-  ManyToOne,
-  Property
-} from "@mikro-orm/core"
+import { Cascade, Entity, ManyToOne, Property } from "@mikro-orm/core"
 import { Field, ObjectType } from "type-graphql"
 import { Base, User } from "./index"
 
@@ -21,5 +15,5 @@ export default class Message extends Base<Message> {
 
   @Field(() => User)
   @ManyToOne(() => User, { cascade: [Cascade.ALL] })
-  sentTo: IdentifiedReference<User>
+  sentTo: User
 }

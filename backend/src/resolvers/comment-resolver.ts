@@ -1,4 +1,4 @@
-import { QueryOrder, wrap } from "@mikro-orm/core"
+import { QueryOrder } from "@mikro-orm/core"
 import {
   Arg,
   Args,
@@ -11,8 +11,7 @@ import {
   UseMiddleware
 } from "type-graphql"
 import Comment from "../entities/Comment"
-import Post from "../entities/Post"
-import User from "../entities/User"
+import { Post, User } from "../entities/index"
 import { ContextType } from "../types"
 import { isAuth } from "../utils/isAuth"
 import { PostArgs } from "./args/post-args"
@@ -29,22 +28,21 @@ export class CommentResolver {
   ): Promise<CommentMutationResponse> {
     const comment = await em.findOne(Comment, { post: { id: postId } })
     if (comment) {
-      wrap(comment).assign({
+      comment.assign({
         body
       })
-
-      await em.persistAndFlush(comment)
-
+      await em.flush()
       return {
         comment
       }
     }
+
     return {
       comment: undefined
     }
   }
 
-  @Query(() => Comment, { nullable: true })
+  @Query(() => Comment)
   async comment(
     @Args() { postId }: PostArgs,
     @Ctx() { em }: ContextType
@@ -72,18 +70,18 @@ export class CommentResolver {
   }
 
   @FieldResolver()
-  async createdBy(
+  createdBy(
     @Root() comment: Comment,
     @Ctx() { em }: ContextType
   ): Promise<User | null> {
-    return await em.findOne(User, comment.createdBy.id)
+    return em.findOne(User, comment.createdBy.id)
   }
 
   @FieldResolver()
-  async post(
+  post(
     @Root() comment: Comment,
     @Ctx() { em }: ContextType
   ): Promise<Post | null> {
-    return await em.findOne(Post, comment.post.id)
+    return em.findOne(Post, comment.post.id)
   }
 }

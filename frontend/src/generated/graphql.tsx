@@ -24,9 +24,9 @@ export type Query = {
   _categoryPostsMeta: _QueryMeta;
   post?: Maybe<Post>;
   posts?: Maybe<Array<Post>>;
-  me?: Maybe<User>;
   user: User;
   users: Array<User>;
+  me: User;
 };
 
 
@@ -119,6 +119,9 @@ export type User = {
   username: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
   about?: Maybe<Scalars['String']>;
+  roles: Array<Scalars['String']>;
+  status: Array<Scalars['String']>;
+  friends?: Maybe<Array<User>>;
   messages?: Maybe<Array<Message>>;
 };
 
@@ -185,6 +188,8 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   register: UserMutationResponse;
   editUser: UserMutationResponse;
+  addFriend: UserMutationResponse;
+  sendMessage: UserMutationResponse;
   login: UserMutationResponse;
   logout: LogoutMutationResponse;
 };
@@ -237,6 +242,16 @@ export type MutationRegisterArgs = {
 
 export type MutationEditUserArgs = {
   data: EditUserInput;
+};
+
+
+export type MutationAddFriendArgs = {
+  data: EditUserInput;
+};
+
+
+export type MutationSendMessageArgs = {
+  data: MessageInput;
 };
 
 
@@ -316,6 +331,7 @@ export type UserMutationResponse = {
   __typename?: 'UserMutationResponse';
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
+  message?: Maybe<Message>;
 };
 
 export type RegisterInput = {
@@ -324,6 +340,11 @@ export type RegisterInput = {
   password: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
   about?: Maybe<Scalars['String']>;
+};
+
+export type MessageInput = {
+  userId: Scalars['ID'];
+  content: Scalars['String'];
 };
 
 export type LoginInput = {
@@ -342,6 +363,7 @@ export type Subscription = {
   newComments: Comment;
   newVotes: Vote;
   newUser: User;
+  newMessage: Message;
 };
 
 
@@ -352,6 +374,11 @@ export type SubscriptionNewCommentsArgs = {
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
+};
+
+
+export type SubscriptionNewMessageArgs = {
+  userId?: Maybe<Scalars['ID']>;
 };
 
 export type CategoryDetailsFragment = (
@@ -684,10 +711,10 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = (
   { __typename?: 'Query' }
-  & { me?: Maybe<(
+  & { me: (
     { __typename?: 'User' }
     & UserMeDetailsFragment
-  )> }
+  ) }
 );
 
 export type PostQueryVariables = Exact<{
@@ -815,6 +842,26 @@ export type NewCommentsSubscription = (
       { __typename?: 'Post' }
       & Pick<Post, 'id' | 'title'>
     )> }
+  ) }
+);
+
+export type NewMessageSubscriptionVariables = Exact<{
+  userId?: Maybe<Scalars['ID']>;
+}>;
+
+
+export type NewMessageSubscription = (
+  { __typename?: 'Subscription' }
+  & { newMessage: (
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'content'>
+    & { sentBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ), sentTo: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
   ) }
 );
 
@@ -1760,6 +1807,44 @@ export function useNewCommentsSubscription(baseOptions: Apollo.SubscriptionHookO
       }
 export type NewCommentsSubscriptionHookResult = ReturnType<typeof useNewCommentsSubscription>;
 export type NewCommentsSubscriptionResult = Apollo.SubscriptionResult<NewCommentsSubscription>;
+export const NewMessageDocument = gql`
+    subscription NewMessage($userId: ID) {
+  newMessage(userId: $userId) {
+    id
+    content
+    sentBy {
+      id
+      username
+    }
+    sentTo {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useNewMessageSubscription__
+ *
+ * To run a query within a React component, call `useNewMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewMessageSubscription({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useNewMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
+        return Apollo.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, baseOptions);
+      }
+export type NewMessageSubscriptionHookResult = ReturnType<typeof useNewMessageSubscription>;
+export type NewMessageSubscriptionResult = Apollo.SubscriptionResult<NewMessageSubscription>;
 export const NewUserDocument = gql`
     subscription NewUser {
   newUser {

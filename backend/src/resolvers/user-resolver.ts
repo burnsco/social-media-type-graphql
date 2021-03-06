@@ -1,8 +1,9 @@
-import { wrap } from "@mikro-orm/core"
 import argon2 from "argon2"
 import {
   Arg,
+  Args,
   Ctx,
+  FieldResolver,
   Mutation,
   Publisher,
   PubSub,
@@ -18,10 +19,13 @@ import {
   emailOrPasswordIsIncorrect,
   usernameInUse
 } from "../constants"
-import { User } from "../entities/index"
+import { Message, User } from "../entities/index"
 import { ContextType } from "../types"
+import initializeLogger from "../utils/initializeLogger"
 import { isAuth } from "../utils/isAuth"
+import { NewMessageArgs } from "./args/message-args"
 import { Topic } from "./enums/topics"
+import { MessageInput } from "./inputs/message-input"
 import {
   CheckAvailability,
   EditUserInput,
@@ -31,14 +35,26 @@ import {
 import LogoutMutationResponse from "./response/mutation/logout-response"
 import { UserMutationResponse } from "./response/query/user-response"
 
+const { logger } = initializeLogger()
+
 @Resolver(() => User)
 export class UserResolver {
-  @Query(() => User, { nullable: true })
-  async me(@Ctx() { req, em }: ContextType) {
-    if (req.session.userId) {
-      return await em.findOne(User, req.session.userId)
-    }
-    return null
+  @Query(() => User)
+  async user(
+    @Arg("data") data: EditUserInput,
+    @Ctx() { em }: ContextType
+  ): Promise<User | null> {
+    return await em.findOne(User, { username: data.username })
+  }
+
+  @Query(() => [User])
+  async users(@Ctx() { em }: ContextType): Promise<User[] | null> {
+    return await em.find(User, {}, { populate: ["friends"] })
+  }
+
+  @Query(() => User)
+  me(@Ctx() { req, em }: ContextType) {
+    return em.findOneOrFail(User, req.session.userId)
   }
 
   @Mutation(() => Boolean)
@@ -51,19 +67,6 @@ export class UserResolver {
       return true
     }
     return false
-  }
-
-  @Query(() => User)
-  async user(
-    @Arg("data") data: EditUserInput,
-    @Ctx() { em }: ContextType
-  ): Promise<User | null> {
-    return await em.findOne(User, { username: data.username })
-  }
-
-  @Query(() => [User])
-  async users(@Ctx() { em }: ContextType): Promise<User[]> {
-    return await em.find(User, {})
   }
 
   @Mutation(() => UserMutationResponse)
@@ -94,11 +97,9 @@ export class UserResolver {
       username,
       password: await argon2.hash(password)
     })
-
     em.persist(user)
 
     await notifyAboutNewUser(user)
-
     await em.flush()
 
     req.session.userId = user.id
@@ -117,27 +118,27 @@ export class UserResolver {
     const user = await em.findOneOrFail(User, { id: req.session.userId })
 
     if (data.username) {
-      wrap(user).assign({
+      user.assign({
         username: data.username
       })
     }
     if (data.about) {
-      wrap(user).assign({
+      user.assign({
         about: data.about
       })
     }
     if (data.email) {
-      wrap(user).assign({
+      user.assign({
         email: data.email
       })
     }
     if (data.password) {
-      wrap(user).assign({
+      user.assign({
         password: await argon2.hash(data.password)
       })
     }
     if (data.avatar) {
-      wrap(user).assign({
+      user.assign({
         avatar: data.avatar
       })
     }
@@ -150,11 +151,70 @@ export class UserResolver {
   }
 
   @Mutation(() => UserMutationResponse)
+  @UseMiddleware(isAuth)
+  async addFriend(
+    @Arg("data") data: EditUserInput,
+    @Ctx() { em, req }: ContextType
+  ): Promise<UserMutationResponse> {
+    const me = await em.findOneOrFail(
+      User,
+      { id: req.session.userId },
+      { populate: ["friends"] }
+    )
+    const user = await em.findOneOrFail(User, { username: data.username })
+
+    if (me && user) {
+      me.friends.add(user)
+    }
+
+    await em.persistAndFlush(user)
+
+    return {
+      user: me
+    }
+  }
+
+  @Mutation(() => UserMutationResponse)
+  @UseMiddleware(isAuth)
+  async sendMessage(
+    @Arg("data") data: MessageInput,
+    @PubSub(Topic.NewMessage)
+    notifyAboutNewMessage: Publisher<Partial<Message>>,
+    @Ctx() { em, req }: ContextType
+  ): Promise<UserMutationResponse | null | boolean> {
+    const user = await em.findOne(User, req.session.userId, {
+      populate: ["messages"]
+    })
+    const receipent = await em.findOne(User, data.userId)
+
+    if (user && receipent && req.session.userId) {
+      const message = em.create(Message, {
+        sentBy: user,
+        sentTo: receipent,
+        content: data.content
+      })
+      user.messages.add(message)
+
+      em.persist(user)
+
+      await notifyAboutNewMessage(message)
+
+      await em.flush()
+
+      return {
+        message
+      }
+    }
+    return null
+  }
+
+  @Mutation(() => UserMutationResponse)
   async login(
     @Arg("data") { email, password }: LoginInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse | null> {
     const errors = []
+
     const user = await em.findOne(User, { email: email })
 
     if (!user) {
@@ -165,8 +225,9 @@ export class UserResolver {
     }
 
     const valid = await argon2.verify(user.password, password)
+
     if (!valid) {
-      const errors = []
+      logger.error(`Email: ${email} - incorrect password attempt`)
       errors.push(emailOrPasswordIsIncorrect)
       return { errors }
     }
@@ -200,20 +261,35 @@ export class UserResolver {
     )
   }
 
+  @FieldResolver({ nullable: true })
+  messages(@Root() user: User, @Ctx() { em }: ContextType) {
+    return em.find(Message, { sentBy: { id: user.id } })
+  }
+
   // **************************
   //                          *
   //    SUBSCRIPTION STUFF    *
   //                          *
   // **************************
 
-  // ```````````````````````````````
   // ---------NEW USER--------------
-  // ...............................
 
   @Subscription(() => User, {
     topics: Topic.NewUser
   })
   newUser(@Root() newUser: User): User {
     return newUser
+  }
+
+  // ---------NEW MESSAGE--------------
+
+  @Subscription(() => Message, {
+    topics: Topic.NewMessage
+  })
+  newMessage(
+    @Root() newMessage: Message,
+    @Args() { userId }: NewMessageArgs
+  ): Message {
+    return newMessage
   }
 }

@@ -2,6 +2,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Enum,
   ManyToMany,
   OneToMany,
   Property,
@@ -10,6 +11,16 @@ import {
 import { GraphQLEmail } from "graphql-custom-types"
 import { Field, ObjectType } from "type-graphql"
 import { Base, Message } from "./index"
+
+enum Role {
+  USER = "user",
+  ADMIN = "admin"
+}
+
+enum UserStatus {
+  ONLINE = "online",
+  OFFLINE = "offline"
+}
 
 @Entity()
 @Unique({ properties: ["email", "username"] })
@@ -34,6 +45,14 @@ export default class User extends Base<User> {
   @Property({ nullable: true })
   about?: string
 
+  @Enum({ items: () => Role, array: true, default: [Role.USER] })
+  @Field(() => [String])
+  roles: Role[] = [Role.USER]
+
+  @Field(() => [String])
+  @Enum({ items: () => UserStatus, array: true, default: [UserStatus.OFFLINE] })
+  status: UserStatus
+
   @Field(() => [User], { nullable: true })
   @ManyToMany(() => User)
   friends = new Collection<User>(this)
@@ -41,8 +60,7 @@ export default class User extends Base<User> {
   @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, message => message.sentBy, {
     cascade: [Cascade.ALL],
-    orphanRemoval: true,
-    lazy: true
+    orphanRemoval: true
   })
   messages = new Collection<Message>(this)
 }

@@ -1,0 +1,14 @@
+subscription NewMessage($userId: ID) {
+  newMessage(userId: $userId) {
+    id
+    content
+    sentBy {
+      id
+      username
+    }
+    sentTo {
+      id
+      username
+    }
+  }
+}

@@ -53,7 +53,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.0",
     "faker": "^5.4.0",
-    "gen-env-types": "^1.0.5",
+    "gen-env-types": "^1.2.0",
     "husky": "^5.1.3",
     "jest": "^26.6.3",
     "jest-watch-typeahead": "^0.6.1",
@@ -62,7 +62,7 @@
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.3",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.2"
+    "typescript": "^4.2.3"
   },
   "dependencies": {
     "@mikro-orm/cli": "^4.4.4",
@@ -88,6 +88,7 @@
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
     "typedi": "^0.10.0",
+    "winston": "^3.3.3",
     "yup": "^0.32.9"
   },
   "mikro-orm": {

@@ -1,4 +1,4 @@
-import { gCall } from "../testing/gCall"
+import { gCall } from "../utils/gCall"
 
 const loginMutation = `
 mutation Login($data: LoginInput! ) {

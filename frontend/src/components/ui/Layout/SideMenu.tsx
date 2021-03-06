@@ -1,6 +1,7 @@
 import { NextChakraLink } from "@/components/common/index"
-import { useCategoriesQuery } from "@/generated/graphql"
+import { useCategoriesLazyQuery } from "@/generated/graphql"
 import {
+  Alert,
   Box,
   List,
   ListItem,
@@ -8,7 +9,7 @@ import {
   VisuallyHidden
 } from "@chakra-ui/react"
 import { useRouter } from "next/router"
-import { memo } from "react"
+import { memo, useEffect } from "react"
 
 const SideMenu: React.FC = () => {
   const router = useRouter()
@@ -21,9 +22,13 @@ const SideMenu: React.FC = () => {
 
   const { category } = router.query
 
-  const { data, loading } = useCategoriesQuery()
+  const [fetchCategories, { data, loading, error }] = useCategoriesLazyQuery()
+
+  useEffect(() => fetchCategories(), [])
 
   if (loading) return <VisuallyHidden>loading</VisuallyHidden>
+
+  if (error) return <Alert>{error}</Alert>
 
   return (
     <Box

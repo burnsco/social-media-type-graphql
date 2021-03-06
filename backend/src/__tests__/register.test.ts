@@ -1,7 +1,7 @@
 import faker from "faker"
 import { User } from "../entities/index"
-import { gCall } from "../testing/gCall"
-import { testConnection } from "../testing/testConn"
+import { gCall } from "../utils/gCall"
+import { testConnection } from "../utils/testConn"
 
 const registerMutation = `
 mutation Register($data: RegisterInput! ) {

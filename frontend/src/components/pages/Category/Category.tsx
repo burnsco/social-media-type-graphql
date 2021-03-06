@@ -1,16 +1,20 @@
 import NewPost from "@/components/common/Post"
 import ShowMorePosts from "@/components/pages/PostList/showMore"
 import { Layout } from "@/components/ui"
-import { usePostsQuery } from "@/generated/graphql"
+import { usePostsLazyQuery } from "@/generated/graphql"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
+import { useEffect } from "react"
 
 const CategoryPosts = (): JSX.Element => {
   const router = useRouter()
   const category = router.query.category as string
-  console.log(category)
-  const { loading, data, fetchMore, networkStatus } = usePostsQuery({
+
+  const [
+    fetchPosts,
+    { loading, data, fetchMore, networkStatus }
+  ] = usePostsLazyQuery({
     variables: {
       category: category,
       skip: 0,
@@ -18,14 +22,17 @@ const CategoryPosts = (): JSX.Element => {
     },
     notifyOnNetworkStatusChange: true
   })
+  useEffect(() => fetchPosts(), [])
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
   const loadMorePosts = () => {
-    fetchMore({
-      variables: {
-        skip: postsBySubreddit?.length ?? 0
-      }
-    })
+    if (fetchMore && postsBySubreddit) {
+      fetchMore({
+        variables: {
+          skip: postsBySubreddit.length
+        }
+      })
+    }
   }
 
   const postsBySubreddit = data?.posts ?? []
@@ -47,7 +54,7 @@ const CategoryPosts = (): JSX.Element => {
   }
 
   if (loading && !loadingMorePosts) {
-    return <VisuallyHidden>loading</VisuallyHidden>
+    return <VisuallyHidden>loading posts by category</VisuallyHidden>
   }
 
   return (

@@ -1,6 +1,6 @@
 import faker from "faker"
-import { gCall } from "../testing/gCall"
-import { testConnection } from "../testing/testConn"
+import { gCall } from "../utils/gCall"
+import { testConnection } from "../utils/testConn"
 import { Comment } from "./../entities/index"
 
 const createCommentMutation = `

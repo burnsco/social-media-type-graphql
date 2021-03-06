@@ -110,6 +110,7 @@ function CreateCategoryDrawer() {
                   duration: 9000,
                   isClosable: true
                 })
+                router.push(`/r/${response?.data.createCategory.category.name}`)
                 onClose()
               } else if (response?.data?.createCategory.errors) {
                 actions.setErrors(

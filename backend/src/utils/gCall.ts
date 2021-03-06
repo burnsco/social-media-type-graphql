@@ -5,7 +5,7 @@ import { CommentResolver } from "../resolvers/comment-resolver"
 import { PostResolver } from "../resolvers/post-resolver"
 import { UserResolver } from "../resolvers/user-resolver"
 import { VoteResolver } from "../resolvers/vote-resolver"
-import { testConnection } from "./testConn"
+import { testConnection } from "../utils/testConn"
 
 interface Options {
   source: string

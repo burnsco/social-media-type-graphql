@@ -1,4 +1,4 @@
-import { QueryOrder, wrap } from "@mikro-orm/core"
+import { QueryOrder } from "@mikro-orm/core"
 import {
   Arg,
   Args,
@@ -107,7 +107,7 @@ export class PostResolver {
         author: em.getReference(User, req.session.userId),
         category: em.getReference(Category, categoryId)
       })
-      await em.flush()
+      await em.persistAndFlush(post)
       return { post }
     }
     return null
@@ -125,28 +125,28 @@ export class PostResolver {
 
     if (post) {
       if (categoryId) {
-        wrap(post).assign({
+        post.assign({
           category: em.getReference(Category, categoryId)
         })
       }
       if (title) {
-        wrap(post).assign({
+        post.assign({
           title
         })
       }
       if (text) {
-        wrap(post).assign({
+        post.assign({
           text
         })
       }
       if (image) {
-        wrap(post).assign({
+        post.assign({
           image
         })
       }
 
       if (link) {
-        wrap(post).assign({
+        post.assign({
           link
         })
       }
