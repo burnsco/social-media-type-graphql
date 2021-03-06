@@ -1,41 +1,72 @@
 import { DeletePostDialog } from "@/components/common/DeletePostDialog"
 import { timeDifferenceForDate } from "@/utils/index"
-import { Box, Flex, HStack, Spacer, useColorModeValue } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuList,
+  Spacer,
+  useColorModeValue
+} from "@chakra-ui/react"
 import { useRouter } from "next/router"
+import React from "react"
+import { FaUserCircle } from "react-icons/fa"
+import { IoAddCircle } from "react-icons/io5"
+import { MdEmail, MdMessage } from "react-icons/md"
+import { User } from "../../../generated/graphql"
+import MessageUser from "../MessageUser"
 
 const PostHeader: React.FC<{
   category?: string | null
-  author?: string | null
+  author?: Partial<User>
   createdAt?: string | null
   updatedAt?: string | null
   postId?: string | null | undefined
 }> = ({ category, author, createdAt, postId, updatedAt }) => {
   const fontColor = useColorModeValue("#1A1A1B", "gray.200")
+  const bg = useColorModeValue("white", "#202020")
   const router = useRouter()
-
-  // #TODO figure out how to get the proper updatedAt value so you can
-  // have 'updated by ${user} @ time
-  // current does not work when sending updatedAt
 
   const renderPostCreatedOrEdited = () => (
     <Box ml="2" textDecoration="none">
       Posted by
-      <Box
-        ml="1.5"
-        onClick={() => router.push(`/user/${author}`)}
-        fontWeight="500"
-        display="inline"
-        color="gray.400"
-        _hover={{
-          textDecoration: "underline",
-          cursor: "pointer"
-        }}
-      >
-        {author}
-      </Box>
+      <Menu>
+        <Button ml={2} size="xs" variant="outline" as={MenuButton}>
+          {author}
+        </Button>
+
+        <MenuList opacity="0.7" bg={bg}>
+          <MenuGroup color="lightsteelblue">
+            <MenuItem onClick={() => router.push(`/user/${author?.username}`)}>
+              <FaUserCircle />
+              <Box ml={3}>Profile</Box>
+            </MenuItem>
+            <MenuDivider />
+          </MenuGroup>
+          <MenuItem onClick={() => router.push("/user/account")}>
+            <IoAddCircle />
+            <Box ml={3}>Add to Friends</Box>
+          </MenuItem>
+          <MenuItem onClick={() => router.push("/user/account")}>
+            <MdEmail />
+            <Box ml={3}>Message</Box>
+          </MenuItem>
+          <MenuItem onClick={() => router.push("/user/account")}>
+            <MdMessage />
+            <Box ml={3}>Chat</Box>
+          </MenuItem>
+        </MenuList>
+      </Menu>
       <Box display="inline" ml="2">
         {timeDifferenceForDate(createdAt)}
       </Box>
+      <Box>{author ? <MessageUser user={author} /> : null}</Box>
     </Box>
   )
 

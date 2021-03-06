@@ -16,7 +16,7 @@ const NewPost: React.FC<PostQuery> = props => {
   const postId = post?.id
   const postScore = post?.totalVotes?.score ?? 0
   const postCategory = post?.category.name
-  const postAuthor = post?.author.username
+  const postAuthor = post?.author
   const postCreatedTime = post?.createdAt
   const postUpdatedTime = post?.updatedAt
   const postTitle = post?.title

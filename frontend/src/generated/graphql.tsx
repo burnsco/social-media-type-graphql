@@ -18,11 +18,11 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   categories?: Maybe<Array<Category>>;
-  comment?: Maybe<Comment>;
+  comment: Comment;
   comments?: Maybe<Array<Comment>>;
   _allPostsMeta: _QueryMeta;
   _categoryPostsMeta: _QueryMeta;
-  post?: Maybe<Post>;
+  post: Post;
   posts?: Maybe<Array<Post>>;
   user: User;
   users: Array<User>;
@@ -631,6 +631,35 @@ export type RegisterMutation = (
   ) }
 );
 
+export type SendMessageMutationVariables = Exact<{
+  data: MessageInput;
+}>;
+
+
+export type SendMessageMutation = (
+  { __typename?: 'Mutation' }
+  & { sendMessage: (
+    { __typename?: 'UserMutationResponse' }
+    & { message?: Maybe<(
+      { __typename?: 'Message' }
+      & Pick<Message, 'id' | 'content'>
+      & { sentBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ), sentTo: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ) }
+    )>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
+
 export type CategoriesQueryVariables = Exact<{
   first?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
@@ -654,14 +683,14 @@ export type CommentQueryVariables = Exact<{
 
 export type CommentQuery = (
   { __typename?: 'Query' }
-  & { comment?: Maybe<(
+  & { comment: (
     { __typename?: 'Comment' }
     & { createdBy: (
       { __typename?: 'User' }
       & UserDetailsFragment
     ) }
     & CommentDetailsFragment
-  )> }
+  ) }
 );
 
 export type CommentsQueryVariables = Exact<{
@@ -692,7 +721,7 @@ export type CommentsForPostQueryVariables = Exact<{
 
 export type CommentsForPostQuery = (
   { __typename?: 'Query' }
-  & { post?: Maybe<(
+  & { post: (
     { __typename?: 'Post' }
     & Pick<Post, 'id'>
     & { comments?: Maybe<Array<(
@@ -703,7 +732,7 @@ export type CommentsForPostQuery = (
       ) }
       & CommentDetailsFragment
     )>> }
-  )> }
+  ) }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -724,7 +753,7 @@ export type PostQueryVariables = Exact<{
 
 export type PostQuery = (
   { __typename?: 'Query' }
-  & { post?: Maybe<(
+  & { post: (
     { __typename?: 'Post' }
     & { author: (
       { __typename?: 'User' }
@@ -740,7 +769,7 @@ export type PostQuery = (
       & Pick<_QueryMeta, 'score' | 'count'>
     )> }
     & PostDetailsFragment
-  )> }
+  ) }
 );
 
 export type PostsQueryVariables = Exact<{
@@ -1341,6 +1370,57 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const SendMessageDocument = gql`
+    mutation SendMessage($data: MessageInput!) {
+  sendMessage(data: $data) {
+    message {
+      id
+      content
+      sentBy {
+        id
+        username
+      }
+      sentTo {
+        id
+        username
+      }
+    }
+    user {
+      id
+      username
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+export type SendMessageMutationFn = Apollo.MutationFunction<SendMessageMutation, SendMessageMutationVariables>;
+
+/**
+ * __useSendMessageMutation__
+ *
+ * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useSendMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendMessageMutation, SendMessageMutationVariables>) {
+        return Apollo.useMutation<SendMessageMutation, SendMessageMutationVariables>(SendMessageDocument, baseOptions);
+      }
+export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
+export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
+export type SendMessageMutationOptions = Apollo.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
 export const CategoriesDocument = gql`
     query Categories($first: Int, $orderBy: String, $skip: Int, $name: String) {
   categories(first: $first, orderBy: $orderBy, skip: $skip, name: $name) {

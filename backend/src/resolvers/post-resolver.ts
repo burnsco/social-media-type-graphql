@@ -42,19 +42,15 @@ export class PostResolver {
     @Ctx()
     { em }: ContextType
   ) {
-    console.log(posts)
     const [, count] = await em.findAndCount(Post, {
-      category: { name: name }
+      category: { name }
     })
     return { count }
   }
 
-  @Query(() => Post, { nullable: true })
-  async post(
-    @Args() { postId }: PostArgs,
-    @Ctx() { em }: ContextType
-  ): Promise<Post | null> {
-    return await em.findOne(Post, { id: postId }, ["comments"])
+  @Query(() => Post)
+  post(@Args() { postId }: PostArgs, @Ctx() { em }: ContextType) {
+    return em.findOne(Post, { id: postId })
   }
 
   @Query(() => [Post], { nullable: true })

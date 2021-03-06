@@ -1,0 +1,24 @@
+mutation SendMessage($data: MessageInput!) {
+  sendMessage(data: $data) {
+    message {
+      id
+      content
+      sentBy {
+        id
+        username
+      }
+      sentTo {
+        id
+        username
+      }
+    }
+    user {
+      id
+      username
+    }
+    errors {
+      field
+      message
+    }
+  }
+}

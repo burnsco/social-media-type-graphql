@@ -12,6 +12,9 @@ export default {
     path: path.join(__dirname, "./migrations"),
     pattern: /^[\w-]+\d+\.[tj]s$/
   },
+  filters: {
+    category: { cond: args => ({ category: args.category }), entity: ["Post"] }
+  },
   entities: ["./dist/entities/**/*.js"],
   entitiesTs: ["./src/entities/**/*.ts"],
   tsNode: process.env.NODE_DEV === "true" ? true : false,

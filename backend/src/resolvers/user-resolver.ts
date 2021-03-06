@@ -185,7 +185,10 @@ export class UserResolver {
     const user = await em.findOne(User, req.session.userId, {
       populate: ["messages"]
     })
-    const receipent = await em.findOne(User, data.userId)
+    let receipent
+    if (data.userId) {
+      receipent = await em.findOne(User, data.userId)
+    }
 
     if (user && receipent && req.session.userId) {
       const message = em.create(Message, {
