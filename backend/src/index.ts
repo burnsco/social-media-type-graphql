@@ -3,18 +3,16 @@ import "dotenv-safe/config"
 import http from "http"
 import "reflect-metadata"
 import { buildSchema } from "type-graphql"
-import { CategoryResolver } from "./resolvers/category-resolver"
-import { CommentResolver } from "./resolvers/comment-resolver"
-import { PostResolver } from "./resolvers/post-resolver"
-import { UserResolver } from "./resolvers/user-resolver"
-import { VoteResolver } from "./resolvers/vote-resolver"
-import initializeDB from "./utils/initializeDB"
-import initializeExpress from "./utils/initializeExpress"
-import initializeLogger from "./utils/initializeLogger"
-import initializeRedis from "./utils/redisConfig"
+import initializeDB from "./config/initializeDB"
+import { CategoryResolver } from "./entities/Category/resolvers/category-resolver"
+import { CommentResolver } from "./entities/Comment/resolvers/comment-resolver"
+import { PostResolver } from "./entities/Post/resolvers/post-resolver"
+import { UserResolver } from "./entities/User/resolvers/user-resolver"
+import { VoteResolver } from "./entities/Vote/resolvers/vote-resolver"
+import initializeExpress from "./server/initializeExpress"
+import initializeRedis from "./server/redisConfig"
 
 const main = async (): Promise<void> => {
-  const { logger } = initializeLogger()
   const { orm } = await initializeDB()
   const { redisClient, pubSub } = initializeRedis()
   const { app } = initializeExpress()
@@ -40,19 +38,11 @@ const main = async (): Promise<void> => {
     subscriptions: {
       path: "/subscriptions",
       onConnect: async () => {
-        logger.log({
-          level: "info",
-          message: `User connected`
-        })
         console.log(
           `Subscription client connected using Apollo server's built-in SubscriptionServer.`
         )
       },
       onDisconnect: async () => {
-        logger.log({
-          level: "info",
-          message: `User disconnected`
-        })
         console.log(`Subscription client disconnected.`)
       }
     }
