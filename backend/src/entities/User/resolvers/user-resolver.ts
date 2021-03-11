@@ -1,4 +1,5 @@
 import argon2 from "argon2"
+import initializeLogger from "src/config/initializeLogger"
 import {
   Arg,
   Args,
@@ -13,27 +14,26 @@ import {
   Subscription,
   UseMiddleware
 } from "type-graphql"
+import { Message, User } from "../../"
+import { isAuth } from "../../../lib/isAuth"
+import { ContextType } from "../../../types"
 import {
   COOKIE_NAME,
   emailInUse,
   emailOrPasswordIsIncorrect,
   usernameInUse
-} from "../../constants"
-import { Message, User } from "../Base/index"
-import { ContextType } from "../../types"
-import initializeLogger from "../../utils/initializeLogger"
-import { isAuth } from "../../utils/isAuth"
-import { NewMessageArgs } from "../Message/message-args"
-import { Topic } from "../topics"
-import { MessageInput } from "../Message/message-input"
+} from "../../common/constants"
+import { Topic } from "../../common/topics"
+import { NewMessageArgs } from "../../Message/args/message-args"
+import { MessageInput } from "../../Message/inputs/message-input"
 import {
   CheckAvailability,
   EditUserInput,
   LoginInput,
   RegisterInput
-} from "./user-input"
-import LogoutMutationResponse from "./logout-response"
-import { UserMutationResponse } from "./user-response"
+} from "../inputs/user-input"
+import LogoutMutationResponse from "../responses/logout-response"
+import { UserMutationResponse } from "../responses/user-response"
 
 const { logger } = initializeLogger()
 

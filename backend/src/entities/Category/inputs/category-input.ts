@@ -1,6 +1,6 @@
 import { MaxLength } from "class-validator"
 import { Field, InputType } from "type-graphql"
-import { Category } from "../Base/index"
+import { Category } from "../"
 
 @InputType()
 export class CategoryInput implements Partial<Category> {

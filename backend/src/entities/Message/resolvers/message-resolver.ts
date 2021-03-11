@@ -1,7 +1,7 @@
 import { Args, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
-import { Message, User } from "../Base/index"
-import { ContextType } from "../../types"
-import { NewMessageArgs } from "./message-args"
+import { Message, User } from "../../"
+import { ContextType } from "../../../types"
+import { NewMessageArgs } from "../args/message-args"
 
 @Resolver(() => Message)
 export class MessageResolver {

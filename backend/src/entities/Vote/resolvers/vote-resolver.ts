@@ -1,7 +1,6 @@
 import { Ctx, FieldResolver, Resolver, Root } from "type-graphql"
-import { ContextType } from "../../types"
-import User from "../Base/User"
-import Vote from "./Vote"
+import { User, Vote } from "../.."
+import { ContextType } from "../../../types"
 
 @Resolver(() => Vote)
 export class VoteResolver {

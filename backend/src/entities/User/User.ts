@@ -10,7 +10,8 @@ import {
 } from "@mikro-orm/core"
 import { GraphQLEmail } from "graphql-custom-types"
 import { Field, ObjectType } from "type-graphql"
-import { Base, Message } from "./index"
+import { Message } from ".."
+import { Base } from "../Base"
 
 enum Role {
   USER = "user",

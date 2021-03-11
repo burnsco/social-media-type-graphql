@@ -8,7 +8,7 @@ import {
 } from "@mikro-orm/core"
 import { ObjectType } from "type-graphql"
 import { Field } from "type-graphql/dist/decorators/Field"
-import { Base, Category, Comment, User, Vote } from "./index"
+import { Base, Category, Comment, User, Vote } from ".."
 
 @Entity()
 @ObjectType()

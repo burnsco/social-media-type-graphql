@@ -1,6 +1,6 @@
 import { Cascade, Entity, ManyToOne, Property } from "@mikro-orm/core"
 import { Field, ObjectType } from "type-graphql"
-import { Base, Post, User } from "./index"
+import { Base, Post, User } from ".."
 
 @Entity()
 @ObjectType()

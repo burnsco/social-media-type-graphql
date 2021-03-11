@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "type-graphql"
-import { Post } from "../Base/index"
+import { Post } from "../../"
 
 @ObjectType()
 export default class PostsQueryResponse {

@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from "type-graphql"
-import { MutationResponse } from "../resolvers/response"
-import { Post, Vote } from "../Base/index"
+import { Post, Vote } from "../../.."
+import MutationResponse from "../../../common/mutation-response"
 
 @ObjectType()
 export class VoteMutationResponse extends MutationResponse {

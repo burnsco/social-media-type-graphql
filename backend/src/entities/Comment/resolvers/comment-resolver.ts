@@ -10,13 +10,12 @@ import {
   Root,
   UseMiddleware
 } from "type-graphql"
-import Comment from "../Base/Comment"
-import { Post, User } from "../Base/index"
-import { ContextType } from "../../types"
-import { isAuth } from "../../utils/isAuth"
-import { PostArgs } from "../Post/post-args"
-import { CommentInput } from "./comment-input"
-import CommentMutationResponse from "./comment-mutation-response"
+import { Comment, Post, User } from "../../"
+import { isAuth } from "../../../lib/isAuth"
+import { ContextType } from "../../../types"
+import { PostArgs } from "../../Post/args/post-args"
+import { CommentInput } from "../inputs/comment-input"
+import CommentMutationResponse from "../responses/comment-mutation-response"
 
 @Resolver(() => Comment)
 export class CommentResolver {

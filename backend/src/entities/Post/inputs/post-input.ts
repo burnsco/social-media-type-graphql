@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from "type-graphql"
-import { Post } from "../Base/index"
+import { Post } from "../../"
 
 @InputType()
 export class CreatePostInput implements Partial<Post> {

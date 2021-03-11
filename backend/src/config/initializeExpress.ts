@@ -3,7 +3,7 @@ import "dotenv-safe/config"
 import express from "express"
 import session from "express-session"
 import "reflect-metadata"
-import { COOKIE_NAME, __prod__ } from "../constants"
+import { COOKIE_NAME, __prod__ } from "../entities/common/constants"
 import initializeRedis from "./redisConfig"
 
 function initializeExpress() {

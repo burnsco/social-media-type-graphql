@@ -8,13 +8,13 @@ import {
   Resolver,
   UseMiddleware
 } from "type-graphql"
-import { subRedditNameInUse } from "../../constants"
-import { Category } from "../Base/index"
-import { ContextType } from "../../types"
-import { isAuth } from "../../utils/isAuth"
-import { CategoryArgs } from "./category-args"
-import { CategoryInput } from "./category-input"
-import CategoryMutationResponse from "./category-mutation-response"
+import { Category } from ".."
+import { isAuth } from "../../../lib/isAuth"
+import { ContextType } from "../../../types"
+import { subRedditNameInUse } from "../../common/constants"
+import { CategoryArgs } from "../args/category-args"
+import { CategoryInput } from "../inputs/category-input"
+import CategoryMutationResponse from "../responses/category-mutation-response"
 
 @Resolver(() => Category)
 export class CategoryResolver {

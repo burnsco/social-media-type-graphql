@@ -1,7 +1,7 @@
 import faker from "faker"
+import { Category } from "../entities"
 import { gCall } from "../utils/gCall"
 import { testConnection } from "../utils/testConn"
-import { Category } from "../Entities/Base/index"
 
 const createCategoryMutation = `
 mutation CreateCategory($data: CategoryInput! ) {

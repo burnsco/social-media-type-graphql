@@ -1,6 +1,6 @@
 import { GraphQLEmail } from "graphql-custom-types"
 import { Field, InputType } from "type-graphql"
-import { User } from "../Base/index"
+import { User } from "../../"
 
 @InputType()
 export class RegisterInput implements Partial<User> {

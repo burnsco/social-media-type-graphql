@@ -1,7 +1,7 @@
 import faker from "faker"
+import { Comment } from "../entities"
 import { gCall } from "../utils/gCall"
 import { testConnection } from "../utils/testConn"
-import { Comment } from "../Entities/Base/index"
 
 const createCommentMutation = `
 mutation CreateComment($data: CommentInput! ) {

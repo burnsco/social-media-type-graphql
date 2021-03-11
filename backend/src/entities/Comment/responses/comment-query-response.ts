@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from "type-graphql"
-import { MutationResponse } from ".."
+import MutationResponse from "../../common/mutation-response"
 
 @ObjectType()
 export default class CommentsQueryResponse extends MutationResponse {

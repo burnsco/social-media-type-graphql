@@ -14,18 +14,18 @@ import {
   Subscription,
   UseMiddleware
 } from "type-graphql"
-import { Category, Comment, Post, User, Vote } from "../Base/index"
-import { ContextType } from "../../types"
-import { isAuth } from "../../utils/isAuth"
-import { PostArgs } from "./post-args"
-import { _QueryMeta } from "./_QueryMeta"
-import { Topic } from "../topics"
-import { CommentInput } from "../Comment/comment-input"
-import { CreatePostInput, EditPostInput } from "./post-input"
-import { VoteInput } from "../Vote/vote-input"
-import CommentMutationResponse from "../Comment/comment-mutation-response"
-import PostMutationResponse from "./post-mutation-response"
-import { VoteMutationResponse } from "../Vote/vote-response"
+import { Category, Comment, Post, User, Vote } from "../../"
+import { isAuth } from "../../../lib/isAuth"
+import { ContextType } from "../../../types"
+import { CommentInput } from "../../Comment/inputs/comment-input"
+import CommentMutationResponse from "../../Comment/responses/comment-mutation-response"
+import { Topic } from "../../common/topics"
+import { VoteInput } from "../../Vote/inputs/vote-input"
+import { VoteMutationResponse } from "../../Vote/responses/mutation/vote-response"
+import { PostArgs } from "../args/post-args"
+import { CreatePostInput, EditPostInput } from "../inputs/post-input"
+import { _QueryMeta } from "../inputs/_QueryMeta"
+import PostMutationResponse from "../responses/post-mutation-response"
 
 @Resolver(() => Post)
 export class PostResolver {
