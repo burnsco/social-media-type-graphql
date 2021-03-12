@@ -1,8 +1,6 @@
 import argon2 from "argon2"
-import initializeLogger from "src/config/initializeLogger"
 import {
   Arg,
-  Args,
   Ctx,
   FieldResolver,
   Mutation,
@@ -15,6 +13,7 @@ import {
   UseMiddleware
 } from "type-graphql"
 import { Message, User } from "../../"
+import { initializeLogger } from "../../../config/initializeLogger"
 import { isAuth } from "../../../lib/isAuth"
 import { ContextType } from "../../../types"
 import {
@@ -24,7 +23,6 @@ import {
   usernameInUse
 } from "../../common/constants"
 import { Topic } from "../../common/topics"
-import { NewMessageArgs } from "../../Message/args/message-args"
 import { MessageInput } from "../../Message/inputs/message-input"
 import {
   CheckAvailability,
@@ -53,8 +51,8 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  me(@Ctx() { req, em }: ContextType) {
-    return em.findOneOrFail(User, req.session.userId)
+  async me(@Ctx() { req, em }: ContextType) {
+    return await em.findOneOrFail(User, req.session.userId)
   }
 
   @Mutation(() => Boolean)
@@ -265,17 +263,9 @@ export class UserResolver {
   }
 
   @FieldResolver({ nullable: true })
-  messages(@Root() user: User, @Ctx() { em }: ContextType) {
-    return em.find(Message, { sentBy: { id: user.id } })
+  async messages(@Root() user: User, @Ctx() { em }: ContextType) {
+    return await em.find(Message, { sentBy: { id: user.id } })
   }
-
-  // **************************
-  //                          *
-  //    SUBSCRIPTION STUFF    *
-  //                          *
-  // **************************
-
-  // ---------NEW USER--------------
 
   @Subscription(() => User, {
     topics: Topic.NewUser
@@ -284,15 +274,10 @@ export class UserResolver {
     return newUser
   }
 
-  // ---------NEW MESSAGE--------------
-
   @Subscription(() => Message, {
     topics: Topic.NewMessage
   })
-  newMessage(
-    @Root() newMessage: Message,
-    @Args() { userId }: NewMessageArgs
-  ): Message {
+  newMessage(@Root() newMessage: Message): Message {
     return newMessage
   }
 }

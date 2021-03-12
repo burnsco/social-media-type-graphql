@@ -63,7 +63,7 @@ const PasswordField: React.FC<ChakraFieldProps> = ({
           placeholder={props.placeholder}
         />
         <InputRightElement width="4.5rem">
-          <Button h="1.75rem" size="sm" onClick={handleClick}>
+          <Button h="1.75rem" size="md" onClick={handleClick}>
             {show ? "Hide" : "Show"}
           </Button>
         </InputRightElement>

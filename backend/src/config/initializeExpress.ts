@@ -4,12 +4,13 @@ import express from "express"
 import session from "express-session"
 import "reflect-metadata"
 import { COOKIE_NAME, __prod__ } from "../entities/common/constants"
-import initializeRedis from "./redisConfig"
+import { initializeRedis } from "./redisConfig"
 
-function initializeExpress() {
+export const initializeExpress = () => {
   const { redisStore, redisClient } = initializeRedis()
 
   const app = express()
+
   app.set("trust proxy", 1)
   app.use(
     cors({
@@ -39,5 +40,3 @@ function initializeExpress() {
 
   return { app }
 }
-
-export default initializeExpress

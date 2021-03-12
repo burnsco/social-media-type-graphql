@@ -3,15 +3,16 @@
     "@typescript-eslint",
     "@typescript-eslint/eslint-plugin",
     "react",
-    "prettier",
     "react-hooks",
+    "prettier",
     "jest-dom",
     "testing-library"
   ],
   "extends": [
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "prettier",
     "plugin:prettier/recommended",
     "plugin:testing-library/react",

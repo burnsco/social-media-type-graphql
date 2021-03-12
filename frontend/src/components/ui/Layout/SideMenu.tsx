@@ -24,7 +24,7 @@ const SideMenu: React.FC = () => {
 
   const [fetchCategories, { data, loading, error }] = useCategoriesLazyQuery()
 
-  useEffect(() => fetchCategories(), [])
+  useEffect(() => fetchCategories(), [fetchCategories])
 
   if (loading) return <VisuallyHidden>loading</VisuallyHidden>
 

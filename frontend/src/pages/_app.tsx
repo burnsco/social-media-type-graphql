@@ -9,9 +9,7 @@ const Noop: FC = ({ children }) => <>{children}</>
 
 export default function App({ Component, pageProps }: AppProps) {
   const Layout = (Component as any).Layout || Noop
-
   const apolloClient = useApollo(pageProps.initialApolloState)
-
   return (
     <>
       <Head>

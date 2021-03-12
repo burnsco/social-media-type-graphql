@@ -21,7 +21,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "baseUrl": "."
+    "baseUrl": "./"
   },
   "include": ["**/*.ts", "**/*.tsx", "./src/**/*", "./src/index.d.ts"],
   "exclude": ["node_modules"]

@@ -14,7 +14,7 @@ import {
   Subscription,
   UseMiddleware
 } from "type-graphql"
-import { Category, Comment, Post, User, Vote } from "../../"
+import { Category, Comment, Post, User, Vote } from "../../../@entities/index"
 import { isAuth } from "../../../lib/isAuth"
 import { ContextType } from "../../../types"
 import { CommentInput } from "../../Comment/inputs/comment-input"
@@ -37,8 +37,9 @@ export class PostResolver {
 
   @Query(() => _QueryMeta)
   async _categoryPostsMeta(
-    @Root() posts: Post,
-    @Args() { name }: PostArgs,
+    @Root()
+    @Args()
+    { name }: PostArgs,
     @Ctx()
     { em }: ContextType
   ) {
@@ -49,8 +50,8 @@ export class PostResolver {
   }
 
   @Query(() => Post)
-  post(@Args() { postId }: PostArgs, @Ctx() { em }: ContextType) {
-    return em.findOne(Post, { id: postId })
+  async post(@Args() { postId }: PostArgs, @Ctx() { em }: ContextType) {
+    return await em.findOne(Post, { id: postId })
   }
 
   @Query(() => [Post], { nullable: true })

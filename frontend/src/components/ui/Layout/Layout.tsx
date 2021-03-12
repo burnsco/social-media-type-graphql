@@ -46,14 +46,12 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
           content="A Reddit clone to learn typescript, graphql, testing and more."
         />
       </Head>
-
       <Header />
       <Box px={["0em", "1em", "3em", "6em"]} py="6em">
         <Stack isInline spacing={14}>
           <Box as="main" width="full">
             {children}
           </Box>
-
           <Box
             as="aside"
             minW="200px"

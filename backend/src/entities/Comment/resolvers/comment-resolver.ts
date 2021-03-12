@@ -69,18 +69,18 @@ export class CommentResolver {
   }
 
   @FieldResolver()
-  createdBy(
+  async createdBy(
     @Root() comment: Comment,
     @Ctx() { em }: ContextType
   ): Promise<User | null> {
-    return em.findOne(User, comment.createdBy.id)
+    return await em.findOne(User, comment.createdBy.id)
   }
 
   @FieldResolver()
-  post(
+  async post(
     @Root() comment: Comment,
     @Ctx() { em }: ContextType
   ): Promise<Post | null> {
-    return em.findOne(Post, comment.post.id)
+    return await em.findOne(Post, comment.post.id)
   }
 }

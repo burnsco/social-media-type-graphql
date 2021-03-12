@@ -1,6 +1,6 @@
 import winston from "winston"
 
-function initializeLogger() {
+export const initializeLogger = () => {
   const logger = winston.createLogger({
     level: "info",
     format: winston.format.json(),
@@ -29,5 +29,3 @@ function initializeLogger() {
 
   return { logger }
 }
-
-export default initializeLogger

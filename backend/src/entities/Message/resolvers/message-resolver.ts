@@ -14,8 +14,8 @@ export class MessageResolver {
   }
 
   @Query(() => [Message], { nullable: true })
-  messages(@Ctx() { em }: ContextType): Promise<Message[] | null> {
-    return em.find(Message, {})
+  async messages(@Ctx() { em }: ContextType): Promise<Message[] | null> {
+    return await em.find(Message, {})
   }
 
   @FieldResolver()

@@ -13,7 +13,7 @@ const options: Redis.RedisOptions = {
   retryStrategy: (times: number) => Math.max(times * 100, 3000)
 }
 
-function initializeRedis() {
+export const initializeRedis = () => {
   const redisStore = connectRedis(session)
   const redisClient = new Redis(process.env.REDIS_URL)
 
@@ -28,5 +28,3 @@ function initializeRedis() {
     pubSub
   }
 }
-
-export default initializeRedis

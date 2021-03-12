@@ -5,7 +5,7 @@ import { ContextType } from "../../../types"
 @Resolver(() => Vote)
 export class VoteResolver {
   @FieldResolver()
-  castBy(@Root() vote: Vote, @Ctx() { em }: ContextType): Promise<User> {
-    return em.findOneOrFail(User, vote.castBy.id)
+  async castBy(@Root() vote: Vote, @Ctx() { em }: ContextType): Promise<User> {
+    return await em.findOneOrFail(User, vote.castBy.id)
   }
 }

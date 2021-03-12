@@ -1,0 +1,6 @@
+export * from "../../entities/Category/resolvers/category-resolver"
+export * from "../../entities/Comment/resolvers/comment-resolver"
+export * from "../../entities/Message/resolvers/message-resolver"
+export * from "../../entities/Post/resolvers/post-resolver"
+export * from "../../entities/User/resolvers/user-resolver"
+export * from "../../entities/Vote/resolvers/vote-resolver"

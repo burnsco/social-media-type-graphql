@@ -26,6 +26,7 @@ import { IoChatboxEllipsesOutline } from "react-icons/io5"
 import { MdCheckCircle, MdSettings } from "react-icons/md"
 
 export default function ChatRoomDrawer() {
+  const submitButtonColor = useColorModeValue("purple", "blue")
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const btnRef = useRef<HTMLButtonElement | null>(null)
@@ -133,10 +134,7 @@ export default function ChatRoomDrawer() {
                         placeholder="chat here..."
                       />
 
-                      <Button
-                        type="submit"
-                        colorScheme={useColorModeValue("purple", "blue")}
-                      >
+                      <Button type="submit" colorScheme={submitButtonColor}>
                         Submit
                       </Button>
                     </HStack>

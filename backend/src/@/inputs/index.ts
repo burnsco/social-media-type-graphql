@@ -1,0 +1,6 @@
+export * from "../../entities/Category/inputs/category-input"
+export * from "../../entities/Comment/inputs/comment-input"
+export * from "../../entities/Message/inputs/message-input"
+export * from "../../entities/Post/inputs/post-input"
+export * from "../../entities/User/inputs/user-input"
+export * from "../../entities/Vote/inputs/vote-input"

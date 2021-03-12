@@ -3,16 +3,21 @@ import "dotenv-safe/config"
 import http from "http"
 import "reflect-metadata"
 import { buildSchema } from "type-graphql"
-import initializeDB from "./config/initializeDB"
-import initializeExpress from "./config/initializeExpress"
-import initializeRedis from "./config/redisConfig"
-import { CategoryResolver } from "./entities/Category/resolvers/category-resolver"
-import { CommentResolver } from "./entities/Comment/resolvers/comment-resolver"
-import { PostResolver } from "./entities/Post/resolvers/post-resolver"
-import { UserResolver } from "./entities/User/resolvers/user-resolver"
-import { VoteResolver } from "./entities/Vote/resolvers/vote-resolver"
+import {
+  CategoryResolver,
+  CommentResolver,
+  PostResolver,
+  UserResolver,
+  VoteResolver
+} from "./@/resolvers"
+import {
+  initializeDB,
+  initializeExpress,
+  initializeLogger,
+  initializeRedis
+} from "./config"
 
-const main = async (): Promise<void> => {
+async function main(): Promise<void> {
   const { orm } = await initializeDB()
   const { redisClient, pubSub } = initializeRedis()
   const { app } = initializeExpress()
@@ -63,6 +68,8 @@ const main = async (): Promise<void> => {
   })
 }
 
-main().catch(err => {
-  console.log(err)
+const { logger } = initializeLogger()
+
+main().catch((err: any) => {
+  logger.log({ level: "error", message: err.message })
 })
