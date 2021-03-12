@@ -1,5 +1,5 @@
 import { ChakraField, PasswordField } from "@/components/common/index"
-import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
+import { MeDocument, useRegisterMutation } from "@/generated/graphql"
 import { RegisterSchema } from "@/types/User/schemas"
 import { RegisterUserInputType } from "@/types/User/types"
 import { convertToErrorMap } from "@/utils/index"
@@ -25,6 +25,7 @@ function RegisterDrawer() {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
+  const colorScheme = useColorModeValue("purple", "blue")
   const [register] = useRegisterMutation()
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
@@ -62,7 +63,7 @@ function RegisterDrawer() {
                   }
                 },
                 update: (cache, { data }) => {
-                  cache.writeQuery<MeQuery>({
+                  cache.writeQuery({
                     query: MeDocument,
                     data: {
                       __typename: "Query",
@@ -124,7 +125,7 @@ function RegisterDrawer() {
                       variant="solid"
                       type="submit"
                       isLoading={isSubmitting}
-                      colorScheme={useColorModeValue("purple", "blue")}
+                      colorScheme={colorScheme}
                     >
                       Submit
                     </Button>

@@ -4,18 +4,18 @@ import http from "http"
 import "reflect-metadata"
 import { buildSchema } from "type-graphql"
 import {
-  CategoryResolver,
-  CommentResolver,
-  PostResolver,
-  UserResolver,
-  VoteResolver
-} from "./@/resolvers"
-import {
   initializeDB,
   initializeExpress,
   initializeLogger,
   initializeRedis
 } from "./config"
+import {
+  CategoryResolver,
+  CommentResolver,
+  PostResolver,
+  UserResolver,
+  VoteResolver
+} from "./resolvers"
 
 async function main(): Promise<void> {
   const { orm } = await initializeDB()
@@ -52,12 +52,9 @@ async function main(): Promise<void> {
       }
     }
   })
-
   server.applyMiddleware({ app, cors: false })
-
   const httpServer = http.createServer(app)
   server.installSubscriptionHandlers(httpServer)
-
   httpServer.listen(process.env.PORT, () => {
     console.log(
       `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`

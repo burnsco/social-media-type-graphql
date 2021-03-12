@@ -1,8 +1,8 @@
 import { MikroORM, ReflectMetadataProvider } from "@mikro-orm/core"
 import "dotenv-safe/config"
 import path from "path"
+import { __prod__ } from "./common/constants"
 import { initializeLogger } from "./config"
-import { __prod__ } from "./entities/common/constants"
 
 const { logger } = initializeLogger()
 

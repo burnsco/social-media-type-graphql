@@ -14,7 +14,7 @@ const Posts = (): JSX.Element => {
     variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true
   })
-  useEffect(() => fetchPosts(), [])
+  useEffect(() => fetchPosts(), [fetchPosts])
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 

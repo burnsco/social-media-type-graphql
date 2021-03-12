@@ -29,6 +29,7 @@ function CreateCategoryDrawer() {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
+  const buttonColor = useColorModeValue("purple", "blue")
   const [createCategory, { loading }] = useCreateSubredditMutation()
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
@@ -133,7 +134,7 @@ function CreateCategoryDrawer() {
                     <Button
                       type="submit"
                       isLoading={isSubmitting || loading}
-                      colorScheme={useColorModeValue("purple", "blue")}
+                      colorScheme={buttonColor}
                     >
                       Submit
                     </Button>

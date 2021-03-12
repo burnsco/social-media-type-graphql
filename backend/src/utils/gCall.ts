@@ -1,10 +1,10 @@
 import { graphql } from "graphql"
 import { buildSchema } from "type-graphql"
-import { CategoryResolver } from "../entities/Category/resolvers/category-resolver"
-import { CommentResolver } from "../entities/Comment/resolvers/comment-resolver"
-import { PostResolver } from "../entities/Post/resolvers/post-resolver"
-import { UserResolver } from "../entities/User/resolvers/user-resolver"
-import { VoteResolver } from "../entities/Vote/resolvers/vote-resolver"
+import { CategoryResolver } from "../resolvers/category-resolver"
+import { CommentResolver } from "../resolvers/comment-resolver"
+import { PostResolver } from "../resolvers/post-resolver"
+import { UserResolver } from "../resolvers/user-resolver"
+import { VoteResolver } from "../resolvers/vote-resolver"
 import { testConnection } from "../utils/testConn"
 
 interface Options {

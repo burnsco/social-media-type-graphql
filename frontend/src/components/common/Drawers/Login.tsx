@@ -1,5 +1,5 @@
 import { ChakraField } from "@/components/common/index"
-import { MeDocument, MeQuery, useLoginMutation } from "@/generated/graphql"
+import { MeDocument, useLoginMutation } from "@/generated/graphql"
 import { LoginSchema } from "@/types/User/schemas"
 import { LoginUserInputType } from "@/types/User/types"
 import { convertToErrorMap } from "@/utils/index"
@@ -25,6 +25,7 @@ function LoginDrawer() {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
+  const colorScheme = useColorModeValue("purple", "blue")
   const [login] = useLoginMutation()
 
   const btnRef = useRef<HTMLButtonElement | null>(null)
@@ -56,7 +57,7 @@ function LoginDrawer() {
                   }
                 },
                 update: (cache, { data }) => {
-                  cache.writeQuery<MeQuery>({
+                  cache.writeQuery({
                     query: MeDocument,
                     data: {
                       __typename: "Query",
@@ -108,7 +109,7 @@ function LoginDrawer() {
                     type="submit"
                     isLoading={isSubmitting}
                     loadingText="Submitting"
-                    colorScheme={useColorModeValue("purple", "blue")}
+                    colorScheme={colorScheme}
                   >
                     Submit
                   </Button>

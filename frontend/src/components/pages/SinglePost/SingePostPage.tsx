@@ -17,7 +17,7 @@ export default function SinglePostPage() {
   const [fetchPost, { loading, data }] = usePostLazyQuery({
     variables: { postId }
   })
-  useEffect(() => fetchPost(), [])
+  useEffect(() => fetchPost(), [fetchPost])
 
   if (loading) return <VisuallyHidden>loading</VisuallyHidden>
 

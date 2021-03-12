@@ -1,0 +1,6 @@
+export { default as CategoryResolver } from "./category-resolver"
+export { default as CommentResolver } from "./comment-resolver"
+export { default as MessageResolver } from "./message-resolver"
+export { default as PostResolver } from "./post-resolver"
+export { default as UserResolver } from "./user-resolver"
+export { default as VoteResolver } from "./vote-resolver"

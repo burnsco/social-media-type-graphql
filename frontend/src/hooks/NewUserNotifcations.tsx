@@ -19,7 +19,7 @@ function NewUserNotfications() {
         isClosable: true
       })
     }
-  }, [data, data?.newUser, data?.newUser.username])
+  }, [data, data?.newUser, data?.newUser.username, toast])
 }
 
 export default NewUserNotfications

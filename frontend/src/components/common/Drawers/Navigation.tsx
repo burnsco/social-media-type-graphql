@@ -22,7 +22,10 @@ import { ImArrowDown, ImArrowRight } from "react-icons/im"
 
 export default function NavigationDrawer() {
   const [input, setInput] = useState("")
-
+  const bg = useColorModeValue("translucent", "translucent")
+  const color = useColorModeValue("gray.700", "gray.300")
+  const hoverColor = useColorModeValue("black", "white")
+  const hoverBG = useColorModeValue("#ebedf0", "#3661ed")
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [getCategories, { loading, data }] = useCategoriesLazyQuery()
@@ -73,12 +76,12 @@ export default function NavigationDrawer() {
                         <ListItem p={1} key={`sideNav-${cat.name}-${cat.id}`}>
                           <NextChakraLink
                             p={1}
-                            bg={useColorModeValue("translucent", "translucent")}
+                            bg={bg}
                             fontWeight="400"
-                            color={useColorModeValue("gray.700", "gray.300")}
+                            color={color}
                             _hover={{
-                              color: useColorModeValue("black", "white"),
-                              bg: useColorModeValue("#ebedf0", "#3661ed"),
+                              color: hoverColor,
+                              bg: hoverBG,
                               marginLeft: 1
                             }}
                             href="/r/[category]"

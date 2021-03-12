@@ -7,6 +7,7 @@ import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 
 const SubmitCommentForm = () => {
+  const buttomScheme = useColorModeValue("purple", "orange")
   const bg = useColorModeValue("white", "#202020")
   const toast = useToast()
 
@@ -91,7 +92,7 @@ const SubmitCommentForm = () => {
               borderBottomLeftRadius="lg"
               mt={1}
               size="sm"
-              colorScheme={useColorModeValue("purple", "orange")}
+              colorScheme={buttomScheme}
               isLoading={mutationLoading || formik.isSubmitting}
               isDisabled={mutationLoading || formik.isSubmitting}
               type="submit"

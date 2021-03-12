@@ -3,10 +3,10 @@ import "dotenv-safe/config"
 import express from "express"
 import session from "express-session"
 import "reflect-metadata"
-import { COOKIE_NAME, __prod__ } from "../entities/common/constants"
-import { initializeRedis } from "./redisConfig"
+import { COOKIE_NAME, __prod__ } from "../common/constants"
+import initializeRedis from "./redisConfig"
 
-export const initializeExpress = () => {
+export default function initializeExpress() {
   const { redisStore, redisClient } = initializeRedis()
 
   const app = express()

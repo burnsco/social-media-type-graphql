@@ -22,7 +22,7 @@ const CategoryPosts = (): JSX.Element => {
     },
     notifyOnNetworkStatusChange: true
   })
-  useEffect(() => fetchPosts(), [])
+  useEffect(() => fetchPosts(), [fetchPosts])
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
   const loadMorePosts = () => {
