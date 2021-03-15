@@ -3,6 +3,7 @@ import { PostgreSqlDriver } from "@mikro-orm/postgresql/PostgreSqlDriver"
 
 export default async function initializeDB() {
   const orm = await MikroORM.init<PostgreSqlDriver>()
+
   const migrator = orm.getMigrator()
   const migrations = await migrator.getPendingMigrations()
 

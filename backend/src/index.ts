@@ -19,6 +19,7 @@ import {
 
 async function main(): Promise<void> {
   const { orm } = await initializeDB()
+
   const { redisClient, pubSub } = initializeRedis()
   const { app } = initializeExpress()
 
@@ -52,9 +53,12 @@ async function main(): Promise<void> {
       }
     }
   })
+
   server.applyMiddleware({ app, cors: false })
+
   const httpServer = http.createServer(app)
   server.installSubscriptionHandlers(httpServer)
+
   httpServer.listen(process.env.PORT, () => {
     console.log(
       `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`

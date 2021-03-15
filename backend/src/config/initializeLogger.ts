@@ -4,7 +4,7 @@ export default function initializeLogger() {
   const logger = winston.createLogger({
     level: "info",
     format: winston.format.json(),
-    defaultMeta: { service: "user-service" },
+    defaultMeta: { service: "reddit-clone-db" },
     transports: [
       //
       // - Write all logs with level `error` and below to `error.log`

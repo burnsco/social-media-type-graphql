@@ -1,6 +1,7 @@
 import argon2 from "argon2"
 import {
   Arg,
+  Args,
   Ctx,
   FieldResolver,
   Mutation,
@@ -8,10 +9,12 @@ import {
   PubSub,
   Query,
   Resolver,
+  ResolverFilterData,
   Root,
   Subscription,
   UseMiddleware
 } from "type-graphql"
+import NewMessageArgs from "../args/message-args"
 import {
   COOKIE_NAME,
   emailInUse,
@@ -189,6 +192,7 @@ export default class UserResolver {
 
     if (user && receipent && req.session.userId) {
       const message = em.create(Message, {
+        replyId: receipent.id,
         sentBy: user,
         sentTo: receipent,
         content: data.content
@@ -202,6 +206,7 @@ export default class UserResolver {
       await em.flush()
 
       return {
+        user,
         message
       }
     }
@@ -274,9 +279,18 @@ export default class UserResolver {
   }
 
   @Subscription(() => Message, {
-    topics: Topic.NewMessage
+    topics: Topic.NewMessage,
+    filter: ({
+      payload,
+      args
+    }: ResolverFilterData<Message, NewMessageArgs>) => {
+      return payload.sentTo.id === args.userId
+    }
   })
-  newMessage(@Root() newMessage: Message): Message {
+  newMessage(
+    @Root() newMessage: Message,
+    @Args() { userId }: NewMessageArgs
+  ): Message {
     return newMessage
   }
 }

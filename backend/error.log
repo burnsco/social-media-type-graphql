@@ -1,0 +1,120 @@
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"user-service"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" contains null values","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"No arguments provided for filter 'category'","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" already exists","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"No arguments provided for filter 'category'","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" add column \"reply_id\" varchar(255) not null; - column \"reply_id\" of relation \"message\" already exists","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"No arguments provided for filter 'category'","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}

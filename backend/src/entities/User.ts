@@ -60,7 +60,8 @@ export class User extends Base<User> {
   @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, message => message.sentBy, {
     cascade: [Cascade.ALL],
-    orphanRemoval: true
+    orphanRemoval: true,
+    lazy: true
   })
   messages = new Collection<Message>(this)
 }
