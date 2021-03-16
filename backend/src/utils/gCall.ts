@@ -1,11 +1,17 @@
 import { graphql } from "graphql"
 import { buildSchema } from "type-graphql"
 import {
-  CategoryResolver,
-  CommentResolver,
-  PostResolver,
-  UserResolver,
-  VoteResolver
+  CategoryMutationResolver,
+  CategoryQueryResolver,
+  CommentMutationResolver,
+  CommentQueryResolver,
+  MessageQueryResolver,
+  PostMutationResolver,
+  PostQueryResolver,
+  PrivateMessageQueryResolver,
+  UserMutationResolver,
+  UserQueryResolver,
+  VoteQueryResolver
 } from "../resolvers"
 import { testConnection } from "../utils/testConn"
 
@@ -31,11 +37,17 @@ export const gCall = async ({ source, variableValues, userId }: Options) => {
     },
     schema: await buildSchema({
       resolvers: [
-        PostResolver,
-        UserResolver,
-        VoteResolver,
-        CategoryResolver,
-        CommentResolver
+        PostQueryResolver,
+        PostMutationResolver,
+        UserQueryResolver,
+        UserMutationResolver,
+        MessageQueryResolver,
+        PrivateMessageQueryResolver,
+        VoteQueryResolver,
+        CategoryMutationResolver,
+        CategoryQueryResolver,
+        CommentMutationResolver,
+        CommentQueryResolver
       ]
     })
   })

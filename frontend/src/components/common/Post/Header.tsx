@@ -66,7 +66,7 @@ const PostHeader: React.FC<{
       <Box display="inline" ml="2">
         {timeDifferenceForDate(createdAt)}
       </Box>
-      <Box>{author ? <MessageUser user={author} /> : null}</Box>
+      <Box>{author ? <MessageUser {...author} /> : null}</Box>
     </Box>
   )
 

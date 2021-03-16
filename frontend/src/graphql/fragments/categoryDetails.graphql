@@ -2,4 +2,12 @@ fragment CategoryDetails on Category {
   createdAt
   id
   name
+  messages {
+    id
+    content
+    sentBy {
+      id
+      username
+    }
+  }
 }

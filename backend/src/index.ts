@@ -1,5 +1,3 @@
-import { MikroORM } from "@mikro-orm/core"
-import { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { ApolloServer } from "apollo-server-express"
 import "dotenv-safe/config"
 import http from "http"
@@ -12,35 +10,38 @@ import {
   initializeRedis
 } from "./config"
 import {
-  CategoryResolver,
-  CommentResolver,
-  PostResolver,
-  UserResolver,
-  VoteResolver
+  CategoryMutationResolver,
+  CategoryQueryResolver,
+  CommentMutationResolver,
+  CommentQueryResolver,
+  MessageQueryResolver,
+  PostMutationResolver,
+  PostQueryResolver,
+  PrivateMessageQueryResolver,
+  UserMutationResolver,
+  UserQueryResolver,
+  VoteQueryResolver
 } from "./resolvers"
-import MessageResolver from "./resolvers/message-resolver"
-import PrivateMessageResolver from "./resolvers/private-message-res"
-import { wipeDatabase } from "./utils"
 
 async function main(): Promise<void> {
-  const orms = await MikroORM.init<PostgreSqlDriver>()
-  await wipeDatabase(orms.em)
-
   const { orm } = await initializeDB()
-
-  const { redisClient, pubSub } = initializeRedis()
   const { app } = initializeExpress()
+  const { redisClient, pubSub } = initializeRedis()
 
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [
-        PostResolver,
-        UserResolver,
-        MessageResolver,
-        PrivateMessageResolver,
-        VoteResolver,
-        CategoryResolver,
-        CommentResolver
+        PostQueryResolver,
+        PostMutationResolver,
+        UserQueryResolver,
+        UserMutationResolver,
+        MessageQueryResolver,
+        PrivateMessageQueryResolver,
+        VoteQueryResolver,
+        CategoryMutationResolver,
+        CategoryQueryResolver,
+        CommentMutationResolver,
+        CommentQueryResolver
       ],
       validate: false,
       pubSub

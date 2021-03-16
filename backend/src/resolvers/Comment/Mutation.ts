@@ -12,16 +12,16 @@ import {
   Root,
   UseMiddleware
 } from "type-graphql"
-import { PostArgs } from "../args"
-import { Topic } from "../common/topics"
-import { Comment, Post, User } from "../entities"
-import { CommentInput } from "../inputs"
-import { isAuth } from "../lib/isAuth"
-import { CommentMutationResponse } from "../responses"
-import { ContextType } from "../types"
+import { PostArgs } from "../../args"
+import { Topic } from "../../common/topics"
+import { Comment, Post, User } from "../../entities"
+import { CommentInput } from "../../inputs"
+import { isAuth } from "../../lib/isAuth"
+import { CommentMutationResponse } from "../../responses"
+import { ContextType } from "../../types"
 
 @Resolver(() => Comment)
-export default class CommentResolver {
+export default class CommentMutationResolver {
   @Mutation(() => CommentMutationResponse)
   @UseMiddleware(isAuth)
   async createComment(

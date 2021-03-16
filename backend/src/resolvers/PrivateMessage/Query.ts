@@ -1,10 +1,9 @@
 import { Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
-import { User } from "../entities"
-import PrivateMessage from "../entities/PrivateMessage"
-import { ContextType } from "../types"
+import { PrivateMessage, User } from "../../entities"
+import { ContextType } from "../../types"
 
 @Resolver(() => PrivateMessage)
-export default class PrivateMessageResolver {
+export default class PrivateMessageQueryResolver {
   @Query(() => PrivateMessage, { nullable: true })
   async privateMessage(
     @Ctx() { em, req }: ContextType

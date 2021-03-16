@@ -19,7 +19,6 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   categories?: Maybe<Array<Category>>;
-  paginatedCategories?: Maybe<Array<Category>>;
   category: Category;
   comment: Comment;
   comments?: Maybe<Array<Comment>>;
@@ -32,10 +31,12 @@ export type Query = {
   user: User;
   users: Array<User>;
   me: User;
+  privateMessage?: Maybe<PrivateMessage>;
+  privateMessages?: Maybe<Array<PrivateMessage>>;
 };
 
 
-export type QueryPaginatedCategoriesArgs = {
+export type QueryCategoriesArgs = {
   first?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
@@ -122,9 +123,19 @@ export type User = {
   avatar?: Maybe<Scalars['String']>;
   about?: Maybe<Scalars['String']>;
   friends: Array<User>;
-  messages?: Maybe<Message>;
+  privateMessages: Array<PrivateMessage>;
 };
 
+
+export type PrivateMessage = {
+  __typename?: 'PrivateMessage';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  body: Scalars['String'];
+  sentBy: User;
+  sentTo: User;
+};
 
 export type Message = {
   __typename?: 'Message';
@@ -202,6 +213,7 @@ export type Mutation = {
   register: UserMutationResponse;
   editUser: UserMutationResponse;
   addFriend: UserMutationResponse;
+  sendPrivateMessage: PrivateMessage;
   login: UserMutationResponse;
   logout: UserLogoutMutationResponse;
 };
@@ -264,6 +276,11 @@ export type MutationEditUserArgs = {
 
 export type MutationAddFriendArgs = {
   data: EditUserInput;
+};
+
+
+export type MutationSendPrivateMessageArgs = {
+  data: PrivateMessageInput;
 };
 
 
@@ -361,6 +378,11 @@ export type RegisterInput = {
   about?: Maybe<Scalars['String']>;
 };
 
+export type PrivateMessageInput = {
+  body: Scalars['String'];
+  userId: Scalars['ID'];
+};
+
 export type LoginInput = {
   email?: Maybe<Scalars['Email']>;
   password?: Maybe<Scalars['String']>;
@@ -377,12 +399,18 @@ export type Subscription = {
   newMessage: Message;
   newComments: Comment;
   newVotes: Vote;
+  newPrivateMessage: PrivateMessage;
   newUser: User;
 };
 
 
 export type SubscriptionNewMessageArgs = {
   categoryId: Scalars['ID'];
+};
+
+
+export type SubscriptionNewPrivateMessageArgs = {
+  userId: Scalars['ID'];
 };
 
 export type CategoryDetailsFragment = (
@@ -655,6 +683,26 @@ export type RegisterMutation = (
   ) }
 );
 
+export type SendPrivateMessageMutationVariables = Exact<{
+  data: PrivateMessageInput;
+}>;
+
+
+export type SendPrivateMessageMutation = (
+  { __typename?: 'Mutation' }
+  & { sendPrivateMessage: (
+    { __typename?: 'PrivateMessage' }
+    & Pick<PrivateMessage, 'id' | 'body'>
+    & { sentTo: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ), sentBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ) }
+  ) }
+);
+
 export type CategoriesQueryVariables = Exact<{
   first?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
@@ -665,7 +713,7 @@ export type CategoriesQueryVariables = Exact<{
 
 export type CategoriesQuery = (
   { __typename?: 'Query' }
-  & { paginatedCategories?: Maybe<Array<(
+  & { categories?: Maybe<Array<(
     { __typename?: 'Category' }
     & CategoryDetailsFragment
   )>> }
@@ -867,17 +915,37 @@ export type NewCommentsSubscription = (
   ) }
 );
 
-export type NewMessageSubscriptionVariables = Exact<{
+export type NewChatMessageSubscriptionVariables = Exact<{
   categoryId: Scalars['ID'];
 }>;
 
 
-export type NewMessageSubscription = (
+export type NewChatMessageSubscription = (
   { __typename?: 'Subscription' }
   & { newMessage: (
     { __typename?: 'Message' }
     & Pick<Message, 'id' | 'content'>
     & { sentBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  ) }
+);
+
+export type NewPrivateMessageSubscriptionVariables = Exact<{
+  userId: Scalars['ID'];
+}>;
+
+
+export type NewPrivateMessageSubscription = (
+  { __typename?: 'Subscription' }
+  & { newPrivateMessage: (
+    { __typename?: 'PrivateMessage' }
+    & Pick<PrivateMessage, 'id' | 'body'>
+    & { sentBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ), sentTo: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
@@ -1410,9 +1478,49 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const SendPrivateMessageDocument = gql`
+    mutation SendPrivateMessage($data: PrivateMessageInput!) {
+  sendPrivateMessage(data: $data) {
+    id
+    body
+    sentTo {
+      username
+    }
+    sentBy {
+      username
+    }
+  }
+}
+    `;
+export type SendPrivateMessageMutationFn = Apollo.MutationFunction<SendPrivateMessageMutation, SendPrivateMessageMutationVariables>;
+
+/**
+ * __useSendPrivateMessageMutation__
+ *
+ * To run a mutation, you first call `useSendPrivateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendPrivateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendPrivateMessageMutation, { data, loading, error }] = useSendPrivateMessageMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useSendPrivateMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendPrivateMessageMutation, SendPrivateMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendPrivateMessageMutation, SendPrivateMessageMutationVariables>(SendPrivateMessageDocument, options);
+      }
+export type SendPrivateMessageMutationHookResult = ReturnType<typeof useSendPrivateMessageMutation>;
+export type SendPrivateMessageMutationResult = Apollo.MutationResult<SendPrivateMessageMutation>;
+export type SendPrivateMessageMutationOptions = Apollo.BaseMutationOptions<SendPrivateMessageMutation, SendPrivateMessageMutationVariables>;
 export const CategoriesDocument = gql`
     query Categories($first: Int, $orderBy: String, $skip: Int, $name: String) {
-  paginatedCategories(first: $first, orderBy: $orderBy, skip: $skip, name: $name) {
+  categories(first: $first, orderBy: $orderBy, skip: $skip, name: $name) {
     ...CategoryDetails
   }
 }
@@ -1896,8 +2004,8 @@ export function useNewCommentsSubscription(baseOptions?: Apollo.SubscriptionHook
       }
 export type NewCommentsSubscriptionHookResult = ReturnType<typeof useNewCommentsSubscription>;
 export type NewCommentsSubscriptionResult = Apollo.SubscriptionResult<NewCommentsSubscription>;
-export const NewMessageDocument = gql`
-    subscription NewMessage($categoryId: ID!) {
+export const NewChatMessageDocument = gql`
+    subscription NewChatMessage($categoryId: ID!) {
   newMessage(categoryId: $categoryId) {
     id
     content
@@ -1910,27 +2018,66 @@ export const NewMessageDocument = gql`
     `;
 
 /**
- * __useNewMessageSubscription__
+ * __useNewChatMessageSubscription__
  *
- * To run a query within a React component, call `useNewMessageSubscription` and pass it any options that fit your needs.
- * When your component renders, `useNewMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useNewChatMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewChatMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useNewMessageSubscription({
+ * const { data, loading, error } = useNewChatMessageSubscription({
  *   variables: {
  *      categoryId: // value for 'categoryId'
  *   },
  * });
  */
-export function useNewMessageSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
+export function useNewChatMessageSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewChatMessageSubscription, NewChatMessageSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, options);
+        return Apollo.useSubscription<NewChatMessageSubscription, NewChatMessageSubscriptionVariables>(NewChatMessageDocument, options);
       }
-export type NewMessageSubscriptionHookResult = ReturnType<typeof useNewMessageSubscription>;
-export type NewMessageSubscriptionResult = Apollo.SubscriptionResult<NewMessageSubscription>;
+export type NewChatMessageSubscriptionHookResult = ReturnType<typeof useNewChatMessageSubscription>;
+export type NewChatMessageSubscriptionResult = Apollo.SubscriptionResult<NewChatMessageSubscription>;
+export const NewPrivateMessageDocument = gql`
+    subscription NewPrivateMessage($userId: ID!) {
+  newPrivateMessage(userId: $userId) {
+    id
+    body
+    sentBy {
+      id
+      username
+    }
+    sentTo {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useNewPrivateMessageSubscription__
+ *
+ * To run a query within a React component, call `useNewPrivateMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewPrivateMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewPrivateMessageSubscription({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useNewPrivateMessageSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewPrivateMessageSubscription, NewPrivateMessageSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<NewPrivateMessageSubscription, NewPrivateMessageSubscriptionVariables>(NewPrivateMessageDocument, options);
+      }
+export type NewPrivateMessageSubscriptionHookResult = ReturnType<typeof useNewPrivateMessageSubscription>;
+export type NewPrivateMessageSubscriptionResult = Apollo.SubscriptionResult<NewPrivateMessageSubscription>;
 export const NewUserDocument = gql`
     subscription NewUser {
   newUser {

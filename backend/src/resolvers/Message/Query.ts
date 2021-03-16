@@ -1,9 +1,9 @@
 import { Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
-import { Category, Message, User } from "../entities"
-import { ContextType } from "../types"
+import { Category, Message, User } from "../../entities"
+import { ContextType } from "../../types"
 
 @Resolver(() => Message)
-export default class MessageResolver {
+export default class MessageQueryResolver {
   @Query(() => Message, { nullable: true })
   async message(@Ctx() { em, req }: ContextType): Promise<Message> {
     return await em.findOneOrFail(Message, {

@@ -3,56 +3,39 @@ import {
   Arg,
   Args,
   Ctx,
-  FieldResolver,
   Mutation,
   Publisher,
   PubSub,
-  Query,
   Resolver,
   ResolverFilterData,
   Root,
   Subscription,
   UseMiddleware
 } from "type-graphql"
-import PrivateMessageArgs from "../args/private-message-args"
+import PrivateMessageArgs from "../../args/private-message-args"
 import {
   COOKIE_NAME,
   emailInUse,
   emailOrPasswordIsIncorrect,
   usernameInUse
-} from "../common/constants"
-import { Topic } from "../common/topics"
-import { initializeLogger } from "../config"
-import { User } from "../entities"
-import PrivateMessage from "../entities/PrivateMessage"
-import { EditUserInput, LoginInput, RegisterInput } from "../inputs"
-import PrivateMessageInput from "../inputs/private-message-input"
-import { isAuth } from "../lib/isAuth"
-import { UserLogoutMutationResponse, UserMutationResponse } from "../responses"
-import { ContextType } from "../types"
+} from "../../common/constants"
+import { Topic } from "../../common/topics"
+import { initializeLogger } from "../../config"
+import { User } from "../../entities"
+import PrivateMessage from "../../entities/PrivateMessage"
+import { EditUserInput, LoginInput, RegisterInput } from "../../inputs"
+import PrivateMessageInput from "../../inputs/private-message-input"
+import { isAuth } from "../../lib/isAuth"
+import {
+  UserLogoutMutationResponse,
+  UserMutationResponse
+} from "../../responses"
+import { ContextType } from "../../types"
 
 const { logger } = initializeLogger()
 
 @Resolver(() => User)
-export default class UserResolver {
-  @Query(() => User)
-  async user(
-    @Arg("data") data: EditUserInput,
-    @Ctx() { em }: ContextType
-  ): Promise<User> {
-    return await em.findOneOrFail(User, { username: data.username })
-  }
-
-  @Query(() => [User])
-  async users(@Ctx() { em }: ContextType): Promise<User[] | null> {
-    return await em.find(User, {}, { populate: ["friends"] })
-  }
-
-  @Query(() => User)
-  async me(@Ctx() { req, em }: ContextType) {
-    return await em.findOneOrFail(User, req.session.userId)
-  }
-
+export default class UserMutationResolver {
   @Mutation(() => Boolean)
   async forgotPassword(
     @Arg("email") data: EditUserInput,
@@ -258,11 +241,6 @@ export default class UserResolver {
         }
       })
     )
-  }
-
-  @FieldResolver(() => [PrivateMessage], { nullable: true })
-  async privateMessages(@Root() user: User, @Ctx() { em }: ContextType) {
-    return await em.find(PrivateMessage, { sentTo: { id: user.id } })
   }
 
   @Subscription(() => PrivateMessage, {

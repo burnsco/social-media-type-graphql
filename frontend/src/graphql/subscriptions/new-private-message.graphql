@@ -1,0 +1,14 @@
+subscription NewPrivateMessage($userId: ID!) {
+  newPrivateMessage(userId: $userId) {
+    id
+    body
+    sentBy {
+      id
+      username
+    }
+    sentTo {
+      id
+      username
+    }
+  }
+}

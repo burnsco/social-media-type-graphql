@@ -16,11 +16,11 @@ export default class Category extends Base<Category> {
   @Property({ unique: true })
   name: string
 
-  @Field(() => [User])
+  @Field(() => [User], { nullable: true })
   @ManyToMany(() => User)
   users: [User]
 
-  @Field(() => [Message])
+  @Field(() => [Message], { nullable: true})
   @OneToMany(() => Message, message => message.category, {
     cascade: [Cascade.ALL],
     orphanRemoval: true

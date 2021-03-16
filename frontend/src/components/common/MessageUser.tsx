@@ -1,5 +1,5 @@
 import { ChakraField } from "@/components/common/index"
-import { User, useSendMessageMutation } from "@/generated/graphql"
+import { User, useSendPrivateMessageMutation } from "@/generated/graphql"
 import { sleep } from "@/utils/sleepy"
 import {
   AlertDialog,
@@ -14,16 +14,16 @@ import {
   Tooltip
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
-import { FC, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { RiMailSendLine } from "react-icons/ri"
 
-const MessageUser: FC<Partial<User>> = user => {
-  const [sendMessage, { loading }] = useSendMessageMutation()
+const MessageUser = (props: Partial<User>) => {
+  const [sendMessage, { loading }] = useSendPrivateMessageMutation()
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = useRef<null | HTMLButtonElement>(null)
 
-  if (user) {
+  if (props && props.username && props.id) {
     return (
       <>
         <Tooltip
@@ -37,7 +37,7 @@ const MessageUser: FC<Partial<User>> = user => {
             <IconButton
               onClick={() => setIsOpen(true)}
               size="xs"
-              aria-label={`Message ${user.username}`}
+              aria-label={`Message ${props.username}`}
               icon={<RiMailSendLine />}
             />
           </chakra.span>
@@ -56,7 +56,7 @@ const MessageUser: FC<Partial<User>> = user => {
                 fontSize="lg"
                 fontWeight="bold"
               >
-                Message ${user.username}
+                Message ${props.username}
               </AlertDialogHeader>
 
               <Formik
@@ -67,7 +67,7 @@ const MessageUser: FC<Partial<User>> = user => {
                   await sendMessage({
                     variables: {
                       data: {
-                        userId: user.id as string,
+                        userId: props.id,
                         content: values.content
                       }
                     }
