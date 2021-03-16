@@ -1,16 +1,14 @@
-import { Args, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
-import { NewMessageArgs } from "../args"
-import { Message, User } from "../entities"
+import { Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
+import { Category, Message, User } from "../entities"
 import { ContextType } from "../types"
 
 @Resolver(() => Message)
 export default class MessageResolver {
   @Query(() => Message, { nullable: true })
-  async message(
-    @Args() { userId }: NewMessageArgs,
-    @Ctx() { em }: ContextType
-  ): Promise<Message> {
-    return await em.findOneOrFail(Message, { sentBy: { id: userId } })
+  async message(@Ctx() { em, req }: ContextType): Promise<Message> {
+    return await em.findOneOrFail(Message, {
+      sentBy: { id: req.session.userId }
+    })
   }
 
   @Query(() => [Message], { nullable: true })
@@ -18,12 +16,12 @@ export default class MessageResolver {
     return await em.find(Message, {})
   }
 
-  @FieldResolver()
-  async sentTo(
+  @FieldResolver(() => Category)
+  async category(
     @Root() message: Message,
     @Ctx() { em }: ContextType
-  ): Promise<User> {
-    return await em.findOneOrFail(User, message.sentTo.id)
+  ): Promise<Category> {
+    return await em.findOneOrFail(Category, message.category)
   }
 
   @FieldResolver()

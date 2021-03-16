@@ -12,7 +12,7 @@ import { Base, Category, Comment, User, Vote } from "."
 
 @Entity()
 @ObjectType()
-export class Post extends Base<Post> {
+export default class Post extends Base<Post> {
   @Field(() => String)
   @Property()
   title: string
@@ -26,7 +26,16 @@ export class Post extends Base<Post> {
   link?: string
 
   @Field(() => String, { nullable: true })
+  @Property({ nullable: true })
   image?: string
+
+  @Field(() => String, { nullable: true })
+  @Property({ nullable: true })
+  imageH?: string
+
+  @Field(() => String, { nullable: true })
+  @Property({ nullable: true })
+  imageW?: string
 
   @Field(() => User)
   @ManyToOne(() => User, { onDelete: "cascade" })
@@ -46,8 +55,7 @@ export class Post extends Base<Post> {
   @Field(() => [Comment], { nullable: true })
   @OneToMany(() => Comment, comment => comment.post, {
     cascade: [Cascade.ALL],
-    orphanRemoval: true,
-    lazy: true
+    orphanRemoval: true
   })
   comments = new Collection<Comment>(this)
 }

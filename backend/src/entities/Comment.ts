@@ -4,7 +4,7 @@ import { Base, Post, User } from "."
 
 @Entity()
 @ObjectType()
-export class Comment extends Base<Comment> {
+export default class Comment extends Base<Comment> {
   @Field(() => String)
   @Property()
   body: string
@@ -13,7 +13,7 @@ export class Comment extends Base<Comment> {
   @ManyToOne(() => User, { onDelete: "cascade" })
   createdBy: User
 
-  @Field(() => Post, { nullable: true })
+  @Field(() => Post)
   @ManyToOne(() => Post, {
     cascade: [Cascade.ALL]
   })

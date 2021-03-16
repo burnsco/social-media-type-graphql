@@ -1,3 +1,5 @@
+import { MikroORM } from "@mikro-orm/core"
+import { PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { ApolloServer } from "apollo-server-express"
 import "dotenv-safe/config"
 import http from "http"
@@ -16,8 +18,13 @@ import {
   UserResolver,
   VoteResolver
 } from "./resolvers"
+import MessageResolver from "./resolvers/message-resolver"
+import { wipeDatabase } from "./utils"
 
 async function main(): Promise<void> {
+  const orms = await MikroORM.init<PostgreSqlDriver>()
+  await wipeDatabase(orms.em)
+
   const { orm } = await initializeDB()
 
   const { redisClient, pubSub } = initializeRedis()
@@ -28,6 +35,7 @@ async function main(): Promise<void> {
       resolvers: [
         PostResolver,
         UserResolver,
+        MessageResolver,
         VoteResolver,
         CategoryResolver,
         CommentResolver

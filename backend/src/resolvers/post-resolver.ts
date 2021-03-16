@@ -9,7 +9,6 @@ import {
   PubSub,
   Query,
   Resolver,
-  ResolverFilterData,
   Root,
   Subscription,
   UseMiddleware
@@ -205,7 +204,9 @@ export default class PostResolver {
     notifyAboutNewComment: Publisher<Partial<Comment>>,
     @Ctx() { em, req }: ContextType
   ): Promise<CommentMutationResponse | null | boolean> {
-    const post = await em.findOneOrFail(Post, postId)
+    const post = await em.findOne(Post, postId, {
+      populate: ["comments"]
+    })
 
     if (post && req.session.userId) {
       const comment = em.create(Comment, {
@@ -213,13 +214,16 @@ export default class PostResolver {
         body,
         createdBy: em.getReference(User, req.session.userId)
       })
+
       post.comments.add(comment)
+
       await notifyAboutNewComment({
         id: comment.id,
         post: comment.post,
         body: comment.body,
         createdBy: comment.createdBy
       })
+
       await em.flush()
 
       return {
@@ -287,34 +291,6 @@ export default class PostResolver {
     return { count }
   }
 
-  // SUBSCRIPTION STUFF
-  // *********************
-
-  // ---------COMMENTS--------------
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  @Subscription(() => Comment, {
-    topics: Topic.NewComment,
-    filter: ({ payload, args }: ResolverFilterData<Comment, PostArgs>) => {
-      return payload.post.id === args.postId
-    }
-  })
-  newComments(
-    @Root() newComment: Comment,
-    @Args() { postId }: PostArgs
-  ): Comment {
-    console.log(postId)
-    return newComment
-  }
-
-  // ---------VOTES--------------
-  // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  @Subscription(() => Vote, {
-    topics: Topic.NewVote
-  })
-  newVotes(@Root() newVote: Vote): Vote {
-    return newVote
-  }
-
   @FieldResolver({ nullable: true })
   async comments(@Root() post: Post, @Ctx() { em }: ContextType) {
     return await em.find(Comment, { post: { id: post.id } })
@@ -336,5 +312,23 @@ export default class PostResolver {
     @Ctx() { em }: ContextType
   ): Promise<Category> {
     return await em.findOneOrFail(Category, post.category.id)
+  }
+
+  // ********************
+  // SUBSCRIPTION STUFF //
+  // *********************
+
+  @Subscription(() => Comment, {
+    topics: Topic.NewComment
+  })
+  newComments(@Root() newComment: Comment): Comment {
+    return newComment
+  }
+
+  @Subscription(() => Vote, {
+    topics: Topic.NewVote
+  })
+  newVotes(@Root() newVote: Vote): Vote {
+    return newVote
   }
 }

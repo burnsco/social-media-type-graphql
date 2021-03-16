@@ -4,7 +4,7 @@ import { Base, Post, User } from "."
 
 @Entity()
 @ObjectType()
-export class Vote extends Base<Vote> {
+export default class Vote extends Base<Vote> {
   @Field(() => Int)
   @Property()
   value: number

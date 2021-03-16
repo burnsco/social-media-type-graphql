@@ -4,7 +4,7 @@ import { v4 } from "uuid"
 
 @Entity()
 @ObjectType({ isAbstract: true })
-export abstract class Base<T extends { id: string }> extends BaseEntity<
+export default abstract class Base<T extends { id: string }> extends BaseEntity<
   T,
   "id"
 > {

@@ -118,3 +118,216 @@
 {"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
 {"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
 {"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"connect ECONNREFUSED 172.22.0.2:5432","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'sentTo' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'messages' of 'UserResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"MikroORM is not defined","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'messages' of 'UserResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Entity 'ChatRoom' not found in ./dist/entities/ChatRoom.js","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Cannot read property 'name' of undefined","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Both ChatRoom.users and User.chatrooms are defined as owning sides, use 'mappedBy' on one of them","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"ChatRoom.messages has wrong 'mappedBy' reference type: Category instead of ChatRoom","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"ChatRoom.messages has wrong 'mappedBy' reference type: Category instead of ChatRoom","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Both ChatRoom.users and User.chatrooms are defined as owning sides, use 'mappedBy' on one of them","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"ChatRoom.messages has wrong 'mappedBy' reference type: Category instead of ChatRoom","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"ChatRoom.messages has wrong 'mappedBy' reference type: Category instead of ChatRoom","service":"reddit-clone-db"}
+{"level":"error","message":"ChatRoom.messages has wrong 'mappedBy' reference type: Category instead of ChatRoom","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Cannot read property 'name' of undefined","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Cannot read property 'name' of undefined","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'messages' of 'CategoryResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'messages' of 'CategoryResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'chatroom' of 'CategoryResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'category' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"The value used as a type of '@Args' for 'createMessage' of 'ChatRoomResolver' is not a class decorated with '@ArgsType' decorator!","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"alter table \"message\" drop constraint \"message_sent_to_id_foreign\"; - constraint \"message_sent_to_id_foreign\" of relation \"message\" does not exist","service":"reddit-clone-db"}
+{"level":"error","message":"MikroORM is not defined","service":"reddit-clone-db"}
+{"level":"error","message":"MikroORM is not defined","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Cannot determine GraphQL input type for argument named 'data' of 'createChatRoom' of 'ChatRoomResolver' class. Is the value, that is used as its TS type or explicit type, decorated with a proper decorator or is it a proper input value?","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Unable to infer GraphQL type from TypeScript reflection system. You need to provide explicit type for 'chatroom' of 'MessageResolver' class.","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}

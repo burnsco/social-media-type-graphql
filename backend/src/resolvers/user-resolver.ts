@@ -1,7 +1,6 @@
 import argon2 from "argon2"
 import {
   Arg,
-  Args,
   Ctx,
   FieldResolver,
   Mutation,
@@ -9,12 +8,10 @@ import {
   PubSub,
   Query,
   Resolver,
-  ResolverFilterData,
   Root,
   Subscription,
   UseMiddleware
 } from "type-graphql"
-import NewMessageArgs from "../args/message-args"
 import {
   COOKIE_NAME,
   emailInUse,
@@ -24,12 +21,7 @@ import {
 import { Topic } from "../common/topics"
 import { initializeLogger } from "../config"
 import { Message, User } from "../entities"
-import {
-  EditUserInput,
-  LoginInput,
-  MessageInput,
-  RegisterInput
-} from "../inputs"
+import { EditUserInput, LoginInput, RegisterInput } from "../inputs"
 import { isAuth } from "../lib/isAuth"
 import { UserLogoutMutationResponse, UserMutationResponse } from "../responses"
 import { ContextType } from "../types"
@@ -175,45 +167,6 @@ export default class UserResolver {
   }
 
   @Mutation(() => UserMutationResponse)
-  @UseMiddleware(isAuth)
-  async sendMessage(
-    @Arg("data") data: MessageInput,
-    @PubSub(Topic.NewMessage)
-    notifyAboutNewMessage: Publisher<Partial<Message>>,
-    @Ctx() { em, req }: ContextType
-  ): Promise<UserMutationResponse | null | boolean> {
-    const user = await em.findOne(User, req.session.userId, {
-      populate: ["messages"]
-    })
-    let receipent
-    if (data.userId) {
-      receipent = await em.findOne(User, data.userId)
-    }
-
-    if (user && receipent && req.session.userId) {
-      const message = em.create(Message, {
-        replyId: receipent.id,
-        sentBy: user,
-        sentTo: receipent,
-        content: data.content
-      })
-      user.messages.add(message)
-
-      em.persist(user)
-
-      await notifyAboutNewMessage(message)
-
-      await em.flush()
-
-      return {
-        user,
-        message
-      }
-    }
-    return null
-  }
-
-  @Mutation(() => UserMutationResponse)
   async login(
     @Arg("data") { email, password }: LoginInput,
     @Ctx() { em, req }: ContextType
@@ -266,7 +219,7 @@ export default class UserResolver {
     )
   }
 
-  @FieldResolver({ nullable: true })
+  @FieldResolver(() => Message, { nullable: true })
   async messages(@Root() user: User, @Ctx() { em }: ContextType) {
     return await em.find(Message, { sentBy: { id: user.id } })
   }
@@ -276,21 +229,5 @@ export default class UserResolver {
   })
   newUser(@Root() newUser: User): User {
     return newUser
-  }
-
-  @Subscription(() => Message, {
-    topics: Topic.NewMessage,
-    filter: ({
-      payload,
-      args
-    }: ResolverFilterData<Message, NewMessageArgs>) => {
-      return payload.sentTo.id === args.userId
-    }
-  })
-  newMessage(
-    @Root() newMessage: Message,
-    @Args() { userId }: NewMessageArgs
-  ): Message {
-    return newMessage
   }
 }

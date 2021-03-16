@@ -5,12 +5,15 @@ import {
   Ctx,
   FieldResolver,
   Mutation,
+  Publisher,
+  PubSub,
   Query,
   Resolver,
   Root,
   UseMiddleware
 } from "type-graphql"
 import { PostArgs } from "../args"
+import { Topic } from "../common/topics"
 import { Comment, Post, User } from "../entities"
 import { CommentInput } from "../inputs"
 import { isAuth } from "../lib/isAuth"
@@ -19,6 +22,39 @@ import { ContextType } from "../types"
 
 @Resolver(() => Comment)
 export default class CommentResolver {
+  @Mutation(() => CommentMutationResponse)
+  @UseMiddleware(isAuth)
+  async createComment(
+    @Arg("data") { body, postId }: CommentInput,
+    @PubSub(Topic.NewComment)
+    notifyAboutNewComment: Publisher<Partial<Comment>>,
+    @Ctx() { em, req }: ContextType
+  ): Promise<CommentMutationResponse | null | boolean> {
+    const post = await em.findOneOrFail(Post, postId)
+
+    if (post && req.session.userId) {
+      const comment = em.create(Comment, {
+        post,
+        body,
+        createdBy: em.getReference(User, req.session.userId)
+      })
+      post.comments.add(comment)
+      await notifyAboutNewComment({
+        id: comment.id,
+        post: comment.post,
+        body: comment.body,
+        createdBy: comment.createdBy
+      })
+      await em.flush()
+
+      return {
+        post,
+        comment
+      }
+    }
+    return null
+  }
+
   @Mutation(() => CommentMutationResponse)
   @UseMiddleware(isAuth)
   async editComment(
