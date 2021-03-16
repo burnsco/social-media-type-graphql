@@ -55,7 +55,8 @@ export default class Post extends Base<Post> {
   @Field(() => [Comment], { nullable: true })
   @OneToMany(() => Comment, comment => comment.post, {
     cascade: [Cascade.ALL],
-    orphanRemoval: true
+    orphanRemoval: true,
+    lazy: true
   })
   comments = new Collection<Comment>(this)
 }

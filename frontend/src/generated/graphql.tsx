@@ -18,8 +18,8 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  categories?: Maybe<Array<Category>>;
   category: Category;
+  categories?: Maybe<Array<Category>>;
   comment: Comment;
   comments?: Maybe<Array<Comment>>;
   message?: Maybe<Message>;
@@ -28,11 +28,16 @@ export type Query = {
   _categoryPostsMeta: _QueryMeta;
   post: Post;
   posts?: Maybe<Array<Post>>;
+  privateMessage?: Maybe<PrivateMessage>;
+  privateMessages?: Maybe<Array<PrivateMessage>>;
   user: User;
   users: Array<User>;
   me: User;
-  privateMessage?: Maybe<PrivateMessage>;
-  privateMessages?: Maybe<Array<PrivateMessage>>;
+};
+
+
+export type QueryCategoryArgs = {
+  categoryId: Scalars['ID'];
 };
 
 
@@ -41,11 +46,6 @@ export type QueryCategoriesArgs = {
   skip?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryCategoryArgs = {
-  categoryId: Scalars['ID'];
 };
 
 
@@ -109,8 +109,8 @@ export type Category = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   name: Scalars['String'];
-  users: Array<User>;
-  messages: Array<Message>;
+  users?: Maybe<Array<User>>;
+  messages?: Maybe<Array<Message>>;
 };
 
 export type User = {
@@ -416,6 +416,14 @@ export type SubscriptionNewPrivateMessageArgs = {
 export type CategoryDetailsFragment = (
   { __typename?: 'Category' }
   & Pick<Category, 'createdAt' | 'id' | 'name'>
+  & { messages?: Maybe<Array<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'content'>
+    & { sentBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )>> }
 );
 
 export type CommentDetailsFragment = (
@@ -436,6 +444,25 @@ export type UserDetailsFragment = (
 export type UserMeDetailsFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'username' | 'email' | 'about' | 'avatar'>
+);
+
+export type CreateSubredditMutationVariables = Exact<{
+  data: CategoryInput;
+}>;
+
+
+export type CreateSubredditMutation = (
+  { __typename?: 'Mutation' }
+  & { createCategory: (
+    { __typename?: 'CategoryMutationResponse' }
+    & { category?: Maybe<(
+      { __typename?: 'Category' }
+      & CategoryDetailsFragment
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
 );
 
 export type CreateCommentMutationVariables = Exact<{
@@ -530,48 +557,6 @@ export type CreatePostMutation = (
         & Pick<_QueryMeta, 'score' | 'count'>
       )> }
       & PostDetailsFragment
-    )> }
-  ) }
-);
-
-export type CreateSubredditMutationVariables = Exact<{
-  data: CategoryInput;
-}>;
-
-
-export type CreateSubredditMutation = (
-  { __typename?: 'Mutation' }
-  & { createCategory: (
-    { __typename?: 'CategoryMutationResponse' }
-    & { category?: Maybe<(
-      { __typename?: 'Category' }
-      & CategoryDetailsFragment
-    )>, errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & Pick<FieldError, 'field' | 'message'>
-    )>> }
-  ) }
-);
-
-export type CreateVoteMutationVariables = Exact<{
-  data: VoteInput;
-}>;
-
-
-export type CreateVoteMutation = (
-  { __typename?: 'Mutation' }
-  & { vote: (
-    { __typename?: 'VoteMutationResponse' }
-    & { vote?: Maybe<(
-      { __typename?: 'Vote' }
-      & Pick<Vote, 'value' | 'id'>
-    )>, post?: Maybe<(
-      { __typename?: 'Post' }
-      & Pick<Post, 'id'>
-      & { totalVotes?: Maybe<(
-        { __typename?: '_QueryMeta' }
-        & Pick<_QueryMeta, 'count' | 'score'>
-      )> }
     )> }
   ) }
 );
@@ -703,6 +688,29 @@ export type SendPrivateMessageMutation = (
   ) }
 );
 
+export type CreateVoteMutationVariables = Exact<{
+  data: VoteInput;
+}>;
+
+
+export type CreateVoteMutation = (
+  { __typename?: 'Mutation' }
+  & { vote: (
+    { __typename?: 'VoteMutationResponse' }
+    & { vote?: Maybe<(
+      { __typename?: 'Vote' }
+      & Pick<Vote, 'value' | 'id'>
+    )>, post?: Maybe<(
+      { __typename?: 'Post' }
+      & Pick<Post, 'id'>
+      & { totalVotes?: Maybe<(
+        { __typename?: '_QueryMeta' }
+        & Pick<_QueryMeta, 'count' | 'score'>
+      )> }
+    )> }
+  ) }
+);
+
 export type CategoriesQueryVariables = Exact<{
   first?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
@@ -778,17 +786,6 @@ export type CommentsForPostQuery = (
   ) }
 );
 
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = (
-  { __typename?: 'Query' }
-  & { me: (
-    { __typename?: 'User' }
-    & UserMeDetailsFragment
-  ) }
-);
-
 export type PostQueryVariables = Exact<{
   postId?: Maybe<Scalars['ID']>;
 }>;
@@ -827,14 +824,7 @@ export type PostsQuery = (
   { __typename?: 'Query' }
   & { posts?: Maybe<Array<(
     { __typename?: 'Post' }
-    & { comments?: Maybe<Array<(
-      { __typename?: 'Comment' }
-      & { createdBy: (
-        { __typename?: 'User' }
-        & UserDetailsFragment
-      ) }
-      & CommentDetailsFragment
-    )>>, category: (
+    & { category: (
       { __typename?: 'Category' }
       & CategoryDetailsFragment
     ), author: (
@@ -857,19 +847,14 @@ export type PostsQuery = (
   ) }
 );
 
-export type UpdateMetaQueryVariables = Exact<{
-  category?: Maybe<Scalars['String']>;
-}>;
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UpdateMetaQuery = (
+export type MeQuery = (
   { __typename?: 'Query' }
-  & { _allPostsMeta: (
-    { __typename?: '_QueryMeta' }
-    & Pick<_QueryMeta, 'count'>
-  ), _categoryPostsMeta: (
-    { __typename?: '_QueryMeta' }
-    & Pick<_QueryMeta, 'count'>
+  & { me: (
+    { __typename?: 'User' }
+    & UserMeDetailsFragment
   ) }
 );
 
@@ -895,6 +880,22 @@ export type UsersQuery = (
     { __typename?: 'User' }
     & UserMeDetailsFragment
   )> }
+);
+
+export type UpdateMetaQueryVariables = Exact<{
+  category?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateMetaQuery = (
+  { __typename?: 'Query' }
+  & { _allPostsMeta: (
+    { __typename?: '_QueryMeta' }
+    & Pick<_QueryMeta, 'count'>
+  ), _categoryPostsMeta: (
+    { __typename?: '_QueryMeta' }
+    & Pick<_QueryMeta, 'count'>
+  ) }
 );
 
 export type NewCommentsSubscriptionVariables = Exact<{ [key: string]: never; }>;
@@ -968,6 +969,14 @@ export const CategoryDetailsFragmentDoc = gql`
   createdAt
   id
   name
+  messages {
+    id
+    content
+    sentBy {
+      id
+      username
+    }
+  }
 }
     `;
 export const CommentDetailsFragmentDoc = gql`
@@ -1004,6 +1013,45 @@ export const UserMeDetailsFragmentDoc = gql`
   avatar
 }
     `;
+export const CreateSubredditDocument = gql`
+    mutation createSubreddit($data: CategoryInput!) {
+  createCategory(data: $data) {
+    category {
+      ...CategoryDetails
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    ${CategoryDetailsFragmentDoc}`;
+export type CreateSubredditMutationFn = Apollo.MutationFunction<CreateSubredditMutation, CreateSubredditMutationVariables>;
+
+/**
+ * __useCreateSubredditMutation__
+ *
+ * To run a mutation, you first call `useCreateSubredditMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSubredditMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSubredditMutation, { data, loading, error }] = useCreateSubredditMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateSubredditMutation(baseOptions?: Apollo.MutationHookOptions<CreateSubredditMutation, CreateSubredditMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSubredditMutation, CreateSubredditMutationVariables>(CreateSubredditDocument, options);
+      }
+export type CreateSubredditMutationHookResult = ReturnType<typeof useCreateSubredditMutation>;
+export type CreateSubredditMutationResult = Apollo.MutationResult<CreateSubredditMutation>;
+export type CreateSubredditMutationOptions = Apollo.BaseMutationOptions<CreateSubredditMutation, CreateSubredditMutationVariables>;
 export const CreateCommentDocument = gql`
     mutation createComment($data: CommentInput!) {
   createComment(data: $data) {
@@ -1160,88 +1208,6 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
-export const CreateSubredditDocument = gql`
-    mutation createSubreddit($data: CategoryInput!) {
-  createCategory(data: $data) {
-    category {
-      ...CategoryDetails
-    }
-    errors {
-      field
-      message
-    }
-  }
-}
-    ${CategoryDetailsFragmentDoc}`;
-export type CreateSubredditMutationFn = Apollo.MutationFunction<CreateSubredditMutation, CreateSubredditMutationVariables>;
-
-/**
- * __useCreateSubredditMutation__
- *
- * To run a mutation, you first call `useCreateSubredditMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateSubredditMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createSubredditMutation, { data, loading, error }] = useCreateSubredditMutation({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useCreateSubredditMutation(baseOptions?: Apollo.MutationHookOptions<CreateSubredditMutation, CreateSubredditMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateSubredditMutation, CreateSubredditMutationVariables>(CreateSubredditDocument, options);
-      }
-export type CreateSubredditMutationHookResult = ReturnType<typeof useCreateSubredditMutation>;
-export type CreateSubredditMutationResult = Apollo.MutationResult<CreateSubredditMutation>;
-export type CreateSubredditMutationOptions = Apollo.BaseMutationOptions<CreateSubredditMutation, CreateSubredditMutationVariables>;
-export const CreateVoteDocument = gql`
-    mutation createVote($data: VoteInput!) {
-  vote(data: $data) {
-    vote {
-      value
-      id
-    }
-    post {
-      id
-      totalVotes {
-        count
-        score
-      }
-    }
-  }
-}
-    `;
-export type CreateVoteMutationFn = Apollo.MutationFunction<CreateVoteMutation, CreateVoteMutationVariables>;
-
-/**
- * __useCreateVoteMutation__
- *
- * To run a mutation, you first call `useCreateVoteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateVoteMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createVoteMutation, { data, loading, error }] = useCreateVoteMutation({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useCreateVoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateVoteMutation, CreateVoteMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateVoteMutation, CreateVoteMutationVariables>(CreateVoteDocument, options);
-      }
-export type CreateVoteMutationHookResult = ReturnType<typeof useCreateVoteMutation>;
-export type CreateVoteMutationResult = Apollo.MutationResult<CreateVoteMutation>;
-export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<CreateVoteMutation, CreateVoteMutationVariables>;
 export const DeletePostDocument = gql`
     mutation DeletePost($data: EditPostInput!) {
   deletePost(data: $data) {
@@ -1518,6 +1484,49 @@ export function useSendPrivateMessageMutation(baseOptions?: Apollo.MutationHookO
 export type SendPrivateMessageMutationHookResult = ReturnType<typeof useSendPrivateMessageMutation>;
 export type SendPrivateMessageMutationResult = Apollo.MutationResult<SendPrivateMessageMutation>;
 export type SendPrivateMessageMutationOptions = Apollo.BaseMutationOptions<SendPrivateMessageMutation, SendPrivateMessageMutationVariables>;
+export const CreateVoteDocument = gql`
+    mutation createVote($data: VoteInput!) {
+  vote(data: $data) {
+    vote {
+      value
+      id
+    }
+    post {
+      id
+      totalVotes {
+        count
+        score
+      }
+    }
+  }
+}
+    `;
+export type CreateVoteMutationFn = Apollo.MutationFunction<CreateVoteMutation, CreateVoteMutationVariables>;
+
+/**
+ * __useCreateVoteMutation__
+ *
+ * To run a mutation, you first call `useCreateVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createVoteMutation, { data, loading, error }] = useCreateVoteMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateVoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateVoteMutation, CreateVoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateVoteMutation, CreateVoteMutationVariables>(CreateVoteDocument, options);
+      }
+export type CreateVoteMutationHookResult = ReturnType<typeof useCreateVoteMutation>;
+export type CreateVoteMutationResult = Apollo.MutationResult<CreateVoteMutation>;
+export type CreateVoteMutationOptions = Apollo.BaseMutationOptions<CreateVoteMutation, CreateVoteMutationVariables>;
 export const CategoriesDocument = gql`
     query Categories($first: Int, $orderBy: String, $skip: Int, $name: String) {
   categories(first: $first, orderBy: $orderBy, skip: $skip, name: $name) {
@@ -1692,43 +1701,6 @@ export type CommentsForPostQueryResult = Apollo.QueryResult<CommentsForPostQuery
 export function refetchCommentsForPostQuery(variables?: CommentsForPostQueryVariables) {
       return { query: CommentsForPostDocument, variables: variables }
     }
-export const MeDocument = gql`
-    query Me {
-  me {
-    ...UserMeDetails
-  }
-}
-    ${UserMeDetailsFragmentDoc}`;
-
-/**
- * __useMeQuery__
- *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMeQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-      }
-export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-        }
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
-export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export function refetchMeQuery(variables?: MeQueryVariables) {
-      return { query: MeDocument, variables: variables }
-    }
 export const PostDocument = gql`
     query Post($postId: ID) {
   post(postId: $postId) {
@@ -1786,12 +1758,6 @@ export const PostsDocument = gql`
     query Posts($first: Int, $orderBy: String, $skip: Int, $category: String) {
   posts(first: $first, orderBy: $orderBy, skip: $skip, category: $category) {
     ...PostDetails
-    comments {
-      ...CommentDetails
-      createdBy {
-        ...UserDetails
-      }
-    }
     category {
       ...CategoryDetails
     }
@@ -1814,9 +1780,8 @@ export const PostsDocument = gql`
   }
 }
     ${PostDetailsFragmentDoc}
-${CommentDetailsFragmentDoc}
-${UserDetailsFragmentDoc}
-${CategoryDetailsFragmentDoc}`;
+${CategoryDetailsFragmentDoc}
+${UserDetailsFragmentDoc}`;
 
 /**
  * __usePostsQuery__
@@ -1851,46 +1816,42 @@ export type PostsQueryResult = Apollo.QueryResult<PostsQuery, PostsQueryVariable
 export function refetchPostsQuery(variables?: PostsQueryVariables) {
       return { query: PostsDocument, variables: variables }
     }
-export const UpdateMetaDocument = gql`
-    query UpdateMeta($category: String) {
-  _allPostsMeta {
-    count
-  }
-  _categoryPostsMeta(name: $category) {
-    count
+export const MeDocument = gql`
+    query Me {
+  me {
+    ...UserMeDetails
   }
 }
-    `;
+    ${UserMeDetailsFragmentDoc}`;
 
 /**
- * __useUpdateMetaQuery__
+ * __useMeQuery__
  *
- * To run a query within a React component, call `useUpdateMetaQuery` and pass it any options that fit your needs.
- * When your component renders, `useUpdateMetaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUpdateMetaQuery({
+ * const { data, loading, error } = useMeQuery({
  *   variables: {
- *      category: // value for 'category'
  *   },
  * });
  */
-export function useUpdateMetaQuery(baseOptions?: Apollo.QueryHookOptions<UpdateMetaQuery, UpdateMetaQueryVariables>) {
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UpdateMetaQuery, UpdateMetaQueryVariables>(UpdateMetaDocument, options);
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
       }
-export function useUpdateMetaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UpdateMetaQuery, UpdateMetaQueryVariables>) {
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UpdateMetaQuery, UpdateMetaQueryVariables>(UpdateMetaDocument, options);
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
         }
-export type UpdateMetaQueryHookResult = ReturnType<typeof useUpdateMetaQuery>;
-export type UpdateMetaLazyQueryHookResult = ReturnType<typeof useUpdateMetaLazyQuery>;
-export type UpdateMetaQueryResult = Apollo.QueryResult<UpdateMetaQuery, UpdateMetaQueryVariables>;
-export function refetchUpdateMetaQuery(variables?: UpdateMetaQueryVariables) {
-      return { query: UpdateMetaDocument, variables: variables }
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export function refetchMeQuery(variables?: MeQueryVariables) {
+      return { query: MeDocument, variables: variables }
     }
 export const UserDocument = gql`
     query User($data: EditUserInput!) {
@@ -1966,6 +1927,47 @@ export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
 export function refetchUsersQuery(variables?: UsersQueryVariables) {
       return { query: UsersDocument, variables: variables }
+    }
+export const UpdateMetaDocument = gql`
+    query UpdateMeta($category: String) {
+  _allPostsMeta {
+    count
+  }
+  _categoryPostsMeta(name: $category) {
+    count
+  }
+}
+    `;
+
+/**
+ * __useUpdateMetaQuery__
+ *
+ * To run a query within a React component, call `useUpdateMetaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMetaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUpdateMetaQuery({
+ *   variables: {
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useUpdateMetaQuery(baseOptions?: Apollo.QueryHookOptions<UpdateMetaQuery, UpdateMetaQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UpdateMetaQuery, UpdateMetaQueryVariables>(UpdateMetaDocument, options);
+      }
+export function useUpdateMetaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UpdateMetaQuery, UpdateMetaQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UpdateMetaQuery, UpdateMetaQueryVariables>(UpdateMetaDocument, options);
+        }
+export type UpdateMetaQueryHookResult = ReturnType<typeof useUpdateMetaQuery>;
+export type UpdateMetaLazyQueryHookResult = ReturnType<typeof useUpdateMetaLazyQuery>;
+export type UpdateMetaQueryResult = Apollo.QueryResult<UpdateMetaQuery, UpdateMetaQueryVariables>;
+export function refetchUpdateMetaQuery(variables?: UpdateMetaQueryVariables) {
+      return { query: UpdateMetaDocument, variables: variables }
     }
 export const NewCommentsDocument = gql`
     subscription NewComments {

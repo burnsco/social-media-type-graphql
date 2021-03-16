@@ -7,14 +7,14 @@ import { Base, Post, User } from "."
 export default class Vote extends Base<Vote> {
   @Field(() => Int)
   @Property()
-  value: number
+  value!: number
 
   @Field(() => User)
   @ManyToOne(() => User)
-  castBy: User
+  castBy!: User
 
   @ManyToOne(() => Post, {
     cascade: [Cascade.ALL]
   })
-  post: Post
+  post!: Post
 }

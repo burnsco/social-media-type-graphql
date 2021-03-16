@@ -7,15 +7,15 @@ import { Base, Post, User } from "."
 export default class Comment extends Base<Comment> {
   @Field(() => String)
   @Property()
-  body: string
+  body!: string
 
   @Field(() => User)
   @ManyToOne(() => User, { onDelete: "cascade" })
-  createdBy: User
+  createdBy!: User
 
   @Field(() => Post)
   @ManyToOne(() => Post, {
     cascade: [Cascade.ALL]
   })
-  post: Post
+  post!: Post
 }

@@ -1,21 +1,12 @@
 import { QueryOrder } from "@mikro-orm/core"
-import {
-  Args,
-  Ctx,
-  FieldResolver,
-  Query,
-  Resolver,
-  Root,
-  Subscription
-} from "type-graphql"
+import { Args, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
 import { PostArgs } from "../../args"
-import { Topic } from "../../common/topics"
 import { _QueryMeta } from "../../common/_QueryMeta"
 import { Category, Comment, Post, User, Vote } from "../../entities"
 import { ContextType } from "../../types"
 
 @Resolver(() => Post)
-export default class PostResolver {
+export default class PostQueryResolver {
   @Query(() => _QueryMeta)
   async _allPostsMeta(@Root() @Ctx() { em }: ContextType) {
     const [, count] = await em.findAndCount(Post, {})
@@ -37,15 +28,26 @@ export default class PostResolver {
   }
 
   @Query(() => Post)
-  async post(@Args() { postId }: PostArgs, @Ctx() { em }: ContextType) {
-    return await em.findOneOrFail(Post, { id: postId })
+  async post(
+    @Args() { postId }: PostArgs,
+    @Ctx() { em }: ContextType
+  ): Promise<Post | null> {
+    if (postId) {
+      return await em.findOneOrFail(Post, { id: postId })
+    }
+    return null
+  }
+
+  @Query(() => [Post])
+  async postss(@Ctx() { em }: ContextType) {
+    return await em.find(Post, {})
   }
 
   @Query(() => [Post], { nullable: true })
   async posts(
     @Args() { first, skip, category, orderBy }: PostArgs,
     @Ctx() { em }: ContextType
-  ): Promise<Post[] | null> {
+  ): Promise<Post[]> {
     if (category) {
       const [posts] = await em.findAndCount(
         Post,
@@ -115,23 +117,5 @@ export default class PostResolver {
     @Ctx() { em }: ContextType
   ): Promise<Category> {
     return await em.findOneOrFail(Category, post.category.id)
-  }
-
-  // ********************
-  // SUBSCRIPTION STUFF //
-  // *********************
-
-  @Subscription(() => Comment, {
-    topics: Topic.NewComment
-  })
-  newComments(@Root() newComment: Comment): Comment {
-    return newComment
-  }
-
-  @Subscription(() => Vote, {
-    topics: Topic.NewVote
-  })
-  newVotes(@Root() newVote: Vote): Vote {
-    return newVote
   }
 }

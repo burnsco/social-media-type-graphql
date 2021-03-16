@@ -3,6 +3,8 @@ fragment PostDetails on Post {
   createdAt
   updatedAt
   title
+  imageH
+  imageW
   text
   image
   link

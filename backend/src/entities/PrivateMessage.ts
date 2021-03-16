@@ -7,13 +7,13 @@ import { Base, User } from "."
 export default class PrivateMessage extends Base<PrivateMessage> {
   @Field(() => String)
   @Property()
-  body: string
+  body!: string
 
   @Field(() => User)
   @ManyToOne(() => User, { onDelete: "cascade" })
-  sentBy: User
+  sentBy!: User
 
   @Field(() => User)
   @ManyToOne(() => User, { cascade: [Cascade.ALL] })
-  sentTo: User
+  sentTo!: User
 }

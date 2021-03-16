@@ -7,13 +7,13 @@ import { Base, Category, User } from "."
 export default class Message extends Base<Message> {
   @Field(() => String)
   @Property()
-  content: string
+  content!: string
 
   @Field(() => User)
   @ManyToOne(() => User, { onDelete: "cascade" })
-  sentBy: User
+  sentBy!: User
 
   @Field(() => Category)
   @ManyToOne(() => Category, { cascade: [Cascade.ALL] })
-  category: Category
+  category!: Category
 }

@@ -26,7 +26,7 @@ import {
 import { ContextType } from "../../types"
 
 @Resolver(() => Post)
-export default class PostResolver {
+export default class PostMutationResolver {
   @Mutation(() => PostMutationResponse)
   @UseMiddleware(isAuth)
   async createPost(
@@ -56,49 +56,36 @@ export default class PostResolver {
     { title, text, image, link, postId, categoryId }: EditPostInput,
     @Ctx() { em }: ContextType
   ): Promise<PostMutationResponse> {
+    // #TODO optimize this later
     const errors = []
-    const post = await em.findOne(Post, { id: postId })
-
+    const post = await em.findOneOrFail(Post, { id: postId })
     if (post) {
       if (categoryId) {
-        post.assign({
-          category: em.getReference(Category, categoryId)
-        })
+        post.category = em.getReference(Category, categoryId)
       }
       if (title) {
-        post.assign({
-          title
-        })
+        post.title = title
       }
       if (text) {
-        post.assign({
-          text
-        })
+        post.text = text
       }
       if (image) {
-        post.assign({
-          image
-        })
+        post.image = image
       }
-
       if (link) {
-        post.assign({
-          link
-        })
+        post.link = link
       }
 
-      await em.persistAndFlush(post)
+      await em.flush()
 
       return {
         post
       }
     }
-
     errors.push({
       field: "title",
       message: "post not found"
     })
-
     return {
       errors
     }
@@ -110,11 +97,10 @@ export default class PostResolver {
     @Arg("data") { postId }: EditPostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse | boolean> {
-    const post = await em.findOne(Post, postId, {
+    const post = await em.findOneOrFail(Post, postId, {
       populate: ["comments", "votes"]
     })
-
-    if (post?.author.id === req.session.userId) {
+    if (post && post.author.id === req.session.userId) {
       if (post && post.comments) {
         post.comments.removeAll()
         if (post.votes) {
@@ -127,7 +113,6 @@ export default class PostResolver {
       }
       return false
     }
-
     return false
   }
 
@@ -207,9 +192,9 @@ export default class PostResolver {
     return null
   }
 
-  // ********************
-  // SUBSCRIPTION STUFF //
-  // *********************
+  //******************* \\
+  // SUBSCRIPTION STUFF \\
+  // ****************** \\
 
   @Subscription(() => Comment, {
     topics: Topic.NewComment

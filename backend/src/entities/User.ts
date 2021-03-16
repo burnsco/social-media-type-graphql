@@ -16,14 +16,14 @@ import PrivateMessage from "./PrivateMessage"
 export default class User extends Base<User> {
   @Field(() => GraphQLEmail)
   @Property({ unique: true })
-  email: string
+  email!: string
 
   @Field(() => String)
   @Property({ unique: true })
-  username: string
+  username!: string
 
   @Property()
-  password: string
+  password!: string
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true })
