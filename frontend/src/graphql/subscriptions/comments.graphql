@@ -1,5 +1,5 @@
-subscription NewComments($postId: ID!) {
-  newComments(postId: $postId) {
+subscription NewComments {
+  newComments {
     id
     body
 

@@ -19,6 +19,7 @@ import {
   VoteResolver
 } from "./resolvers"
 import MessageResolver from "./resolvers/message-resolver"
+import PrivateMessageResolver from "./resolvers/private-message-res"
 import { wipeDatabase } from "./utils"
 
 async function main(): Promise<void> {
@@ -36,6 +37,7 @@ async function main(): Promise<void> {
         PostResolver,
         UserResolver,
         MessageResolver,
+        PrivateMessageResolver,
         VoteResolver,
         CategoryResolver,
         CommentResolver

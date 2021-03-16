@@ -1,12 +1,8 @@
-subscription NewMessage($userId: ID) {
-  newMessage(userId: $userId) {
+subscription NewMessage($categoryId: ID!) {
+  newMessage(categoryId: $categoryId) {
     id
     content
     sentBy {
-      id
-      username
-    }
-    sentTo {
       id
       username
     }

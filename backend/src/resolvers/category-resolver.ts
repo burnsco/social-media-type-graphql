@@ -1,3 +1,4 @@
+import { QueryOrder } from "@mikro-orm/core"
 import {
   Arg,
   Args,
@@ -13,6 +14,7 @@ import {
   Subscription,
   UseMiddleware
 } from "type-graphql"
+import CategoryArgs from "../args/category-args"
 import NewMessageArgs from "../args/message-args"
 import { subRedditNameInUse } from "../common/constants"
 import { Topic } from "../common/topics"
@@ -29,6 +31,51 @@ export default class CategoryResolver {
   @Query(() => [Category], { nullable: true })
   async categories(@Ctx() { em }: ContextType): Promise<Category[] | null> {
     return await em.find(Category, {})
+  }
+
+  @Query(() => [Category], { nullable: true })
+  async paginatedCategories(
+    @Args() { first, skip, name, orderBy }: CategoryArgs,
+    @Ctx() { em }: ContextType
+  ): Promise<Category[] | null> {
+    if (name) {
+      const [categories] = await em.findAndCount(
+        Category,
+        {},
+        {
+          limit: first,
+          offset: skip,
+          orderBy: {
+            createdAt: orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC
+          }
+        }
+      )
+      if (categories) {
+        return categories.filter(cat => cat.name.includes(name))
+      }
+      return categories
+    }
+
+    const [categories] = await em.findAndCount(
+      Category,
+      {},
+      {
+        limit: first,
+        offset: skip,
+        orderBy: {
+          createdAt: orderBy === "asc" ? QueryOrder.ASC : QueryOrder.DESC
+        }
+      }
+    )
+    return categories
+  }
+
+  @Query(() => Category)
+  async category(
+    @Args() { categoryId }: NewMessageArgs,
+    @Ctx() { em }: ContextType
+  ) {
+    return await em.findOneOrFail(Category, categoryId)
   }
 
   @Mutation(() => CategoryMutationResponse)
@@ -86,14 +133,6 @@ export default class CategoryResolver {
       }
     }
     return null
-  }
-
-  @Query(() => Category)
-  async category(
-    @Args() { categoryId }: NewMessageArgs,
-    @Ctx() { em }: ContextType
-  ) {
-    return await em.findOneOrFail(Category, categoryId)
   }
 
   @FieldResolver(() => [Message], { nullable: true })

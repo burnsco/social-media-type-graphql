@@ -1,6 +1,7 @@
 import argon2 from "argon2"
 import {
   Arg,
+  Args,
   Ctx,
   FieldResolver,
   Mutation,
@@ -8,10 +9,12 @@ import {
   PubSub,
   Query,
   Resolver,
+  ResolverFilterData,
   Root,
   Subscription,
   UseMiddleware
 } from "type-graphql"
+import PrivateMessageArgs from "../args/private-message-args"
 import {
   COOKIE_NAME,
   emailInUse,
@@ -20,8 +23,10 @@ import {
 } from "../common/constants"
 import { Topic } from "../common/topics"
 import { initializeLogger } from "../config"
-import { Message, User } from "../entities"
+import { User } from "../entities"
+import PrivateMessage from "../entities/PrivateMessage"
 import { EditUserInput, LoginInput, RegisterInput } from "../inputs"
+import PrivateMessageInput from "../inputs/private-message-input"
 import { isAuth } from "../lib/isAuth"
 import { UserLogoutMutationResponse, UserMutationResponse } from "../responses"
 import { ContextType } from "../types"
@@ -166,6 +171,42 @@ export default class UserResolver {
     }
   }
 
+  @Mutation(() => PrivateMessage)
+  @UseMiddleware(isAuth)
+  async sendPrivateMessage(
+    @Arg("data") { body, userId }: PrivateMessageInput,
+    @PubSub(Topic.NewPrivateMessage)
+    notifyAboutNewMessage: Publisher<Partial<PrivateMessage>>,
+    @Ctx() { em, req }: ContextType
+  ): Promise<PrivateMessage | null> {
+    const user = await em.findOneOrFail(User, req.session.userId, [
+      "privateMessages"
+    ])
+    const receipent = await em.findOneOrFail(User, userId, ["privateMessages"])
+
+    if (user && receipent && req.session.userId) {
+      const message = em.create(PrivateMessage, {
+        body,
+        sentBy: em.getReference(User, user.id),
+        sentTo: em.getReference(User, receipent.id)
+      })
+      user.privateMessages.add(message)
+      receipent.privateMessages.add(message)
+
+      await notifyAboutNewMessage({
+        id: message.id,
+        body: message.body,
+        sentBy: message.sentBy,
+        sentTo: message.sentTo
+      })
+
+      await em.flush()
+
+      return message
+    }
+    return null
+  }
+
   @Mutation(() => UserMutationResponse)
   async login(
     @Arg("data") { email, password }: LoginInput,
@@ -219,9 +260,26 @@ export default class UserResolver {
     )
   }
 
-  @FieldResolver(() => Message, { nullable: true })
-  async messages(@Root() user: User, @Ctx() { em }: ContextType) {
-    return await em.find(Message, { sentBy: { id: user.id } })
+  @FieldResolver(() => [PrivateMessage], { nullable: true })
+  async privateMessages(@Root() user: User, @Ctx() { em }: ContextType) {
+    return await em.find(PrivateMessage, { sentTo: { id: user.id } })
+  }
+
+  @Subscription(() => PrivateMessage, {
+    topics: Topic.NewPrivateMessage,
+    filter: ({
+      payload,
+      args
+    }: ResolverFilterData<PrivateMessage, PrivateMessageArgs>) => {
+      return payload.sentTo.id === args.userId
+    }
+  })
+  newPrivateMessage(
+    @Root() newPrivateMessage: PrivateMessage,
+    @Args() { userId }: PrivateMessageArgs
+  ): PrivateMessage {
+    console.log(userId)
+    return newPrivateMessage
   }
 
   @Subscription(() => User, {

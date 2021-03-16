@@ -8,6 +8,7 @@ import {
 import { GraphQLEmail } from "graphql-custom-types"
 import { Field, ObjectType } from "type-graphql"
 import { Base } from "."
+import PrivateMessage from "./PrivateMessage"
 
 @Entity()
 @Unique({ properties: ["email", "username"] })
@@ -35,4 +36,8 @@ export default class User extends Base<User> {
   @Field(() => [User])
   @ManyToMany(() => User)
   friends = new Collection<User>(this)
+
+  @Field(() => [PrivateMessage])
+  @ManyToMany(() => PrivateMessage)
+  privateMessages = new Collection<PrivateMessage>(this)
 }
