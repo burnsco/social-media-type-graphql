@@ -1,4 +1,4 @@
-import NavigationMenu from "../../common/NavigationMenu"
+import NavigationMenu from "@/components/common/NavigationMenu"
 
 function HeaderNavigation() {
   return <NavigationMenu />

@@ -3,13 +3,22 @@ import {
   ApolloClient,
   HttpLink,
   InMemoryCache,
+  makeVar,
   NormalizedCacheObject,
+  ReactiveVar,
   split
 } from "@apollo/client"
 import { WebSocketLink } from "@apollo/client/link/ws"
 import { concatPagination, getMainDefinition } from "@apollo/client/utilities"
 import { useMemo } from "react"
 import { SubscriptionClient } from "subscriptions-transport-ws"
+
+export const selectedChatRoomId: ReactiveVar<string> = makeVar<string>(
+  "179e9376-828d-421f-a20d-fc8d9b9c7cf4"
+)
+export const selectedChatRoomName: ReactiveVar<string> = makeVar<string>(
+  "react"
+)
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 const WS_URI = `ws://localhost:4000/subscriptions`
@@ -46,6 +55,16 @@ function createApolloClient() {
               incoming: Category[]
             ): Category[] {
               return existing ? [...incoming, ...existing] : [...incoming]
+            }
+          },
+          selectedChatRoomId: {
+            read() {
+              return selectedChatRoomId()
+            }
+          },
+          selecteChatRoomName: {
+            read() {
+              return selectedChatRoomName()
             }
           }
         }
