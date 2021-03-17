@@ -1,8 +1,8 @@
 import { InputField } from "@/components/common/index"
 import {
   useCategoriesLazyQuery,
+  useChatRoomMessagesLazyQuery,
   useCreateMessageMutation,
-  useMessagesByCategoryLazyQuery,
   useNewChatMessageSubscription
 } from "@/generated/graphql"
 import {
@@ -40,7 +40,7 @@ import { BsArrowDown, BsArrowLeft } from "react-icons/bs"
 import { FaHome, FaSpinner } from "react-icons/fa"
 import { IoChatboxEllipsesOutline } from "react-icons/io5"
 
-export default function ChatRoomDrawer() {
+export default function ChatDrawerPage() {
   const bg = useColorModeValue("white", "#202020")
   const drawerbg = useColorModeValue("whitesmoke", "gray.900")
   const submitButtonColor = useColorModeValue("purple", "blue")
@@ -52,14 +52,15 @@ export default function ChatRoomDrawer() {
   )
   const [currentRoomName, setCurrentRoomName] = useState("react")
 
-  const { data, loading } = useNewChatMessageSubscription({
-    variables: { categoryId: currentCategoryId }
-  })
-
   const [
     fetchMessages,
-    { data: messagesData, loading: loadingMessages, error: messagesError }
-  ] = useMessagesByCategoryLazyQuery()
+    {
+      data: messagesData,
+      loading: loadingMessages,
+      error: messagesError,
+      subscribeToMore
+    }
+  ] = useChatRoomMessagesLazyQuery()
 
   const [
     fetchCategories,
@@ -69,6 +70,10 @@ export default function ChatRoomDrawer() {
   const [submitMessage] = useCreateMessageMutation()
 
   useEffect(() => fetchCategories(), [fetchCategories])
+
+  const { data, loading } = useNewChatMessageSubscription({
+    variables: { categoryId: currentCategoryId }
+  })
 
   if (categoriesError) return <Alert>Error Loading Subreddits</Alert>
   if (messagesError) return <Alert>Error loading Messages</Alert>
@@ -120,9 +125,11 @@ export default function ChatRoomDrawer() {
 
   const ChatRoomDisplay = () => (
     <List mt={2} spacing={3}>
-      {messagesData && messagesData.messagesByCategory ? (
+      {messagesData &&
+      messagesData.category &&
+      messagesData.category.messages ? (
         <>
-          {messagesData.messagesByCategory.map(message => (
+          {messagesData.category.messages.map(message => (
             <ListItem key={message.id}>
               <Avatar
                 size="xs"
@@ -145,6 +152,7 @@ export default function ChatRoomDrawer() {
       }
     })
     console.log(response)
+    actions.resetForm()
     return response
   }
 

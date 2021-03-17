@@ -1,0 +1,16 @@
+query ChatRoomMessages($categoryId: ID!) {
+  category(categoryId: $categoryId) {
+    createdAt
+    id
+    name
+    messages {
+      id
+      createdAt
+      content
+      sentBy {
+        id
+        username
+      }
+    }
+  }
+}

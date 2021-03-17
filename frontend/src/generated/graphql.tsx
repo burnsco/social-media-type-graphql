@@ -116,7 +116,6 @@ export type Category = {
   updatedAt: Scalars['String'];
   name: Scalars['String'];
   messages?: Maybe<Array<Message>>;
-  users?: Maybe<Array<User>>;
 };
 
 export type Message = {
@@ -784,21 +783,25 @@ export type CommentsForPostQuery = (
   ) }
 );
 
-export type MessagesByCategoryQueryVariables = Exact<{
+export type ChatRoomMessagesQueryVariables = Exact<{
   categoryId: Scalars['ID'];
 }>;
 
 
-export type MessagesByCategoryQuery = (
+export type ChatRoomMessagesQuery = (
   { __typename?: 'Query' }
-  & { messagesByCategory?: Maybe<Array<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'createdAt' | 'content'>
-    & { sentBy: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
-    ) }
-  )>> }
+  & { category: (
+    { __typename?: 'Category' }
+    & Pick<Category, 'createdAt' | 'id' | 'name'>
+    & { messages?: Maybe<Array<(
+      { __typename?: 'Message' }
+      & Pick<Message, 'id' | 'createdAt' | 'content'>
+      & { sentBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ) }
+    )>> }
+  ) }
 );
 
 export type PostQueryVariables = Exact<{
@@ -1710,49 +1713,54 @@ export type CommentsForPostQueryResult = Apollo.QueryResult<CommentsForPostQuery
 export function refetchCommentsForPostQuery(variables?: CommentsForPostQueryVariables) {
       return { query: CommentsForPostDocument, variables: variables }
     }
-export const MessagesByCategoryDocument = gql`
-    query MessagesByCategory($categoryId: ID!) {
-  messagesByCategory(categoryId: $categoryId) {
-    id
+export const ChatRoomMessagesDocument = gql`
+    query ChatRoomMessages($categoryId: ID!) {
+  category(categoryId: $categoryId) {
     createdAt
-    content
-    sentBy {
+    id
+    name
+    messages {
       id
-      username
+      createdAt
+      content
+      sentBy {
+        id
+        username
+      }
     }
   }
 }
     `;
 
 /**
- * __useMessagesByCategoryQuery__
+ * __useChatRoomMessagesQuery__
  *
- * To run a query within a React component, call `useMessagesByCategoryQuery` and pass it any options that fit your needs.
- * When your component renders, `useMessagesByCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useChatRoomMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChatRoomMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMessagesByCategoryQuery({
+ * const { data, loading, error } = useChatRoomMessagesQuery({
  *   variables: {
  *      categoryId: // value for 'categoryId'
  *   },
  * });
  */
-export function useMessagesByCategoryQuery(baseOptions: Apollo.QueryHookOptions<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>) {
+export function useChatRoomMessagesQuery(baseOptions: Apollo.QueryHookOptions<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>(MessagesByCategoryDocument, options);
+        return Apollo.useQuery<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>(ChatRoomMessagesDocument, options);
       }
-export function useMessagesByCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>) {
+export function useChatRoomMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>(MessagesByCategoryDocument, options);
+          return Apollo.useLazyQuery<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>(ChatRoomMessagesDocument, options);
         }
-export type MessagesByCategoryQueryHookResult = ReturnType<typeof useMessagesByCategoryQuery>;
-export type MessagesByCategoryLazyQueryHookResult = ReturnType<typeof useMessagesByCategoryLazyQuery>;
-export type MessagesByCategoryQueryResult = Apollo.QueryResult<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>;
-export function refetchMessagesByCategoryQuery(variables?: MessagesByCategoryQueryVariables) {
-      return { query: MessagesByCategoryDocument, variables: variables }
+export type ChatRoomMessagesQueryHookResult = ReturnType<typeof useChatRoomMessagesQuery>;
+export type ChatRoomMessagesLazyQueryHookResult = ReturnType<typeof useChatRoomMessagesLazyQuery>;
+export type ChatRoomMessagesQueryResult = Apollo.QueryResult<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>;
+export function refetchChatRoomMessagesQuery(variables?: ChatRoomMessagesQueryVariables) {
+      return { query: ChatRoomMessagesDocument, variables: variables }
     }
 export const PostDocument = gql`
     query Post($postId: ID) {

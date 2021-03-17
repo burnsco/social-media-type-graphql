@@ -2,7 +2,7 @@ import { QueryOrder } from "@mikro-orm/core"
 import { Args, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
 import CategoryArgs from "../../args/category-args"
 import NewMessageArgs from "../../args/message-args"
-import { Category, Message, User } from "../../entities"
+import { Category, Message } from "../../entities"
 import { ContextType } from "../../types"
 
 @Resolver(() => Category)
@@ -15,7 +15,7 @@ export default class CategoryQueryResolver {
     @Ctx() { em }: ContextType
   ) {
     return await em.findOneOrFail(Category, categoryId, {
-      populate: ["messages", "users"]
+      populate: ["messages"]
     })
   }
 
@@ -60,10 +60,5 @@ export default class CategoryQueryResolver {
   @FieldResolver(() => [Message], { nullable: true })
   async messages(@Root() category: Category, @Ctx() { em }: ContextType) {
     return await em.find(Message, { category: { id: category.id } })
-  }
-
-  @FieldResolver(() => [User], { nullable: true })
-  async users(@Root() category: Category, @Ctx() { em }: ContextType) {
-    return await em.find(Category, { id: category.id }, { populate: ["users"] })
   }
 }
