@@ -2,12 +2,13 @@ import { InputField } from "@/components/common/index"
 import {
   useCategoriesLazyQuery,
   useCreateMessageMutation,
-  useMessagesByCategoryLazyQuery
+  useMessagesByCategoryLazyQuery,
+  useNewChatMessageSubscription
 } from "@/generated/graphql"
-import { CategorySchema } from "@/types/Category/schemas"
 import {
   Alert,
   Avatar,
+  Box,
   Button,
   chakra,
   Drawer,
@@ -27,14 +28,16 @@ import {
   MenuItem,
   MenuList,
   MenuOptionGroup,
+  Text,
   Tooltip,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
+  VStack
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { useEffect, useRef, useState } from "react"
 import { BsArrowDown, BsArrowLeft } from "react-icons/bs"
-import { FaHome } from "react-icons/fa"
+import { FaHome, FaSpinner } from "react-icons/fa"
 import { IoChatboxEllipsesOutline } from "react-icons/io5"
 
 export default function ChatRoomDrawer() {
@@ -44,7 +47,14 @@ export default function ChatRoomDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
-  const [currentCategoryId, setCurrentCategoryId] = useState("")
+  const [currentCategoryId, setCurrentCategoryId] = useState(
+    "7da85907-f1bc-47ff-99a8-6fae7428e271"
+  )
+  const [currentRoomName, setCurrentRoomName] = useState("react")
+
+  const { data, loading } = useNewChatMessageSubscription({
+    variables: { categoryId: currentCategoryId }
+  })
 
   const [
     fetchMessages,
@@ -90,6 +100,7 @@ export default function ChatRoomDrawer() {
                       key={`subreddit-center-menu-${item.id}-${i}`}
                       onClick={() => {
                         if (item && item.name && item.id) {
+                          setCurrentRoomName(item.name)
                           setCurrentCategoryId(item.id)
                           fetchMessages({ variables: { categoryId: item.id } })
                         }
@@ -168,37 +179,48 @@ export default function ChatRoomDrawer() {
         <DrawerContent bg={drawerbg}>
           <DrawerCloseButton />
           <DrawerHeader>
-            <ChatNavigation />
+            <Box p={3}>
+              <ChatNavigation />
+              <VStack>
+                <Text>Current Room ID = {currentCategoryId}</Text>
+                <Text>Current Room Name = {currentRoomName}</Text>
+                {!loading && data && data.newMessage ? (
+                  <>
+                    <List>
+                      <ListItem>{data.newMessage.content}</ListItem>
+                      <ListItem>{data.newMessage.sentBy.username}</ListItem>
+                    </List>
+                  </>
+                ) : null}
+              </VStack>
+            </Box>
           </DrawerHeader>
           <Formik
-            initialValues={{ content: "", categoryId: currentCategoryId }}
-            validationSchema={CategorySchema}
+            initialValues={{ content: "" }}
             onSubmit={handleSubmitMessage}
           >
-            {({ isSubmitting }) => {
-              return (
-                <Form>
-                  <DrawerBody>
-                    <ChatRoomDisplay />
-                  </DrawerBody>
+            <Form>
+              <DrawerBody>
+                {!loadingMessages ? <ChatRoomDisplay /> : <FaSpinner />}
+              </DrawerBody>
 
-                  <DrawerFooter>
-                    <HStack w="full">
-                      <InputField
-                        label=""
-                        id="content"
-                        name="content"
-                        placeholder="chat here..."
-                      />
+              <DrawerFooter>
+                <VStack w="full">
+                  <HStack w="full">
+                    <InputField
+                      label=""
+                      id="content"
+                      name="content"
+                      placeholder="chat here..."
+                    />
 
-                      <Button type="submit" colorScheme={submitButtonColor}>
-                        Submit
-                      </Button>
-                    </HStack>
-                  </DrawerFooter>
-                </Form>
-              )
-            }}
+                    <Button type="submit" colorScheme={submitButtonColor}>
+                      Submit
+                    </Button>
+                  </HStack>
+                </VStack>
+              </DrawerFooter>
+            </Form>
           </Formik>
         </DrawerContent>
       </Drawer>
