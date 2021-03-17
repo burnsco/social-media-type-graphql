@@ -1,20 +1,16 @@
 import NewPost from "@/components/common/Post"
 import ShowMorePosts from "@/components/pages/PostList/showMore"
 import { Layout } from "@/components/ui"
-import { usePostsLazyQuery } from "@/generated/graphql"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { usePostsQuery } from "../../../generated/graphql"
 
 const CategoryPosts = (): JSX.Element => {
   const router = useRouter()
   const category = router.query.category as string
 
-  const [
-    fetchPosts,
-    { loading, data, fetchMore, networkStatus }
-  ] = usePostsLazyQuery({
+  const { loading, data, fetchMore, networkStatus } = usePostsQuery({
     variables: {
       category: category,
       skip: 0,
@@ -22,7 +18,6 @@ const CategoryPosts = (): JSX.Element => {
     },
     notifyOnNetworkStatusChange: true
   })
-  useEffect(() => fetchPosts(), [fetchPosts])
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
   const loadMorePosts = () => {

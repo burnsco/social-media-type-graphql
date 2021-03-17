@@ -24,12 +24,13 @@ export type Query = {
   comments?: Maybe<Array<Comment>>;
   message?: Maybe<Message>;
   messages?: Maybe<Array<Message>>;
+  messagesByCategory?: Maybe<Array<Message>>;
   _allPostsMeta: _QueryMeta;
   _categoryPostsMeta: _QueryMeta;
   post: Post;
+  postss: Array<Post>;
   posts?: Maybe<Array<Post>>;
   privateMessage?: Maybe<PrivateMessage>;
-  privateMessages?: Maybe<Array<PrivateMessage>>;
   user: User;
   users: Array<User>;
   me: User;
@@ -66,6 +67,11 @@ export type QueryCommentsArgs = {
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryMessagesByCategoryArgs = {
+  categoryId: Scalars['ID'];
 };
 
 
@@ -109,8 +115,18 @@ export type Category = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   name: Scalars['String'];
-  users?: Maybe<Array<User>>;
   messages?: Maybe<Array<Message>>;
+  users?: Maybe<Array<User>>;
+};
+
+export type Message = {
+  __typename?: 'Message';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  content: Scalars['String'];
+  sentBy: User;
+  category: Category;
 };
 
 export type User = {
@@ -135,16 +151,6 @@ export type PrivateMessage = {
   body: Scalars['String'];
   sentBy: User;
   sentTo: User;
-};
-
-export type Message = {
-  __typename?: 'Message';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  content: Scalars['String'];
-  sentBy: User;
-  category: Category;
 };
 
 export type Comment = {
@@ -416,14 +422,6 @@ export type SubscriptionNewPrivateMessageArgs = {
 export type CategoryDetailsFragment = (
   { __typename?: 'Category' }
   & Pick<Category, 'createdAt' | 'id' | 'name'>
-  & { messages?: Maybe<Array<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'content'>
-    & { sentBy: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
-    ) }
-  )>> }
 );
 
 export type CommentDetailsFragment = (
@@ -433,7 +431,7 @@ export type CommentDetailsFragment = (
 
 export type PostDetailsFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text' | 'image' | 'link'>
+  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'imageH' | 'imageW' | 'text' | 'image' | 'link'>
 );
 
 export type UserDetailsFragment = (
@@ -786,6 +784,23 @@ export type CommentsForPostQuery = (
   ) }
 );
 
+export type MessagesByCategoryQueryVariables = Exact<{
+  categoryId: Scalars['ID'];
+}>;
+
+
+export type MessagesByCategoryQuery = (
+  { __typename?: 'Query' }
+  & { messagesByCategory?: Maybe<Array<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'createdAt' | 'content'>
+    & { sentBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )>> }
+);
+
 export type PostQueryVariables = Exact<{
   postId?: Maybe<Scalars['ID']>;
 }>;
@@ -969,14 +984,6 @@ export const CategoryDetailsFragmentDoc = gql`
   createdAt
   id
   name
-  messages {
-    id
-    content
-    sentBy {
-      id
-      username
-    }
-  }
 }
     `;
 export const CommentDetailsFragmentDoc = gql`
@@ -993,6 +1000,8 @@ export const PostDetailsFragmentDoc = gql`
   createdAt
   updatedAt
   title
+  imageH
+  imageW
   text
   image
   link
@@ -1700,6 +1709,50 @@ export type CommentsForPostLazyQueryHookResult = ReturnType<typeof useCommentsFo
 export type CommentsForPostQueryResult = Apollo.QueryResult<CommentsForPostQuery, CommentsForPostQueryVariables>;
 export function refetchCommentsForPostQuery(variables?: CommentsForPostQueryVariables) {
       return { query: CommentsForPostDocument, variables: variables }
+    }
+export const MessagesByCategoryDocument = gql`
+    query MessagesByCategory($categoryId: ID!) {
+  messagesByCategory(categoryId: $categoryId) {
+    id
+    createdAt
+    content
+    sentBy {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useMessagesByCategoryQuery__
+ *
+ * To run a query within a React component, call `useMessagesByCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMessagesByCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMessagesByCategoryQuery({
+ *   variables: {
+ *      categoryId: // value for 'categoryId'
+ *   },
+ * });
+ */
+export function useMessagesByCategoryQuery(baseOptions: Apollo.QueryHookOptions<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>(MessagesByCategoryDocument, options);
+      }
+export function useMessagesByCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>(MessagesByCategoryDocument, options);
+        }
+export type MessagesByCategoryQueryHookResult = ReturnType<typeof useMessagesByCategoryQuery>;
+export type MessagesByCategoryLazyQueryHookResult = ReturnType<typeof useMessagesByCategoryLazyQuery>;
+export type MessagesByCategoryQueryResult = Apollo.QueryResult<MessagesByCategoryQuery, MessagesByCategoryQueryVariables>;
+export function refetchMessagesByCategoryQuery(variables?: MessagesByCategoryQueryVariables) {
+      return { query: MessagesByCategoryDocument, variables: variables }
     }
 export const PostDocument = gql`
     query Post($postId: ID) {

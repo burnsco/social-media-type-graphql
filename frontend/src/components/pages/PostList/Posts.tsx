@@ -1,20 +1,15 @@
 import NewPost from "@/components/common/Post"
-import { usePostsLazyQuery } from "@/generated/graphql"
 import { allPostsQueryVars } from "@/types/pagination"
 import { NetworkStatus } from "@apollo/client"
 import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/react"
-import { useEffect } from "react"
+import { usePostsQuery } from "../../../generated/graphql"
 import ShowMorePosts from "./showMore"
 
 const Posts = (): JSX.Element => {
-  const [
-    fetchPosts,
-    { loading, data, fetchMore, networkStatus }
-  ] = usePostsLazyQuery({
+  const { loading, data, fetchMore, networkStatus } = usePostsQuery({
     variables: allPostsQueryVars,
     notifyOnNetworkStatusChange: true
   })
-  useEffect(() => fetchPosts(), [fetchPosts])
 
   const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
 

@@ -2,10 +2,9 @@ import CommentsPageWithData from "@/components/common/Comment/Data"
 import SubmitCommentForm from "@/components/common/Comment/Form"
 import NewPost from "@/components/common/Post"
 import Layout from "@/components/ui/Layout"
-import { usePostLazyQuery } from "@/generated/graphql"
 import { Skeleton, Stack, VisuallyHidden } from "@chakra-ui/react"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { usePostQuery } from "../../../generated/graphql"
 import LatestComment from "./LatestComment"
 import LatestMessage from "./LatestMessage"
 
@@ -14,10 +13,9 @@ export default function SinglePostPage() {
 
   const postId = router.query.id as string
 
-  const [fetchPost, { loading, data }] = usePostLazyQuery({
+  const { loading, data } = usePostQuery({
     variables: { postId }
   })
-  useEffect(() => fetchPost(), [fetchPost])
 
   if (loading) return <VisuallyHidden>loading</VisuallyHidden>
 

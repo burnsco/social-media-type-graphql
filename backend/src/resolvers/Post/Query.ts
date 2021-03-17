@@ -15,7 +15,7 @@ export default class PostQueryResolver {
 
   @Query(() => _QueryMeta)
   async _categoryPostsMeta(
-    @Root()
+    @Root() posts: Post,
     @Args()
     { name }: PostArgs,
     @Ctx()
@@ -28,10 +28,7 @@ export default class PostQueryResolver {
   }
 
   @Query(() => Post)
-  async post(
-    @Args() { postId }: PostArgs,
-    @Ctx() { em }: ContextType
-  ): Promise<Post | null> {
+  async post(@Args() { postId }: PostArgs, @Ctx() { em }: ContextType) {
     if (postId) {
       return await em.findOneOrFail(Post, { id: postId })
     }
@@ -93,12 +90,20 @@ export default class PostQueryResolver {
 
       return { count, score }
     }
-    return { count }
+    return { count, score: 0 }
   }
 
   @FieldResolver({ nullable: true })
   async comments(@Root() post: Post, @Ctx() { em }: ContextType) {
-    return await em.find(Comment, { post: { id: post.id } })
+    return await em.find(
+      Comment,
+      { post: { id: post.id } },
+      {
+        orderBy: {
+          createdAt: QueryOrder.DESC
+        }
+      }
+    )
   }
 
   @FieldResolver({ nullable: true })

@@ -1,5 +1,4 @@
 import { NextChakraLink } from "@/components/common/index"
-import { useCategoriesLazyQuery } from "@/generated/graphql"
 import {
   Box,
   Button,
@@ -17,8 +16,9 @@ import {
   useColorModeValue,
   useDisclosure
 } from "@chakra-ui/react"
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { ImArrowDown, ImArrowRight } from "react-icons/im"
+import { useCategoriesQuery } from "../../../generated/graphql"
 
 export default function NavigationDrawer() {
   const [input, setInput] = useState("")
@@ -28,11 +28,7 @@ export default function NavigationDrawer() {
   const hoverBG = useColorModeValue("#ebedf0", "#3661ed")
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [getCategories, { loading, data }] = useCategoriesLazyQuery()
-
-  useEffect(() => {
-    getCategories()
-  }, [getCategories])
+  const { loading, data } = useCategoriesQuery()
 
   const btnRef = useRef<HTMLButtonElement | null>(null)
 

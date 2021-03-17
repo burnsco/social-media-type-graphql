@@ -1,0 +1,11 @@
+query MessagesByCategory($categoryId: ID!) {
+  messagesByCategory(categoryId: $categoryId) {
+    id
+    createdAt
+    content
+    sentBy {
+      id
+      username
+    }
+  }
+}

@@ -13,13 +13,6 @@ export default class PrivateMessageQueryResolver {
     })
   }
 
-  @Query(() => [PrivateMessage], { nullable: true })
-  async privateMessages(
-    @Ctx() { em, req }: ContextType
-  ): Promise<PrivateMessage[] | null> {
-    return await em.find(PrivateMessage, { sentBy: { id: req.session.userId } })
-  }
-
   @FieldResolver()
   async sentBy(
     @Root() privateMessage: PrivateMessage,
