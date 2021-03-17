@@ -1,10 +1,10 @@
-import { ChakraField } from "@/components/common/index"
+import { InputField } from "@/components/common/index"
 import {
   useCategoriesLazyQuery,
+  useCreateMessageMutation,
   useMessagesByCategoryLazyQuery
 } from "@/generated/graphql"
 import { CategorySchema } from "@/types/Category/schemas"
-import { CategoryInputType } from "@/types/Category/types"
 import {
   Alert,
   Avatar,
@@ -32,7 +32,7 @@ import {
   useDisclosure
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { BsArrowDown, BsArrowLeft } from "react-icons/bs"
 import { FaHome } from "react-icons/fa"
 import { IoChatboxEllipsesOutline } from "react-icons/io5"
@@ -44,6 +44,8 @@ export default function ChatRoomDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
+  const [currentCategoryId, setCurrentCategoryId] = useState("")
+
   const [
     fetchMessages,
     { data: messagesData, loading: loadingMessages, error: messagesError }
@@ -53,6 +55,8 @@ export default function ChatRoomDrawer() {
     fetchCategories,
     { data: categoriesData, loading: loadingCategories, error: categoriesError }
   ] = useCategoriesLazyQuery()
+
+  const [submitMessage] = useCreateMessageMutation()
 
   useEffect(() => fetchCategories(), [fetchCategories])
 
@@ -86,6 +90,7 @@ export default function ChatRoomDrawer() {
                       key={`subreddit-center-menu-${item.id}-${i}`}
                       onClick={() => {
                         if (item && item.name && item.id) {
+                          setCurrentCategoryId(item.id)
                           fetchMessages({ variables: { categoryId: item.id } })
                         }
                       }}
@@ -122,6 +127,16 @@ export default function ChatRoomDrawer() {
     </List>
   )
 
+  const handleSubmitMessage = async (values: any, actions: any) => {
+    const response = await submitMessage({
+      variables: {
+        data: { content: values.content, categoryId: currentCategoryId }
+      }
+    })
+    console.log(response)
+    return response
+  }
+
   return (
     <>
       <Tooltip
@@ -156,11 +171,9 @@ export default function ChatRoomDrawer() {
             <ChatNavigation />
           </DrawerHeader>
           <Formik
-            initialValues={CategoryInputType}
+            initialValues={{ content: "", categoryId: currentCategoryId }}
             validationSchema={CategorySchema}
-            onSubmit={() => {
-              console.log("chat drawer")
-            }}
+            onSubmit={handleSubmitMessage}
           >
             {({ isSubmitting }) => {
               return (
@@ -171,10 +184,10 @@ export default function ChatRoomDrawer() {
 
                   <DrawerFooter>
                     <HStack w="full">
-                      <ChakraField
+                      <InputField
                         label=""
-                        id="name"
-                        name="name"
+                        id="content"
+                        name="content"
                         placeholder="chat here..."
                       />
 
