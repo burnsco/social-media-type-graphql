@@ -514,7 +514,10 @@ export type CreateMessageMutation = (
     & { message: (
       { __typename?: 'Message' }
       & Pick<Message, 'id' | 'content'>
-      & { sentBy: (
+      & { category: (
+        { __typename?: 'Category' }
+        & Pick<Category, 'id' | 'name'>
+      ), sentBy: (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'username'>
       ) }
@@ -1129,6 +1132,10 @@ export const CreateMessageDocument = gql`
     message {
       id
       content
+      category {
+        id
+        name
+      }
       sentBy {
         id
         username

@@ -1,22 +1,16 @@
-import {
-  useCategoriesLazyQuery,
-  useNewChatMessageSubscription
-} from "@/generated/graphql"
+import { useCategoriesLazyQuery } from "@/generated/graphql"
 import { selectedChatRoomId, selectedChatRoomName } from "@/lib/apolloClient"
+import { useReactiveVar } from "@apollo/client"
 import {
   Alert,
   Button,
   Flex,
-  List,
-  ListItem,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   MenuOptionGroup,
-  Text,
-  useColorModeValue,
-  VStack
+  useColorModeValue
 } from "@chakra-ui/react"
 import React, { useEffect } from "react"
 import { BsArrowDown, BsArrowLeft } from "react-icons/bs"
@@ -25,8 +19,8 @@ import { FaHome } from "react-icons/fa"
 export default function ChatSelection() {
   const bg = useColorModeValue("white", "#202020")
 
-  const selectedCategoryId = selectedChatRoomId()
-  const selectedCategoryName = selectedChatRoomName()
+  const selectedCategoryId = useReactiveVar(selectedChatRoomId)
+  const selectedCategoryName = useReactiveVar(selectedChatRoomName)
 
   const [
     fetchCategories,
@@ -34,10 +28,6 @@ export default function ChatSelection() {
   ] = useCategoriesLazyQuery()
 
   useEffect(() => fetchCategories(), [fetchCategories])
-
-  const { data, loading } = useNewChatMessageSubscription({
-    variables: { categoryId: selectedCategoryId }
-  })
 
   if (!categoriesError) {
     return (
@@ -81,18 +71,6 @@ export default function ChatSelection() {
             </>
           )}
         </Menu>
-        <VStack>
-          <Text>Current Room ID = {selectedCategoryId}</Text>
-          <Text>Current Room Name = {selectedCategoryName}</Text>
-          {!loading && data && data.newMessage ? (
-            <>
-              <List>
-                <ListItem>{data.newMessage.content}</ListItem>
-                <ListItem>{data.newMessage.sentBy.username}</ListItem>
-              </List>
-            </>
-          ) : null}
-        </VStack>
       </Flex>
     )
   }

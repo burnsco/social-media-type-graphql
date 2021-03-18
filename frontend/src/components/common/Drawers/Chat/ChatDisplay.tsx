@@ -1,55 +1,71 @@
-import { useChatRoomMessagesLazyQuery } from "@/generated/graphql"
-import { useReactiveVar } from "@apollo/client"
-import { Alert, Avatar, List, ListItem } from "@chakra-ui/react"
-import { useEffect } from "react"
-import { ImSpinner4 } from "react-icons/im"
+import { gql, useQuery, useReactiveVar } from "@apollo/client"
 import { selectedChatRoomId } from "../../../../lib/apolloClient"
+import ChatList from "./ChatList"
+
+const CHAT_ROOM_MESSAGES_SUBSCRIPTION = gql`
+  subscription NewChatMessage($categoryId: ID!) {
+    newMessage(categoryId: $categoryId) {
+      id
+      content
+      category {
+        id
+        name
+      }
+      sentBy {
+        id
+        username
+      }
+    }
+  }
+`
+
+const CHAT_ROOM_MESSAGES_QUERY = gql`
+  query ChatRoomMessages($categoryId: ID!) {
+    category(categoryId: $categoryId) {
+      createdAt
+      id
+      name
+      messages {
+        id
+        createdAt
+        content
+        sentBy {
+          id
+          username
+        }
+      }
+    }
+  }
+`
 
 export default function ChatDisplay() {
   const selectedCategoryId = useReactiveVar(selectedChatRoomId)
-
-  const [
-    fetchMessages,
-    {
-      data: messagesData,
-      loading: loadingMessages,
-      error: messagesError,
-      subscribeToMore
-    }
-  ] = useChatRoomMessagesLazyQuery({
+  const { subscribeToMore, ...result } = useQuery(CHAT_ROOM_MESSAGES_QUERY, {
     variables: { categoryId: selectedCategoryId }
   })
 
-  console.log("chat display")
-  console.log(selectedCategoryId)
-
-  useEffect(() => fetchMessages(), [fetchMessages, selectedCategoryId])
-
-  if (messagesError) return <Alert>Error loading Messages</Alert>
-
-  if (loadingMessages) return <ImSpinner4 />
-
-  console.log(messagesData)
-
-  return (
-    <List mt={2} spacing={3}>
-      {messagesData &&
-      messagesData.category &&
-      messagesData.category.messages ? (
-        <>
-          {messagesData.category.messages.map(message => (
-            <ListItem key={message.id}>
-              <Avatar
-                size="xs"
-                name="Ryan Florence"
-                src="https://bit.ly/ryan-florence"
-                mr={3}
-              />
-              {message.content}
-            </ListItem>
-          ))}
-        </>
-      ) : null}
-    </List>
-  )
+  if (subscribeToMore !== undefined) {
+    return (
+      <ChatList
+        {...result}
+        handleSubscription={() =>
+          subscribeToMore({
+            document: CHAT_ROOM_MESSAGES_SUBSCRIPTION,
+            variables: { categoryId: selectedCategoryId },
+            updateQuery: (prev, { subscriptionData }) => {
+              if (!subscriptionData.data) return prev
+              const newFeedItem = subscriptionData.data.newMessage
+              return {
+                ...prev,
+                category: {
+                  messages: [newFeedItem, ...prev.category.messages]
+                }
+              }
+            }
+          })
+        }
+      />
+    )
+  }
+  return null
 }

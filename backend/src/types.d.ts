@@ -11,9 +11,3 @@ type CustomSessionRequest = Request & {
   session: Express.Session
   sessionID: string
 }
-
-export type NewCommentPayload = {
-  body: string
-  createdBy: User
-  createdAt: string
-}

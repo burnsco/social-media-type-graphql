@@ -20,6 +20,9 @@ export const selectedChatRoomName: ReactiveVar<string> = makeVar<string>(
   "react"
 )
 
+console.log("selected cat in lib")
+console.log(selectedChatRoomId)
+
 let apolloClient: ApolloClient<NormalizedCacheObject>
 const WS_URI = `ws://localhost:4000/subscriptions`
 

@@ -3,6 +3,10 @@ mutation CreateMessage($data: MessageInput!) {
     message {
       id
       content
+      category {
+        id
+        name
+      }
       sentBy {
         id
         username

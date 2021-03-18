@@ -5,7 +5,15 @@ import {
 } from "@mikro-orm/core"
 import { PostgreSqlDriver } from "@mikro-orm/postgresql/PostgreSqlDriver"
 import path from "path"
-import { Base, Category, Comment, Post, User, Vote } from "../entities"
+import {
+  Category,
+  Comment,
+  Message,
+  Post,
+  PrivateMessage,
+  User,
+  Vote
+} from "../entities"
 
 export const BASE_DIR = __dirname
 
@@ -17,7 +25,7 @@ export async function testConnection() {
       pattern: /^[\w-]+\d+\.[tj]s$/
     },
     clientUrl: "postgres://postgres:postgres@172.22.0.2:5432/reddit-clone-db",
-    entities: [Base, Category, User, Post, Comment, Vote],
+    entities: [Category, User, Post, Comment, Vote, Message, PrivateMessage],
     baseDir: BASE_DIR,
     type: "postgresql",
     debug: true,

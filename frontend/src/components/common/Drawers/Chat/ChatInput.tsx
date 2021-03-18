@@ -1,5 +1,6 @@
 import { InputField } from "@/components/common/index"
 import { useCreateMessageMutation } from "@/generated/graphql"
+import { useReactiveVar } from "@apollo/client"
 import {
   Box,
   Button,
@@ -13,7 +14,7 @@ import { selectedChatRoomId } from "../../../../lib/apolloClient"
 export default function ChatInput() {
   const submitButtonColor = useColorModeValue("purple", "blue")
 
-  const selectedCategoryId = selectedChatRoomId()
+  const selectedCategoryId = useReactiveVar(selectedChatRoomId)
   const [submitMessage] = useCreateMessageMutation()
 
   const handleSubmitMessage = async (values: any, actions: any) => {
@@ -23,7 +24,6 @@ export default function ChatInput() {
       }
     })
     console.log(response)
-    actions.resetForm()
     return response
   }
 

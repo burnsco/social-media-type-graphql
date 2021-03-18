@@ -19,7 +19,6 @@ import { CategoryInput } from "../../inputs"
 import MessageInput from "../../inputs/message-input"
 import { isAuth } from "../../lib/isAuth"
 import { CategoryMutationResponse } from "../../responses"
-import MessageMutationResponse from "../../responses/mutation/message-mutation-response"
 import { ContextType } from "../../types"
 
 @Resolver(() => Category)
@@ -45,39 +44,36 @@ export default class CategoryMutationResolver {
     }
   }
 
-  @Mutation(() => MessageMutationResponse)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async createMessage(
     @Arg("data") { content, categoryId }: MessageInput,
     @PubSub(Topic.NewMessage)
-    notifyAboutNewMessage: Publisher<Partial<Message>>,
+    notifyAboutNewMessage: Publisher<Message>,
     @Ctx() { em, req }: ContextType
-  ): Promise<MessageMutationResponse | null | boolean> {
+  ): Promise<boolean> {
     const user = await em.findOneOrFail(User, req.session.userId)
-    const category = await em.findOneOrFail(Category, categoryId, {
+    const category = await em.findOne(Category, categoryId, {
       populate: ["messages"]
     })
+    if (!category) {
+      console.log("category not found")
+      return false
+    }
     if (category && req.session.userId) {
       const message = em.create(Message, {
+        createdAt: new Date().toISOString(),
         category,
         content,
         sentBy: user
       })
       em.persist(category)
+      em.persist(message)
       category.messages.add(message)
       await em.flush()
-      await notifyAboutNewMessage({
-        id: message.id,
-        category: message.category,
-        content: message.content,
-        sentBy: message.sentBy
-      })
-      return {
-        message,
-        category
-      }
+      await notifyAboutNewMessage(message)
     }
-    return null
+    return true
   }
 
   // *** SUBSCRIPTION *** \\

@@ -63,15 +63,12 @@ export default class CommentMutationResolver {
   ): Promise<CommentMutationResponse> {
     const comment = await em.findOne(Comment, { post: { id: postId } })
     if (comment) {
-      comment.assign({
-        body
-      })
+      comment.body = body
       await em.flush()
       return {
         comment
       }
     }
-
     return {
       comment: undefined
     }

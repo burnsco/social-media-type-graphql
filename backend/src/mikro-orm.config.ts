@@ -1,4 +1,8 @@
-import { MikroORM, ReflectMetadataProvider } from "@mikro-orm/core"
+import {
+  LoadStrategy,
+  MikroORM,
+  ReflectMetadataProvider
+} from "@mikro-orm/core"
 import "dotenv-safe/config"
 import path from "path"
 import { __prod__ } from "./common/constants"
@@ -13,6 +17,7 @@ export default {
     pattern: /^[\w-]+\d+\.[tj]s$/
   },
   entities: ["./dist/entities/**/*.js"],
+  loadStrategy: LoadStrategy.JOINED,
   entitiesTs: ["./src/entities/**/*.ts"],
   tsNode: process.env.NODE_DEV === "true" ? true : false,
   clientUrl: process.env.DB_URL,

@@ -1,19 +1,12 @@
-import {
-  Collection,
-  Entity,
-  ManyToMany,
-  Property,
-  Unique
-} from "@mikro-orm/core"
+import { Collection, Entity, ManyToMany, Property } from "@mikro-orm/core"
 import { GraphQLEmail } from "graphql-custom-types"
 import { Field, ObjectType } from "type-graphql"
-import { Base } from "."
+import Base from "./BaseEntity"
 import PrivateMessage from "./PrivateMessage"
 
 @Entity()
-@Unique({ properties: ["email", "username"] })
 @ObjectType()
-export default class User extends Base<User> {
+export default class User extends Base {
   @Field(() => GraphQLEmail)
   @Property({ unique: true })
   email!: string

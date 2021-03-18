@@ -76,11 +76,11 @@ export default class UserMutationResolver {
       username,
       password: await argon2.hash(password)
     })
-
-    em.persist(user)
+    await em.persistAndFlush(user)
 
     await notifyAboutNewUser(user)
-    await em.flush()
+
+    console.log(user)
 
     req.session.userId = user.id
 
@@ -98,29 +98,19 @@ export default class UserMutationResolver {
     const user = await em.findOneOrFail(User, { id: req.session.userId })
 
     if (data.username) {
-      user.assign({
-        username: data.username
-      })
+      user.username = data.username
     }
     if (data.about) {
-      user.assign({
-        about: data.about
-      })
+      user.about = data.about
     }
     if (data.email) {
-      user.assign({
-        email: data.email
-      })
+      user.email = data.email
     }
     if (data.password) {
-      user.assign({
-        password: await argon2.hash(data.password)
-      })
+      user.password = await argon2.hash(data.password)
     }
     if (data.avatar) {
-      user.assign({
-        avatar: data.avatar
-      })
+      user.avatar = data.avatar
     }
 
     await em.persistAndFlush(user)
