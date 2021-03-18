@@ -1,10 +1,10 @@
 import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
-import { Field, Int, ObjectType } from "type-graphql"
+import { Field, ID, ObjectType } from "type-graphql"
 
 @Entity()
 @ObjectType({ isAbstract: true })
 export default abstract class Base {
-  @Field(() => Int)
+  @Field(() => ID)
   @PrimaryKey()
   readonly id: number
 

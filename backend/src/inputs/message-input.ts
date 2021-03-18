@@ -1,10 +1,10 @@
-import { Field, InputType, Int } from "type-graphql"
+import { Field, ID, InputType } from "type-graphql"
 import { Message } from "../entities"
 
 @InputType()
 export default class MessageInput implements Partial<Message> {
   content: string
 
-  @Field(() => Int)
+  @Field(() => ID)
   categoryId: number
 }

@@ -67,10 +67,9 @@ export default class CategoryMutationResolver {
         content,
         sentBy: user
       })
-      em.persist(category)
-      em.persist(message)
+
       category.messages.add(message)
-      await em.flush()
+      em.persistAndFlush(category)
       await notifyAboutNewMessage(message)
     }
     return true

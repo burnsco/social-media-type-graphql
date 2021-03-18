@@ -14,16 +14,16 @@ import Base from "./BaseEntity"
 export default class Comment extends Base {
   @Field(() => String)
   @Property()
-  body!: string
+  body: string
 
   @Field(() => User)
   @ManyToOne(() => User, { onDelete: "cascade", strategy: LoadStrategy.JOINED })
-  createdBy!: User
+  createdBy: User
 
   @Field(() => Post)
   @ManyToOne(() => Post, {
     cascade: [Cascade.ALL],
     strategy: LoadStrategy.JOINED
   })
-  post!: Post
+  post: Post
 }

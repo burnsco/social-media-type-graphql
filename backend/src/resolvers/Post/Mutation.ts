@@ -11,18 +11,9 @@ import {
 } from "type-graphql"
 import { Topic } from "../../common/topics"
 import { Category, Comment, Post, User, Vote } from "../../entities"
-import {
-  CommentInput,
-  CreatePostInput,
-  EditPostInput,
-  VoteInput
-} from "../../inputs"
+import { CreatePostInput, EditPostInput, VoteInput } from "../../inputs"
 import { isAuth } from "../../lib/isAuth"
-import {
-  CommentMutationResponse,
-  PostMutationResponse,
-  VoteMutationResponse
-} from "../../responses"
+import { PostMutationResponse, VoteMutationResponse } from "../../responses"
 import { ContextType } from "../../types"
 
 @Resolver(() => Post)
@@ -114,44 +105,6 @@ export default class PostMutationResolver {
       return false
     }
     return false
-  }
-
-  @Mutation(() => CommentMutationResponse)
-  @UseMiddleware(isAuth)
-  async createComment(
-    @Arg("data") { body, postId }: CommentInput,
-    @PubSub(Topic.NewComment)
-    notifyAboutNewComment: Publisher<Partial<Comment>>,
-    @Ctx() { em, req }: ContextType
-  ): Promise<CommentMutationResponse | null | boolean> {
-    const post = await em.findOne(Post, postId, {
-      populate: ["comments"]
-    })
-
-    if (post && req.session.userId) {
-      const comment = em.create(Comment, {
-        post,
-        body,
-        createdBy: em.getReference(User, req.session.userId)
-      })
-
-      post.comments.add(comment)
-
-      await notifyAboutNewComment({
-        id: comment.id,
-        post: comment.post,
-        body: comment.body,
-        createdBy: comment.createdBy
-      })
-
-      await em.flush()
-
-      return {
-        post,
-        comment
-      }
-    }
-    return null
   }
 
   @Mutation(() => VoteMutationResponse)

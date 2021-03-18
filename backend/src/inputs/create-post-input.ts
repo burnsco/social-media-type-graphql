@@ -1,9 +1,9 @@
-import { Field, InputType, Int } from "type-graphql"
+import { Field, ID, InputType } from "type-graphql"
 import { Post } from "../entities"
 
 @InputType()
 export default class CreatePostInput implements Partial<Post> {
-  @Field(() => Int)
+  @Field(() => ID)
   categoryId: number
 
   @Field(() => String)
