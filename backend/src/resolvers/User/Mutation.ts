@@ -1,18 +1,15 @@
 import argon2 from "argon2"
 import {
   Arg,
-  Args,
   Ctx,
   Mutation,
   Publisher,
   PubSub,
   Resolver,
-  ResolverFilterData,
   Root,
   Subscription,
   UseMiddleware
 } from "type-graphql"
-import PrivateMessageArgs from "../../args/private-message-args"
 import {
   COOKIE_NAME,
   emailInUse,
@@ -20,19 +17,14 @@ import {
   usernameInUse
 } from "../../common/constants"
 import { Topic } from "../../common/topics"
-import { initializeLogger } from "../../config"
 import { User } from "../../entities"
-import PrivateMessage from "../../entities/PrivateMessage"
 import { EditUserInput, LoginInput, RegisterInput } from "../../inputs"
-import PrivateMessageInput from "../../inputs/private-message-input"
 import { isAuth } from "../../lib/isAuth"
 import {
   UserLogoutMutationResponse,
   UserMutationResponse
 } from "../../responses"
 import { ContextType } from "../../types"
-
-const { logger } = initializeLogger()
 
 @Resolver(() => User)
 export default class UserMutationResolver {
@@ -144,64 +136,23 @@ export default class UserMutationResolver {
     }
   }
 
-  @Mutation(() => PrivateMessage)
-  @UseMiddleware(isAuth)
-  async sendPrivateMessage(
-    @Arg("data") { body, userId }: PrivateMessageInput,
-    @PubSub(Topic.NewPrivateMessage)
-    notifyAboutNewMessage: Publisher<Partial<PrivateMessage>>,
-    @Ctx() { em, req }: ContextType
-  ): Promise<PrivateMessage | null> {
-    const user = await em.findOneOrFail(User, req.session.userId, [
-      "privateMessages"
-    ])
-    const receipent = await em.findOneOrFail(User, userId, ["privateMessages"])
-
-    if (user && receipent && req.session.userId) {
-      const message = em.create(PrivateMessage, {
-        body,
-        sentBy: em.getReference(User, user.id),
-        sentTo: em.getReference(User, receipent.id)
-      })
-      user.privateMessages.add(message)
-      receipent.privateMessages.add(message)
-
-      await notifyAboutNewMessage({
-        id: message.id,
-        body: message.body,
-        sentBy: message.sentBy,
-        sentTo: message.sentTo
-      })
-
-      await em.flush()
-
-      return message
-    }
-    return null
-  }
-
   @Mutation(() => UserMutationResponse)
   async login(
     @Arg("data") { email, password }: LoginInput,
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse | null> {
-    const errors = []
-
     const user = await em.findOne(User, { email: email })
 
     if (!user) {
-      errors.push(emailOrPasswordIsIncorrect)
       return {
-        errors
+        errors: [emailOrPasswordIsIncorrect]
       }
     }
 
     const valid = await argon2.verify(user.password, password)
 
     if (!valid) {
-      logger.error(`Email: ${email} - incorrect password attempt`)
-      errors.push(emailOrPasswordIsIncorrect)
-      return { errors }
+      return { errors: [emailOrPasswordIsIncorrect] }
     }
     if (valid) {
       req.session.userId = user.id
@@ -233,27 +184,11 @@ export default class UserMutationResolver {
     )
   }
 
-  @Subscription(() => PrivateMessage, {
-    topics: Topic.NewPrivateMessage,
-    filter: ({
-      payload,
-      args
-    }: ResolverFilterData<PrivateMessage, PrivateMessageArgs>) => {
-      return payload.sentTo.id === args.userId
-    }
-  })
-  newPrivateMessage(
-    @Root() newPrivateMessage: PrivateMessage,
-    @Args() { userId }: PrivateMessageArgs
-  ): PrivateMessage {
-    console.log(userId)
-    return newPrivateMessage
-  }
-
   @Subscription(() => User, {
     topics: Topic.NewUser
   })
   newUser(@Root() newUser: User): User {
+    console.log(newUser)
     return newUser
   }
 }

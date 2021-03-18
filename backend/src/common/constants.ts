@@ -33,3 +33,13 @@ export const subRedditNameInUse = {
   field: "name",
   message: "Subreddit name is already in use."
 }
+
+export const commentNotFound = {
+  field: "Comment Not Found",
+  message: "Comment Not Found!"
+}
+
+export const postNotFound = {
+  field: "Post",
+  message: "Post Not Found!"
+}

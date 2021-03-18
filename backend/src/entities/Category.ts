@@ -2,7 +2,6 @@ import {
   Cascade,
   Collection,
   Entity,
-  LoadStrategy,
   OneToMany,
   Property
 } from "@mikro-orm/core"
@@ -17,11 +16,11 @@ export default class Category extends Base {
   @Property({ unique: true, length: 20 })
   name: string
 
-  @Field(() => [Message])
+  @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, message => message.category, {
     cascade: [Cascade.ALL],
     orphanRemoval: true,
-    strategy: LoadStrategy.JOINED
+    lazy: true
   })
   messages = new Collection<Message>(this)
 }

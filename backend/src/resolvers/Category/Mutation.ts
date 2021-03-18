@@ -1,22 +1,7 @@
-import {
-  Arg,
-  Args,
-  Ctx,
-  Mutation,
-  Publisher,
-  PubSub,
-  Resolver,
-  ResolverFilterData,
-  Root,
-  Subscription,
-  UseMiddleware
-} from "type-graphql"
-import NewMessageArgs from "../../args/message-args"
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql"
 import { subRedditNameInUse } from "../../common/constants"
-import { Topic } from "../../common/topics"
-import { Category, Message, User } from "../../entities"
+import { Category } from "../../entities"
 import { CategoryInput } from "../../inputs"
-import MessageInput from "../../inputs/message-input"
 import { isAuth } from "../../lib/isAuth"
 import { CategoryMutationResponse } from "../../responses"
 import { ContextType } from "../../types"
@@ -42,55 +27,5 @@ export default class CategoryMutationResolver {
     return {
       errors
     }
-  }
-
-  @Mutation(() => Boolean)
-  @UseMiddleware(isAuth)
-  async createMessage(
-    @Arg("data") { content, categoryId }: MessageInput,
-    @PubSub(Topic.NewMessage)
-    notifyAboutNewMessage: Publisher<Message>,
-    @Ctx() { em, req }: ContextType
-  ): Promise<boolean> {
-    const user = await em.findOneOrFail(User, req.session.userId)
-    const category = await em.findOne(Category, categoryId, {
-      populate: ["messages"]
-    })
-    if (!category) {
-      console.log("category not found")
-      return false
-    }
-    if (category && req.session.userId) {
-      const message = em.create(Message, {
-        createdAt: new Date().toISOString(),
-        category,
-        content,
-        sentBy: user
-      })
-
-      category.messages.add(message)
-      em.persistAndFlush(category)
-      await notifyAboutNewMessage(message)
-    }
-    return true
-  }
-
-  // *** SUBSCRIPTION *** \\
-
-  @Subscription(() => Message, {
-    topics: Topic.NewMessage,
-    filter: ({
-      payload,
-      args
-    }: ResolverFilterData<Message, NewMessageArgs>) => {
-      return payload.category.id === args.categoryId
-    }
-  })
-  newMessage(
-    @Root() newMessage: Message,
-    @Args() { categoryId }: NewMessageArgs
-  ): Message {
-    console.log(categoryId)
-    return newMessage
   }
 }

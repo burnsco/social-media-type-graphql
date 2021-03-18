@@ -22,6 +22,7 @@ import {
   UserQueryResolver,
   VoteQueryResolver
 } from "./resolvers"
+import MessageMutationResolver from "./resolvers/Message/Mutation"
 
 async function main(): Promise<void> {
   const { orm } = await initializeDB()
@@ -37,6 +38,7 @@ async function main(): Promise<void> {
         UserQueryResolver,
         UserMutationResolver,
         MessageQueryResolver,
+        MessageMutationResolver,
         PrivateMessageQueryResolver,
         VoteQueryResolver,
         CategoryMutationResolver,

@@ -38,6 +38,6 @@ export default class MessageQueryResolver {
     @Root() message: Message,
     @Ctx() { em }: ContextType
   ): Promise<User> {
-    return await em.findOneOrFail(User, message.sentBy.id)
+    return await em.findOneOrFail(User, message.sentBy)
   }
 }
