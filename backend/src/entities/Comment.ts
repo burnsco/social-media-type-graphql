@@ -1,10 +1,4 @@
-import {
-  Cascade,
-  Entity,
-  LoadStrategy,
-  ManyToOne,
-  Property
-} from "@mikro-orm/core"
+import { Cascade, Entity, ManyToOne, Property } from "@mikro-orm/core"
 import { Field, ObjectType } from "type-graphql"
 import { Post, User } from "."
 import Base from "./BaseEntity"
@@ -14,16 +8,15 @@ import Base from "./BaseEntity"
 export default class Comment extends Base {
   @Field(() => String)
   @Property()
-  body: string
+  body!: string
 
   @Field(() => User)
-  @ManyToOne(() => User, { onDelete: "cascade", strategy: LoadStrategy.JOINED })
-  createdBy: User
+  @ManyToOne(() => User, { onDelete: "cascade" })
+  createdBy!: User
 
   @Field(() => Post)
   @ManyToOne(() => Post, {
-    cascade: [Cascade.ALL],
-    strategy: LoadStrategy.JOINED
+    cascade: [Cascade.ALL]
   })
-  post: Post
+  post!: Post
 }

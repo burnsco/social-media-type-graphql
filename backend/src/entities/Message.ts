@@ -8,15 +8,15 @@ import Base from "./BaseEntity"
 export default class Message extends Base {
   @Field()
   @Property()
-  content: string
+  content!: string
 
   @Field(() => User)
   @ManyToOne(() => User, { onDelete: "cascade" })
-  sentBy: User
+  sentBy!: User
 
   @Field(() => Category)
   @ManyToOne(() => Category, {
     cascade: [Cascade.ALL]
   })
-  category: Category
+  category!: Category
 }

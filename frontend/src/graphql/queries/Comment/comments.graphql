@@ -1,4 +1,4 @@
-query Comments($first: Int, $orderBy: String, $skip: Int, $postId: ID) {
+query Comments($first: Int, $orderBy: String, $skip: Int, $postId: Int) {
   comments(first: $first, orderBy: $orderBy, skip: $skip, postId: $postId) {
     ...CommentDetails
     createdBy {

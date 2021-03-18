@@ -1,5 +1,5 @@
-subscription NewChatMessage($categoryId: ID!) {
-  newMessage(categoryId: $categoryId) {
+subscription NewChatMessage {
+  newMessage {
     id
     content
     sentBy {

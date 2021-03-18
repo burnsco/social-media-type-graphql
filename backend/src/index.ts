@@ -17,6 +17,7 @@ import {
   MessageQueryResolver,
   PostMutationResolver,
   PostQueryResolver,
+  PrivateMessageMutationResolver,
   PrivateMessageQueryResolver,
   UserMutationResolver,
   UserQueryResolver,
@@ -26,7 +27,6 @@ import MessageMutationResolver from "./resolvers/Message/Mutation"
 
 async function main(): Promise<void> {
   const { orm } = await initializeDB()
-
   const { app } = initializeExpress()
   const { redisClient, pubSub } = initializeRedis()
 
@@ -40,6 +40,7 @@ async function main(): Promise<void> {
         MessageQueryResolver,
         MessageMutationResolver,
         PrivateMessageQueryResolver,
+        PrivateMessageMutationResolver,
         VoteQueryResolver,
         CategoryMutationResolver,
         CategoryQueryResolver,

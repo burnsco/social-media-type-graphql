@@ -13,6 +13,6 @@ export default abstract class Base {
   createdAt: string = new Date().toISOString()
 
   @Field(() => String)
-  @Property({ type: "date", onUpdate: () => new Date().toISOString() })
+  @Property({ onUpdate: () => new Date().toISOString() })
   updatedAt: string = new Date().toISOString()
 }

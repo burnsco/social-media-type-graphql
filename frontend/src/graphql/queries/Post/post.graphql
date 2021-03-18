@@ -1,4 +1,4 @@
-query Post($postId: ID) {
+query Post($postId: Int) {
   post(postId: $postId) {
     ...PostDetails
 

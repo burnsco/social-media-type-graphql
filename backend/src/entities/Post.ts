@@ -2,7 +2,6 @@ import {
   Cascade,
   Collection,
   Entity,
-  LoadStrategy,
   ManyToOne,
   OneToMany,
   Property
@@ -17,7 +16,7 @@ import Base from "./BaseEntity"
 export default class Post extends Base {
   @Field(() => String)
   @Property()
-  title: string
+  title!: string
 
   @Field(() => String, { nullable: true })
   @Property({ nullable: true })
@@ -40,20 +39,20 @@ export default class Post extends Base {
   imageW?: string
 
   @Field(() => User)
-  @ManyToOne(() => User, { onDelete: "cascade", strategy: LoadStrategy.JOINED })
-  author: User
+  @ManyToOne(() => User, { onDelete: "cascade" })
+  author!: User
 
   @Field(() => Category)
   @ManyToOne(() => Category, {
-    onDelete: "cascade",
-    strategy: LoadStrategy.JOINED
+    onDelete: "cascade"
   })
-  category: Category
+  category!: Category
 
   @Field(() => [Vote], { nullable: true })
   @OneToMany(() => Vote, vote => vote.post, {
     cascade: [Cascade.ALL],
-    orphanRemoval: true
+    orphanRemoval: true,
+    lazy: true
   })
   votes = new Collection<Vote>(this)
 

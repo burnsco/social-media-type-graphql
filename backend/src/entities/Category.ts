@@ -14,7 +14,7 @@ import Base from "./BaseEntity"
 export default class Category extends Base {
   @Field()
   @Property({ unique: true, length: 20 })
-  name: string
+  name!: string
 
   @Field(() => [Message], { nullable: true })
   @OneToMany(() => Message, message => message.category, {

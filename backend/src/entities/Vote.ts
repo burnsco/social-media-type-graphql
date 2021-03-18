@@ -17,7 +17,7 @@ export default class Vote extends Base {
   value!: number
 
   @Field(() => User)
-  @ManyToOne(() => User, { strategy: LoadStrategy.JOINED })
+  @ManyToOne(() => User)
   castBy!: User
 
   @ManyToOne(() => Post, {

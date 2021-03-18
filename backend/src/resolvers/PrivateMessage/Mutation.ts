@@ -20,7 +20,7 @@ import { isAuth } from "../../lib/isAuth"
 import { ContextType } from "../../types"
 
 @Resolver(() => User)
-export default class UserMutationResolver {
+export default class PrivatMessageMutationResolver {
   @Mutation(() => PrivateMessage)
   @UseMiddleware(isAuth)
   async sendPrivateMessage(
