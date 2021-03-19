@@ -1,16 +1,11 @@
-query ChatRoomMessages($categoryId: ID!) {
-  category(categoryId: $categoryId) {
-    createdAt
+query ChatRoomMessages {
+  messages {
     id
-    name
-    messages {
+    createdAt
+    content
+    sentBy {
       id
-      createdAt
-      content
-      sentBy {
-        id
-        username
-      }
+      username
     }
   }
 }

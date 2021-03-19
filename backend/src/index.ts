@@ -24,9 +24,11 @@ import {
   VoteQueryResolver
 } from "./resolvers"
 import MessageMutationResolver from "./resolvers/Message/Mutation"
+import { wipeDatabase } from "./utils"
 
 async function main(): Promise<void> {
   const { orm } = await initializeDB()
+  await wipeDatabase(orm.em)
   const { app } = initializeExpress()
   const { redisClient, pubSub } = initializeRedis()
 

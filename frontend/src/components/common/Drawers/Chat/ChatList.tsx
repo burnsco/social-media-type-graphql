@@ -1,34 +1,49 @@
-import { Avatar, List, ListItem } from "@chakra-ui/react"
-import { useEffect } from "react"
+import {
+  Avatar,
+  Box,
+  List,
+  ListItem,
+  useSafeLayoutEffect
+} from "@chakra-ui/react"
+import React from "react"
 
 export default function ChatList(props: any) {
   const { handleSubscription } = props
   const { data, loading } = props
 
-  useEffect(() => {
+  useSafeLayoutEffect(() => {
     handleSubscription()
   }, [handleSubscription])
 
-  console.log("chat list component -->")
-  console.log(data)
-  console.log(handleSubscription)
+  const messagesEndRef = React.useRef<HTMLDivElement | null>(null)
 
-  if (!loading && data) {
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  React.useEffect(() => {
+    scrollToBottom()
+  }, [data, data.messages])
+
+  if (!loading && data && data.messages) {
     return (
-      <List mt={2} spacing={3}>
-        {data.category.messages.map((message: any) => (
-          <ListItem key={message.id}>
-            <Avatar
-              size="xs"
-              name="Ryan Florence"
-              src="https://bit.ly/ryan-florence"
-              mr={3}
-            />
-            {message.content}
-          </ListItem>
-        ))}
-      </List>
+      <Box overflowY="auto">
+        <List mt={2} spacing={3}>
+          {data.messages.map((message: any) => (
+            <ListItem key={message.id}>
+              <Avatar
+                size="xs"
+                name="Ryan Florence"
+                src="https://bit.ly/ryan-florence"
+                mr={3}
+              />
+              {message.content}
+            </ListItem>
+          ))}
+          <div ref={messagesEndRef} />
+        </List>
+      </Box>
     )
   }
-  return null
+  return <>No messages yet</>
 }

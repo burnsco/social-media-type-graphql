@@ -52,7 +52,7 @@ export type QueryCategoriesArgs = {
 
 export type QueryCommentArgs = {
   first?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['ID']>;
+  postId?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
@@ -62,7 +62,7 @@ export type QueryCommentArgs = {
 
 export type QueryCommentsArgs = {
   first?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['ID']>;
+  postId?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
@@ -77,7 +77,7 @@ export type QueryMessagesByCategoryArgs = {
 
 export type Query_CategoryPostsMetaArgs = {
   first?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['ID']>;
+  postId?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
@@ -87,7 +87,7 @@ export type Query_CategoryPostsMetaArgs = {
 
 export type QueryPostArgs = {
   first?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['ID']>;
+  postId?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
@@ -97,7 +97,7 @@ export type QueryPostArgs = {
 
 export type QueryPostsArgs = {
   first?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['ID']>;
+  postId?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
   category?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
@@ -207,18 +207,18 @@ export type EditUserInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createCategory: CategoryMutationResponse;
-  createMessage: MessageMutationResponse;
   createComment: CommentMutationResponse;
   editComment: CommentMutationResponse;
+  createMessage: MessageMutationResponse;
   createPost: PostMutationResponse;
   editPost: PostMutationResponse;
   deletePost: PostMutationResponse;
   vote: VoteMutationResponse;
+  sendPrivateMessage: PrivateMessage;
   forgotPassword: Scalars['Boolean'];
   register: UserMutationResponse;
   editUser: UserMutationResponse;
   addFriend: UserMutationResponse;
-  sendPrivateMessage: PrivateMessage;
   login: UserMutationResponse;
   logout: UserLogoutMutationResponse;
 };
@@ -229,11 +229,6 @@ export type MutationCreateCategoryArgs = {
 };
 
 
-export type MutationCreateMessageArgs = {
-  data: MessageInput;
-};
-
-
 export type MutationCreateCommentArgs = {
   data: CommentInput;
 };
@@ -241,6 +236,11 @@ export type MutationCreateCommentArgs = {
 
 export type MutationEditCommentArgs = {
   data: CommentInput;
+};
+
+
+export type MutationCreateMessageArgs = {
+  data: MessageInput;
 };
 
 
@@ -264,6 +264,11 @@ export type MutationVoteArgs = {
 };
 
 
+export type MutationSendPrivateMessageArgs = {
+  data: PrivateMessageInput;
+};
+
+
 export type MutationForgotPasswordArgs = {
   email: EditUserInput;
 };
@@ -281,11 +286,6 @@ export type MutationEditUserArgs = {
 
 export type MutationAddFriendArgs = {
   data: EditUserInput;
-};
-
-
-export type MutationSendPrivateMessageArgs = {
-  data: PrivateMessageInput;
 };
 
 
@@ -309,18 +309,6 @@ export type CategoryInput = {
   name: Scalars['String'];
 };
 
-export type MessageMutationResponse = {
-  __typename?: 'MessageMutationResponse';
-  errors?: Maybe<Array<FieldError>>;
-  message: Message;
-  category: Category;
-};
-
-export type MessageInput = {
-  content: Scalars['String'];
-  categoryId: Scalars['ID'];
-};
-
 export type CommentMutationResponse = {
   __typename?: 'CommentMutationResponse';
   errors?: Maybe<Array<FieldError>>;
@@ -331,6 +319,18 @@ export type CommentMutationResponse = {
 export type CommentInput = {
   body: Scalars['String'];
   postId: Scalars['ID'];
+};
+
+export type MessageMutationResponse = {
+  __typename?: 'MessageMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  message: Message;
+  category: Category;
+};
+
+export type MessageInput = {
+  content: Scalars['String'];
+  categoryId: Scalars['Int'];
 };
 
 export type PostMutationResponse = {
@@ -365,7 +365,12 @@ export type VoteMutationResponse = {
 
 export type VoteInput = {
   postId: Scalars['ID'];
-  value: Scalars['Int'];
+  value: Scalars['ID'];
+};
+
+export type PrivateMessageInput = {
+  body: Scalars['String'];
+  userId: Scalars['ID'];
 };
 
 export type UserMutationResponse = {
@@ -381,11 +386,6 @@ export type RegisterInput = {
   password: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
   about?: Maybe<Scalars['String']>;
-};
-
-export type PrivateMessageInput = {
-  body: Scalars['String'];
-  userId: Scalars['ID'];
 };
 
 export type LoginInput = {
@@ -406,11 +406,6 @@ export type Subscription = {
   newVotes: Vote;
   newPrivateMessage: PrivateMessage;
   newUser: User;
-};
-
-
-export type SubscriptionNewMessageArgs = {
-  categoryId: Scalars['ID'];
 };
 
 
@@ -677,7 +672,7 @@ export type SendPrivateMessageMutation = (
   { __typename?: 'Mutation' }
   & { sendPrivateMessage: (
     { __typename?: 'PrivateMessage' }
-    & Pick<PrivateMessage, 'id' | 'body'>
+    & Pick<PrivateMessage, 'id' | 'body' | 'createdAt'>
     & { sentTo: (
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -728,7 +723,7 @@ export type CategoriesQuery = (
 );
 
 export type CommentQueryVariables = Exact<{
-  postId?: Maybe<Scalars['ID']>;
+  postId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -748,7 +743,7 @@ export type CommentsQueryVariables = Exact<{
   first?: Maybe<Scalars['Int']>;
   orderBy?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Int']>;
-  postId?: Maybe<Scalars['ID']>;
+  postId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -765,7 +760,7 @@ export type CommentsQuery = (
 );
 
 export type CommentsForPostQueryVariables = Exact<{
-  postId: Scalars['ID'];
+  postId: Scalars['Int'];
   orderBy?: Maybe<Scalars['String']>;
 }>;
 
@@ -786,29 +781,23 @@ export type CommentsForPostQuery = (
   ) }
 );
 
-export type ChatRoomMessagesQueryVariables = Exact<{
-  categoryId: Scalars['ID'];
-}>;
+export type ChatRoomMessagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ChatRoomMessagesQuery = (
   { __typename?: 'Query' }
-  & { category: (
-    { __typename?: 'Category' }
-    & Pick<Category, 'createdAt' | 'id' | 'name'>
-    & { messages?: Maybe<Array<(
-      { __typename?: 'Message' }
-      & Pick<Message, 'id' | 'createdAt' | 'content'>
-      & { sentBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-      ) }
-    )>> }
-  ) }
+  & { messages?: Maybe<Array<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'createdAt' | 'content'>
+    & { sentBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )>> }
 );
 
 export type PostQueryVariables = Exact<{
-  postId?: Maybe<Scalars['ID']>;
+  postId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -937,9 +926,7 @@ export type NewCommentsSubscription = (
   ) }
 );
 
-export type NewChatMessageSubscriptionVariables = Exact<{
-  categoryId: Scalars['ID'];
-}>;
+export type NewChatMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type NewChatMessageSubscription = (
@@ -1468,6 +1455,7 @@ export const SendPrivateMessageDocument = gql`
   sendPrivateMessage(data: $data) {
     id
     body
+    createdAt
     sentTo {
       username
     }
@@ -1588,7 +1576,7 @@ export function refetchCategoriesQuery(variables?: CategoriesQueryVariables) {
       return { query: CategoriesDocument, variables: variables }
     }
 export const CommentDocument = gql`
-    query Comment($postId: ID) {
+    query Comment($postId: Int) {
   comment(postId: $postId) {
     ...CommentDetails
     createdBy {
@@ -1630,7 +1618,7 @@ export function refetchCommentQuery(variables?: CommentQueryVariables) {
       return { query: CommentDocument, variables: variables }
     }
 export const CommentsDocument = gql`
-    query Comments($first: Int, $orderBy: String, $skip: Int, $postId: ID) {
+    query Comments($first: Int, $orderBy: String, $skip: Int, $postId: Int) {
   comments(first: $first, orderBy: $orderBy, skip: $skip, postId: $postId) {
     ...CommentDetails
     createdBy {
@@ -1675,7 +1663,7 @@ export function refetchCommentsQuery(variables?: CommentsQueryVariables) {
       return { query: CommentsDocument, variables: variables }
     }
 export const CommentsForPostDocument = gql`
-    query CommentsForPost($postId: ID!, $orderBy: String) {
+    query CommentsForPost($postId: Int!, $orderBy: String) {
   post(postId: $postId, orderBy: $orderBy) {
     id
     comments {
@@ -1721,19 +1709,14 @@ export function refetchCommentsForPostQuery(variables?: CommentsForPostQueryVari
       return { query: CommentsForPostDocument, variables: variables }
     }
 export const ChatRoomMessagesDocument = gql`
-    query ChatRoomMessages($categoryId: ID!) {
-  category(categoryId: $categoryId) {
-    createdAt
+    query ChatRoomMessages {
+  messages {
     id
-    name
-    messages {
+    createdAt
+    content
+    sentBy {
       id
-      createdAt
-      content
-      sentBy {
-        id
-        username
-      }
+      username
     }
   }
 }
@@ -1751,11 +1734,10 @@ export const ChatRoomMessagesDocument = gql`
  * @example
  * const { data, loading, error } = useChatRoomMessagesQuery({
  *   variables: {
- *      categoryId: // value for 'categoryId'
  *   },
  * });
  */
-export function useChatRoomMessagesQuery(baseOptions: Apollo.QueryHookOptions<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>) {
+export function useChatRoomMessagesQuery(baseOptions?: Apollo.QueryHookOptions<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>(ChatRoomMessagesDocument, options);
       }
@@ -1770,7 +1752,7 @@ export function refetchChatRoomMessagesQuery(variables?: ChatRoomMessagesQueryVa
       return { query: ChatRoomMessagesDocument, variables: variables }
     }
 export const PostDocument = gql`
-    query Post($postId: ID) {
+    query Post($postId: Int) {
   post(postId: $postId) {
     ...PostDetails
     author {
@@ -2075,8 +2057,8 @@ export function useNewCommentsSubscription(baseOptions?: Apollo.SubscriptionHook
 export type NewCommentsSubscriptionHookResult = ReturnType<typeof useNewCommentsSubscription>;
 export type NewCommentsSubscriptionResult = Apollo.SubscriptionResult<NewCommentsSubscription>;
 export const NewChatMessageDocument = gql`
-    subscription NewChatMessage($categoryId: ID!) {
-  newMessage(categoryId: $categoryId) {
+    subscription NewChatMessage {
+  newMessage {
     id
     content
     sentBy {
@@ -2099,11 +2081,10 @@ export const NewChatMessageDocument = gql`
  * @example
  * const { data, loading, error } = useNewChatMessageSubscription({
  *   variables: {
- *      categoryId: // value for 'categoryId'
  *   },
  * });
  */
-export function useNewChatMessageSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewChatMessageSubscription, NewChatMessageSubscriptionVariables>) {
+export function useNewChatMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewChatMessageSubscription, NewChatMessageSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useSubscription<NewChatMessageSubscription, NewChatMessageSubscriptionVariables>(NewChatMessageDocument, options);
       }

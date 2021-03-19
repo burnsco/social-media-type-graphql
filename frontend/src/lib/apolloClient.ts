@@ -13,9 +13,7 @@ import { concatPagination, getMainDefinition } from "@apollo/client/utilities"
 import { useMemo } from "react"
 import { SubscriptionClient } from "subscriptions-transport-ws"
 
-export const selectedChatRoomId: ReactiveVar<string> = makeVar<string>(
-  "179e9376-828d-421f-a20d-fc8d9b9c7cf4"
-)
+export const selectedChatRoomId: ReactiveVar<number> = makeVar<number>(1)
 export const selectedChatRoomName: ReactiveVar<string> = makeVar<string>(
   "react"
 )
@@ -42,6 +40,15 @@ function createApolloClient() {
             }
           },
           totalVotes: {
+            merge(existing, incoming) {
+              return { ...existing, ...incoming }
+            }
+          }
+        }
+      },
+      Category: {
+        fields: {
+          messages: {
             merge(existing, incoming) {
               return { ...existing, ...incoming }
             }

@@ -26,14 +26,7 @@ const NewPost: React.FC<PostQuery> = props => {
   const postCommentsCount = post?.totalComments?.count ?? 0
   const isOwner = data?.me?.id === post?.author.id ?? false
   const isLoggedIn = data?.me?.username !== null
-
-  if (post) {
-    console.log(post.title)
-    console.log("created")
-    console.log(post?.createdAt)
-    console.log("updated")
-    console.log(post?.updatedAt)
-  }
+  console.log(post)
 
   return (
     <PostContainer bg={bg}>

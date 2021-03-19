@@ -57,7 +57,7 @@ export default function ChatSelection() {
                         key={`subreddit-center-menu-${item.id}-${i}`}
                         onClick={() => {
                           if (item && item.name && item.id) {
-                            selectedChatRoomId(item.id)
+                            selectedChatRoomId(Number(item.id))
                             selectedChatRoomName(item.name)
                           }
                         }}

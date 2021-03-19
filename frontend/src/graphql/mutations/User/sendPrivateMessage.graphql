@@ -1,7 +1,8 @@
-mutation SendPrivateMessage($data: PrivateMessageInput) {
+mutation SendPrivateMessage($data: PrivateMessageInput!) {
   sendPrivateMessage(data: $data) {
     id
     body
+    createdAt
     sentTo {
       username
     }

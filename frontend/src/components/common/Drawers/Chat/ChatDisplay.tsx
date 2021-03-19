@@ -1,16 +1,14 @@
-import { gql, useQuery, useReactiveVar } from "@apollo/client"
-import { selectedChatRoomId } from "../../../../lib/apolloClient"
+import { gql, useQuery } from "@apollo/client"
+import React from "react"
 import ChatList from "./ChatList"
 
 const CHAT_ROOM_MESSAGES_SUBSCRIPTION = gql`
-  subscription NewChatMessage($categoryId: ID!) {
-    newMessage(categoryId: $categoryId) {
+  subscription NewChatMessage {
+    newMessage {
       id
       content
-      category {
-        id
-        name
-      }
+      createdAt
+
       sentBy {
         id
         username
@@ -20,29 +18,22 @@ const CHAT_ROOM_MESSAGES_SUBSCRIPTION = gql`
 `
 
 const CHAT_ROOM_MESSAGES_QUERY = gql`
-  query ChatRoomMessages($categoryId: ID!) {
-    category(categoryId: $categoryId) {
-      createdAt
+  query {
+    messages {
       id
-      name
-      messages {
+      content
+      createdAt
+
+      sentBy {
         id
-        createdAt
-        content
-        sentBy {
-          id
-          username
-        }
+        username
       }
     }
   }
 `
 
 export default function ChatDisplay() {
-  const selectedCategoryId = useReactiveVar(selectedChatRoomId)
-  const { subscribeToMore, ...result } = useQuery(CHAT_ROOM_MESSAGES_QUERY, {
-    variables: { categoryId: selectedCategoryId }
-  })
+  const { subscribeToMore, ...result } = useQuery(CHAT_ROOM_MESSAGES_QUERY)
 
   if (subscribeToMore !== undefined) {
     return (
@@ -51,15 +42,14 @@ export default function ChatDisplay() {
         handleSubscription={() =>
           subscribeToMore({
             document: CHAT_ROOM_MESSAGES_SUBSCRIPTION,
-            variables: { categoryId: selectedCategoryId },
+
             updateQuery: (prev, { subscriptionData }) => {
               if (!subscriptionData.data) return prev
               const newFeedItem = subscriptionData.data.newMessage
               return {
                 ...prev,
-                category: {
-                  messages: [newFeedItem, ...prev.category.messages]
-                }
+
+                messages: [newFeedItem, { ...prev.messages }]
               }
             }
           })

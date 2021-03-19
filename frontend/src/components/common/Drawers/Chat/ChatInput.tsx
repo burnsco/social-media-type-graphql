@@ -1,5 +1,6 @@
 import { InputField } from "@/components/common/index"
 import { useCreateMessageMutation } from "@/generated/graphql"
+import { selectedChatRoomId } from "@/lib/apolloClient"
 import { useReactiveVar } from "@apollo/client"
 import {
   Box,
@@ -9,7 +10,6 @@ import {
   VStack
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
-import { selectedChatRoomId } from "../../../../lib/apolloClient"
 
 export default function ChatInput() {
   const submitButtonColor = useColorModeValue("purple", "blue")
@@ -20,7 +20,10 @@ export default function ChatInput() {
   const handleSubmitMessage = async (values: any, actions: any) => {
     const response = await submitMessage({
       variables: {
-        data: { content: values.content, categoryId: selectedCategoryId }
+        data: {
+          content: values.content,
+          categoryId: 10
+        }
       }
     })
     console.log(response)
