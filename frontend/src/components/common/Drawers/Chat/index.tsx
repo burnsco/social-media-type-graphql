@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/client"
 import {
   chakra,
   Drawer,
@@ -14,7 +15,7 @@ import {
 } from "@chakra-ui/react"
 import { useRef } from "react"
 import { IoChatboxEllipsesOutline } from "react-icons/io5"
-import ChatDisplay from "./ChatDisplay"
+import ChatDisplay, { CHAT_ROOM_MESSAGES_QUERY } from "./ChatDisplay"
 import ChatInput from "./ChatInput"
 import ChatSelection from "./ChatSelect"
 
@@ -22,6 +23,8 @@ export default function ChatDrawerPage() {
   const drawerbg = useColorModeValue("whitesmoke", "gray.900")
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
+
+  const { refetch } = useQuery(CHAT_ROOM_MESSAGES_QUERY)
 
   return (
     <>
@@ -34,6 +37,7 @@ export default function ChatDrawerPage() {
       >
         <chakra.span>
           <IconButton
+            onMouseOver={() => refetch()}
             onClick={onOpen}
             variant="ghost"
             aria-label="Create a Subreddit"

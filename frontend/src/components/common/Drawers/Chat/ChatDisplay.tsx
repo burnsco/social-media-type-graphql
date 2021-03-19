@@ -17,7 +17,7 @@ const CHAT_ROOM_MESSAGES_SUBSCRIPTION = gql`
   }
 `
 
-const CHAT_ROOM_MESSAGES_QUERY = gql`
+export const CHAT_ROOM_MESSAGES_QUERY = gql`
   query {
     messages {
       id
@@ -42,13 +42,11 @@ export default function ChatDisplay() {
         handleSubscription={() =>
           subscribeToMore({
             document: CHAT_ROOM_MESSAGES_SUBSCRIPTION,
-
             updateQuery: (prev, { subscriptionData }) => {
               if (!subscriptionData.data) return prev
               const newFeedItem = subscriptionData.data.newMessage
               return {
                 ...prev,
-
                 messages: [newFeedItem, { ...prev.messages }]
               }
             }

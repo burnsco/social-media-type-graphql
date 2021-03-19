@@ -1,19 +1,13 @@
-import {
-  Avatar,
-  Box,
-  List,
-  ListItem,
-  useSafeLayoutEffect
-} from "@chakra-ui/react"
-import React from "react"
+import { Avatar, Box, List, ListItem } from "@chakra-ui/react"
+import React, { useEffect } from "react"
 
 export default function ChatList(props: any) {
   const { handleSubscription } = props
   const { data, loading } = props
 
-  useSafeLayoutEffect(() => {
+  useEffect(() => {
     handleSubscription()
-  }, [handleSubscription])
+  })
 
   const messagesEndRef = React.useRef<HTMLDivElement | null>(null)
 
