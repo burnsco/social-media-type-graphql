@@ -35,19 +35,25 @@ export default class PrivatMessageMutationResolver {
     const receipent = await em.findOneOrFail(User, userId, ["privateMessages"])
 
     if (user && receipent && req.session.userId) {
-      const message = em.create(PrivateMessage, {
+      const newmessage = em.create(PrivateMessage, {
         body,
-        sentBy: em.getReference(User, req.session.userId),
+        sentBy: em.getReference(User, user.id),
         sentTo: em.getReference(User, receipent.id)
       })
-      user.privateMessages.add(message)
-      receipent.privateMessages.add(message)
-
-      await notifyAboutNewMessage(message)
-
+      console.log(newmessage)
+      em.persist(user)
+      em.persist(receipent)
+      user.privateMessages.add(newmessage)
+      em.persist(newmessage)
+      receipent.privateMessages.add(newmessage)
       await em.flush()
+      await notifyAboutNewMessage({
+        createdAt: newmessage.createdAt,
+        body: newmessage.body,
+        sentBy: user
+      })
 
-      return message
+      return newmessage
     }
     return null
   }
