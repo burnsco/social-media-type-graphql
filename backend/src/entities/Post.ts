@@ -4,16 +4,27 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  PrimaryKey,
   Property
 } from "@mikro-orm/core"
-import { ObjectType } from "type-graphql"
+import { ID, ObjectType } from "type-graphql"
 import { Field } from "type-graphql/dist/decorators/Field"
 import { Category, Comment, User, Vote } from "."
-import Base from "./BaseEntity"
 
 @Entity()
 @ObjectType()
-export default class Post extends Base {
+export default class Post {
+  @Field(() => ID)
+  @PrimaryKey()
+  readonly id: number
+
+  @Field(() => String)
+  @Property()
+  createdAt: string = new Date().toISOString()
+
+  @Field(() => String)
+  @Property({ onUpdate: () => new Date().toISOString() })
+  updatedAt: string = new Date().toISOString()
   @Field(() => String)
   @Property()
   title!: string

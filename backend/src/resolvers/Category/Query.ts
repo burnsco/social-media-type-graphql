@@ -1,4 +1,4 @@
-import { QueryOrder } from "@mikro-orm/core"
+import { LoadStrategy, QueryOrder } from "@mikro-orm/core"
 import { Args, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
 import CategoryArgs from "../../args/category-args"
 import NewMessageArgs from "../../args/message-args"
@@ -7,15 +7,13 @@ import { ContextType } from "../../types"
 
 @Resolver(() => Category)
 export default class CategoryQueryResolver {
-  // *** For ChatRoom ? *** \\
-
   @Query(() => Category)
   async category(
     @Args() { categoryId }: NewMessageArgs,
     @Ctx() { em }: ContextType
   ) {
     return await em.findOneOrFail(Category, categoryId, {
-      populate: ["messages"]
+      populate: { messages: LoadStrategy.JOINED }
     })
   }
 

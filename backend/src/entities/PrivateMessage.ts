@@ -1,11 +1,28 @@
-import { Cascade, Entity, ManyToOne, Property } from "@mikro-orm/core"
-import { Field, ObjectType } from "type-graphql"
+import {
+  Cascade,
+  Entity,
+  ManyToOne,
+  PrimaryKey,
+  Property
+} from "@mikro-orm/core"
+import { Field, ID, ObjectType } from "type-graphql"
 import { User } from "."
-import Base from "./BaseEntity"
 
 @Entity()
 @ObjectType()
-export default class PrivateMessage extends Base {
+export default class PrivateMessage {
+  @Field(() => ID)
+  @PrimaryKey()
+  readonly id: number
+
+  @Field(() => String)
+  @Property()
+  createdAt: string = new Date().toISOString()
+
+  @Field(() => String)
+  @Property({ onUpdate: () => new Date().toISOString() })
+  updatedAt: string = new Date().toISOString()
+
   @Field()
   @Property()
   body!: string

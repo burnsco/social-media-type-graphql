@@ -5,7 +5,7 @@ import {
 } from "@mikro-orm/core"
 import { PostgreSqlDriver } from "@mikro-orm/postgresql/PostgreSqlDriver"
 import path from "path"
-import { Base, Category, Comment, Message, Post, User, Vote } from "../entities"
+import { Category, Comment, Message, Post, User, Vote } from "../entities"
 import PrivateMessage from "../entities/PrivateMessage"
 
 export const BASE_DIR = __dirname
@@ -32,7 +32,6 @@ export async function testConnection() {
 export async function wipeDatabase(em: EntityManager) {
   await em.nativeDelete(Category, {})
   await em.nativeDelete(User, {})
-  await em.nativeDelete(Base, {})
   await em.nativeDelete(Message, {})
   await em.nativeDelete(PrivateMessage, {})
   await em.nativeDelete(User, {})

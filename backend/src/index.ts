@@ -9,46 +9,20 @@ import {
   initializeLogger,
   initializeRedis
 } from "./config"
-import {
-  CategoryMutationResolver,
-  CategoryQueryResolver,
-  CommentMutationResolver,
-  CommentQueryResolver,
-  MessageQueryResolver,
-  PostMutationResolver,
-  PostQueryResolver,
-  PrivateMessageMutationResolver,
-  PrivateMessageQueryResolver,
-  UserMutationResolver,
-  UserQueryResolver,
-  VoteQueryResolver
-} from "./resolvers"
-import MessageMutationResolver from "./resolvers/Message/Mutation"
+import { resolversArray } from "./resolvers/resolvers"
 import { wipeDatabase } from "./utils"
+import { seedDatabase } from "./utils/seedDatabase"
 
 async function main(): Promise<void> {
   const { orm } = await initializeDB()
   await wipeDatabase(orm.em)
+  await seedDatabase(orm.em)
   const { app } = initializeExpress()
   const { redisClient, pubSub } = initializeRedis()
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [
-        PostQueryResolver,
-        PostMutationResolver,
-        UserQueryResolver,
-        UserMutationResolver,
-        MessageQueryResolver,
-        MessageMutationResolver,
-        PrivateMessageQueryResolver,
-        PrivateMessageMutationResolver,
-        VoteQueryResolver,
-        CategoryMutationResolver,
-        CategoryQueryResolver,
-        CommentMutationResolver,
-        CommentQueryResolver
-      ],
+      resolvers: resolversArray,
       validate: false,
       pubSub
     }),
@@ -70,7 +44,6 @@ async function main(): Promise<void> {
       }
     }
   })
-
   server.applyMiddleware({ app, cors: false })
 
   const httpServer = http.createServer(app)

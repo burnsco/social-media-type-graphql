@@ -4,9 +4,9 @@ import { User } from "../entities"
 
 @InputType()
 export default class LoginInput implements Partial<User> {
-  @Field(() => GraphQLEmail, { nullable: true })
+  @Field(() => GraphQLEmail)
   email: string
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   password: string
 }

@@ -1,18 +1,6 @@
 import { graphql } from "graphql"
 import { buildSchema } from "type-graphql"
-import {
-  CategoryMutationResolver,
-  CategoryQueryResolver,
-  CommentMutationResolver,
-  CommentQueryResolver,
-  MessageQueryResolver,
-  PostMutationResolver,
-  PostQueryResolver,
-  PrivateMessageQueryResolver,
-  UserMutationResolver,
-  UserQueryResolver,
-  VoteQueryResolver
-} from "../resolvers"
+import { resolversArray } from "../resolvers/resolvers"
 import { testConnection } from "../utils/testConn"
 
 interface Options {
@@ -36,19 +24,7 @@ export const gCall = async ({ source, variableValues, userId }: Options) => {
       em: orm.em.fork()
     },
     schema: await buildSchema({
-      resolvers: [
-        PostQueryResolver,
-        PostMutationResolver,
-        UserQueryResolver,
-        UserMutationResolver,
-        MessageQueryResolver,
-        PrivateMessageQueryResolver,
-        VoteQueryResolver,
-        CategoryMutationResolver,
-        CategoryQueryResolver,
-        CommentMutationResolver,
-        CommentQueryResolver
-      ]
+      resolvers: resolversArray
     })
   })
 }

@@ -1,14 +1,31 @@
-import { Collection, Entity, ManyToMany, Property } from "@mikro-orm/core"
+import {
+  Collection,
+  Entity,
+  ManyToMany,
+  PrimaryKey,
+  Property
+} from "@mikro-orm/core"
 import { GraphQLEmail } from "graphql-custom-types"
-import { Field, ObjectType } from "type-graphql"
-import Base from "./BaseEntity"
+import { Field, ID, ObjectType } from "type-graphql"
 import PrivateMessage from "./PrivateMessage"
 
 @Entity()
 @ObjectType()
-export default class User extends Base {
+export default class User {
+  @Field(() => ID)
+  @PrimaryKey()
+  readonly id: number
+
+  @Field(() => String)
+  @Property()
+  createdAt: string = new Date().toISOString()
+
+  @Field(() => String)
+  @Property({ onUpdate: () => new Date().toISOString() })
+  updatedAt: string = new Date().toISOString()
+
   @Field(() => GraphQLEmail)
-  @Property({ unique: true })
+  @Property()
   email!: string
 
   @Field(() => String)
@@ -33,4 +50,14 @@ export default class User extends Base {
   @Field(() => [PrivateMessage])
   @ManyToMany(() => PrivateMessage)
   privateMessages = new Collection<PrivateMessage>(this)
+}
+
+export enum UserRole {
+  ADMIN = "admin",
+  USER = "user"
+}
+
+export const enum UserStatus {
+  ONLINE,
+  OFFLINE
 }

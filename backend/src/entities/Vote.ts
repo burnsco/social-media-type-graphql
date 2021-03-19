@@ -3,15 +3,27 @@ import {
   Entity,
   LoadStrategy,
   ManyToOne,
+  PrimaryKey,
   Property
 } from "@mikro-orm/core"
-import { Field, Int, ObjectType } from "type-graphql"
+import { Field, ID, Int, ObjectType } from "type-graphql"
 import { Post, User } from "."
-import Base from "./BaseEntity"
 
 @Entity()
 @ObjectType()
-export default class Vote extends Base {
+export default class Vote {
+  @Field(() => ID)
+  @PrimaryKey()
+  readonly id: number
+
+  @Field(() => String)
+  @Property()
+  createdAt: string = new Date().toISOString()
+
+  @Field(() => String)
+  @Property({ onUpdate: () => new Date().toISOString() })
+  updatedAt: string = new Date().toISOString()
+
   @Field(() => Int)
   @Property()
   value!: number

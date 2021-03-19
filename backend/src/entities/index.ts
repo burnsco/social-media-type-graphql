@@ -1,4 +1,3 @@
-export { default as Base } from "./BaseEntity"
 export { default as Category } from "./Category"
 export { default as Comment } from "./Comment"
 export { default as Message } from "./Message"

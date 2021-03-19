@@ -1,25 +1,21 @@
-import { Category } from "@/generated/graphql"
 import {
   ApolloClient,
   HttpLink,
-  InMemoryCache,
   makeVar,
   NormalizedCacheObject,
   ReactiveVar,
   split
 } from "@apollo/client"
 import { WebSocketLink } from "@apollo/client/link/ws"
-import { concatPagination, getMainDefinition } from "@apollo/client/utilities"
+import { getMainDefinition } from "@apollo/client/utilities"
 import { useMemo } from "react"
 import { SubscriptionClient } from "subscriptions-transport-ws"
+import { cacheOptions } from "./cache"
 
 export const selectedChatRoomId: ReactiveVar<number> = makeVar<number>(1)
 export const selectedChatRoomName: ReactiveVar<string> = makeVar<string>(
   "react"
 )
-
-console.log("selected cat in lib")
-console.log(selectedChatRoomId)
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 const WS_URI = `ws://localhost:4000/subscriptions`
@@ -29,57 +25,6 @@ function createApolloClient() {
   const httpLink = new HttpLink({
     uri: process.env.NEXT_PUBLIC_API_URL as string,
     credentials: "include"
-  })
-  const cacheOptions = new InMemoryCache({
-    typePolicies: {
-      Post: {
-        fields: {
-          category: {
-            merge(existing, incoming) {
-              return { ...existing, ...incoming }
-            }
-          },
-          totalVotes: {
-            merge(existing, incoming) {
-              return { ...existing, ...incoming }
-            }
-          }
-        }
-      },
-      Category: {
-        fields: {
-          messages: {
-            merge(existing, incoming) {
-              return { ...existing, ...incoming }
-            }
-          }
-        }
-      },
-      Query: {
-        fields: {
-          posts: concatPagination(),
-          categories: {
-            keyArgs: [],
-            merge(
-              existing: Category[] | undefined,
-              incoming: Category[]
-            ): Category[] {
-              return existing ? [...incoming, ...existing] : [...incoming]
-            }
-          },
-          selectedChatRoomId: {
-            read() {
-              return selectedChatRoomId()
-            }
-          },
-          selecteChatRoomName: {
-            read() {
-              return selectedChatRoomName()
-            }
-          }
-        }
-      }
-    }
   })
 
   if (ssrMode) {

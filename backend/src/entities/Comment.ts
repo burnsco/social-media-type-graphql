@@ -1,11 +1,28 @@
-import { Cascade, Entity, ManyToOne, Property } from "@mikro-orm/core"
-import { Field, ObjectType } from "type-graphql"
+import {
+  Cascade,
+  Entity,
+  ManyToOne,
+  PrimaryKey,
+  Property
+} from "@mikro-orm/core"
+import { Field, ID, ObjectType } from "type-graphql"
 import { Post, User } from "."
-import Base from "./BaseEntity"
 
 @Entity()
 @ObjectType()
-export default class Comment extends Base {
+export default class Comment {
+  @Field(() => ID)
+  @PrimaryKey()
+  readonly id: number
+
+  @Field(() => String)
+  @Property()
+  createdAt: string = new Date().toISOString()
+
+  @Field(() => String)
+  @Property({ onUpdate: () => new Date() })
+  updatedAt: string = new Date().toISOString()
+
   @Field(() => String)
   @Property()
   body!: string

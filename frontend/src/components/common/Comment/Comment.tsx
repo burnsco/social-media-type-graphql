@@ -24,6 +24,7 @@ import { MdEmail, MdMessage } from "react-icons/md"
 
 const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
   const bg = useColorModeValue("white", "#202020")
+  const stackColor = useColorModeValue("gray.600", "gray.400")
   const router = useRouter()
   const votebg = useColorModeValue("gray.50", "#313131")
 
@@ -64,7 +65,7 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
         display="flex"
         flexDir="column"
       >
-        <Stack fontSize="xs" color={useColorModeValue("gray.600", "gray.400")}>
+        <Stack fontSize="xs" color={stackColor}>
           <Box textDecoration="none" mb={2}>
             Comment by
             <Menu>
