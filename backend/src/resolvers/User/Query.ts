@@ -21,8 +21,8 @@ export default class UserQueryResolver {
   }
 
   @Query(() => User, { nullable: true })
-  async loggedInUser(@Ctx() { req, em }: ContextType) {
-    return await em.findOne(
+  async loggedInUser(@Ctx() { req, em }: ContextType): Promise<User | null> {
+    return await em.findOneOrFail(
       User,
       { id: req.session.userId },
       {

@@ -17,18 +17,14 @@ export default class CommentMutationResolver {
     const post = await em.findOneOrFail(Post, postId, {
       populate: ["comments"]
     })
-    if (!post) {
-      return {
-        errors: [postNotFound]
-      }
-    }
+    if (!post) return { errors: [postNotFound] }
     const comment = em.create(Comment, {
       post: em.getReference(Post, post.id),
       body,
       createdBy: em.getReference(User, req.session.userId)
     })
     post.comments.add(comment)
-    await em.persistAndFlush(post)
+    await em.flush()
     return {
       post,
       comment

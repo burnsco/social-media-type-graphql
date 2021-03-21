@@ -40,7 +40,10 @@ const OfflineCircle = () => (
 
 export default function SideMenuContainer() {
   const bg = useColorModeValue("white", "#202020")
-  const { data, loading } = useMyFriendsAndMessagesQuery()
+  const { data, loading, refetch } = useMyFriendsAndMessagesQuery()
+
+  console.log("friendsAndMessages")
+  console.log(data)
 
   const FriendsAcccordion = () => (
     <AccordionItem>
@@ -54,7 +57,7 @@ export default function SideMenuContainer() {
       </h2>
       <AccordionPanel pb={4}>
         <List mt={2} spacing={3}>
-          {data && data.loggedInUser && data.loggedInUser.friends ? (
+          {data && data.loggedInUser ? (
             <>
               {data.loggedInUser.friends.map(user => (
                 <ListItem key={`friends-list-${user.username}`}>
@@ -118,6 +121,7 @@ export default function SideMenuContainer() {
   return (
     <Skeleton isLoaded={!loading}>
       <Box
+        onClick={() => refetch()}
         bg={bg}
         minW="200px"
         maxW="260px"

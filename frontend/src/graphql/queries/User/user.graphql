@@ -1,5 +1,0 @@
-query User($data: EditUserInput!) {
-  user(data: $data) {
-    ...UserMeDetails
-  }
-}
