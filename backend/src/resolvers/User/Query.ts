@@ -1,3 +1,4 @@
+import { LoadStrategy } from "@mikro-orm/core"
 import { Arg, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
 import { User } from "../../entities"
 import PrivateMessage from "../../entities/PrivateMessage"
@@ -21,11 +22,23 @@ export default class UserQueryResolver {
 
   @Query(() => User)
   async me(@Ctx() { req, em }: ContextType) {
-    return await em.findOneOrFail(User, req.session.userId)
+    return await em.findOne(
+      User,
+      { id: req.session.userId },
+      {
+        populate: ["friends", "privateMessages"],
+        strategy: LoadStrategy.JOINED
+      }
+    )
   }
 
   @FieldResolver(() => [PrivateMessage], { nullable: true })
-  async privateMessages(@Root() user: User, @Ctx() { em }: ContextType) {
-    return await em.find(PrivateMessage, { sentTo: { id: user.id } })
+  privateMessages(@Root() user: User) {
+    return user.privateMessages
+  }
+
+  @FieldResolver(() => [User], { nullable: true })
+  friends(@Root() user: User) {
+    return user.friends
   }
 }
