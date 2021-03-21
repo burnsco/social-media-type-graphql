@@ -1,3 +1,4 @@
+import useNewUserNotification from "@/hooks/useNewUserNotify"
 import {
   chakra,
   Flex,
@@ -8,7 +9,6 @@ import {
   useToast
 } from "@chakra-ui/react"
 import { FaMoon, FaSun } from "react-icons/fa"
-import useNewUserNotification from "../../../hooks/useNewUserNotify"
 import NavSection from "./Center"
 import LogoSection from "./Left"
 import MenuIconsSection from "./Right"

@@ -33,6 +33,7 @@ export type Query = {
   privateMessage?: Maybe<PrivateMessage>;
   user: User;
   users: Array<User>;
+  loggedInUser?: Maybe<User>;
   me: User;
 };
 
@@ -588,6 +589,22 @@ export type EditPostMutation = (
   ) }
 );
 
+export type AddFriendMutationVariables = Exact<{
+  data: EditUserInput;
+}>;
+
+
+export type AddFriendMutation = (
+  { __typename?: 'Mutation' }
+  & { addFriend: (
+    { __typename?: 'UserMutationResponse' }
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    )> }
+  ) }
+);
+
 export type EditUserMutationVariables = Exact<{
   data: EditUserInput;
 }>;
@@ -859,6 +876,28 @@ export type MeQuery = (
     { __typename?: 'User' }
     & UserMeDetailsFragment
   ) }
+);
+
+export type MyFriendsAndMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyFriendsAndMessagesQuery = (
+  { __typename?: 'Query' }
+  & { loggedInUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
+    & { friends: Array<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'online'>
+    )>, privateMessages: Array<(
+      { __typename?: 'PrivateMessage' }
+      & Pick<PrivateMessage, 'id' | 'body' | 'createdAt'>
+      & { sentBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ) }
+    )> }
+  )> }
 );
 
 export type UserQueryVariables = Exact<{
@@ -1251,6 +1290,42 @@ export function useEditPostMutation(baseOptions?: Apollo.MutationHookOptions<Edi
 export type EditPostMutationHookResult = ReturnType<typeof useEditPostMutation>;
 export type EditPostMutationResult = Apollo.MutationResult<EditPostMutation>;
 export type EditPostMutationOptions = Apollo.BaseMutationOptions<EditPostMutation, EditPostMutationVariables>;
+export const AddFriendDocument = gql`
+    mutation AddFriend($data: EditUserInput!) {
+  addFriend(data: $data) {
+    user {
+      id
+      username
+    }
+  }
+}
+    `;
+export type AddFriendMutationFn = Apollo.MutationFunction<AddFriendMutation, AddFriendMutationVariables>;
+
+/**
+ * __useAddFriendMutation__
+ *
+ * To run a mutation, you first call `useAddFriendMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddFriendMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addFriendMutation, { data, loading, error }] = useAddFriendMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useAddFriendMutation(baseOptions?: Apollo.MutationHookOptions<AddFriendMutation, AddFriendMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddFriendMutation, AddFriendMutationVariables>(AddFriendDocument, options);
+      }
+export type AddFriendMutationHookResult = ReturnType<typeof useAddFriendMutation>;
+export type AddFriendMutationResult = Apollo.MutationResult<AddFriendMutation>;
+export type AddFriendMutationOptions = Apollo.BaseMutationOptions<AddFriendMutation, AddFriendMutationVariables>;
 export const EditUserDocument = gql`
     mutation editUser($data: EditUserInput!) {
   editUser(data: $data) {
@@ -1861,6 +1936,58 @@ export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export function refetchMeQuery(variables?: MeQueryVariables) {
       return { query: MeDocument, variables: variables }
+    }
+export const MyFriendsAndMessagesDocument = gql`
+    query MyFriendsAndMessages {
+  loggedInUser {
+    id
+    username
+    friends {
+      id
+      username
+      online
+    }
+    privateMessages {
+      id
+      body
+      createdAt
+      sentBy {
+        id
+        username
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useMyFriendsAndMessagesQuery__
+ *
+ * To run a query within a React component, call `useMyFriendsAndMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyFriendsAndMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyFriendsAndMessagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyFriendsAndMessagesQuery(baseOptions?: Apollo.QueryHookOptions<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>(MyFriendsAndMessagesDocument, options);
+      }
+export function useMyFriendsAndMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>(MyFriendsAndMessagesDocument, options);
+        }
+export type MyFriendsAndMessagesQueryHookResult = ReturnType<typeof useMyFriendsAndMessagesQuery>;
+export type MyFriendsAndMessagesLazyQueryHookResult = ReturnType<typeof useMyFriendsAndMessagesLazyQuery>;
+export type MyFriendsAndMessagesQueryResult = Apollo.QueryResult<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>;
+export function refetchMyFriendsAndMessagesQuery(variables?: MyFriendsAndMessagesQueryVariables) {
+      return { query: MyFriendsAndMessagesDocument, variables: variables }
     }
 export const UserDocument = gql`
     query User($data: EditUserInput!) {

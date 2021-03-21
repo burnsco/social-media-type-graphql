@@ -79,7 +79,7 @@ async function main(): Promise<void> {
           await orm.em.flush()
 
           console.log(
-            `User - ${connectedUser.username} has disconncted to subscription server`
+            `User - ${connectedUser.username} has disconnected to subscription server`
           )
         } catch (ex) {
           console.log("exception")

@@ -20,8 +20,8 @@ export default class UserQueryResolver {
     return await em.find(User, {}, { populate: ["friends"] })
   }
 
-  @Query(() => User)
-  async me(@Ctx() { req, em }: ContextType) {
+  @Query(() => User, { nullable: true })
+  async loggedInUser(@Ctx() { req, em }: ContextType) {
     return await em.findOne(
       User,
       { id: req.session.userId },
@@ -30,6 +30,11 @@ export default class UserQueryResolver {
         strategy: LoadStrategy.JOINED
       }
     )
+  }
+
+  @Query(() => User)
+  async me(@Ctx() { req, em }: ContextType) {
+    return await em.findOneOrFail(User, { id: req.session.userId })
   }
 
   @FieldResolver(() => [PrivateMessage], { nullable: true })

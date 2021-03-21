@@ -48,10 +48,18 @@ const DynamicCreatePostDrawer = dynamic(
   { ssr: false }
 )
 
+const DynamicAddFriendDrawer = dynamic(
+  () => import("@/components/common/Drawers/AddFriend"),
+  { ssr: false }
+)
+
 const HeaderMenu = () => {
   const router = useRouter()
+
   const bg = useColorModeValue("white", "#202020")
+
   const { data, loading } = useMeQuery({ ssr: false })
+
   const [logout, { client }] = useLogoutMutation()
 
   if (loading) return <VisuallyHidden>Loading Header</VisuallyHidden>
@@ -63,6 +71,7 @@ const HeaderMenu = () => {
           <DynamicChatRoomDrawer />
           <DynamicCreatePostDrawer />
           <DynamicCreateCategoryDrawer />
+          <DynamicAddFriendDrawer />
         </ButtonGroup>
 
         <Menu>
@@ -104,8 +113,8 @@ const HeaderMenu = () => {
             <MenuGroup>
               <MenuItem
                 mr={2}
-                onClick={() => {
-                  logout().then(() => {
+                onClick={async () => {
+                  await logout().then(() => {
                     client.resetStore().then(async () => {
                       await sleep(1000)
                       router.push("/")

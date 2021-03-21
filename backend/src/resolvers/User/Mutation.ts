@@ -113,7 +113,7 @@ export default class UserMutationResolver {
   async addFriend(
     @Arg("data") data: EditUserInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<UserMutationResponse> {
+  ): Promise<UserMutationResponse | null | boolean> {
     const me = await em.findOneOrFail(
       User,
       { id: req.session.userId },
@@ -124,6 +124,7 @@ export default class UserMutationResolver {
       me.friends.add(user)
     }
     await em.persistAndFlush(user)
+
     return {
       user: me
     }
