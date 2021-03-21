@@ -62,17 +62,15 @@ export default class UserMutationResolver {
         errors
       }
     }
-
     const user = em.create(User, {
       email,
       username,
+      online: false,
       password: await argon2.hash(password)
     })
+
     await em.persistAndFlush(user)
-
     await notifyAboutNewUser(user)
-
-    console.log(user)
 
     req.session.userId = user.id
 
@@ -104,9 +102,7 @@ export default class UserMutationResolver {
     if (data.avatar) {
       user.avatar = data.avatar
     }
-
-    await em.persistAndFlush(user)
-
+    await em.flush()
     return {
       user
     }
@@ -124,13 +120,10 @@ export default class UserMutationResolver {
       { populate: ["friends"] }
     )
     const user = await em.findOneOrFail(User, { username: data.username })
-
     if (me && user) {
       me.friends.add(user)
     }
-
     await em.persistAndFlush(user)
-
     return {
       user: me
     }
@@ -142,15 +135,12 @@ export default class UserMutationResolver {
     @Ctx() { em, req }: ContextType
   ): Promise<UserMutationResponse | null> {
     const user = await em.findOne(User, { email: email })
-
     if (!user) {
       return {
         errors: [emailOrPasswordIsIncorrect]
       }
     }
-
     const valid = await argon2.verify(user.password, password)
-
     if (!valid) {
       return { errors: [emailOrPasswordIsIncorrect] }
     }
@@ -188,7 +178,6 @@ export default class UserMutationResolver {
     topics: Topic.NewUser
   })
   newUser(@Root() newUser: User): User {
-    console.log(newUser)
     return newUser
   }
 }

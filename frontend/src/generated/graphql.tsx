@@ -113,7 +113,6 @@ export type Category = {
   __typename?: 'Category';
   id: Scalars['ID'];
   createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
   name: Scalars['String'];
   messages?: Maybe<Array<Message>>;
 };
@@ -122,7 +121,6 @@ export type Message = {
   __typename?: 'Message';
   id: Scalars['ID'];
   createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
   content: Scalars['String'];
   sentBy: User;
   category: Category;
@@ -133,6 +131,7 @@ export type User = {
   id: Scalars['ID'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+  online?: Maybe<Scalars['Boolean']>;
   email: Scalars['Email'];
   username: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
@@ -389,8 +388,8 @@ export type RegisterInput = {
 };
 
 export type LoginInput = {
-  email?: Maybe<Scalars['Email']>;
-  password?: Maybe<Scalars['String']>;
+  email: Scalars['Email'];
+  password: Scalars['String'];
 };
 
 export type UserLogoutMutationResponse = {
@@ -404,13 +403,7 @@ export type Subscription = {
   newMessage: Message;
   newComments: Comment;
   newVotes: Vote;
-  newPrivateMessage: PrivateMessage;
   newUser: User;
-};
-
-
-export type SubscriptionNewPrivateMessageArgs = {
-  userId: Scalars['ID'];
 };
 
 export type CategoryDetailsFragment = (
@@ -881,14 +874,14 @@ export type UserQuery = (
   ) }
 );
 
-export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
+export type UsersQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = (
+export type UsersQueryQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & UserMeDetailsFragment
+    & Pick<User, 'id' | 'createdAt' | 'updatedAt' | 'username' | 'email' | 'online'>
   )> }
 );
 
@@ -908,24 +901,6 @@ export type UpdateMetaQuery = (
   ) }
 );
 
-export type NewCommentsSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type NewCommentsSubscription = (
-  { __typename?: 'Subscription' }
-  & { newComments: (
-    { __typename?: 'Comment' }
-    & Pick<Comment, 'id' | 'body'>
-    & { createdBy: (
-      { __typename?: 'User' }
-      & Pick<User, 'username'>
-    ), post: (
-      { __typename?: 'Post' }
-      & Pick<Post, 'id' | 'title'>
-    ) }
-  ) }
-);
-
 export type NewChatMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -935,26 +910,6 @@ export type NewChatMessageSubscription = (
     { __typename?: 'Message' }
     & Pick<Message, 'id' | 'content'>
     & { sentBy: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
-    ) }
-  ) }
-);
-
-export type NewPrivateMessageSubscriptionVariables = Exact<{
-  userId: Scalars['ID'];
-}>;
-
-
-export type NewPrivateMessageSubscription = (
-  { __typename?: 'Subscription' }
-  & { newPrivateMessage: (
-    { __typename?: 'PrivateMessage' }
-    & Pick<PrivateMessage, 'id' | 'body'>
-    & { sentBy: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
-    ), sentTo: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
@@ -1941,42 +1896,47 @@ export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export function refetchUserQuery(variables?: UserQueryVariables) {
       return { query: UserDocument, variables: variables }
     }
-export const UsersDocument = gql`
-    query Users {
+export const UsersQueryDocument = gql`
+    query UsersQuery {
   users {
-    ...UserMeDetails
+    id
+    createdAt
+    updatedAt
+    username
+    email
+    online
   }
 }
-    ${UserMeDetailsFragmentDoc}`;
+    `;
 
 /**
- * __useUsersQuery__
+ * __useUsersQueryQuery__
  *
- * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useUsersQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUsersQuery({
+ * const { data, loading, error } = useUsersQueryQuery({
  *   variables: {
  *   },
  * });
  */
-export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+export function useUsersQueryQuery(baseOptions?: Apollo.QueryHookOptions<UsersQueryQuery, UsersQueryQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+        return Apollo.useQuery<UsersQueryQuery, UsersQueryQueryVariables>(UsersQueryDocument, options);
       }
-export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+export function useUsersQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQueryQuery, UsersQueryQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+          return Apollo.useLazyQuery<UsersQueryQuery, UsersQueryQueryVariables>(UsersQueryDocument, options);
         }
-export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
-export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
-export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
-export function refetchUsersQuery(variables?: UsersQueryVariables) {
-      return { query: UsersDocument, variables: variables }
+export type UsersQueryQueryHookResult = ReturnType<typeof useUsersQueryQuery>;
+export type UsersQueryLazyQueryHookResult = ReturnType<typeof useUsersQueryLazyQuery>;
+export type UsersQueryQueryResult = Apollo.QueryResult<UsersQueryQuery, UsersQueryQueryVariables>;
+export function refetchUsersQueryQuery(variables?: UsersQueryQueryVariables) {
+      return { query: UsersQueryDocument, variables: variables }
     }
 export const UpdateMetaDocument = gql`
     query UpdateMeta($category: String) {
@@ -2019,43 +1979,6 @@ export type UpdateMetaQueryResult = Apollo.QueryResult<UpdateMetaQuery, UpdateMe
 export function refetchUpdateMetaQuery(variables?: UpdateMetaQueryVariables) {
       return { query: UpdateMetaDocument, variables: variables }
     }
-export const NewCommentsDocument = gql`
-    subscription NewComments {
-  newComments {
-    id
-    body
-    createdBy {
-      username
-    }
-    post {
-      id
-      title
-    }
-  }
-}
-    `;
-
-/**
- * __useNewCommentsSubscription__
- *
- * To run a query within a React component, call `useNewCommentsSubscription` and pass it any options that fit your needs.
- * When your component renders, `useNewCommentsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useNewCommentsSubscription({
- *   variables: {
- *   },
- * });
- */
-export function useNewCommentsSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewCommentsSubscription, NewCommentsSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<NewCommentsSubscription, NewCommentsSubscriptionVariables>(NewCommentsDocument, options);
-      }
-export type NewCommentsSubscriptionHookResult = ReturnType<typeof useNewCommentsSubscription>;
-export type NewCommentsSubscriptionResult = Apollo.SubscriptionResult<NewCommentsSubscription>;
 export const NewChatMessageDocument = gql`
     subscription NewChatMessage {
   newMessage {
@@ -2090,45 +2013,6 @@ export function useNewChatMessageSubscription(baseOptions?: Apollo.SubscriptionH
       }
 export type NewChatMessageSubscriptionHookResult = ReturnType<typeof useNewChatMessageSubscription>;
 export type NewChatMessageSubscriptionResult = Apollo.SubscriptionResult<NewChatMessageSubscription>;
-export const NewPrivateMessageDocument = gql`
-    subscription NewPrivateMessage($userId: ID!) {
-  newPrivateMessage(userId: $userId) {
-    id
-    body
-    sentBy {
-      id
-      username
-    }
-    sentTo {
-      id
-      username
-    }
-  }
-}
-    `;
-
-/**
- * __useNewPrivateMessageSubscription__
- *
- * To run a query within a React component, call `useNewPrivateMessageSubscription` and pass it any options that fit your needs.
- * When your component renders, `useNewPrivateMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useNewPrivateMessageSubscription({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useNewPrivateMessageSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewPrivateMessageSubscription, NewPrivateMessageSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<NewPrivateMessageSubscription, NewPrivateMessageSubscriptionVariables>(NewPrivateMessageDocument, options);
-      }
-export type NewPrivateMessageSubscriptionHookResult = ReturnType<typeof useNewPrivateMessageSubscription>;
-export type NewPrivateMessageSubscriptionResult = Apollo.SubscriptionResult<NewPrivateMessageSubscription>;
 export const NewUserDocument = gql`
     subscription NewUser {
   newUser {

@@ -24,6 +24,10 @@ export default class User {
   @Property({ onUpdate: () => new Date().toISOString() })
   updatedAt: string = new Date().toISOString()
 
+  @Field(() => Boolean, { defaultValue: false })
+  @Property()
+  online!: boolean
+
   @Field(() => GraphQLEmail)
   @Property()
   email!: string

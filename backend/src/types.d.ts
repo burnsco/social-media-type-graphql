@@ -11,3 +11,9 @@ type CustomSessionRequest = Request & {
   session: Express.Session
   sessionID: string
 }
+
+export interface ContextType2 {
+  em: EntityManager<any> & EntityManager<IDatabaseDriver<Connection>>
+  req: CustomSessionRequest & Express.Request
+  res: Response
+}

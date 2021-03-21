@@ -9,16 +9,18 @@ import {
   initializeLogger,
   initializeRedis
 } from "./config"
+import { User } from "./entities"
 import { resolversArray } from "./resolvers/resolvers"
+import { ContextType2 } from "./types"
 import { wipeDatabase } from "./utils"
-import { seedDatabase } from "./utils/seedDatabase"
 
 async function main(): Promise<void> {
   const { orm } = await initializeDB()
   await wipeDatabase(orm.em)
-  await seedDatabase(orm.em)
   const { app } = initializeExpress()
   const { redisClient, pubSub } = initializeRedis()
+
+  let userId: any
 
   const server = new ApolloServer({
     schema: await buildSchema({
@@ -26,21 +28,63 @@ async function main(): Promise<void> {
       validate: false,
       pubSub
     }),
-    context: ({ req, res }) => ({
-      em: orm.em.fork(),
-      req,
-      res,
-      redis: redisClient
-    }),
+    context: async ({ req, res }: ContextType2) => {
+      if (req && req.session && req.session.userId) {
+        userId = req.session.userId
+        return {
+          em: orm.em.fork(),
+          req,
+          res,
+          redis: redisClient
+        }
+      } else {
+        return {
+          em: orm.em.fork(),
+          req,
+          res,
+          redis: redisClient
+        }
+      }
+    },
     subscriptions: {
       path: "/subscriptions",
       onConnect: async () => {
-        console.log(
-          `Subscription client connected using Apollo server's built-in SubscriptionServer.`
-        )
+        try {
+          const connectedUser = await orm.em.findOne(User, { id: userId })
+
+          if (!connectedUser) {
+            throw new Error("missing userID")
+          }
+
+          connectedUser.online = true
+          await orm.em.flush()
+
+          console.log(
+            `User - ${connectedUser.username} has connected to subscription server`
+          )
+        } catch (ex) {
+          console.log("exception")
+          console.log(ex)
+        }
       },
       onDisconnect: async () => {
-        console.log(`Subscription client disconnected.`)
+        try {
+          const connectedUser = await orm.em.findOne(User, { id: userId })
+
+          if (!connectedUser) {
+            throw new Error("missing userID")
+          }
+
+          connectedUser.online = false
+          await orm.em.flush()
+
+          console.log(
+            `User - ${connectedUser.username} has disconncted to subscription server`
+          )
+        } catch (ex) {
+          console.log("exception")
+          console.log(ex)
+        }
       }
     }
   })

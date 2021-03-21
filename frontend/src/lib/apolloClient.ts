@@ -18,6 +18,7 @@ export const selectedChatRoomName: ReactiveVar<string> = makeVar<string>(
 )
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
+
 const WS_URI = `ws://localhost:4000/subscriptions`
 
 function createApolloClient() {

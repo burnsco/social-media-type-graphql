@@ -28,5 +28,5 @@ export async function seedDatabase(em: EntityManager) {
 
   await em.flush()
 
-  return
+  return { defaultUser }
 }

@@ -3,6 +3,7 @@ import { Box, Stack } from "@chakra-ui/react"
 import dynamic from "next/dynamic"
 import Head from "next/head"
 import PropTypes from "prop-types"
+import UsersSideMenu from "./Users"
 
 const DynamicSideMenu = dynamic(() => import("@/components/ui/Layout/SideMenu"))
 
@@ -51,6 +52,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
         <Stack isInline spacing={14}>
           <Box as="main" width="full">
             {children}
+            <UsersSideMenu />
           </Box>
           <Box
             as="aside"
