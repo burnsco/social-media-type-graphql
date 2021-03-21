@@ -881,7 +881,11 @@ export type UsersQueryQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'createdAt' | 'updatedAt' | 'username' | 'email' | 'online'>
+    & Pick<User, 'id' | 'username' | 'createdAt' | 'updatedAt' | 'online'>
+    & { friends: Array<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'online'>
+    )> }
   )> }
 );
 
@@ -1900,10 +1904,13 @@ export const UsersQueryDocument = gql`
     query UsersQuery {
   users {
     id
+    username
     createdAt
     updatedAt
-    username
-    email
+    friends {
+      id
+      online
+    }
     online
   }
 }
