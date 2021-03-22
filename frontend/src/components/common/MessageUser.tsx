@@ -1,4 +1,4 @@
-import { ChakraField } from "@/components/common/index"
+import { InputField } from "@/components/common/index"
 import { User, useSendPrivateMessageMutation } from "@/generated/graphql"
 import { sleep } from "@/utils/sleepy"
 import {
@@ -8,22 +8,26 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Badge,
+  Box,
   Button,
   chakra,
   IconButton,
-  Tooltip
+  Tooltip,
+  useToast
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { useRef, useState } from "react"
 import { RiMailSendLine } from "react-icons/ri"
 
-const MessageUser = (props: Partial<User>) => {
+const MessageUser = (user: Partial<User>) => {
+  const toast = useToast()
   const [sendMessage, { loading }] = useSendPrivateMessageMutation()
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = useRef<null | HTMLButtonElement>(null)
 
-  if (props && props.username && props.id) {
+  if (user && user.username && user.id) {
     return (
       <>
         <Tooltip
@@ -37,7 +41,7 @@ const MessageUser = (props: Partial<User>) => {
             <IconButton
               onClick={() => setIsOpen(true)}
               size="xs"
-              aria-label={`Message ${props.username}`}
+              aria-label={`Message ${user.username}`}
               icon={<RiMailSendLine />}
             />
           </chakra.span>
@@ -56,27 +60,38 @@ const MessageUser = (props: Partial<User>) => {
                 fontSize="lg"
                 fontWeight="bold"
               >
-                Message ${props.username}
+                To: <Badge colorScheme="purple">{user.username}</Badge>
               </AlertDialogHeader>
 
               <Formik
-                initialValues={{ content: "" }}
+                initialValues={{ body: "" }}
                 onSubmit={async (values, actions) => {
                   actions.setSubmitting(false)
                   sleep(1000)
-                  await sendMessage({
+                  const response = await sendMessage({
                     variables: {
                       data: {
-                        userId: props.id,
-                        content: values.content
+                        userId: user.id as string,
+                        body: values.body
                       }
                     }
                   })
+                  if (!response.errors) {
+                    toast({
+                      position: "bottom-left",
+                      render: () => (
+                        <Box color="white" p={3} bg="blue.500">
+                          Message Sent!
+                        </Box>
+                      )
+                    })
+                    onClose()
+                  }
                 }}
               >
                 <Form>
                   <AlertDialogBody>
-                    <ChakraField id="content" name="content" label="Message" />
+                    <InputField id="body" name="body" label="Message" />
                   </AlertDialogBody>
 
                   <AlertDialogFooter>

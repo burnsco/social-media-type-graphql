@@ -37,13 +37,12 @@ async function main(): Promise<void> {
           res,
           redis: redisClient
         }
-      } else {
-        return {
-          em: orm.em.fork(),
-          req,
-          res,
-          redis: redisClient
-        }
+      }
+      return {
+        em: orm.em.fork(),
+        req,
+        res,
+        redis: redisClient
       }
     },
     subscriptions: {
@@ -88,11 +87,10 @@ async function main(): Promise<void> {
       }
     }
   })
-  server.applyMiddleware({ app, cors: false })
 
+  server.applyMiddleware({ app, cors: false })
   const httpServer = http.createServer(app)
   server.installSubscriptionHandlers(httpServer)
-
   httpServer.listen(process.env.PORT, () => {
     console.log(
       `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`

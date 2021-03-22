@@ -1,5 +1,4 @@
 import { useLogoutMutation, useMeQuery } from "@/generated/graphql"
-import { sleep } from "@/utils/sleepy"
 import {
   Avatar,
   Box,
@@ -53,13 +52,10 @@ const DynamicAddFriendDrawer = dynamic(
   { ssr: false }
 )
 
-const HeaderMenu = () => {
+export default function HeaderMenu() {
   const router = useRouter()
-
   const bg = useColorModeValue("white", "#202020")
-
   const { data, loading } = useMeQuery({ ssr: false })
-
   const [logout, { client }] = useLogoutMutation()
 
   if (loading) return <VisuallyHidden>Loading Header</VisuallyHidden>
@@ -113,10 +109,9 @@ const HeaderMenu = () => {
             <MenuGroup>
               <MenuItem
                 mr={2}
-                onClick={async () => {
-                  await logout().then(() => {
-                    client.resetStore().then(async () => {
-                      await sleep(1000)
+                onClick={() => {
+                  logout().then(() => {
+                    client.resetStore().then(() => {
                       router.push("/")
                     })
                   })
@@ -138,5 +133,3 @@ const HeaderMenu = () => {
     </Stack>
   )
 }
-
-export default HeaderMenu

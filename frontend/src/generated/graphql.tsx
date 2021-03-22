@@ -33,7 +33,6 @@ export type Query = {
   privateMessage?: Maybe<PrivateMessage>;
   user: User;
   users: Array<User>;
-  loggedInUser?: Maybe<User>;
   me: User;
 };
 
@@ -218,7 +217,7 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   register: UserMutationResponse;
   editUser: UserMutationResponse;
-  addFriend: UserMutationResponse;
+  addFriend: AddUserMutationResponse;
   login: UserMutationResponse;
   logout: UserLogoutMutationResponse;
 };
@@ -285,7 +284,7 @@ export type MutationEditUserArgs = {
 
 
 export type MutationAddFriendArgs = {
-  data: EditUserInput;
+  data: AddUserInput;
 };
 
 
@@ -386,6 +385,17 @@ export type RegisterInput = {
   password: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
   about?: Maybe<Scalars['String']>;
+};
+
+export type AddUserMutationResponse = {
+  __typename?: 'AddUserMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  friend?: Maybe<User>;
+  me?: Maybe<User>;
+};
+
+export type AddUserInput = {
+  username: Scalars['String'];
 };
 
 export type LoginInput = {
@@ -590,18 +600,24 @@ export type EditPostMutation = (
 );
 
 export type AddFriendMutationVariables = Exact<{
-  data: EditUserInput;
+  data: AddUserInput;
 }>;
 
 
 export type AddFriendMutation = (
   { __typename?: 'Mutation' }
   & { addFriend: (
-    { __typename?: 'UserMutationResponse' }
-    & { user?: Maybe<(
+    { __typename?: 'AddUserMutationResponse' }
+    & { me?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
-    )> }
+    )>, friend?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'online'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
   ) }
 );
 
@@ -883,14 +899,24 @@ export type MyFriendsAndMessagesQueryVariables = Exact<{ [key: string]: never; }
 
 export type MyFriendsAndMessagesQuery = (
   { __typename?: 'Query' }
-  & { loggedInUser?: Maybe<(
+  & { me: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
     & { friends: Array<(
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username' | 'online'>
+    )>, privateMessages: Array<(
+      { __typename?: 'PrivateMessage' }
+      & Pick<PrivateMessage, 'id' | 'body'>
+      & { sentBy: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ), sentTo: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      ) }
     )> }
-  )> }
+  ) }
 );
 
 export type UsersQueryQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1271,11 +1297,20 @@ export type EditPostMutationHookResult = ReturnType<typeof useEditPostMutation>;
 export type EditPostMutationResult = Apollo.MutationResult<EditPostMutation>;
 export type EditPostMutationOptions = Apollo.BaseMutationOptions<EditPostMutation, EditPostMutationVariables>;
 export const AddFriendDocument = gql`
-    mutation AddFriend($data: EditUserInput!) {
+    mutation AddFriend($data: AddUserInput!) {
   addFriend(data: $data) {
-    user {
+    me {
       id
       username
+    }
+    friend {
+      id
+      username
+      online
+    }
+    errors {
+      field
+      message
     }
   }
 }
@@ -1919,13 +1954,25 @@ export function refetchMeQuery(variables?: MeQueryVariables) {
     }
 export const MyFriendsAndMessagesDocument = gql`
     query MyFriendsAndMessages {
-  loggedInUser {
+  me {
     id
     username
     friends {
       id
       username
       online
+    }
+    privateMessages {
+      id
+      body
+      sentBy {
+        id
+        username
+      }
+      sentTo {
+        id
+        username
+      }
     }
   }
 }

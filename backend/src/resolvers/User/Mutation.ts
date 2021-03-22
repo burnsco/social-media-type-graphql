@@ -1,3 +1,4 @@
+import { LoadStrategy } from "@mikro-orm/core"
 import argon2 from "argon2"
 import {
   Arg,
@@ -19,11 +20,13 @@ import {
 import { Topic } from "../../common/topics"
 import { User } from "../../entities"
 import { EditUserInput, LoginInput, RegisterInput } from "../../inputs"
+import AddUserInput from "../../inputs/add-user-input"
 import { isAuth } from "../../lib/isAuth"
 import {
   UserLogoutMutationResponse,
   UserMutationResponse
 } from "../../responses"
+import AddUserMutationResponse from "../../responses/mutation/add-friend-mutation-response"
 import { ContextType } from "../../types"
 
 @Resolver(() => User)
@@ -108,25 +111,36 @@ export default class UserMutationResolver {
     }
   }
 
-  @Mutation(() => UserMutationResponse)
+  @Mutation(() => AddUserMutationResponse)
   @UseMiddleware(isAuth)
   async addFriend(
-    @Arg("data") data: EditUserInput,
+    @Arg("data") data: AddUserInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<UserMutationResponse | null | boolean> {
-    const me = await em.findOneOrFail(
+  ): Promise<AddUserMutationResponse> {
+    const me = await em.findOne(
       User,
       { id: req.session.userId },
-      { populate: ["friends"] }
+      { populate: ["friends"], strategy: LoadStrategy.JOINED }
     )
-    const user = await em.findOneOrFail(User, { username: data.username })
-    if (me && user) {
-      me.friends.add(user)
+    const friend = await em.findOne(
+      User,
+      { username: data.username },
+      { populate: ["friends"], strategy: LoadStrategy.JOINED }
+    )
+    if (!friend || !me) {
+      return {
+        errors: [{ field: "username", message: "User Not Found" }]
+      }
     }
-    await em.persistAndFlush(user)
+    if (me && friend) {
+      me.friends.add(friend)
+      friend.friends.add(me)
+    }
+    await em.flush()
 
     return {
-      user: me
+      friend,
+      me
     }
   }
 

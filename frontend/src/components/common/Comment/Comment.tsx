@@ -1,5 +1,7 @@
-import { CommentQuery } from "@/generated/graphql"
+import { CommentQuery, useAddFriendMutation } from "@/generated/graphql"
+import { useLoggedInUser } from "@/hooks/useLoggedInUser"
 import { timeDifferenceForDate } from "@/utils/index"
+import { gql } from "@apollo/client"
 import {
   Box,
   Button,
@@ -23,9 +25,12 @@ import { IoAddCircle } from "react-icons/io5"
 import { MdEmail, MdMessage } from "react-icons/md"
 
 const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
+  const [loggedInUser] = useLoggedInUser()
+  const [addFriend, { loading }] = useAddFriendMutation()
   const bg = useColorModeValue("white", "#202020")
   const stackColor = useColorModeValue("gray.600", "gray.400")
   const router = useRouter()
+  const huh = useColorModeValue("darkblue", "lightblue")
   const votebg = useColorModeValue("gray.50", "#313131")
 
   return (
@@ -85,7 +90,47 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
                   </MenuItem>
                   <MenuDivider />
                 </MenuGroup>
-                <MenuItem onClick={() => router.push("/user/account")}>
+                <MenuItem
+                  onClick={async () => {
+                    let response
+                    try {
+                      response = await addFriend({
+                        variables: {
+                          data: {
+                            username: comment?.createdBy.username
+                          }
+                        },
+                        update(cache, { data }) {
+                          if (loggedInUser) {
+                            cache.modify({
+                              id: cache.identify(loggedInUser),
+                              fields: {
+                                friends(existingFriends = []) {
+                                  const newFriendRef = cache.writeFragment({
+                                    data: data?.addFriend.me,
+                                    fragment: gql`
+                                      fragment NewFriend on User {
+                                        id
+                                        username
+                                        online
+                                      }
+                                    `
+                                  })
+                                  return [newFriendRef, ...existingFriends]
+                                }
+                              }
+                            })
+                          }
+                          throw new Error(
+                            "Something went wrong adding a friend"
+                          )
+                        }
+                      })
+                    } catch (ex) {
+                      console.log(ex)
+                    }
+                  }}
+                >
                   <IoAddCircle />
                   <Box ml={3}>Add to Friends</Box>
                 </MenuItem>
@@ -101,7 +146,7 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
             </Menu>
             <Box
               display="inline"
-              color={useColorModeValue("darkblue", "lightblue")}
+              color={huh}
               ml="1"
               _hover={{
                 textDecoration: "underline",

@@ -17,11 +17,11 @@ const HeaderContent = () => {
   const { toggleColorMode: toggleMode } = useColorMode()
   const text = useColorModeValue("dark", "light")
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
+
   return (
     <Flex w="100%" h="100%" px="6" align="center" justify="space-between">
       <LogoSection />
       <NavSection />
-
       <MenuIconsSection />
       <IconButton
         size="md"
@@ -38,31 +38,33 @@ const HeaderContent = () => {
 }
 
 const Header = () => {
+  const headerBG = useColorModeValue("white", "#202020")
+  const headerShadow = useColorModeValue("md", "dark-lg")
   const toast = useToast()
-  const user = useNewUserNotification()
+  const newUser = useNewUserNotification()
 
   useSafeLayoutEffect(() => {
-    if (user) {
+    if (newUser) {
       toast({
         position: "bottom-left",
-        title: `User "${user}"`,
+        title: `User "${newUser}"`,
         description: "Has just joined the community!",
         status: "warning",
         duration: 5000,
         isClosable: true
       })
     }
-  }, [user])
+  }, [newUser])
 
   return (
     <chakra.header
       pos="fixed"
       top="0"
       zIndex="1"
-      bg={useColorModeValue("white", "#202020")}
+      bg={headerBG}
       left="0"
       right="0"
-      boxShadow={useColorModeValue("md", "dark-lg")}
+      boxShadow={headerShadow}
       width="full"
     >
       <chakra.div height="3.5rem" mx="auto" maxW="1200px">

@@ -1,8 +1,17 @@
-mutation AddFriend($data: EditUserInput!) {
+mutation AddFriend($data: AddUserInput!) {
   addFriend(data: $data) {
-    user {
+    me {
       id
       username
+    }
+    friend {
+      id
+      username
+      online
+    }
+    errors {
+      field
+      message
     }
   }
 }

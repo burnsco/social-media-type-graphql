@@ -1,11 +1,23 @@
 query MyFriendsAndMessages {
-  loggedInUser {
+  me {
     id
     username
     friends {
       id
       username
       online
+    }
+    privateMessages {
+      id
+      body
+      sentBy {
+        id
+        username
+      }
+      sentTo {
+        id
+        username
+      }
     }
   }
 }

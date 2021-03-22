@@ -1,3 +1,4 @@
+import MessageUser from "@/components/common/MessageUser"
 import { useMyFriendsAndMessagesQuery } from "@/generated/graphql"
 import {
   Accordion,
@@ -6,6 +7,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Avatar,
+  Badge,
   Box,
   chakra,
   List,
@@ -45,21 +47,47 @@ export default function SideMenuContainer() {
   console.log("friendsAndMessages")
   console.log(data)
 
+  const FriendsCount = () => {
+    if (data && data.me && data.me.friends.length > 0) {
+      const onlineFriends = data.me.friends.map(friend => friend.online).length
+      const offlineFriends = data.me.friends.map(friend => !friend.online)
+        .length
+      return (
+        <Badge ml={1} colorScheme="green">
+          {onlineFriends}
+        </Badge>
+      )
+    }
+    return null
+  }
+
+  const MessagesCount = () => {
+    if (data && data.me && data.me.privateMessages.length > 0) {
+      const privateMessagesCount = data.me.privateMessages.length
+      return (
+        <Badge ml={1} colorScheme="green">
+          {privateMessagesCount}
+        </Badge>
+      )
+    }
+    return null
+  }
+
   const FriendsAcccordion = () => (
     <AccordionItem>
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            FRIENDS
+            FRIENDS <FriendsCount />
           </Box>
           {!loading ? <AccordionIcon /> : <ImSpinner />}
         </AccordionButton>
       </h2>
       <AccordionPanel pb={4}>
         <List mt={2} spacing={3}>
-          {data && data.loggedInUser ? (
+          {data && data.me ? (
             <>
-              {data.loggedInUser.friends.map(user => (
+              {data.me.friends.map(user => (
                 <ListItem key={`friends-list-${user.username}`}>
                   <Avatar
                     size="xs"
@@ -67,7 +95,8 @@ export default function SideMenuContainer() {
                     src="https://bit.ly/ryan-florence"
                     mr={3}
                   />
-                  {user.username}{" "}
+                  {user.username}
+                  <MessageUser {...user} />
                   {user.online ? <OnlineCircle /> : <OfflineCircle />}
                 </ListItem>
               ))}
@@ -99,24 +128,56 @@ export default function SideMenuContainer() {
     </AccordionItem>
   )
 
+  // #TODO figure out UI/Logic for messages
+  // ie. each user has own box (like friends) and all messages
+  // are contained within that
+  // may have to change backend schema, or something...need all messages
+  // in one box, per user
+
   const MessagesAccordion = () => (
     <AccordionItem>
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            MESSAGES
+            MESSAGES <MessagesCount />
           </Box>
           {!loading ? <AccordionIcon /> : <ImSpinner />}
         </AccordionButton>
       </h2>
       <AccordionPanel pb={4}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
+        <List mt={2} spacing={3}>
+          {data && data.me && data.me.privateMessages ? (
+            <>
+              {data.me.privateMessages.map(message => {
+                let myFriend
+                if (message.sentBy.username !== data.me.username) {
+                  myFriend = message.sentBy.username
+                }
+                myFriend = message.sentTo.username
+                return (
+                  <ListItem key={`messages-list-${message.id}`}>
+                    <Avatar
+                      size="xs"
+                      name="Ryan Florence"
+                      src="https://bit.ly/ryan-florence"
+                      mr={3}
+                    />
+                    {myFriend}
+                  </ListItem>
+                )
+              })}
+            </>
+          ) : (
+            <ListItem>No Friends Yet</ListItem>
+          )}
+        </List>
       </AccordionPanel>
     </AccordionItem>
   )
+
+  // #TODO figure out UI/Logic for messages
+  // ie. each user has own box (like friends) and all messages
+  // are contained within that
 
   return (
     <Skeleton isLoaded={!loading}>
@@ -124,12 +185,13 @@ export default function SideMenuContainer() {
         onClick={() => refetch()}
         bg={bg}
         minW="200px"
-        maxW="260px"
+        maxW="300px"
+        borderY="none"
         borderWidth="1px"
         overflow="hidden"
         boxShadow="xs"
       >
-        <Accordion allowToggle>
+        <Accordion>
           <SubredditsAccordion />
           <FriendsAcccordion />
           <MessagesAccordion />
