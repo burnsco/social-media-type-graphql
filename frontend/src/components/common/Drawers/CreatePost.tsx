@@ -41,6 +41,8 @@ function CreatePostDrawer() {
   const [uploadProgress, setUploadProgress] = useState(0)
 
   const [imageUrl, setImageUrl] = useState(null)
+  const [imageH, setImageH] = useState(null)
+  const [imageW, setImageW] = useState(null)
 
   const router = useRouter()
   const toast = useToast()
@@ -63,7 +65,9 @@ function CreatePostDrawer() {
           title: values.title,
           text: values.text,
           link: values.link,
-          image: imageUrl
+          image: imageUrl,
+          imageH: imageH,
+          imageW: imageW
         }
       },
       update(cache, { data }) {
@@ -118,8 +122,11 @@ function CreatePostDrawer() {
         if (error) {
           throw new Error(error.message)
         }
-
+        console.log("image details")
+        console.log(response.body)
         setImageUrl(response.body.public_id)
+        setImageH(response.body.height)
+        setImageW(response.body.width)
       })
   }, [])
 

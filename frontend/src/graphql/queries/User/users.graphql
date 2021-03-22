@@ -1,13 +1,8 @@
-query UsersQuery {
+query Users {
   users {
     id
     username
-    createdAt
-    updatedAt
-    friends {
-      id
-      online
-    }
-    online
+    email
+    about
   }
 }

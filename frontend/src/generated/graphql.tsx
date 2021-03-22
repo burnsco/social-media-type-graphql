@@ -344,6 +344,8 @@ export type CreatePostInput = {
   text?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
   link?: Maybe<Scalars['String']>;
+  imageH?: Maybe<Scalars['String']>;
+  imageW?: Maybe<Scalars['String']>;
 };
 
 export type EditPostInput = {
@@ -823,7 +825,7 @@ export type ChatRoomMessagesQuery = (
 );
 
 export type PostQueryVariables = Exact<{
-  postId?: Maybe<Scalars['Int']>;
+  postId: Scalars['Int'];
 }>;
 
 
@@ -919,18 +921,27 @@ export type MyFriendsAndMessagesQuery = (
   ) }
 );
 
-export type UsersQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type UserQueryVariables = Exact<{
+  data: EditUserInput;
+}>;
 
 
-export type UsersQueryQuery = (
+export type UserQuery = (
+  { __typename?: 'Query' }
+  & { user: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'email' | 'about'>
+  ) }
+);
+
+export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UsersQuery = (
   { __typename?: 'Query' }
   & { users: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'createdAt' | 'updatedAt' | 'online'>
-    & { friends: Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'online'>
-    )> }
+    & Pick<User, 'id' | 'username' | 'email' | 'about'>
   )> }
 );
 
@@ -1803,7 +1814,7 @@ export function refetchChatRoomMessagesQuery(variables?: ChatRoomMessagesQueryVa
       return { query: ChatRoomMessagesDocument, variables: variables }
     }
 export const PostDocument = gql`
-    query Post($postId: Int) {
+    query Post($postId: Int!) {
   post(postId: $postId) {
     ...PostDetails
     author {
@@ -1841,7 +1852,7 @@ ${CategoryDetailsFragmentDoc}`;
  *   },
  * });
  */
-export function usePostQuery(baseOptions?: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>) {
+export function usePostQuery(baseOptions: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<PostQuery, PostQueryVariables>(PostDocument, options);
       }
@@ -2009,50 +2020,86 @@ export type MyFriendsAndMessagesQueryResult = Apollo.QueryResult<MyFriendsAndMes
 export function refetchMyFriendsAndMessagesQuery(variables?: MyFriendsAndMessagesQueryVariables) {
       return { query: MyFriendsAndMessagesDocument, variables: variables }
     }
-export const UsersQueryDocument = gql`
-    query UsersQuery {
-  users {
+export const UserDocument = gql`
+    query User($data: EditUserInput!) {
+  user(data: $data) {
     id
     username
-    createdAt
-    updatedAt
-    friends {
-      id
-      online
-    }
-    online
+    email
+    about
   }
 }
     `;
 
 /**
- * __useUsersQueryQuery__
+ * __useUserQuery__
  *
- * To run a query within a React component, call `useUsersQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useUsersQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUsersQueryQuery({
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+      }
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export function refetchUserQuery(variables?: UserQueryVariables) {
+      return { query: UserDocument, variables: variables }
+    }
+export const UsersDocument = gql`
+    query Users {
+  users {
+    id
+    username
+    email
+    about
+  }
+}
+    `;
+
+/**
+ * __useUsersQuery__
+ *
+ * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useUsersQueryQuery(baseOptions?: Apollo.QueryHookOptions<UsersQueryQuery, UsersQueryQueryVariables>) {
+export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UsersQueryQuery, UsersQueryQueryVariables>(UsersQueryDocument, options);
+        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
       }
-export function useUsersQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQueryQuery, UsersQueryQueryVariables>) {
+export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UsersQueryQuery, UsersQueryQueryVariables>(UsersQueryDocument, options);
+          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
         }
-export type UsersQueryQueryHookResult = ReturnType<typeof useUsersQueryQuery>;
-export type UsersQueryLazyQueryHookResult = ReturnType<typeof useUsersQueryLazyQuery>;
-export type UsersQueryQueryResult = Apollo.QueryResult<UsersQueryQuery, UsersQueryQueryVariables>;
-export function refetchUsersQueryQuery(variables?: UsersQueryQueryVariables) {
-      return { query: UsersQueryDocument, variables: variables }
+export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
+export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
+export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
+export function refetchUsersQuery(variables?: UsersQueryVariables) {
+      return { query: UsersDocument, variables: variables }
     }
 export const UpdateMetaDocument = gql`
     query UpdateMeta($category: String) {

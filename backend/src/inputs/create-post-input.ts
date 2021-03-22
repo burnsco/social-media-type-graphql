@@ -17,4 +17,10 @@ export default class CreatePostInput implements Partial<Post> {
 
   @Field(() => String, { nullable: true })
   link?: string
+
+  @Field(() => String, { nullable: true })
+  imageH?: string
+
+  @Field(() => String, { nullable: true })
+  imageW?: string
 }

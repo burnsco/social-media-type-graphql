@@ -1,15 +1,8 @@
 import { ChakraField } from "@/components/common/index"
-import { TabPanel } from "@chakra-ui/react"
+import { PannelWrapper } from "./PanelWrapper"
 
 export const RegularPost = () => (
-  <TabPanel>
-    <ChakraField
-      label=""
-      id="title"
-      placeholder="title"
-      aria-placeholder="post Title"
-      name="title"
-    />
+  <PannelWrapper>
     <ChakraField
       label=""
       id="text"
@@ -17,18 +10,11 @@ export const RegularPost = () => (
       aria-placeholder="post Text"
       name="text"
     />
-  </TabPanel>
+  </PannelWrapper>
 )
 
 export const LinkPost = () => (
-  <TabPanel>
-    <ChakraField
-      label=""
-      id="title"
-      name="title"
-      placeholder="title"
-      aria-placeholder="Post Title"
-    />
+  <PannelWrapper>
     <ChakraField
       label=""
       id="link"
@@ -36,18 +22,11 @@ export const LinkPost = () => (
       placeholder="link"
       aria-placeholder="Post Link"
     />
-  </TabPanel>
+  </PannelWrapper>
 )
 
 export const MediaPost = () => (
-  <TabPanel>
-    <ChakraField
-      label=""
-      id="title"
-      name="title"
-      placeholder="title"
-      aria-placeholder="Post Title"
-    />
+  <PannelWrapper>
     <ChakraField
       label=""
       id="image"
@@ -62,5 +41,5 @@ export const MediaPost = () => (
       placeholder="video"
       aria-placeholder="Post Video"
     />
-  </TabPanel>
+  </PannelWrapper>
 )

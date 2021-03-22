@@ -1,6 +1,13 @@
 import Layout from "@/components/ui/Layout"
 import { useUserQuery } from "@/generated/graphql"
-import { Box, Heading, Text, VisuallyHidden } from "@chakra-ui/react"
+import {
+  Box,
+  Container,
+  Heading,
+  List,
+  ListItem,
+  VisuallyHidden
+} from "@chakra-ui/react"
 import { useRouter } from "next/router"
 
 const AboutUserPage = () => {
@@ -14,12 +21,22 @@ const AboutUserPage = () => {
 
   return (
     <Layout title={data?.user.username || "user"}>
-      <Box p={1}>
-        <Heading>User</Heading>
-        <Text>{data?.user.username} </Text>
-        <Text>{data?.user.email} </Text>
-        <Text>{data?.user.about} </Text>
-      </Box>
+      <Container>
+        <Box
+          p={1}
+          maxW="sm"
+          borderWidth="1px"
+          borderRadius="lg"
+          overflow="hidden"
+        >
+          <Heading>User Details</Heading>
+          <List>
+            <ListItem>{data?.user.username} </ListItem>
+            <ListItem>{data?.user.email} </ListItem>
+            <ListItem>{data?.user.about} </ListItem>
+          </List>
+        </Box>
+      </Container>
     </Layout>
   )
 }
