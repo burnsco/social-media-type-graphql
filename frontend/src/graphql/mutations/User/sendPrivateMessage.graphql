@@ -4,9 +4,11 @@ mutation SendPrivateMessage($data: PrivateMessageInput!) {
     body
     createdAt
     sentTo {
+      id
       username
     }
     sentBy {
+      id
       username
     }
   }

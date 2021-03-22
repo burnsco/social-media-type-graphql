@@ -5,6 +5,5 @@ export const CreatePostInputType: CreatePostInput = {
   title: "",
   text: "",
   link: "",
-  video: "",
   image: ""
 }

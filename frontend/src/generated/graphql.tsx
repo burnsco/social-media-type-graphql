@@ -701,10 +701,10 @@ export type SendPrivateMessageMutation = (
     & Pick<PrivateMessage, 'id' | 'body' | 'createdAt'>
     & { sentTo: (
       { __typename?: 'User' }
-      & Pick<User, 'username'>
+      & Pick<User, 'id' | 'username'>
     ), sentBy: (
       { __typename?: 'User' }
-      & Pick<User, 'username'>
+      & Pick<User, 'id' | 'username'>
     ) }
   ) }
 );
@@ -1506,9 +1506,11 @@ export const SendPrivateMessageDocument = gql`
     body
     createdAt
     sentTo {
+      id
       username
     }
     sentBy {
+      id
       username
     }
   }

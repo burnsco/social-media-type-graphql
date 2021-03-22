@@ -20,7 +20,6 @@ import { FaUserCircle } from "react-icons/fa"
 import { IoAddCircle } from "react-icons/io5"
 import { MdEmail, MdMessage } from "react-icons/md"
 import { User } from "../../../generated/graphql"
-import MessageUser from "../MessageUser"
 
 const PostHeader: React.FC<{
   category?: string | null
@@ -38,7 +37,7 @@ const PostHeader: React.FC<{
       Posted by
       <Menu>
         <Button ml={2} size="xs" variant="outline" as={MenuButton}>
-          {author}
+          {author?.username}
         </Button>
 
         <MenuList opacity="0.7" bg={bg}>
@@ -66,7 +65,6 @@ const PostHeader: React.FC<{
       <Box display="inline" ml="2">
         {timeDifferenceForDate(createdAt)}
       </Box>
-      <Box>{author ? <MessageUser {...author} /> : null}</Box>
     </Box>
   )
 

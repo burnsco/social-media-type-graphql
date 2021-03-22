@@ -40,9 +40,15 @@ function timeDifference(curr?: number, prev?: number) {
   return `${Math.round(elapsed / milliSecondsPerYear)} years ago`
 }
 
+// how to convert date.ISOSTRING ==> date.toString or date.toTimeString() then => getTime()
+
 export default function timeDifferenceForDate(date?: string | null | number) {
-  const conv = Number(date)
-  const now = new Date().getTime()
-  const updated = new Date(conv).getTime()
-  return timeDifference(now, updated)
+  if (date) {
+    const conv = date?.toLocaleString()
+    const now = new Date().getTime()
+    const updated = new Date(conv).getTime()
+    return timeDifference(now, updated)
+  }
+  console.log("error")
+  return null
 }

@@ -1,4 +1,3 @@
-import MessageUser from "@/components/common/MessageUser"
 import { useMyFriendsAndMessagesQuery } from "@/generated/graphql"
 import {
   Accordion,
@@ -10,6 +9,7 @@ import {
   Badge,
   Box,
   chakra,
+  Input,
   List,
   ListItem,
   Skeleton,
@@ -84,27 +84,73 @@ export default function SideMenuContainer() {
         </AccordionButton>
       </h2>
       <AccordionPanel pb={4}>
-        <List mt={2} spacing={3}>
-          {data && data.me ? (
-            <>
-              {data.me.friends.map(user => (
-                <ListItem key={`friends-list-${user.username}`}>
-                  <Avatar
-                    size="xs"
-                    name="Ryan Florence"
-                    src="https://bit.ly/ryan-florence"
-                    mr={3}
-                  />
-                  {user.username}
-                  <MessageUser {...user} />
-                  {user.online ? <OnlineCircle /> : <OfflineCircle />}
-                </ListItem>
-              ))}
-            </>
-          ) : (
-            <ListItem>No Friends Yet</ListItem>
-          )}
-        </List>
+        <Accordion allowToggle>
+          <List mt={2} spacing={3}>
+            {data && data.me ? (
+              <>
+                {data.me.friends.map(user => (
+                  <AccordionItem color="" key={`friends-list-${user.username}`}>
+                    <AccordionButton
+                      _expanded={{ bg: "lightgrey", borderRadius: 5 }}
+                    >
+                      <ListItem>
+                        <Box flex="1" textAlign="left">
+                          {user.username}
+                          {user.online ? <OnlineCircle /> : <OfflineCircle />}
+                          <AccordionIcon ml={3} />
+                        </Box>
+                      </ListItem>
+                    </AccordionButton>
+                    <AccordionPanel pb={2}>
+                      <List mt={2} spacing={3}>
+                        {data && data.me && data.me.privateMessages ? (
+                          <>
+                            {data.me.privateMessages.map(message => {
+                              if (
+                                (message.sentBy.username ||
+                                  message.sentTo.username) === data.me.username
+                              )
+                                return (
+                                  <ListItem key={`messages-list-${message.id}`}>
+                                    <Avatar
+                                      size="xs"
+                                      name="Ryan Florence"
+                                      src="https://bit.ly/ryan-florence"
+                                      mr={3}
+                                    />
+                                    {message.body}
+                                  </ListItem>
+                                )
+
+                              return (
+                                <ListItem key={`messages-list-${message.id}`}>
+                                  {message.body}
+                                  <Avatar
+                                    size="xs"
+                                    name="Ryan Florence"
+                                    src="https://bit.ly/ryan-florence"
+                                    ml={1}
+                                  />
+                                </ListItem>
+                              )
+                            })}
+                          </>
+                        ) : (
+                          <ListItem>No Friends Yet</ListItem>
+                        )}
+                        <ListItem>
+                          <Input placeholder="Type your message" />
+                        </ListItem>
+                      </List>
+                    </AccordionPanel>
+                  </AccordionItem>
+                ))}
+              </>
+            ) : (
+              <ListItem>No Friends Yet</ListItem>
+            )}
+          </List>
+        </Accordion>
       </AccordionPanel>
     </AccordionItem>
   )
@@ -191,7 +237,7 @@ export default function SideMenuContainer() {
         overflow="hidden"
         boxShadow="xs"
       >
-        <Accordion>
+        <Accordion allowToggle>
           <SubredditsAccordion />
           <FriendsAcccordion />
           <MessagesAccordion />

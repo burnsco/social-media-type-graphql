@@ -1,6 +1,7 @@
-import { PostQuery, useMeQuery } from "@/generated/graphql"
+import { PostQuery } from "@/generated/graphql"
 import { Flex, useColorModeValue } from "@chakra-ui/react"
 import { memo } from "react"
+import { useLoggedInUser } from "../../../hooks/useLoggedInUser"
 import PostBody from "./Body"
 import PostContainer from "./Container"
 import PostFooter from "./Footer"
@@ -10,7 +11,7 @@ import VoteBox from "./VoteBox"
 const NewPost: React.FC<PostQuery> = props => {
   const bg = useColorModeValue("white", "#202020")
 
-  const { data } = useMeQuery()
+  const [loggedInUser] = useLoggedInUser()
   const { post } = props
 
   const postId = post?.id
@@ -24,9 +25,8 @@ const NewPost: React.FC<PostQuery> = props => {
   const postImage = post?.image
   const postLink = post?.link
   const postCommentsCount = post?.totalComments?.count ?? 0
-  const isOwner = data?.me?.id === post?.author.id ?? false
-  const isLoggedIn = data?.me?.username !== null
-  console.log(post)
+  const isOwner = loggedInUser?.id === post?.author.id ?? false
+  const isLoggedIn = loggedInUser !== null
 
   return (
     <PostContainer bg={bg}>
