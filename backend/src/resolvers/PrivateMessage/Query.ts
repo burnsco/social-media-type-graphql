@@ -9,23 +9,23 @@ export default class PrivateMessageQueryResolver {
     @Ctx() { em, req }: ContextType
   ): Promise<PrivateMessage> {
     return await em.findOneOrFail(PrivateMessage, {
-      sentBy: { id: req.session.userId }
+      sentTo: { id: req.session.userId }
     })
   }
 
-  @FieldResolver()
+  @FieldResolver(() => PrivateMessage)
   async sentBy(
     @Root() privateMessage: PrivateMessage,
     @Ctx() { em }: ContextType
   ): Promise<User> {
-    return await em.findOneOrFail(User, privateMessage.sentBy.id)
+    return await em.findOneOrFail(User, privateMessage.sentBy)
   }
 
-  @FieldResolver()
+  @FieldResolver(() => User)
   async sentTo(
-    @Root() message: PrivateMessage,
+    @Root() privateMessage: PrivateMessage,
     @Ctx() { em }: ContextType
   ): Promise<User> {
-    return await em.findOneOrFail(User, message.sentTo.id)
+    return await em.findOneOrFail(User, privateMessage.sentTo)
   }
 }

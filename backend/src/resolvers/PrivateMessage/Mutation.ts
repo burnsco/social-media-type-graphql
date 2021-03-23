@@ -1,4 +1,17 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql"
+import {
+  Arg,
+  Args,
+  Ctx,
+  Mutation,
+  Publisher,
+  PubSub,
+  Resolver,
+  Root,
+  Subscription,
+  UseMiddleware
+} from "type-graphql"
+import PrivateMessageArgs from "../../args/private-message-args"
+import { Topic } from "../../common/topics"
 import { User } from "../../entities"
 import PrivateMessage from "../../entities/PrivateMessage"
 import PrivateMessageInput from "../../inputs/private-message-input"
@@ -11,12 +24,17 @@ export default class PrivateMessageMutationResolver {
   @UseMiddleware(isAuth)
   async sendPrivateMessage(
     @Arg("data") { body, userId }: PrivateMessageInput,
-    @Ctx() { em, req }: ContextType
+    @PubSub(Topic.NewPrivateMessage)
+    notifyAboutNewPrivateMessage: Publisher<PrivateMessage>,
+    @Ctx()
+    { em, req }: ContextType
   ): Promise<PrivateMessage | null> {
-    const user = await em.findOneOrFail(User, req.session.userId, [
+    const user = await em.findOneOrFail(User, { id: req.session.userId }, [
       "privateMessages"
     ])
-    const receipent = await em.findOneOrFail(User, userId, ["privateMessages"])
+    const receipent = await em.findOneOrFail(User, { id: userId }, [
+      "privateMessages"
+    ])
 
     if (user && receipent && req.session.userId) {
       const newmessage = em.create(PrivateMessage, {
@@ -34,8 +52,29 @@ export default class PrivateMessageMutationResolver {
 
       await em.flush()
 
+      await notifyAboutNewPrivateMessage(newmessage)
+
       return newmessage
     }
     return null
+  }
+
+  // *** SUBSCRIPTION *** \\
+
+  @Subscription(() => PrivateMessage, {
+    topics: Topic.NewPrivateMessage,
+    filter: ({ payload, args }) => {
+      console.log("payload")
+      console.log(payload)
+      console.log("args")
+      console.log(args)
+      return payload.sentTo === args.userId
+    }
+  })
+  newPrivateMessage(
+    @Root() newPrivateMessage: PrivateMessage,
+    @Args() { userId }: PrivateMessageArgs
+  ): PrivateMessage {
+    return newPrivateMessage
   }
 }

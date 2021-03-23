@@ -1,7 +1,7 @@
-import { ArgsType, Field, ID } from "type-graphql"
+import { ArgsType, Field, Int } from "type-graphql"
 
 @ArgsType()
 export default class PrivateMessageArgs {
-  @Field(() => ID)
+  @Field(() => Int)
   userId: number
 }
