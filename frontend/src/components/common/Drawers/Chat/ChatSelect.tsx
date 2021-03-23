@@ -19,8 +19,8 @@ import { FaHome } from "react-icons/fa"
 export default function ChatSelection() {
   const bg = useColorModeValue("white", "#202020")
 
-  const selectedCategoryId = useReactiveVar(selectedChatRoomId)
-  const selectedCategoryName = useReactiveVar(selectedChatRoomName)
+  const chatID = useReactiveVar(selectedChatRoomId)
+  const chatName = useReactiveVar(selectedChatRoomName)
 
   const [
     fetchCategories,
@@ -30,6 +30,10 @@ export default function ChatSelection() {
   useEffect(() => fetchCategories(), [fetchCategories])
 
   if (!categoriesError) {
+    console.log("selected chat room name")
+    console.log(chatName)
+    console.log("selected chat room id")
+    console.log(chatID)
     return (
       <Flex flexGrow={2}>
         <Menu closeOnSelect={true}>
@@ -46,15 +50,15 @@ export default function ChatSelection() {
                 rightIcon={isOpen ? <BsArrowDown /> : <BsArrowLeft />}
                 variant="outline"
               >
-                {loadingCategories ? "Loading..." : selectedCategoryName}
+                {loadingCategories ? "Loading..." : chatName}
               </MenuButton>
               {categoriesData && categoriesData.categories && (
                 <MenuList minWidth="240px" opacity="0.7" bg={bg}>
                   <MenuOptionGroup title="subreddits">
-                    {categoriesData.categories.map((item, i) => (
+                    {categoriesData.categories.map(item => (
                       <MenuItem
                         value={item.name}
-                        key={`subreddit-center-menu-${item.id}-${i}`}
+                        key={`chat-selection-${item.id}}`}
                         onClick={() => {
                           if (item && item.name && item.id) {
                             selectedChatRoomId(Number(item.id))

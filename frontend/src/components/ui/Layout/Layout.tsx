@@ -12,7 +12,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
   children,
   title
 }) => {
-  const { data, loading } = useMeQuery({ ssr: false })
+  const { data } = useMeQuery({ ssr: false })
   return (
     <>
       <Head>
@@ -50,6 +50,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
         />
       </Head>
       <Header />
+
       <Box px={["0em", "1em", "3em", "6em"]} py="6em">
         <Stack isInline spacing={14}>
           <Box as="main" width="full">

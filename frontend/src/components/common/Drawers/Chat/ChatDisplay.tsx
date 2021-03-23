@@ -1,47 +1,30 @@
-import { gql, useQuery } from "@apollo/client"
+import {
+  CategoryChatSubDocument,
+  useChatRoomMessagesQuery
+} from "@/generated/graphql"
+import { selectedChatRoomId } from "@/lib/apolloClient"
+import { useReactiveVar } from "@apollo/client"
+import { Alert } from "@chakra-ui/react"
 import React from "react"
 import ChatList from "./ChatList"
 
-const CHAT_ROOM_MESSAGES_SUBSCRIPTION = gql`
-  subscription NewChatMessage {
-    newMessage {
-      id
-      content
-      createdAt
-
-      sentBy {
-        id
-        username
-      }
-    }
-  }
-`
-
-export const CHAT_ROOM_MESSAGES_QUERY = gql`
-  query {
-    messages {
-      id
-      content
-      createdAt
-
-      sentBy {
-        id
-        username
-      }
-    }
-  }
-`
-
 export default function ChatDisplay() {
-  const { subscribeToMore, ...result } = useQuery(CHAT_ROOM_MESSAGES_QUERY)
+  const selectedCategoryId = useReactiveVar(selectedChatRoomId)
 
+  const { subscribeToMore, ...result } = useChatRoomMessagesQuery({
+    variables: { categoryId: selectedCategoryId }
+  })
+
+  console.log("chat display")
+  console.log(result)
   if (subscribeToMore !== undefined) {
     return (
       <ChatList
         {...result}
         handleSubscription={() =>
           subscribeToMore({
-            document: CHAT_ROOM_MESSAGES_SUBSCRIPTION,
+            document: CategoryChatSubDocument,
+            variables: { categoryId: selectedCategoryId },
             updateQuery: (prev, { subscriptionData }) => {
               if (!subscriptionData.data) return prev
               const newFeedItem = subscriptionData.data.newMessage
@@ -55,5 +38,5 @@ export default function ChatDisplay() {
       />
     )
   }
-  return null
+  return <Alert>No Chat Yet</Alert>
 }

@@ -5,6 +5,9 @@ export default function ChatList(props: any) {
   const { handleSubscription } = props
   const { data, loading } = props
 
+  console.log("chat list")
+  console.log(props)
+
   useEffect(() => {
     handleSubscription()
   })

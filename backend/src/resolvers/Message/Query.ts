@@ -1,5 +1,5 @@
 import { Args, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
-import ChatRoomArgs from "../../args/chat-args"
+import ChatRoomArgsForQuery from "../../args/chat-args"
 import { Category, Message, User } from "../../entities"
 import { ContextType } from "../../types"
 
@@ -13,13 +13,8 @@ export default class MessageQueryResolver {
   }
 
   @Query(() => [Message], { nullable: true })
-  async messages(@Ctx() { em }: ContextType): Promise<Message[] | null> {
-    return await em.find(Message, {})
-  }
-
-  @Query(() => [Message], { nullable: true })
-  async messagesByCategory(
-    @Args() { categoryId }: ChatRoomArgs,
+  async messages(
+    @Args() { categoryId }: ChatRoomArgsForQuery,
     @Ctx() { em }: ContextType
   ): Promise<Message[] | null> {
     return await em.find(Message, { category: { id: categoryId } })

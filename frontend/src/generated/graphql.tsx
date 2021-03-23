@@ -24,7 +24,6 @@ export type Query = {
   comments?: Maybe<Array<Comment>>;
   message?: Maybe<Message>;
   messages?: Maybe<Array<Message>>;
-  messagesByCategory?: Maybe<Array<Message>>;
   _allPostsMeta: _QueryMeta;
   _categoryPostsMeta: _QueryMeta;
   post: Post;
@@ -38,7 +37,7 @@ export type Query = {
 
 
 export type QueryCategoryArgs = {
-  categoryId: Scalars['ID'];
+  categoryId: Scalars['Int'];
 };
 
 
@@ -70,8 +69,8 @@ export type QueryCommentsArgs = {
 };
 
 
-export type QueryMessagesByCategoryArgs = {
-  categoryId: Scalars['ID'];
+export type QueryMessagesArgs = {
+  categoryId: Scalars['Int'];
 };
 
 
@@ -416,7 +415,18 @@ export type Subscription = {
   newMessage: Message;
   newComments: Comment;
   newVotes: Vote;
+  newPrivateMessage: PrivateMessage;
   newUser: User;
+};
+
+
+export type SubscriptionNewMessageArgs = {
+  categoryId: Scalars['Int'];
+};
+
+
+export type SubscriptionNewPrivateMessageArgs = {
+  userId: Scalars['ID'];
 };
 
 export type CategoryDetailsFragment = (
@@ -809,7 +819,9 @@ export type CommentsForPostQuery = (
   ) }
 );
 
-export type ChatRoomMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+export type ChatRoomMessagesQueryVariables = Exact<{
+  categoryId: Scalars['Int'];
+}>;
 
 
 export type ChatRoomMessagesQuery = (
@@ -820,6 +832,9 @@ export type ChatRoomMessagesQuery = (
     & { sentBy: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
+    ), category: (
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
     ) }
   )>> }
 );
@@ -961,17 +976,22 @@ export type UpdateMetaQuery = (
   ) }
 );
 
-export type NewChatMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type CategoryChatSubSubscriptionVariables = Exact<{
+  categoryId: Scalars['Int'];
+}>;
 
 
-export type NewChatMessageSubscription = (
+export type CategoryChatSubSubscription = (
   { __typename?: 'Subscription' }
   & { newMessage: (
     { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'content'>
+    & Pick<Message, 'id' | 'createdAt' | 'content'>
     & { sentBy: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
+    ), category: (
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
     ) }
   ) }
 );
@@ -1772,14 +1792,18 @@ export function refetchCommentsForPostQuery(variables?: CommentsForPostQueryVari
       return { query: CommentsForPostDocument, variables: variables }
     }
 export const ChatRoomMessagesDocument = gql`
-    query ChatRoomMessages {
-  messages {
+    query ChatRoomMessages($categoryId: Int!) {
+  messages(categoryId: $categoryId) {
     id
     createdAt
     content
     sentBy {
       id
       username
+    }
+    category {
+      id
+      name
     }
   }
 }
@@ -1797,10 +1821,11 @@ export const ChatRoomMessagesDocument = gql`
  * @example
  * const { data, loading, error } = useChatRoomMessagesQuery({
  *   variables: {
+ *      categoryId: // value for 'categoryId'
  *   },
  * });
  */
-export function useChatRoomMessagesQuery(baseOptions?: Apollo.QueryHookOptions<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>) {
+export function useChatRoomMessagesQuery(baseOptions: Apollo.QueryHookOptions<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ChatRoomMessagesQuery, ChatRoomMessagesQueryVariables>(ChatRoomMessagesDocument, options);
       }
@@ -2144,40 +2169,46 @@ export type UpdateMetaQueryResult = Apollo.QueryResult<UpdateMetaQuery, UpdateMe
 export function refetchUpdateMetaQuery(variables?: UpdateMetaQueryVariables) {
       return { query: UpdateMetaDocument, variables: variables }
     }
-export const NewChatMessageDocument = gql`
-    subscription NewChatMessage {
-  newMessage {
+export const CategoryChatSubDocument = gql`
+    subscription CategoryChatSub($categoryId: Int!) {
+  newMessage(categoryId: $categoryId) {
     id
+    createdAt
     content
     sentBy {
       id
       username
+    }
+    category {
+      id
+      name
     }
   }
 }
     `;
 
 /**
- * __useNewChatMessageSubscription__
+ * __useCategoryChatSubSubscription__
  *
- * To run a query within a React component, call `useNewChatMessageSubscription` and pass it any options that fit your needs.
- * When your component renders, `useNewChatMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCategoryChatSubSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCategoryChatSubSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useNewChatMessageSubscription({
+ * const { data, loading, error } = useCategoryChatSubSubscription({
  *   variables: {
+ *      categoryId: // value for 'categoryId'
  *   },
  * });
  */
-export function useNewChatMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewChatMessageSubscription, NewChatMessageSubscriptionVariables>) {
+export function useCategoryChatSubSubscription(baseOptions: Apollo.SubscriptionHookOptions<CategoryChatSubSubscription, CategoryChatSubSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<NewChatMessageSubscription, NewChatMessageSubscriptionVariables>(NewChatMessageDocument, options);
+        return Apollo.useSubscription<CategoryChatSubSubscription, CategoryChatSubSubscriptionVariables>(CategoryChatSubDocument, options);
       }
-export type NewChatMessageSubscriptionHookResult = ReturnType<typeof useNewChatMessageSubscription>;
-export type NewChatMessageSubscriptionResult = Apollo.SubscriptionResult<NewChatMessageSubscription>;
+export type CategoryChatSubSubscriptionHookResult = ReturnType<typeof useCategoryChatSubSubscription>;
+export type CategoryChatSubSubscriptionResult = Apollo.SubscriptionResult<CategoryChatSubSubscription>;
 export const NewUserDocument = gql`
     subscription NewUser {
   newUser {

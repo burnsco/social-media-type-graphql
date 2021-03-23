@@ -12,9 +12,9 @@ import { useMemo } from "react"
 import { SubscriptionClient } from "subscriptions-transport-ws"
 import { cacheOptions } from "./cache"
 
-export const selectedChatRoomId: ReactiveVar<number> = makeVar<number>(1)
+export const selectedChatRoomId: ReactiveVar<number> = makeVar<number>(39)
 export const selectedChatRoomName: ReactiveVar<string> = makeVar<string>(
-  "react"
+  "react-js"
 )
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
