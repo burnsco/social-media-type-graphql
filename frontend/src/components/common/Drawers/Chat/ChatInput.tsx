@@ -27,6 +27,7 @@ export default function ChatInput() {
       }
     })
     console.log(response)
+    actions.resetForm()
     return response
   }
 

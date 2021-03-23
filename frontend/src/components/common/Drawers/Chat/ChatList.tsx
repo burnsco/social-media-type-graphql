@@ -1,4 +1,4 @@
-import { Avatar, Box, List, ListItem } from "@chakra-ui/react"
+import { Avatar, Box, Flex, List, ListItem, Spacer } from "@chakra-ui/react"
 import React, { useEffect } from "react"
 
 export default function ChatList(props: any) {
@@ -20,7 +20,7 @@ export default function ChatList(props: any) {
 
   React.useEffect(() => {
     scrollToBottom()
-  }, [data, data.messages])
+  }, [data])
 
   if (!loading && data && data.messages) {
     return (
@@ -28,13 +28,17 @@ export default function ChatList(props: any) {
         <List mt={2} spacing={3}>
           {data.messages.map((message: any) => (
             <ListItem key={message.id}>
-              <Avatar
-                size="xs"
-                name="Ryan Florence"
-                src="https://bit.ly/ryan-florence"
-                mr={3}
-              />
-              {message.content}
+              <Flex>
+                <Avatar
+                  size="xs"
+                  name="Ryan Florence"
+                  src="https://bit.ly/ryan-florence"
+                  mr={3}
+                />
+                {message.sentBy.username} - {message.content}
+                <Spacer />
+                {new Date(message.createdAt).toLocaleTimeString()}
+              </Flex>
             </ListItem>
           ))}
           <div ref={messagesEndRef} />

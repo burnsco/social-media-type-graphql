@@ -7,8 +7,11 @@ import {
 import { CreatePostInputType } from "@/types/Post/types"
 import { gql } from "@apollo/client"
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
+  Center,
   chakra,
   Drawer,
   DrawerBody,
@@ -28,13 +31,17 @@ import {
   Tooltip,
   useColorModeValue,
   useDisclosure,
-  useToast
+  useToast,
+  VisuallyHidden,
+  VStack
 } from "@chakra-ui/react"
 import { Form, Formik, FormikHelpers } from "formik"
 import { useRouter } from "next/router"
 import { useCallback, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
-import { BsPencilSquare } from "react-icons/bs"
+import { BsPaperclip, BsPencilSquare } from "react-icons/bs"
+import { MdLink } from "react-icons/md"
+import { RiPictureInPictureFill } from "react-icons/ri"
 import request from "superagent"
 
 function CreatePostDrawer() {
@@ -205,91 +212,120 @@ function CreatePostDrawer() {
                         }}
                       >
                         <TabList>
-                          <Tab>Post</Tab>
-                          <Tab>Link</Tab>
-                          <Tab>Images & Video</Tab>
+                          <Tab>
+                            <BsPaperclip />
+                            Post
+                          </Tab>
+                          <Tab>
+                            <MdLink />
+                            Link
+                          </Tab>
+
+                          <Tab>
+                            <RiPictureInPictureFill />
+                            Image
+                          </Tab>
                         </TabList>
 
                         <TabPanels>
                           <TabPanel>
-                            <ChakraField
-                              label=""
-                              id="title"
-                              placeholder="title"
-                              aria-placeholder="post Title"
-                              name="title"
-                            />
-                            <ChakraField
-                              label=""
-                              id="text"
-                              placeholder="text"
-                              aria-placeholder="post Text"
-                              name="text"
-                            />
+                            <VStack spacing={4}>
+                              <ChakraField
+                                label="Title: "
+                                id="title"
+                                placeholder="...enter your post title"
+                                aria-placeholder="Post Title Input"
+                                name="title"
+                              />
+
+                              <ChakraField
+                                label="Text: "
+                                id="text"
+                                placeholder="...type some details"
+                                aria-placeholder="Post Text Input"
+                                name="text"
+                              />
+                            </VStack>
                           </TabPanel>
 
                           <TabPanel>
-                            <ChakraField
-                              label=""
-                              id="title"
-                              name="title"
-                              placeholder="title"
-                              aria-placeholder="Post Title"
-                            />
-                            <ChakraField
-                              label=""
-                              id="link"
-                              name="link"
-                              placeholder="link"
-                              aria-placeholder="Post Link"
-                            />
+                            <VStack spacing={4}>
+                              <ChakraField
+                                label="Title: "
+                                id="title"
+                                name="title"
+                                placeholder="...my cool post"
+                                aria-placeholder="Post Title"
+                              />
+                              <ChakraField
+                                label="Link(URL): "
+                                id="link"
+                                name="link"
+                                placeholder="http://nicepics/cool.jpg"
+                                aria-placeholder="Post Link"
+                              />
+                            </VStack>
                           </TabPanel>
 
                           <TabPanel>
-                            <ChakraField
-                              label=""
-                              id="title"
-                              name="title"
-                              placeholder="title"
-                              aria-placeholder="Post Title"
-                            />
-                            {isDragActive ? (
-                              <p>Drop the files here ...</p>
-                            ) : (
-                              <p>
-                                Drag and drop some files here, or click to
-                                select files
-                              </p>
-                            )}
-                            <div {...getRootProps({})}>
-                              <Box
-                                id="upload-media"
-                                border="3px dashed"
-                                p={4}
-                                my={2}
-                              >
-                                <ChakraField
-                                  label=""
-                                  id="image"
-                                  name="image"
-                                  placeholder="image"
-                                  aria-placeholder="Post Image"
-                                />
-                                <input {...getInputProps({})} />
+                            <VStack spacing={6}>
+                              <ChakraField
+                                label="Title: "
+                                id="title"
+                                name="title"
+                                placeholder="title"
+                                aria-placeholder="Post Title"
+                              />
 
-                                {uploadProgress === 100 ? "COMPLETE" : null}
+                              <div {...getRootProps({})}>
+                                {uploadProgress !== 100 ? (
+                                  <Box
+                                    width="300px"
+                                    height="100px"
+                                    id="upload-media"
+                                    border="3px dashed"
+                                    p={4}
+                                  >
+                                    <Center>
+                                      {isDragActive ? (
+                                        <p>Drop the files here ...</p>
+                                      ) : (
+                                        <p>
+                                          {uploadProgress === 0
+                                            ? "Drag and drop some files here, or click to select files"
+                                            : "Uploading..."}
+                                        </p>
+                                      )}
+                                    </Center>
+                                    <VisuallyHidden>
+                                      <ChakraField
+                                        label=""
+                                        id="image"
+                                        name="image"
+                                        placeholder="image"
+                                        aria-placeholder="Post Image"
+                                      />
+                                    </VisuallyHidden>
+                                    <input {...getInputProps({})} />
 
-                                {uploadProgress !== 0 &&
-                                uploadProgress !== 100 ? (
-                                  <Progress
-                                    my={4}
-                                    size="lg"
-                                    hasStripe
-                                    value={uploadProgress}
-                                  />
-                                ) : null}
-                              </Box>
-                            </div>
+                                    {uploadProgress !== 0 &&
+                                    uploadProgress !== 100 ? (
+                                      <Progress
+                                        my={4}
+                                        size="lg"
+                                        hasStripe
+                                        value={uploadProgress}
+                                      />
+                                    ) : null}
+                                  </Box>
+                                ) : (
+                                  <Alert status="success" borderRadius={6}>
+                                    <AlertIcon />
+                                    Image uploaded !
+                                  </Alert>
+                                )}
+                              </div>
+                            </VStack>
                           </TabPanel>
                         </TabPanels>
                       </Tabs>
