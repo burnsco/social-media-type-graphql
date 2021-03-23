@@ -1,4 +1,8 @@
-import { useMyFriendsAndMessagesQuery } from "@/generated/graphql"
+import { NextChakraLink } from "@/components/common/index"
+import {
+  useCategoriesQuery,
+  useMyFriendsAndMessagesQuery
+} from "@/generated/graphql"
 import {
   Accordion,
   AccordionButton,
@@ -15,6 +19,7 @@ import {
   Skeleton,
   useColorModeValue
 } from "@chakra-ui/react"
+import { useRouter } from "next/router"
 import React from "react"
 import { ImSpinner } from "react-icons/im"
 
@@ -42,16 +47,26 @@ const OfflineCircle = () => (
 
 export default function SideMenuContainer() {
   const bg = useColorModeValue("white", "#202020")
-  const { data, loading, refetch } = useMyFriendsAndMessagesQuery()
+  const router = useRouter()
+  const color = useColorModeValue("gray.700", "gray.300")
+  const hover = useColorModeValue("black", "white")
 
-  console.log("friendsAndMessages")
-  console.log(data)
+  const linkbg = useColorModeValue("#ebedf0", "#3661ed")
+
+  const { data, loading, refetch } = useMyFriendsAndMessagesQuery()
+  const {
+    data: subreddits,
+    loading: loadingSubreddits,
+    error: subredditsError,
+    refetch: fetchMoreSubreddits
+  } = useCategoriesQuery()
+
+  const { category } = router.query
 
   const FriendsCount = () => {
     if (data && data.me && data.me.friends.length > 0) {
       const onlineFriends = data.me.friends.map(friend => friend.online).length
-      const offlineFriends = data.me.friends.map(friend => !friend.online)
-        .length
+
       return (
         <Badge ml={1} colorScheme="green">
           {onlineFriends}
@@ -67,6 +82,22 @@ export default function SideMenuContainer() {
       return (
         <Badge ml={1} colorScheme="green">
           {privateMessagesCount}
+        </Badge>
+      )
+    }
+    return null
+  }
+
+  const SubredditsCount = () => {
+    if (
+      subreddits &&
+      subreddits.categories &&
+      subreddits.categories.length > 0
+    ) {
+      const count = subreddits.categories.length
+      return (
+        <Badge ml={1} colorScheme="orange">
+          {count}
         </Badge>
       )
     }
@@ -156,20 +187,48 @@ export default function SideMenuContainer() {
   )
 
   const SubredditsAccordion = () => (
-    <AccordionItem>
+    <AccordionItem onMouseOver={() => fetchMoreSubreddits}>
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            SUBREDDITS
+            SUBREDDITS <SubredditsCount />
           </Box>
-          {!loading ? <AccordionIcon /> : <ImSpinner />}
+          {!loadingSubreddits ? <AccordionIcon /> : <ImSpinner />}
         </AccordionButton>
       </h2>
       <AccordionPanel pb={4}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
+        <List mt={2} spacing={3}>
+          {subreddits && subreddits.categories ? (
+            <>
+              {subreddits.categories.map(subreddit => {
+                return (
+                  <ListItem
+                    key={`subreddit-list-${subreddit.id}`}
+                    onClick={() => router.push(`/r/${subreddit.name}`)}
+                  >
+                    <NextChakraLink
+                      p={1}
+                      fontWeight={category === subreddit.name ? "500" : "400"}
+                      color={category === subreddit.name ? hover : color}
+                      _hover={{
+                        borderRadius: 5,
+                        color: hover,
+                        bg: linkbg,
+                        marginLeft: 1
+                      }}
+                      href="/r/[category]"
+                      as={`/r/${subreddit.name}`}
+                    >
+                      {subreddit.name}
+                    </NextChakraLink>
+                  </ListItem>
+                )
+              })}
+            </>
+          ) : (
+            <ListItem>No Subreddits Yet</ListItem>
+          )}
+        </List>
       </AccordionPanel>
     </AccordionItem>
   )
@@ -220,10 +279,6 @@ export default function SideMenuContainer() {
       </AccordionPanel>
     </AccordionItem>
   )
-
-  // #TODO figure out UI/Logic for messages
-  // ie. each user has own box (like friends) and all messages
-  // are contained within that
 
   return (
     <Skeleton isLoaded={!loading}>

@@ -1,4 +1,5 @@
 fragment UserDetails on User {
   id
   username
+  online
 }

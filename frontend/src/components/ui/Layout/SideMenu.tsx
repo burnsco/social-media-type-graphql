@@ -5,11 +5,11 @@ import {
   Box,
   List,
   ListItem,
+  Text,
   useColorModeValue,
   VisuallyHidden
 } from "@chakra-ui/react"
 import { useRouter } from "next/router"
-import { memo } from "react"
 
 const SideMenu: React.FC = () => {
   const router = useRouter()
@@ -29,38 +29,44 @@ const SideMenu: React.FC = () => {
   if (error) return <Alert>{error}</Alert>
 
   return (
-    <Box
-      bg={bg}
-      minW="200px"
-      borderWidth="1px"
-      overflow="hidden"
-      boxShadow="xs"
-    >
-      <Box h="100%" w="100%">
-        <List minH="100%" spacing={3} fontSize="md" p={2}>
-          {data?.categories?.map((subreddit, i) => (
-            <ListItem key={`subreddit-${subreddit.id}-${i}`}>
-              <NextChakraLink
-                p={1}
-                bg={category === subreddit.name ? linkbg : linkbg2}
-                fontWeight={category === subreddit.name ? "500" : "400"}
-                color={category === subreddit.name ? hover : color}
-                _hover={{
-                  color: hover,
-                  bg: linkbg,
-                  marginLeft: 1
-                }}
-                href="/r/[category]"
-                as={`/r/${subreddit.name}`}
-              >
-                {subreddit.name}
-              </NextChakraLink>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-    </Box>
+    <>
+      {data && data.categories && data.categories.length > 0 ? (
+        <Box
+          bg={bg}
+          minW="200px"
+          borderWidth="1px"
+          overflow="hidden"
+          boxShadow="xs"
+        >
+          <Box h="100%" w="100%">
+            <List minH="100%" spacing={3} fontSize="md" p={2}>
+              {data?.categories?.map((subreddit, i) => (
+                <ListItem key={`subreddit-${subreddit.id}-${i}`}>
+                  <NextChakraLink
+                    p={1}
+                    bg={category === subreddit.name ? linkbg : linkbg2}
+                    fontWeight={category === subreddit.name ? "500" : "400"}
+                    color={category === subreddit.name ? hover : color}
+                    _hover={{
+                      color: hover,
+                      bg: linkbg,
+                      marginLeft: 1
+                    }}
+                    href="/r/[category]"
+                    as={`/r/${subreddit.name}`}
+                  >
+                    {subreddit.name}
+                  </NextChakraLink>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Box>
+      ) : (
+        <Text>No Categories Yet.</Text>
+      )}
+    </>
   )
 }
 
-export default memo(SideMenu)
+export default SideMenu

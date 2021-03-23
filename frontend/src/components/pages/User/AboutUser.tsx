@@ -34,6 +34,7 @@ const AboutUserPage = () => {
             <ListItem>{data?.user.username} </ListItem>
             <ListItem>{data?.user.email} </ListItem>
             <ListItem>{data?.user.about} </ListItem>
+            <ListItem>{data?.user.online} </ListItem>
           </List>
         </Box>
       </Container>

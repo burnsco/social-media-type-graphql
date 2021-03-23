@@ -1,8 +1,10 @@
 import { DeletePostDialog } from "@/components/common/DeletePostDialog"
+import { User } from "@/generated/graphql"
 import { timeDifferenceForDate } from "@/utils/index"
 import {
   Box,
   Button,
+  chakra,
   Flex,
   HStack,
   Menu,
@@ -19,7 +21,6 @@ import React from "react"
 import { FaUserCircle } from "react-icons/fa"
 import { IoAddCircle } from "react-icons/io5"
 import { MdEmail, MdMessage } from "react-icons/md"
-import { User } from "../../../generated/graphql"
 
 const PostHeader: React.FC<{
   category?: string | null
@@ -32,12 +33,35 @@ const PostHeader: React.FC<{
   const bg = useColorModeValue("white", "#202020")
   const router = useRouter()
 
+  const OnlineCircle = () => (
+    <chakra.span
+      h="8px"
+      w="8px"
+      ml={2}
+      bgColor="green.400"
+      borderRadius="50%"
+      display="inline-block"
+    />
+  )
+
+  const OfflineCircle = () => (
+    <chakra.span
+      h="8px"
+      w="8px"
+      ml={2}
+      bgColor="red.400"
+      borderRadius="50%"
+      display="inline-block"
+    />
+  )
+
   const renderPostCreatedOrEdited = () => (
     <Box ml="2" textDecoration="none">
       Posted by
       <Menu>
         <Button ml={2} size="xs" variant="outline" as={MenuButton}>
-          {author?.username}
+          {author?.username}{" "}
+          {author?.online ? <OnlineCircle /> : <OfflineCircle />}
         </Button>
 
         <MenuList opacity="0.7" bg={bg}>

@@ -1,5 +1,6 @@
 import {
   Arg,
+  Args,
   Ctx,
   Mutation,
   Publisher,
@@ -9,6 +10,7 @@ import {
   Subscription,
   UseMiddleware
 } from "type-graphql"
+import NewMessageArgs from "../../args/message-args"
 import { Topic } from "../../common/topics"
 import { Category, Message, User } from "../../entities"
 import MessageInput from "../../inputs/message-input"
@@ -23,7 +25,7 @@ export default class MessageMutationResolver {
   async createMessage(
     @Arg("data") { content, categoryId }: MessageInput,
     @PubSub(Topic.NewMessage)
-    notifyAboutNewMessage: Publisher<Partial<Message>>,
+    notifyAboutNewMessage: Publisher<Message>,
     @Ctx() { em, req }: ContextType
   ): Promise<MessageMutationResponse | null | boolean> {
     const category = await em.findOneOrFail(Category, categoryId, {
@@ -50,9 +52,15 @@ export default class MessageMutationResolver {
   // *** SUBSCRIPTION *** \\
 
   @Subscription(() => Message, {
-    topics: Topic.NewMessage
+    topics: Topic.NewMessage,
+    filter: ({ payload, args }) => {
+      return payload.category === args.categoryId
+    }
   })
-  newMessage(@Root() newMessage: Message): Message {
+  newMessage(
+    @Root() newMessage: Message,
+    @Args() { categoryId }: NewMessageArgs
+  ): Message {
     return newMessage
   }
 }

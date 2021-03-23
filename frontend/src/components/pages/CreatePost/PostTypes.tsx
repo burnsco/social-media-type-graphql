@@ -34,12 +34,5 @@ export const MediaPost = () => (
       placeholder="image"
       aria-placeholder="Post Image"
     />
-    <ChakraField
-      label=""
-      id="video"
-      name="video"
-      placeholder="video"
-      aria-placeholder="Post Video"
-    />
   </PannelWrapper>
 )

@@ -436,7 +436,7 @@ export type PostDetailsFragment = (
 
 export type UserDetailsFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'username'>
+  & Pick<User, 'id' | 'username' | 'online'>
 );
 
 export type UserMeDetailsFragment = (
@@ -930,7 +930,7 @@ export type UserQuery = (
   { __typename?: 'Query' }
   & { user: (
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email' | 'about'>
+    & Pick<User, 'id' | 'username' | 'email' | 'about' | 'online'>
   ) }
 );
 
@@ -1019,6 +1019,7 @@ export const UserDetailsFragmentDoc = gql`
     fragment UserDetails on User {
   id
   username
+  online
 }
     `;
 export const UserMeDetailsFragmentDoc = gql`
@@ -2027,6 +2028,7 @@ export const UserDocument = gql`
     username
     email
     about
+    online
   }
 }
     `;

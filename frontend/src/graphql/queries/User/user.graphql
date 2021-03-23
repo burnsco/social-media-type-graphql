@@ -4,5 +4,6 @@ query User($data: EditUserInput!) {
     username
     email
     about
+    online
   }
 }
