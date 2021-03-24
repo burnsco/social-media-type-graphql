@@ -1,4 +1,14 @@
-import { Avatar, Box, Flex, List, ListItem, Spacer } from "@chakra-ui/react"
+import {
+  Avatar,
+  Box,
+  Code,
+  Divider,
+  List,
+  ListItem,
+  Spacer,
+  Stack,
+  Text
+} from "@chakra-ui/react"
 import React, { useEffect } from "react"
 
 export default function ChatList(props: any) {
@@ -22,23 +32,50 @@ export default function ChatList(props: any) {
     scrollToBottom()
   }, [data])
 
+  const colorSchemes = [
+    "blue",
+    "cyan",
+    "gray",
+    "green",
+    "orange",
+    "pink",
+    "purple",
+    "red",
+    "teal",
+    "yellow",
+    "linkedin",
+    "facebook",
+    "messenger",
+    "whatsapp",
+    "twitter",
+    "telegram"
+  ]
+
   if (!loading && data && data.messages) {
     return (
-      <Box overflowY="auto">
+      <Box overflowY="auto" fontFamily="monospace">
         <List mt={2} spacing={3}>
           {data.messages.map((message: any) => (
             <ListItem key={message.id}>
-              <Flex>
+              <Stack h="100%" direction="row">
                 <Avatar
                   size="xs"
                   name="Ryan Florence"
                   src="https://bit.ly/ryan-florence"
                   mr={3}
                 />
-                {message.sentBy.username} - {message.content}
+                <Code
+                  colorScheme={
+                    colorSchemes[Math.floor(Math.random() * (14 - 1) + 1)]
+                  }
+                >
+                  {message.sentBy.username}
+                </Code>
+                <Divider orientation="vertical" colorScheme="orange" />
+                <Text>{message.content}</Text>
                 <Spacer />
-                {new Date(message.createdAt).toLocaleTimeString()}
-              </Flex>
+                <Box>{new Date(message.createdAt).toLocaleTimeString()}</Box>
+              </Stack>
             </ListItem>
           ))}
           <div ref={messagesEndRef} />

@@ -5,7 +5,7 @@ import { Category } from "../entities"
 @InputType()
 export default class CategoryInput implements Partial<Category> {
   @Field(() => String)
-  @MinLength(3)
-  @MaxLength(15)
+  @MinLength(2)
+  @MaxLength(20)
   name: string
 }

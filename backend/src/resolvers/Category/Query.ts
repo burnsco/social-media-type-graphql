@@ -12,9 +12,13 @@ export default class CategoryQueryResolver {
     @Args() { categoryId }: NewMessageArgs,
     @Ctx() { em }: ContextType
   ) {
-    return await em.findOneOrFail(Category, categoryId, {
-      populate: { messages: LoadStrategy.JOINED }
-    })
+    return await em.findOneOrFail(
+      Category,
+      { id: categoryId },
+      {
+        populate: { messages: LoadStrategy.JOINED }
+      }
+    )
   }
 
   // *** Split Query, with pagination and without *** \\

@@ -60,53 +60,62 @@ function CreatePostDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
 
+  const drawerBG = useColorModeValue("whitesmoke", "gray.900")
+
   const createPostHandler = async (
     values: typeof CreatePostInputType,
     actions: FormikHelpers<CreatePostInput>
   ) => {
     actions.setSubmitting(false)
-    const response = await submitPost({
-      variables: {
-        data: {
-          categoryId: values.categoryId,
-          title: values.title,
-          text: values.text,
-          link: values.link,
-          image: imageUrl,
-          imageH: imageH,
-          imageW: imageW
-        }
-      },
-      update(cache, { data }) {
-        cache.modify({
-          fields: {
-            posts(existingPosts = []) {
-              const newPostRef = cache.writeFragment({
-                data: data?.createPost.post,
-                fragment: gql`
-                  fragment NewPost on Post {
-                    id
-                    title
-                  }
-                `
-              })
-              return [newPostRef, ...existingPosts]
-            }
+    console.log("values")
+    console.log(values)
+    try {
+      const response = await submitPost({
+        variables: {
+          data: {
+            categoryId: values.categoryId,
+            title: values.title,
+            text: values.text,
+            link: values.link,
+            image: imageUrl,
+            imageH: imageH,
+            imageW: imageW
           }
-        })
-      }
-    })
-    if (response.data?.createPost.post) {
-      toast({
-        id: `success-${response.data?.createPost.post.title}`,
-        title: `${response.data?.createPost?.post.title}!`,
-        description: "Your post was submitted successfully.",
-        status: "success",
-        duration: 9000,
-        isClosable: true
+        },
+        update(cache, { data }) {
+          cache.modify({
+            fields: {
+              posts(existingPosts = []) {
+                const newPostRef = cache.writeFragment({
+                  data: data?.createPost.post,
+                  fragment: gql`
+                    fragment NewPost on Post {
+                      id
+                      title
+                    }
+                  `
+                })
+                return [newPostRef, ...existingPosts]
+              }
+            }
+          })
+        }
       })
-      router.push("/")
-      onClose()
+      console.log(response)
+      if (response.data?.createPost.post) {
+        toast({
+          id: `success-${response.data?.createPost.post.title}`,
+          title: `${response.data?.createPost?.post.title}!`,
+          description: "Your post was submitted successfully.",
+          status: "success",
+          duration: 9000,
+          isClosable: true
+        })
+        router.push("/")
+        onClose()
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -175,7 +184,7 @@ function CreatePostDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
+        <DrawerContent bg={drawerBG}>
           <DrawerCloseButton />
           <DrawerHeader>Submit a Post!</DrawerHeader>
           <Formik
@@ -319,7 +328,7 @@ function CreatePostDrawer() {
                                     ) : null}
                                   </Box>
                                 ) : (
-                                  <Alert status="success" borderRadius={6}>
+                                  <Alert status="success" variant="top-accent">
                                     <AlertIcon />
                                     Image uploaded !
                                   </Alert>

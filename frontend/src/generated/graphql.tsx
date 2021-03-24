@@ -316,7 +316,7 @@ export type CommentMutationResponse = {
 
 export type CommentInput = {
   body: Scalars['String'];
-  postId: Scalars['ID'];
+  postId: Scalars['Int'];
 };
 
 export type MessageMutationResponse = {
@@ -338,7 +338,7 @@ export type PostMutationResponse = {
 };
 
 export type CreatePostInput = {
-  categoryId: Scalars['ID'];
+  categoryId: Scalars['Int'];
   title: Scalars['String'];
   text?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
@@ -348,12 +348,14 @@ export type CreatePostInput = {
 };
 
 export type EditPostInput = {
-  postId: Scalars['ID'];
-  categoryId?: Maybe<Scalars['ID']>;
-  title?: Maybe<Scalars['String']>;
+  postId: Scalars['Int'];
+  categoryId: Scalars['Int'];
+  title: Scalars['String'];
   text?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
   link?: Maybe<Scalars['String']>;
+  imageH?: Maybe<Scalars['String']>;
+  imageW?: Maybe<Scalars['String']>;
 };
 
 export type VoteMutationResponse = {
@@ -364,13 +366,13 @@ export type VoteMutationResponse = {
 };
 
 export type VoteInput = {
-  postId: Scalars['ID'];
-  value: Scalars['ID'];
+  postId: Scalars['Int'];
+  value: Scalars['Int'];
 };
 
 export type PrivateMessageInput = {
   body: Scalars['String'];
-  userId: Scalars['ID'];
+  userId: Scalars['Int'];
 };
 
 export type UserMutationResponse = {

@@ -22,22 +22,32 @@ export default class PostMutationResolver {
   @UseMiddleware(isAuth)
   async createPost(
     @Arg("data")
-    { title, text, image, link, categoryId }: CreatePostInput,
+    { title, text, image, link, categoryId, imageH, imageW }: CreatePostInput,
     @Ctx() { em, req }: ContextType
-  ): Promise<PostMutationResponse | null> {
-    if (req.session.userId) {
-      const post = em.create(Post, {
-        title,
-        text,
-        image,
-        link,
-        author: em.getReference(User, req.session.userId),
-        category: em.getReference(Category, categoryId)
-      })
-      await em.persistAndFlush(post)
-      return { post }
+  ): Promise<PostMutationResponse> {
+    const category = await em.findOne(Category, { id: categoryId })
+    if (!category) {
+      return {
+        errors: [
+          {
+            field: "title",
+            message: "there was an error finding that category"
+          }
+        ]
+      }
     }
-    return null
+    const post = em.create(Post, {
+      title,
+      text,
+      image,
+      imageH,
+      imageW,
+      link,
+      author: em.getReference(User, req.session.userId),
+      category: em.getReference(Category, category.id)
+    })
+    await em.persistAndFlush(post)
+    return { post }
   }
 
   @Mutation(() => PostMutationResponse)
@@ -88,9 +98,13 @@ export default class PostMutationResolver {
     @Arg("data") { postId }: EditPostInput,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse | boolean> {
-    const post = await em.findOneOrFail(Post, postId, {
-      populate: ["comments", "votes"]
-    })
+    const post = await em.findOneOrFail(
+      Post,
+      { id: postId },
+      {
+        populate: ["comments", "votes"]
+      }
+    )
     if (post && post.author.id === req.session.userId) {
       if (post && post.comments) {
         post.comments.removeAll()

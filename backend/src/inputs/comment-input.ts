@@ -1,11 +1,10 @@
-import { Field, ID, InputType } from "type-graphql"
-import { Comment } from "../entities"
+import { Field, InputType, Int } from "type-graphql"
 
 @InputType()
-export default class CommentInput implements Partial<Comment> {
+export default class CommentInput {
   @Field(() => String)
   body: string
 
-  @Field(() => ID)
+  @Field(() => Int)
   postId: number
 }

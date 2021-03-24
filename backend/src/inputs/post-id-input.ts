@@ -1,7 +1,7 @@
-import { Field, ID, InputType } from "type-graphql"
+import { Field, InputType, Int } from "type-graphql"
 
 @InputType()
 export default class PostIdInput {
-  @Field(() => ID)
+  @Field(() => Int)
   postId: number
 }
