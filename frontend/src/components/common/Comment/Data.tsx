@@ -5,9 +5,11 @@ import CommentPage from "./index"
 
 const CommentsPageWithData = () => {
   const router = useRouter()
-  const postId = router.query.id as string
+  const postId = router.query.id
 
-  const { data, loading } = useCommentsForPostQuery({ variables: { postId } })
+  const { data, loading } = useCommentsForPostQuery({
+    variables: { postId: Number(postId) }
+  })
 
   if (data && data.post && data.post.comments) {
     const { comments } = data.post

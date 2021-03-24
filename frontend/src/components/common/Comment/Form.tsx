@@ -9,10 +9,11 @@ import { useRouter } from "next/router"
 const SubmitCommentForm = () => {
   const buttomScheme = useColorModeValue("purple", "orange")
   const bg = useColorModeValue("white", "#202020")
+  const hoverBc = useColorModeValue("gray.200", "gray.600")
   const toast = useToast()
 
   const router = useRouter()
-  const postId = router.query.id as string
+  const postId = router.query.id
 
   const [
     submitComment,
@@ -28,22 +29,24 @@ const SubmitCommentForm = () => {
       _hover={{
         boxShadow: "lg",
         borderWidth: "1px",
-        borderColor: useColorModeValue("gray.200", "gray.600")
+        borderColor: hoverBc
       }}
     >
       <Formik
-        initialValues={{ body: "", postId }}
+        initialValues={{ body: "", postId: 0 }}
         validationSchema={CreateCommentSchema}
         onSubmit={async (values, actions) => {
           actions.setSubmitting(false)
           const response = await submitComment({
             variables: {
               data: {
-                ...values
+                body: values.body,
+                postId: Number(postId)
               }
             },
             update(cache, { data }) {
               cache.modify({
+                id: cache.identify({ id: `Post:${postId}` }),
                 fields: {
                   comments(existingComments = []) {
                     const newCommentRef = cache.writeFragment({
@@ -51,12 +54,13 @@ const SubmitCommentForm = () => {
                       fragment: gql`
                         fragment NewComment on Comment {
                           id
-                          body
                           createdAt
                           updatedAt
+                          body
                           createdBy {
                             id
                             username
+                            online
                           }
                         }
                       `

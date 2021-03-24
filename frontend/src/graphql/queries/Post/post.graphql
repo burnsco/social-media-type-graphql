@@ -2,12 +2,12 @@ query Post($postId: Int!) {
   post(postId: $postId) {
     ...PostDetails
 
-    author {
-      ...UserDetails
-    }
-
     category {
       ...CategoryDetails
+    }
+
+    author {
+      ...UserDetails
     }
 
     totalComments {

@@ -29,10 +29,7 @@ export default class PostQueryResolver {
 
   @Query(() => Post)
   async post(@Args() { postId }: PostArgs, @Ctx() { em }: ContextType) {
-    if (postId) {
-      return await em.findOneOrFail(Post, { id: postId })
-    }
-    return null
+    return await em.findOne(Post, { id: postId })
   }
 
   @Query(() => [Post])

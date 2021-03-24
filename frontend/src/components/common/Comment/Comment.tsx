@@ -19,27 +19,33 @@ import {
 } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import React from "react"
-import { BsArrowDown, BsArrowUp } from "react-icons/bs"
+import { BsLightning } from "react-icons/bs"
 import { FaUserCircle } from "react-icons/fa"
 import { IoAddCircle } from "react-icons/io5"
 import { MdEmail, MdMessage } from "react-icons/md"
+import { OfflineCircle, OnlineCircle } from "../OnlineOffline"
 
 const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
   const [loggedInUser] = useLoggedInUser()
   const [addFriend, { loading }] = useAddFriendMutation()
+
   const bg = useColorModeValue("white", "#202020")
   const stackColor = useColorModeValue("gray.600", "gray.400")
   const router = useRouter()
   const huh = useColorModeValue("darkblue", "lightblue")
   const votebg = useColorModeValue("gray.50", "#313131")
 
+  // #TODO fix voting, make it like or nothing
+  // click the lightening bolt on/off
   return (
     <Flex bg={bg} minH="80px" width="100%">
+      {/* Vote Box Container (Left Aside) */}
       <Box bg={votebg}>
         <Flex
           width="45px"
           flexDir="column"
           alignItems="center"
+          justifyContent="center"
           p="2"
           height="100%"
         >
@@ -48,20 +54,12 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
             variant="ghost"
             color="current"
             aria-label="UpVote"
-            icon={<BsArrowUp />}
-          />
-
-          <IconButton
-            onClick={() => console.log("downvote")}
-            variant="ghost"
-            color="current"
-            aria-label="DownVote"
-            icon={<BsArrowDown />}
+            icon={<BsLightning size="2em" />}
           />
         </Flex>
       </Box>
 
-      {/* Comment Details Container */}
+      {/* Comment Details Container (HEADER) */}
       <Box
         p={2}
         ml="1"
@@ -76,6 +74,11 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
             <Menu>
               <Button ml={2} size="xs" variant="outline" as={MenuButton}>
                 {comment?.createdBy?.username}
+                {comment.createdBy?.online ? (
+                  <OnlineCircle />
+                ) : (
+                  <OfflineCircle />
+                )}
               </Button>
 
               <MenuList opacity="0.7" bg={bg}>
@@ -154,12 +157,14 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
               }}
             ></Box>
             <Box display="inline" ml="2">
-              {timeDifferenceForDate(Number(comment?.createdAt))}
+              {timeDifferenceForDate(comment?.createdAt)}
             </Box>
           </Box>
         </Stack>
-
-        <Text>{comment?.body}</Text>
+        {/* Comment Body Container (Text) */}
+        <Box p={1}>
+          <Text>{comment?.body}</Text>
+        </Box>
       </Box>
     </Flex>
   )

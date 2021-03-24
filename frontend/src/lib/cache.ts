@@ -10,12 +10,12 @@ export const cacheOptions = new InMemoryCache({
     // QUERIES \\
     Query: {
       fields: {
-        post(_, { args, toReference }) {
-          return toReference({
-            __typename: "Post",
-            id: args?.id
-          })
-        },
+        // post(_, { args, toReference }) {
+        //   return toReference({
+        //     __typename: "Post",
+        //     id: args?.id
+        //   })
+        // },
 
         posts: concatPagination(),
         categories: {

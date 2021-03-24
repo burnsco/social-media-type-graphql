@@ -45,7 +45,7 @@ const PostBody: React.FC<PostBodyType> = ({
                     variables: {
                       data: {
                         title: props,
-                        postId
+                        postId: Number(postId)
                       }
                     }
                   })
@@ -61,7 +61,7 @@ const PostBody: React.FC<PostBodyType> = ({
         )
       }
       return (
-        <Heading fontWeight="500" fontSize="xl" px={1}>
+        <Heading fontWeight="500" fontSize="xl" p={2}>
           {title}
         </Heading>
       )

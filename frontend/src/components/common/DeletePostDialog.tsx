@@ -73,7 +73,7 @@ export const DeletePostDialog: React.FC<{
                     await deletePost({
                       variables: {
                         data: {
-                          postId
+                          postId: Number(postId)
                         }
                       },
                       update(cache, { data }) {

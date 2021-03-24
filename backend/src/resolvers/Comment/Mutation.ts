@@ -14,17 +14,26 @@ export default class CommentMutationResolver {
     @Arg("data") { body, postId }: CommentInput,
     @Ctx() { em, req }: ContextType
   ): Promise<CommentMutationResponse> {
-    const post = await em.findOneOrFail(Post, postId, {
-      populate: ["comments"]
-    })
+    const post = await em.findOne(
+      Post,
+      { id: postId },
+      {
+        populate: ["comments"]
+      }
+    )
+    const user = await em.findOne(User, { id: req.session.userId })
+    if (!user)
+      return { errors: [{ field: "content", message: "user not found" }] }
     if (!post) return { errors: [postNotFound] }
+
     const comment = em.create(Comment, {
       post: em.getReference(Post, post.id),
       body,
       createdBy: em.getReference(User, req.session.userId)
     })
+
     post.comments.add(comment)
-    await em.flush()
+    await em.persistAndFlush(post)
     return {
       post,
       comment

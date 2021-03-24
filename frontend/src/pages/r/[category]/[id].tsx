@@ -9,8 +9,7 @@ import { GetStaticPaths, GetStaticProps } from "next"
 import dynamic from "next/dynamic"
 
 const DynamicSinglePostPage = dynamic(
-  () => import("@/components/pages/SinglePost/SingePostPage"),
-  { ssr: false }
+  () => import("@/components/pages/SinglePost/SingePostPage")
 )
 
 const PostAndCommentsPage: React.FC = () => {
@@ -23,16 +22,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   await apolloClient.query<PostQuery>({
     query: PostDocument,
     variables: {
-      postId: params?.id ?? null
+      postId: Number(params?.id) ?? 1
     }
   })
 
   return {
     props: {
       initialApolloState: apolloClient.cache.extract(),
-      postId: params?.id ?? "1"
+      postId: Number(params?.id) ?? 1
     },
-    revalidate: 1
+    revalidate: 10
   }
 }
 

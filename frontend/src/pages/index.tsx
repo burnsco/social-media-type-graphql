@@ -3,12 +3,6 @@ import { initializeApollo } from "@/lib/apolloClient"
 import { allPostsQueryVars } from "@/types/pagination"
 import dynamic from "next/dynamic"
 
-const DynamicPostList = dynamic(
-  () => import("@/components/pages/PostList/index")
-)
-
-const IndexPage = () => <DynamicPostList />
-
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
 
@@ -25,4 +19,10 @@ export async function getStaticProps() {
   }
 }
 
-export default IndexPage
+const DynamicPostList = dynamic(
+  () => import("@/components/pages/PostList/index")
+)
+
+export default function IndexPage() {
+  return <DynamicPostList />
+}
