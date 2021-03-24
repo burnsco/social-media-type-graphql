@@ -1,5 +1,22 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql"
-import { commentNotFound, postNotFound } from "../../common/constants"
+import {
+  Arg,
+  Args,
+  Ctx,
+  Mutation,
+  Publisher,
+  PubSub,
+  Resolver,
+  Root,
+  Subscription,
+  UseMiddleware
+} from "type-graphql"
+import NewCommentsArgs from "../../args/comment-args"
+import {
+  commentNotFound,
+  postNotFound,
+  userNotFound
+} from "../../common/constants"
+import { Topic } from "../../common/topics"
 import { Comment, Post, User } from "../../entities"
 import { CommentInput } from "../../inputs"
 import { isAuth } from "../../lib/isAuth"
@@ -12,6 +29,8 @@ export default class CommentMutationResolver {
   @UseMiddleware(isAuth)
   async createComment(
     @Arg("data") { body, postId }: CommentInput,
+    @PubSub(Topic.NewComment)
+    notifyAboutNewComment: Publisher<Comment>,
     @Ctx() { em, req }: ContextType
   ): Promise<CommentMutationResponse> {
     const post = await em.findOne(
@@ -21,19 +40,23 @@ export default class CommentMutationResolver {
         populate: ["comments"]
       }
     )
-    const user = await em.findOne(User, { id: req.session.userId })
-    if (!user)
-      return { errors: [{ field: "content", message: "user not found" }] }
     if (!post) return { errors: [postNotFound] }
+
+    const user = await em.findOne(User, { id: req.session.userId })
+    if (!user) return { errors: [userNotFound] }
 
     const comment = em.create(Comment, {
       post: em.getReference(Post, post.id),
       body,
-      createdBy: em.getReference(User, req.session.userId)
+      createdBy: em.getReference(User, user.id)
     })
+    em.persist(post)
 
     post.comments.add(comment)
-    await em.persistAndFlush(post)
+
+    await em.flush()
+    await notifyAboutNewComment(comment)
+
     return {
       post,
       comment
@@ -64,5 +87,20 @@ export default class CommentMutationResolver {
       post,
       comment
     }
+  }
+
+  // *** SUBSCRIPTION *** \\
+
+  @Subscription(() => Comment, {
+    topics: Topic.NewComment,
+    filter: ({ payload, args }) => {
+      return payload.post === args.postId
+    }
+  })
+  newMessage(
+    @Root() newComment: Comment,
+    @Args() { postId }: NewCommentsArgs
+  ): Comment {
+    return newComment
   }
 }

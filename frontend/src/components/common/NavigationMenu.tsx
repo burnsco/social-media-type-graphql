@@ -21,7 +21,8 @@ function NavigationMenu() {
 
   const bg = useColorModeValue("white", "#202020")
 
-  const renderPath = () => {
+  const renderPath = (isOpen: boolean) => {
+    if (isOpen) return "Browsing"
     if (router && router.pathname) {
       if (router.pathname === "/") {
         return "Home"
@@ -50,7 +51,7 @@ function NavigationMenu() {
               rightIcon={isOpen ? <BsArrowDown /> : <BsArrowLeft />}
               variant="outline"
             >
-              {renderPath()}
+              {renderPath(isOpen)}
             </MenuButton>
             {data && data.categories && (
               <MenuList minWidth="240px" opacity="0.7" bg={bg}>

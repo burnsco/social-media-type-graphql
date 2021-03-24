@@ -1,7 +1,7 @@
 import { PostQuery } from "@/generated/graphql"
+import { useLoggedInUser } from "@/hooks/useLoggedInUser"
 import { Alert, Flex, useColorModeValue } from "@chakra-ui/react"
 import { memo } from "react"
-import { useLoggedInUser } from "../../../hooks/useLoggedInUser"
 import PostBody from "./Body"
 import PostContainer from "./Container"
 import PostFooter from "./Footer"
@@ -18,6 +18,7 @@ const NewPost: React.FC<PostQuery> = props => {
     const postId = post?.id
     const postScore = post?.totalVotes?.score ?? 0
     const postCategory = post?.category.name
+    const categoryId = post?.category.id
     const postAuthor = post?.author
     const postCreatedTime = post?.createdAt
     const postUpdatedTime = post?.updatedAt
@@ -48,6 +49,7 @@ const NewPost: React.FC<PostQuery> = props => {
               />
               <PostBody
                 postId={postId}
+                categoryId={categoryId}
                 image={postImage}
                 title={postTitle}
                 text={postText}

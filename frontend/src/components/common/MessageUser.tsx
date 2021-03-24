@@ -71,7 +71,7 @@ const MessageUser = (user: Partial<User>) => {
                   const response = await sendMessage({
                     variables: {
                       data: {
-                        userId: user.id as string,
+                        userId: Number(user.id),
                         body: values.body
                       }
                     }

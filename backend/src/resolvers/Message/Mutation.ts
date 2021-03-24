@@ -28,9 +28,14 @@ export default class MessageMutationResolver {
     notifyAboutNewMessage: Publisher<Message>,
     @Ctx() { em, req }: ContextType
   ): Promise<MessageMutationResponse | null | boolean> {
-    const category = await em.findOneOrFail(Category, categoryId, {
-      populate: ["messages"]
-    })
+    const category = await em.findOneOrFail(
+      Category,
+      { id: categoryId },
+      {
+        populate: ["messages"]
+      }
+    )
+
     if (category && req.session.userId) {
       const message = em.create(Message, {
         category: em.getReference(Category, category.id),
@@ -38,9 +43,12 @@ export default class MessageMutationResolver {
         sentBy: em.getReference(User, req.session.userId)
       })
       em.persist(category)
+
       category.messages.add(message)
+
       await em.flush()
       await notifyAboutNewMessage(message)
+
       return {
         message,
         category

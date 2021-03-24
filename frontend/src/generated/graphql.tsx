@@ -16,6 +16,248 @@ export type Scalars = {
   Email: any;
 };
 
+export type AddUserInput = {
+  username: Scalars['String'];
+};
+
+export type AddUserMutationResponse = {
+  __typename?: 'AddUserMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  friend?: Maybe<User>;
+  me?: Maybe<User>;
+};
+
+export type Category = {
+  __typename?: 'Category';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  name: Scalars['String'];
+  messages?: Maybe<Array<Message>>;
+};
+
+export type CategoryInput = {
+  name: Scalars['String'];
+};
+
+export type CategoryMutationResponse = {
+  __typename?: 'CategoryMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  category?: Maybe<Category>;
+};
+
+export type Comment = {
+  __typename?: 'Comment';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  body: Scalars['String'];
+  createdBy: User;
+  post: Post;
+};
+
+export type CommentInput = {
+  body: Scalars['String'];
+  postId: Scalars['Int'];
+};
+
+export type CommentMutationResponse = {
+  __typename?: 'CommentMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  comment?: Maybe<Comment>;
+  post?: Maybe<Post>;
+};
+
+export type CreatePostInput = {
+  categoryId: Scalars['Int'];
+  title: Scalars['String'];
+  text?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  link?: Maybe<Scalars['String']>;
+  imageH?: Maybe<Scalars['String']>;
+  imageW?: Maybe<Scalars['String']>;
+};
+
+export type EditPostInput = {
+  postId: Scalars['Int'];
+  categoryId: Scalars['Int'];
+  title: Scalars['String'];
+  text?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  link?: Maybe<Scalars['String']>;
+  imageH?: Maybe<Scalars['String']>;
+  imageW?: Maybe<Scalars['String']>;
+};
+
+export type EditUserInput = {
+  email?: Maybe<Scalars['Email']>;
+  username?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['String']>;
+  about?: Maybe<Scalars['String']>;
+};
+
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type LoginInput = {
+  email: Scalars['Email'];
+  password: Scalars['String'];
+};
+
+export type Message = {
+  __typename?: 'Message';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  content: Scalars['String'];
+  sentBy: User;
+  category: Category;
+};
+
+export type MessageInput = {
+  content: Scalars['String'];
+  categoryId: Scalars['Int'];
+};
+
+export type MessageMutationResponse = {
+  __typename?: 'MessageMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  message: Message;
+  category: Category;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createCategory: CategoryMutationResponse;
+  createComment: CommentMutationResponse;
+  editComment: CommentMutationResponse;
+  createMessage: MessageMutationResponse;
+  createPost: PostMutationResponse;
+  editPost: PostMutationResponse;
+  deletePost: PostMutationResponse;
+  vote: VoteMutationResponse;
+  sendPrivateMessage: PrivateMessage;
+  forgotPassword: Scalars['Boolean'];
+  register: UserMutationResponse;
+  editUser: UserMutationResponse;
+  addFriend: AddUserMutationResponse;
+  login: UserMutationResponse;
+  logout: UserLogoutMutationResponse;
+};
+
+
+export type MutationCreateCategoryArgs = {
+  data: CategoryInput;
+};
+
+
+export type MutationCreateCommentArgs = {
+  data: CommentInput;
+};
+
+
+export type MutationEditCommentArgs = {
+  data: CommentInput;
+};
+
+
+export type MutationCreateMessageArgs = {
+  data: MessageInput;
+};
+
+
+export type MutationCreatePostArgs = {
+  data: CreatePostInput;
+};
+
+
+export type MutationEditPostArgs = {
+  data: EditPostInput;
+};
+
+
+export type MutationDeletePostArgs = {
+  data: EditPostInput;
+};
+
+
+export type MutationVoteArgs = {
+  data: VoteInput;
+};
+
+
+export type MutationSendPrivateMessageArgs = {
+  data: PrivateMessageInput;
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: EditUserInput;
+};
+
+
+export type MutationRegisterArgs = {
+  data: RegisterInput;
+};
+
+
+export type MutationEditUserArgs = {
+  data: EditUserInput;
+};
+
+
+export type MutationAddFriendArgs = {
+  data: AddUserInput;
+};
+
+
+export type MutationLoginArgs = {
+  data: LoginInput;
+};
+
+export type Post = {
+  __typename?: 'Post';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  title: Scalars['String'];
+  text?: Maybe<Scalars['String']>;
+  link?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  imageH?: Maybe<Scalars['String']>;
+  imageW?: Maybe<Scalars['String']>;
+  author: User;
+  category: Category;
+  votes?: Maybe<Array<Vote>>;
+  comments?: Maybe<Array<Comment>>;
+  totalComments?: Maybe<_QueryMeta>;
+  totalVotes?: Maybe<_QueryMeta>;
+};
+
+export type PostMutationResponse = {
+  __typename?: 'PostMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  post?: Maybe<Post>;
+};
+
+export type PrivateMessage = {
+  __typename?: 'PrivateMessage';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  body: Scalars['String'];
+  sentBy: User;
+  sentTo: User;
+};
+
+export type PrivateMessageInput = {
+  body: Scalars['String'];
+  userId: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
   category: Category;
@@ -108,308 +350,12 @@ export type QueryUserArgs = {
   data: EditUserInput;
 };
 
-export type Category = {
-  __typename?: 'Category';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  name: Scalars['String'];
-  messages?: Maybe<Array<Message>>;
-};
-
-export type Message = {
-  __typename?: 'Message';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  content: Scalars['String'];
-  sentBy: User;
-  category: Category;
-};
-
-export type User = {
-  __typename?: 'User';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  online?: Maybe<Scalars['Boolean']>;
-  email: Scalars['Email'];
-  username: Scalars['String'];
-  avatar?: Maybe<Scalars['String']>;
-  about?: Maybe<Scalars['String']>;
-  friends: Array<User>;
-  privateMessages: Array<PrivateMessage>;
-};
-
-
-export type PrivateMessage = {
-  __typename?: 'PrivateMessage';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  body: Scalars['String'];
-  sentBy: User;
-  sentTo: User;
-};
-
-export type Comment = {
-  __typename?: 'Comment';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  body: Scalars['String'];
-  createdBy: User;
-  post: Post;
-};
-
-export type Post = {
-  __typename?: 'Post';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  title: Scalars['String'];
-  text?: Maybe<Scalars['String']>;
-  link?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  imageH?: Maybe<Scalars['String']>;
-  imageW?: Maybe<Scalars['String']>;
-  author: User;
-  category: Category;
-  votes?: Maybe<Array<Vote>>;
-  comments?: Maybe<Array<Comment>>;
-  totalComments?: Maybe<_QueryMeta>;
-  totalVotes?: Maybe<_QueryMeta>;
-};
-
-export type Vote = {
-  __typename?: 'Vote';
-  id: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  value: Scalars['Int'];
-  castBy: User;
-};
-
-export type _QueryMeta = {
-  __typename?: '_QueryMeta';
-  count?: Maybe<Scalars['Int']>;
-  score?: Maybe<Scalars['Int']>;
-};
-
-export type EditUserInput = {
-  email?: Maybe<Scalars['Email']>;
-  username?: Maybe<Scalars['String']>;
-  password?: Maybe<Scalars['String']>;
-  avatar?: Maybe<Scalars['String']>;
-  about?: Maybe<Scalars['String']>;
-};
-
-export type Mutation = {
-  __typename?: 'Mutation';
-  createCategory: CategoryMutationResponse;
-  createComment: CommentMutationResponse;
-  editComment: CommentMutationResponse;
-  createMessage: MessageMutationResponse;
-  createPost: PostMutationResponse;
-  editPost: PostMutationResponse;
-  deletePost: PostMutationResponse;
-  vote: VoteMutationResponse;
-  sendPrivateMessage: PrivateMessage;
-  forgotPassword: Scalars['Boolean'];
-  register: UserMutationResponse;
-  editUser: UserMutationResponse;
-  addFriend: AddUserMutationResponse;
-  login: UserMutationResponse;
-  logout: UserLogoutMutationResponse;
-};
-
-
-export type MutationCreateCategoryArgs = {
-  data: CategoryInput;
-};
-
-
-export type MutationCreateCommentArgs = {
-  data: CommentInput;
-};
-
-
-export type MutationEditCommentArgs = {
-  data: CommentInput;
-};
-
-
-export type MutationCreateMessageArgs = {
-  data: MessageInput;
-};
-
-
-export type MutationCreatePostArgs = {
-  data: CreatePostInput;
-};
-
-
-export type MutationEditPostArgs = {
-  data: EditPostInput;
-};
-
-
-export type MutationDeletePostArgs = {
-  data: EditPostInput;
-};
-
-
-export type MutationVoteArgs = {
-  data: VoteInput;
-};
-
-
-export type MutationSendPrivateMessageArgs = {
-  data: PrivateMessageInput;
-};
-
-
-export type MutationForgotPasswordArgs = {
-  email: EditUserInput;
-};
-
-
-export type MutationRegisterArgs = {
-  data: RegisterInput;
-};
-
-
-export type MutationEditUserArgs = {
-  data: EditUserInput;
-};
-
-
-export type MutationAddFriendArgs = {
-  data: AddUserInput;
-};
-
-
-export type MutationLoginArgs = {
-  data: LoginInput;
-};
-
-export type CategoryMutationResponse = {
-  __typename?: 'CategoryMutationResponse';
-  errors?: Maybe<Array<FieldError>>;
-  category?: Maybe<Category>;
-};
-
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
-};
-
-export type CategoryInput = {
-  name: Scalars['String'];
-};
-
-export type CommentMutationResponse = {
-  __typename?: 'CommentMutationResponse';
-  errors?: Maybe<Array<FieldError>>;
-  comment?: Maybe<Comment>;
-  post?: Maybe<Post>;
-};
-
-export type CommentInput = {
-  body: Scalars['String'];
-  postId: Scalars['Int'];
-};
-
-export type MessageMutationResponse = {
-  __typename?: 'MessageMutationResponse';
-  errors?: Maybe<Array<FieldError>>;
-  message: Message;
-  category: Category;
-};
-
-export type MessageInput = {
-  content: Scalars['String'];
-  categoryId: Scalars['Int'];
-};
-
-export type PostMutationResponse = {
-  __typename?: 'PostMutationResponse';
-  errors?: Maybe<Array<FieldError>>;
-  post?: Maybe<Post>;
-};
-
-export type CreatePostInput = {
-  categoryId: Scalars['Int'];
-  title: Scalars['String'];
-  text?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  link?: Maybe<Scalars['String']>;
-  imageH?: Maybe<Scalars['String']>;
-  imageW?: Maybe<Scalars['String']>;
-};
-
-export type EditPostInput = {
-  postId: Scalars['Int'];
-  categoryId: Scalars['Int'];
-  title: Scalars['String'];
-  text?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  link?: Maybe<Scalars['String']>;
-  imageH?: Maybe<Scalars['String']>;
-  imageW?: Maybe<Scalars['String']>;
-};
-
-export type VoteMutationResponse = {
-  __typename?: 'VoteMutationResponse';
-  errors?: Maybe<Array<FieldError>>;
-  vote?: Maybe<Vote>;
-  post?: Maybe<Post>;
-};
-
-export type VoteInput = {
-  postId: Scalars['Int'];
-  value: Scalars['Int'];
-};
-
-export type PrivateMessageInput = {
-  body: Scalars['String'];
-  userId: Scalars['Int'];
-};
-
-export type UserMutationResponse = {
-  __typename?: 'UserMutationResponse';
-  errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<User>;
-  message?: Maybe<Message>;
-};
-
 export type RegisterInput = {
   email: Scalars['Email'];
   username: Scalars['String'];
   password: Scalars['String'];
   avatar?: Maybe<Scalars['String']>;
   about?: Maybe<Scalars['String']>;
-};
-
-export type AddUserMutationResponse = {
-  __typename?: 'AddUserMutationResponse';
-  errors?: Maybe<Array<FieldError>>;
-  friend?: Maybe<User>;
-  me?: Maybe<User>;
-};
-
-export type AddUserInput = {
-  username: Scalars['String'];
-};
-
-export type LoginInput = {
-  email: Scalars['Email'];
-  password: Scalars['String'];
-};
-
-export type UserLogoutMutationResponse = {
-  __typename?: 'UserLogoutMutationResponse';
-  message?: Maybe<Scalars['String']>;
-  success?: Maybe<Scalars['String']>;
 };
 
 export type Subscription = {
@@ -429,6 +375,60 @@ export type SubscriptionNewMessageArgs = {
 
 export type SubscriptionNewPrivateMessageArgs = {
   userId: Scalars['ID'];
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  online?: Maybe<Scalars['Boolean']>;
+  email: Scalars['Email'];
+  username: Scalars['String'];
+  avatar?: Maybe<Scalars['String']>;
+  about?: Maybe<Scalars['String']>;
+  friends: Array<User>;
+  privateMessages: Array<PrivateMessage>;
+};
+
+export type UserLogoutMutationResponse = {
+  __typename?: 'UserLogoutMutationResponse';
+  message?: Maybe<Scalars['String']>;
+  success?: Maybe<Scalars['String']>;
+};
+
+export type UserMutationResponse = {
+  __typename?: 'UserMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+  message?: Maybe<Message>;
+};
+
+export type Vote = {
+  __typename?: 'Vote';
+  id: Scalars['ID'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  value: Scalars['Int'];
+  castBy: User;
+};
+
+export type VoteInput = {
+  postId: Scalars['Int'];
+  value: Scalars['Int'];
+};
+
+export type VoteMutationResponse = {
+  __typename?: 'VoteMutationResponse';
+  errors?: Maybe<Array<FieldError>>;
+  vote?: Maybe<Vote>;
+  post?: Maybe<Post>;
+};
+
+export type _QueryMeta = {
+  __typename?: '_QueryMeta';
+  count?: Maybe<Scalars['Int']>;
+  score?: Maybe<Scalars['Int']>;
 };
 
 export type CategoryDetailsFragment = (
@@ -850,12 +850,12 @@ export type PostQuery = (
   { __typename?: 'Query' }
   & { post: (
     { __typename?: 'Post' }
-    & { author: (
-      { __typename?: 'User' }
-      & UserDetailsFragment
-    ), category: (
+    & { category: (
       { __typename?: 'Category' }
       & CategoryDetailsFragment
+    ), author: (
+      { __typename?: 'User' }
+      & UserDetailsFragment
     ), totalComments?: Maybe<(
       { __typename?: '_QueryMeta' }
       & Pick<_QueryMeta, 'count'>
@@ -1845,11 +1845,11 @@ export const PostDocument = gql`
     query Post($postId: Int!) {
   post(postId: $postId) {
     ...PostDetails
-    author {
-      ...UserDetails
-    }
     category {
       ...CategoryDetails
+    }
+    author {
+      ...UserDetails
     }
     totalComments {
       count
@@ -1861,8 +1861,8 @@ export const PostDocument = gql`
   }
 }
     ${PostDetailsFragmentDoc}
-${UserDetailsFragmentDoc}
-${CategoryDetailsFragmentDoc}`;
+${CategoryDetailsFragmentDoc}
+${UserDetailsFragmentDoc}`;
 
 /**
  * __usePostQuery__

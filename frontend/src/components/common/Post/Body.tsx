@@ -19,6 +19,7 @@ type PostBodyType = {
   link?: string | null
   image?: string | null
   postId?: string | null | undefined
+  categoryId?: string | null | undefined
 }
 
 const PostBody: React.FC<PostBodyType> = ({
@@ -26,7 +27,8 @@ const PostBody: React.FC<PostBodyType> = ({
   text,
   postId,
   link,
-  image
+  image,
+  categoryId
 }): JSX.Element => {
   const [editPost, { loading: submittingEditedPost }] = useEditPostMutation()
 
@@ -45,6 +47,7 @@ const PostBody: React.FC<PostBodyType> = ({
                     variables: {
                       data: {
                         title: props,
+                        categoryId: Number(categoryId),
                         postId: Number(postId)
                       }
                     }

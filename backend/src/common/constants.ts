@@ -43,3 +43,8 @@ export const postNotFound = {
   field: "Post",
   message: "Post Not Found!"
 }
+
+export const userNotFound = {
+  field: "body",
+  message: "user not found"
+}

@@ -66,7 +66,7 @@ const SideMenu: React.FC = () => {
           </Box>
         </Box>
       ) : (
-        <Text>No Categories Yet.</Text>
+        <Text>No Categories Created.</Text>
       )}
     </>
   )
