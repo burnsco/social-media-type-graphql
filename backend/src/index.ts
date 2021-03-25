@@ -49,10 +49,14 @@ async function main(): Promise<void> {
       path: "/subscriptions",
       onConnect: async () => {
         try {
+          if (!userId) {
+            console.log(`GUEST has connected to subscription server`)
+            return
+          }
           const connectedUser = await orm.em.findOne(User, { id: userId })
 
           if (!connectedUser) {
-            throw new Error("missing userID")
+            return
           }
 
           connectedUser.online = true
@@ -68,10 +72,14 @@ async function main(): Promise<void> {
       },
       onDisconnect: async () => {
         try {
+          if (!userId) {
+            console.log(`GUEST has connected to subscription server`)
+            return
+          }
           const connectedUser = await orm.em.findOne(User, { id: userId })
 
           if (!connectedUser) {
-            throw new Error("missing userID")
+            return
           }
 
           connectedUser.online = false

@@ -27,14 +27,9 @@ export default class PostQueryResolver {
     return { count }
   }
 
-  @Query(() => Post)
+  @Query(() => Post, { nullable: true })
   async post(@Args() { postId }: PostArgs, @Ctx() { em }: ContextType) {
-    return await em.findOne(Post, { id: postId })
-  }
-
-  @Query(() => [Post])
-  async postss(@Ctx() { em }: ContextType) {
-    return await em.find(Post, {})
+    return await em.findOneOrFail(Post, { id: postId })
   }
 
   @Query(() => [Post], { nullable: true })
@@ -43,7 +38,7 @@ export default class PostQueryResolver {
     @Ctx() { em }: ContextType
   ): Promise<Post[]> {
     if (category) {
-      const [posts] = await em.findAndCount(
+      const posts = await em.find(
         Post,
         { category: { name: category } },
         {
