@@ -268,8 +268,7 @@ export type Query = {
   messages?: Maybe<Array<Message>>;
   _allPostsMeta: _QueryMeta;
   _categoryPostsMeta: _QueryMeta;
-  post: Post;
-  postss: Array<Post>;
+  post?: Maybe<Post>;
   posts?: Maybe<Array<Post>>;
   privateMessage?: Maybe<PrivateMessage>;
   user: User;
@@ -360,6 +359,7 @@ export type RegisterInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  newCategory: Category;
   newMessage: Message;
   newComments: Comment;
   newVotes: Vote;
@@ -807,7 +807,7 @@ export type CommentsForPostQueryVariables = Exact<{
 
 export type CommentsForPostQuery = (
   { __typename?: 'Query' }
-  & { post: (
+  & { post?: Maybe<(
     { __typename?: 'Post' }
     & Pick<Post, 'id'>
     & { comments?: Maybe<Array<(
@@ -818,7 +818,7 @@ export type CommentsForPostQuery = (
       ) }
       & CommentDetailsFragment
     )>> }
-  ) }
+  )> }
 );
 
 export type ChatRoomMessagesQueryVariables = Exact<{
@@ -848,7 +848,7 @@ export type PostQueryVariables = Exact<{
 
 export type PostQuery = (
   { __typename?: 'Query' }
-  & { post: (
+  & { post?: Maybe<(
     { __typename?: 'Post' }
     & { category: (
       { __typename?: 'Category' }
@@ -864,7 +864,7 @@ export type PostQuery = (
       & Pick<_QueryMeta, 'score' | 'count'>
     )> }
     & PostDetailsFragment
-  ) }
+  )> }
 );
 
 export type PostsQueryVariables = Exact<{

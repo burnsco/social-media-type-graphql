@@ -58,7 +58,7 @@ export default function SideMenuContainer() {
     data: subreddits,
     loading: loadingSubreddits,
     error: subredditsError,
-    refetch: fetchMoreSubreddits
+    refetch: refetchCategories
   } = useCategoriesQuery()
 
   const { category } = router.query
@@ -105,7 +105,7 @@ export default function SideMenuContainer() {
   }
 
   const FriendsAcccordion = () => (
-    <AccordionItem>
+    <AccordionItem onClick={() => refetch()}>
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
@@ -187,7 +187,7 @@ export default function SideMenuContainer() {
   )
 
   const SubredditsAccordion = () => (
-    <AccordionItem onMouseOver={() => fetchMoreSubreddits}>
+    <AccordionItem>
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
@@ -202,10 +202,7 @@ export default function SideMenuContainer() {
             <>
               {subreddits.categories.map(subreddit => {
                 return (
-                  <ListItem
-                    key={`subreddit-list-${subreddit.id}`}
-                    onClick={() => router.push(`/r/${subreddit.name}`)}
-                  >
+                  <ListItem key={`subreddit-list-${subreddit.id}`}>
                     <NextChakraLink
                       p={1}
                       fontWeight={category === subreddit.name ? "500" : "400"}
@@ -283,7 +280,6 @@ export default function SideMenuContainer() {
   return (
     <Skeleton isLoaded={!loading}>
       <Box
-        onClick={() => refetch()}
         bg={bg}
         minW="200px"
         maxW="300px"

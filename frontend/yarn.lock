@@ -1952,10 +1952,10 @@
     lz-string "^1.4.4"
     pretty-format "^26.6.2"
 
-"@testing-library/jest-dom@^5.11.9":
-  version "5.11.9"
-  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.11.9.tgz#e6b3cd687021f89f261bd53cbe367041fbd3e975"
-  integrity sha512-Mn2gnA9d1wStlAIT2NU8J15LNob0YFBVjs2aEQ3j8rsfRQo+lAs7/ui1i2TGaJjapLmuNPLTsrm+nPjmZDwpcQ==
+"@testing-library/jest-dom@^5.11.10":
+  version "5.11.10"
+  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-5.11.10.tgz#1cd90715023e1627f5ed26ab3b38e6f22d77046c"
+  integrity sha512-FuKiq5xuk44Fqm0000Z9w0hjOdwZRNzgx7xGGxQYepWFZy+OYUMOT/wPI4nLYXCaVltNVpU1W/qmD88wLWDsqQ==
   dependencies:
     "@babel/runtime" "^7.9.2"
     "@types/testing-library__jest-dom" "^5.9.1"
@@ -1974,10 +1974,10 @@
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^7.28.1"
 
-"@testing-library/user-event@^13.0.10":
-  version "13.0.10"
-  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-13.0.10.tgz#8bd5c9f82b5e707fde598a8f319943c289a87378"
-  integrity sha512-LORQD86zMtv/lP1RpulfBm5wGjTwmzqCRBx15nOYcH55ojsGoaTNsL76V5eoZWefl+T2SvG0kqY6mwOxJ1/5Og==
+"@testing-library/user-event@^13.0.15":
+  version "13.0.15"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-13.0.15.tgz#9b2cbcd954474b71392f52341053b24c770bb404"
+  integrity sha512-GjSG8Sf/aIvYkaN54ENrA0brg1fU/69P+ow02fBF4NQpbLLKRfGX1z3pWGBBpxBXY/2Be9RHBYlkj2058SroTg==
   dependencies:
     "@babel/runtime" "^7.12.5"
 
@@ -4010,9 +4010,9 @@ ecdsa-sig-formatter@1.0.11:
     safe-buffer "^5.0.1"
 
 electron-to-chromium@^1.3.634, electron-to-chromium@^1.3.649:
-  version "1.3.698"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.698.tgz#5de813960f23581a268718a0058683dffa15d221"
-  integrity sha512-VEXDzYblnlT+g8Q3gedwzgKOso1evkeJzV8lih7lV8mL8eAnGVnKyC3KsFT6S+R5PQO4ffdr1PI16/ElibY/kQ==
+  version "1.3.699"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.699.tgz#854eea9db8bc8109c409a4807bfdb200dd75a2c7"
+  integrity sha512-fjt43CPXdPYwD9ybmKbNeLwZBmCVdLY2J5fGZub7/eMPuiqQznOGNXv/wurnpXIlE7ScHnvG9Zi+H4/i6uMKmw==
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -6692,7 +6692,7 @@ lodash.sortby@^4.7.0:
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
-lodash@4.x, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@~4.17.20:
+lodash@4.x, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.7.0, lodash@~4.17.20:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -8996,9 +8996,9 @@ stylis@3.5.4:
   integrity sha512-8/3pSmthWM7lsPBKv7NXkzn2Uc9W7NotcwGNpJaa3k7WMM1XDCA4MgT5k/8BIexd5ydZdboXtU90XH9Ec4Bv/Q==
 
 stylis@^4.0.3:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/stylis/-/stylis-4.0.8.tgz#b03cc47dcedcd2dbac93d8224e687c43ceda4e20"
-  integrity sha512-WCHD2YHu2gp4GN9M8TqD7DZljL/UC5mIFaKyYJRuRyPdnqkTqzTnxCIQ1Z3VgQvz1aPcua5bSS2h0HrcbDUdBg==
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/stylis/-/stylis-4.0.9.tgz#ae3d5283aa439225cf79dd2d0cf46f8bfd4ad393"
+  integrity sha512-ci7pEFNVW3YJiWEzqPOMsAjY6kgraZ3ZgBfQ5HYbNtLJEsQ0G46ejWZpfSSCp/FaSiCSGGhzL9O2lN+2cB6ong==
 
 subscriptions-transport-ws@^0.9.18:
   version "0.9.18"
@@ -9695,11 +9695,11 @@ whatwg-url@^7.0.0:
     webidl-conversions "^4.0.2"
 
 whatwg-url@^8.0.0:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-8.4.0.tgz#50fb9615b05469591d2b2bd6dfaed2942ed72837"
-  integrity sha512-vwTUFf6V4zhcPkWp/4CQPr1TW9Ml6SF4lVyaIMBdJw5i6qUUJ1QWM4Z6YYVkfka0OUIzVo/0aNtGVGk256IKWw==
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-8.5.0.tgz#7752b8464fc0903fec89aa9846fc9efe07351fd3"
+  integrity sha512-fy+R77xWv0AiqfLl4nuGUlQ3/6b5uNfQ4WAbGQVMYshCTCCPK9psC1nWh3XHuxGVCtlcDDQPQW1csmmIQo+fwg==
   dependencies:
-    lodash.sortby "^4.7.0"
+    lodash "^4.7.0"
     tr46 "^2.0.2"
     webidl-conversions "^6.1.0"
 

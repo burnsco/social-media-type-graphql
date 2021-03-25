@@ -3,6 +3,7 @@ export enum Topic {
   NewPost = "NEW_POST",
   NewVote = "NEW_VOTE",
   NewMessage = "NEW_MESSAGE",
+  NewCategory = "NEW_CATEGORY",
   NewPrivateMessage = "NEW_PRIVATE_MESSAGE",
   NewUser = "NEW_USER",
   FriendOnline = "FRIEND_ONLINE",
