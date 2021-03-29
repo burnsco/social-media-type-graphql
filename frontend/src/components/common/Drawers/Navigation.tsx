@@ -27,7 +27,7 @@ export default function NavigationDrawer() {
   const hoverColor = useColorModeValue("black", "white")
   const hoverBG = useColorModeValue("#ebedf0", "#3661ed")
   const { isOpen, onOpen, onClose } = useDisclosure()
-
+  const drawerContentBG = useColorModeValue("whitesmoke", "gray.900")
   const { loading, data } = useCategoriesQuery()
 
   const btnRef = useRef<HTMLButtonElement | null>(null)
@@ -51,7 +51,7 @@ export default function NavigationDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
+        <DrawerContent bg={drawerContentBG}>
           <DrawerCloseButton />
           <DrawerHeader>Search Subreddits</DrawerHeader>
           <DrawerBody>

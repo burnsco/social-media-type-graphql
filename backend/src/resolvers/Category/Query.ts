@@ -7,12 +7,12 @@ import { ContextType } from "../../types"
 
 @Resolver(() => Category)
 export default class CategoryQueryResolver {
-  @Query(() => Category)
+  @Query(() => Category, { nullable: true })
   async category(
     @Args() { categoryId }: NewMessageArgs,
     @Ctx() { em }: ContextType
   ) {
-    return await em.findOneOrFail(
+    return await em.find(
       Category,
       { id: categoryId },
       {
@@ -21,7 +21,6 @@ export default class CategoryQueryResolver {
     )
   }
 
-  // *** Split Query, with pagination and without *** \\
   @Query(() => [Category], { nullable: true })
   async categories(
     @Args() { first, skip, name, orderBy }: CategoryArgs,

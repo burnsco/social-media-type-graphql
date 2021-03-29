@@ -1,6 +1,6 @@
 import { ChakraField } from "@/components/common/index"
+import { Wrapper } from "@/components/common/wrapper"
 import { Layout } from "@/components/ui"
-import { Wrapper } from "@/components/ui/Layout/wrapper"
 import { MeDocument, MeQuery, useLoginMutation } from "@/generated/graphql"
 import { LoginSchema } from "@/types/User/schemas"
 import { LoginUserInputType } from "@/types/User/types"

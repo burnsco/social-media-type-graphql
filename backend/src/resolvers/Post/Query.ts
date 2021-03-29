@@ -29,7 +29,7 @@ export default class PostQueryResolver {
 
   @Query(() => Post, { nullable: true })
   async post(@Args() { postId }: PostArgs, @Ctx() { em }: ContextType) {
-    return await em.findOneOrFail(Post, { id: postId })
+    return await em.findOne(Post, { id: postId })
   }
 
   @Query(() => [Post], { nullable: true })
@@ -104,15 +104,12 @@ export default class PostQueryResolver {
   }
 
   @FieldResolver()
-  async author(@Root() post: Post, @Ctx() { em }: ContextType): Promise<User> {
-    return await em.findOneOrFail(User, post.author.id)
+  async author(@Root() post: Post, @Ctx() { em }: ContextType) {
+    return await em.findOne(User, post.author.id)
   }
 
   @FieldResolver()
-  async category(
-    @Root() post: Post,
-    @Ctx() { em }: ContextType
-  ): Promise<Category> {
-    return await em.findOneOrFail(Category, post.category.id)
+  async category(@Root() post: Post, @Ctx() { em }: ContextType) {
+    return await em.findOne(Category, post.category.id)
   }
 }

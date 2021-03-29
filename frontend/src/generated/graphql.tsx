@@ -260,7 +260,7 @@ export type PrivateMessageInput = {
 
 export type Query = {
   __typename?: 'Query';
-  category: Category;
+  category?: Maybe<Category>;
   categories?: Maybe<Array<Category>>;
   comment: Comment;
   comments?: Maybe<Array<Comment>>;
@@ -271,8 +271,8 @@ export type Query = {
   post?: Maybe<Post>;
   posts?: Maybe<Array<Post>>;
   privateMessage?: Maybe<PrivateMessage>;
-  user: User;
-  users: Array<User>;
+  user?: Maybe<User>;
+  users?: Maybe<Array<User>>;
   me: User;
 };
 
@@ -945,10 +945,10 @@ export type UserQueryVariables = Exact<{
 
 export type UserQuery = (
   { __typename?: 'Query' }
-  & { user: (
+  & { user?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username' | 'email' | 'about' | 'online'>
-  ) }
+  )> }
 );
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
@@ -956,10 +956,10 @@ export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type UsersQuery = (
   { __typename?: 'Query' }
-  & { users: Array<(
+  & { users?: Maybe<Array<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username' | 'email' | 'about'>
-  )> }
+  )>> }
 );
 
 export type UpdateMetaQueryVariables = Exact<{

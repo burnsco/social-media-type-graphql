@@ -12,7 +12,7 @@ import {
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
-const SideMenu: React.FC = () => {
+export default function NoAuthSideMenu() {
   const router = useRouter()
 
   const color = useColorModeValue("gray.700", "gray.300")
@@ -22,14 +22,8 @@ const SideMenu: React.FC = () => {
   const linkbg2 = useColorModeValue("translucent", "translucent")
 
   const { category } = router.query
-
   const [fetchCategories, { data, loading, error }] = useCategoriesLazyQuery()
-
   useEffect(() => fetchCategories, [fetchCategories])
-
-  if (loading) return <VisuallyHidden>loading</VisuallyHidden>
-
-  if (error) return <Alert>{error}</Alert>
 
   return (
     <>
@@ -70,6 +64,7 @@ const SideMenu: React.FC = () => {
       )}
     </>
   )
-}
+  if (loading) return <VisuallyHidden>loading</VisuallyHidden>
 
-export default SideMenu
+  if (error) return <Alert>{error}</Alert>
+}

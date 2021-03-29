@@ -7,15 +7,15 @@ import { ContextType } from "../../types"
 
 @Resolver(() => User)
 export default class UserQueryResolver {
-  @Query(() => User)
+  @Query(() => User, { nullable: true })
   async user(
     @Arg("data") data: EditUserInput,
     @Ctx() { em }: ContextType
-  ): Promise<User> {
-    return await em.findOneOrFail(User, { username: data.username })
+  ): Promise<User | null> {
+    return await em.findOne(User, { username: data.username })
   }
 
-  @Query(() => [User])
+  @Query(() => [User], { nullable: true })
   async users(@Ctx() { em }: ContextType): Promise<User[] | null> {
     return await em.find(User, {}, { populate: ["friends"] })
   }

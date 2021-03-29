@@ -29,10 +29,10 @@ export default class PrivateMessageMutationResolver {
     @Ctx()
     { em, req }: ContextType
   ): Promise<PrivateMessage | null> {
-    const user = await em.findOneOrFail(User, { id: req.session.userId }, [
+    const user = await em.findOne(User, { id: req.session.userId }, [
       "privateMessages"
     ])
-    const receipent = await em.findOneOrFail(User, { id: userId }, [
+    const receipent = await em.findOne(User, { id: userId }, [
       "privateMessages"
     ])
 

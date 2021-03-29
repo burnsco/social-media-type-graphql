@@ -7,12 +7,6 @@ export const cacheOptions = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        post(_, { args, toReference }) {
-          return toReference({
-            __typename: "Post",
-            id: args?.postId
-          })
-        },
         categories: {
           keyArgs: [],
           merge(

@@ -37,7 +37,7 @@ import {
 } from "@chakra-ui/react"
 import { Form, Formik, FormikHelpers } from "formik"
 import { useRouter } from "next/router"
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { BsPaperclip, BsPencilSquare } from "react-icons/bs"
 import { MdLink } from "react-icons/md"
@@ -56,6 +56,8 @@ function CreatePostDrawer() {
 
   const [getSubreddits, { data }] = useCategoriesLazyQuery()
   const [submitPost, { loading }] = useCreatePostMutation()
+
+  useEffect(() => getSubreddits(), [getSubreddits])
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
@@ -199,7 +201,6 @@ function CreatePostDrawer() {
                       <ChakraSelect
                         placeholder="Choose a community"
                         aria-label="Choose a community"
-                        onMouseOver={() => getSubreddits()}
                         id="categoryId"
                         name="categoryId"
                         label=""

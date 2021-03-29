@@ -28,13 +28,16 @@ export default class MessageMutationResolver {
     notifyAboutNewMessage: Publisher<Message>,
     @Ctx() { em, req }: ContextType
   ): Promise<MessageMutationResponse | null | boolean> {
-    const category = await em.findOneOrFail(
+    const category = await em.findOne(
       Category,
       { id: categoryId },
       {
         populate: ["messages"]
       }
     )
+    if (!category) {
+      return null
+    }
 
     if (category && req.session.userId) {
       const message = em.create(Message, {
