@@ -1,3 +1,4 @@
+import { LoadStrategy } from "@mikro-orm/core"
 import {
   Arg,
   Args,
@@ -32,7 +33,8 @@ export default class MessageMutationResolver {
       Category,
       { id: categoryId },
       {
-        populate: ["messages"]
+        populate: ["messages"],
+        strategy: LoadStrategy.JOINED
       }
     )
     if (!category) {

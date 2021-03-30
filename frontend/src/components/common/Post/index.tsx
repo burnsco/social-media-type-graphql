@@ -25,6 +25,8 @@ const NewPost: React.FC<PostQuery> = props => {
     const postTitle = post?.title
     const postText = post?.text
     const postImage = post?.image
+    const postImageH = post?.imageH
+    const postImageW = post?.imageW
     const postLink = post?.link
     const postCommentsCount = post?.totalComments?.count ?? 0
     const isOwner = loggedInUser?.id === post?.author.id ?? false
@@ -49,6 +51,8 @@ const NewPost: React.FC<PostQuery> = props => {
               />
               <PostBody
                 postId={postId}
+                imageW={postImageW}
+                imageH={postImageH}
                 categoryId={categoryId}
                 image={postImage}
                 title={postTitle}
@@ -61,12 +65,15 @@ const NewPost: React.FC<PostQuery> = props => {
               <PostHeader
                 author={postAuthor}
                 createdAt={postCreatedTime}
+                updatedAt={postUpdatedTime}
                 category={postCategory}
               />
 
               <PostBody
                 image={postImage}
                 title={postTitle}
+                imageW={postImageW}
+                imageH={postImageH}
                 text={postText}
                 link={postLink}
               />

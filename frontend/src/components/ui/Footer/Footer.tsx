@@ -1,4 +1,6 @@
 import MessageUser from "@/components/common/MessageUser"
+import { OfflineCircle, OnlineCircle } from "@/components/common/OnlineOffline"
+import { useMyFriendsAndMessagesQuery } from "@/generated/graphql"
 import {
   Avatar,
   Badge,
@@ -25,8 +27,6 @@ import {
 import React from "react"
 import { FaUserFriends } from "react-icons/fa"
 import { ImSpinner } from "react-icons/im"
-import { useMyFriendsAndMessagesQuery } from "../../../generated/graphql"
-import { OfflineCircle, OnlineCircle } from "../../common/OnlineOffline"
 
 const FooterContent = () => {
   const { data, loading, refetch } = useMyFriendsAndMessagesQuery()

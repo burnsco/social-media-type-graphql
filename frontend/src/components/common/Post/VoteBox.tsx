@@ -25,7 +25,7 @@ const VoteBox: React.FC<{
           isDisabled={loading || !isLoggedIn}
           onClick={async () => {
             await vote({
-              variables: { data: { value: 1, postId } }
+              variables: { data: { value: 1, postId: Number(postId) } }
             })
           }}
           variant="ghost"
@@ -42,7 +42,7 @@ const VoteBox: React.FC<{
           isDisabled={loading || !isLoggedIn}
           onClick={async () => {
             await vote({
-              variables: { data: { value: -1, postId } }
+              variables: { data: { value: -1, postId: Number(postId) } }
             })
           }}
           variant="ghost"

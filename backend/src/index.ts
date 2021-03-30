@@ -54,11 +54,9 @@ async function main(): Promise<void> {
             return
           }
           const connectedUser = await orm.em.findOne(User, { id: userId })
-
           if (!connectedUser) {
             return
           }
-
           connectedUser.online = true
           await orm.em.flush()
 
@@ -77,11 +75,9 @@ async function main(): Promise<void> {
             return
           }
           const connectedUser = await orm.em.findOne(User, { id: userId })
-
           if (!connectedUser) {
             return
           }
-
           connectedUser.online = false
           await orm.em.flush()
 

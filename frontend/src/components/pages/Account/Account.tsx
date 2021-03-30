@@ -9,15 +9,27 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Alert,
+  AlertIcon,
   Box,
   Button,
+  Center,
+  CircularProgress,
+  CircularProgressLabel,
   Container,
   Spinner,
-  useColorModeValue
+  useColorModeValue,
+  VisuallyHidden
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
+import { useCallback, useState } from "react"
+import { useDropzone } from "react-dropzone"
+import request from "superagent"
 
 const AccountContent = (): JSX.Element => {
+  const [uploadProgress, setUploadProgress] = useState(0)
+
+  const [imageUrl, setImageUrl] = useState<string>("")
   const bg = useColorModeValue("white", "#1A1A1B")
   const { data, loading: meQueryLoading } = useMeQuery()
   const [editUser, { loading: editUserLoading }] = useEditUserMutation()
@@ -36,9 +48,45 @@ const AccountContent = (): JSX.Element => {
       title: "Email",
       type: "email"
     },
-    { id: "edit-user-about-field", field: "about", title: "About" },
-    { id: "edit-user-avatar-field", field: "avatar", title: "Avatar" }
+    { id: "edit-user-about-field", field: "about", title: "About" }
   ]
+
+  const onDrop = useCallback(acceptedFile => {
+    const cloudinaryUrl = "https://api.cloudinary.com/v1_1/dmztdsduf/upload"
+    const cloudinaryPreset = "qapnebg6"
+
+    request
+      .post(cloudinaryUrl)
+      .field("upload_preset", cloudinaryPreset)
+      .field("file", acceptedFile)
+      .field("multiple", false)
+      .on("progress", progress => {
+        console.log(progress)
+        if (progress && progress.percent) {
+          setUploadProgress(progress.percent)
+        }
+      })
+      .end((error, response) => {
+        if (error) {
+          throw new Error(error.message)
+        }
+        console.log("image details")
+        console.log(response.body)
+        setImageUrl(response.body.public_id)
+      })
+  }, [])
+
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    acceptedFiles
+  } = useDropzone({
+    onDrop,
+    maxFiles: 1
+  })
+
+  console.log(imageUrl)
 
   if (!meQueryLoading) {
     return (
@@ -51,7 +99,7 @@ const AccountContent = (): JSX.Element => {
                 about: data?.me?.about ?? "",
                 email: data?.me?.email,
                 password: "",
-                avatar: ""
+                avatar: imageUrl
               }}
               validationSchema={EditUserSchema}
               onSubmit={async (values, actions) => {
@@ -75,26 +123,89 @@ const AccountContent = (): JSX.Element => {
               {({ isSubmitting }) => (
                 <Form>
                   <Accordion allowToggle>
-                    {accountFormData.map(formItem => (
-                      <AccordionItem key={formItem.id}>
+                    <>
+                      {accountFormData.map(formItem => (
+                        <AccordionItem key={formItem.id}>
+                          <h2>
+                            <AccordionButton>
+                              <Box flex="1" textAlign="left">
+                                {formItem.title}
+                              </Box>
+                              <AccordionIcon />
+                            </AccordionButton>
+                          </h2>
+                          <AccordionPanel pb={4}>
+                            <EditUserField
+                              name={formItem.field}
+                              type={formItem.type || "text"}
+                              id={formItem.field}
+                              label=""
+                            />
+                          </AccordionPanel>
+                        </AccordionItem>
+                      ))}
+                      <AccordionItem>
                         <h2>
                           <AccordionButton>
                             <Box flex="1" textAlign="left">
-                              {formItem.title}
+                              Avatar
                             </Box>
                             <AccordionIcon />
                           </AccordionButton>
                         </h2>
                         <AccordionPanel pb={4}>
-                          <EditUserField
-                            name={formItem.field}
-                            type={formItem.type || "text"}
-                            id={formItem.field}
-                            label=""
-                          />
+                          <div {...getRootProps({})}>
+                            {uploadProgress !== 100 ? (
+                              <Box
+                                width="300px"
+                                height="100px"
+                                id="upload-media"
+                                border="3px dashed"
+                                p={4}
+                              >
+                                <Center>
+                                  {isDragActive ? (
+                                    <p>Drop the files here ...</p>
+                                  ) : (
+                                    <p>
+                                      {uploadProgress === 0
+                                        ? "Drag and drop your avatar here, or click to select file"
+                                        : "Uploading..."}
+                                    </p>
+                                  )}
+                                </Center>
+                                <VisuallyHidden>
+                                  <EditUserField
+                                    name="avatar"
+                                    type="text"
+                                    id="avatar"
+                                    label=""
+                                  />
+                                </VisuallyHidden>
+                                <input {...getInputProps({})} />
+                                {uploadProgress !== 0 &&
+                                uploadProgress !== 100 ? (
+                                  <CircularProgress
+                                    my={4}
+                                    color="green.400"
+                                    value={uploadProgress}
+                                  >
+                                    <CircularProgressLabel>
+                                      {uploadProgress}
+                                    </CircularProgressLabel>
+                                  </CircularProgress>
+                                ) : null}
+                              </Box>
+                            ) : (
+                              <Alert status="success" variant="top-accent">
+                                <AlertIcon />
+                                Image uploaded !
+                              </Alert>
+                            )}
+                          </div>
                         </AccordionPanel>
                       </AccordionItem>
-                    ))}
+                    </>
                   </Accordion>
 
                   <Button

@@ -21,7 +21,7 @@ import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { LinkPost, MediaPost, RegularPost } from "./PostTypes"
 
-const CreatePost: React.FunctionComponent = () => {
+export default function CreatePost() {
   const router = useRouter()
   const bg = useColorModeValue("white", "#1A1A1B")
   const toast = useToast()
@@ -133,5 +133,3 @@ const CreatePost: React.FunctionComponent = () => {
     </Box>
   )
 }
-
-export default CreatePost

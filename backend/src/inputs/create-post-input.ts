@@ -17,9 +17,9 @@ export default class CreatePostInput {
   @Field(() => String, { nullable: true })
   link?: string
 
-  @Field(() => String, { nullable: true })
-  imageH?: string
+  @Field(() => Int, { nullable: true })
+  imageH?: number
 
-  @Field(() => String, { nullable: true })
-  imageW?: string
+  @Field(() => Int, { nullable: true })
+  imageW?: number
 }

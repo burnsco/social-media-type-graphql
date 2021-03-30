@@ -16,9 +16,7 @@ export const cacheOptions = new InMemoryCache({
             return existing ? [...incoming, ...existing] : [...incoming]
           }
         },
-
         posts: concatPagination(),
-
         selectedChatRoomId: {
           read() {
             return selectedChatRoomId()
@@ -31,7 +29,6 @@ export const cacheOptions = new InMemoryCache({
         }
       }
     },
-    // ENTITIES \\
     Post: {
       fields: {
         category: {

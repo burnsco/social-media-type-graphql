@@ -17,6 +17,8 @@ type PostBodyType = {
   title?: string | null
   text?: string | null
   link?: string | null
+  imageH?: number | null
+  imageW?: number | null
   image?: string | null
   postId?: string | null | undefined
   categoryId?: string | null | undefined
@@ -26,6 +28,8 @@ const PostBody: React.FC<PostBodyType> = ({
   title,
   text,
   postId,
+  imageW,
+  imageH,
   link,
   image,
   categoryId
@@ -33,11 +37,16 @@ const PostBody: React.FC<PostBodyType> = ({
   const [editPost, { loading: submittingEditedPost }] = useEditPostMutation()
 
   // #TODO optimize this so can use on title, text or link
-  function EditItemControls({ title, text, link, postId }: PostBodyType) {
+  function EditItemControls({
+    title,
+    text,
+    link,
+    postId
+  }: Partial<PostBodyType>) {
     if (title || text || link) {
       if (postId) {
         return (
-          <Heading fontWeight="500" fontSize="xl" px={1}>
+          <Heading fontWeight="500" fontSize="xl" my={1} px={1}>
             <Editable
               defaultValue={title || "Error"}
               submitOnBlur
@@ -78,15 +87,16 @@ const PostBody: React.FC<PostBodyType> = ({
         <EditItemControls title={title} postId={postId} />
       </Skeleton>
 
-      {image ? (
-        <Box pos="relative" minW="full" minH="260px">
+      {image && imageW && imageH ? (
+        <>
           <Image
-            layout="fill"
-            objectFit="cover"
+            layout="responsive"
             src={image}
+            height={imageH}
+            width={imageW}
             alt={`image-${title}`}
           />
-        </Box>
+        </>
       ) : null}
 
       {text ? (

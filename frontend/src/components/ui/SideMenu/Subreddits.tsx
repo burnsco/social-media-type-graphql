@@ -63,7 +63,7 @@ export default function SubredditsAccordion() {
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            SUBREDDITS <SubredditsCount />
+            CATEGORIES <SubredditsCount />
           </Box>
           {!loadingSubreddits ? <AccordionIcon /> : <ImSpinner />}
         </AccordionButton>

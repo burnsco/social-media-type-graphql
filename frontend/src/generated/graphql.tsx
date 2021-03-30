@@ -73,8 +73,8 @@ export type CreatePostInput = {
   text?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
   link?: Maybe<Scalars['String']>;
-  imageH?: Maybe<Scalars['String']>;
-  imageW?: Maybe<Scalars['String']>;
+  imageH?: Maybe<Scalars['Int']>;
+  imageW?: Maybe<Scalars['Int']>;
 };
 
 export type EditPostInput = {
@@ -227,8 +227,8 @@ export type Post = {
   text?: Maybe<Scalars['String']>;
   link?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
-  imageH?: Maybe<Scalars['String']>;
-  imageW?: Maybe<Scalars['String']>;
+  imageH?: Maybe<Scalars['Int']>;
+  imageW?: Maybe<Scalars['Int']>;
   author: User;
   category: Category;
   votes?: Maybe<Array<Vote>>;

@@ -59,7 +59,7 @@ export default class CategoryQueryResolver {
   }
 
   @FieldResolver(() => [Message], { nullable: true })
-  async messages(@Root() category: Category, @Ctx() { em }: ContextType) {
-    return await em.find(Message, { category: { id: category.id } })
+  messages(@Root() category: Category, @Ctx() { em }: ContextType) {
+    return em.find(Message, { category: { id: category.id } })
   }
 }

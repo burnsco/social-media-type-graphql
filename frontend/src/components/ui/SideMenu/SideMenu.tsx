@@ -22,8 +22,14 @@ export default function NoAuthSideMenu() {
   const linkbg2 = useColorModeValue("translucent", "translucent")
 
   const { category } = router.query
+
   const [fetchCategories, { data, loading, error }] = useCategoriesLazyQuery()
-  useEffect(() => fetchCategories, [fetchCategories])
+
+  useEffect(() => fetchCategories(), [fetchCategories])
+
+  if (loading) return <VisuallyHidden>loading</VisuallyHidden>
+
+  if (error) return <Alert>{error}</Alert>
 
   return (
     <>
@@ -64,7 +70,4 @@ export default function NoAuthSideMenu() {
       )}
     </>
   )
-  if (loading) return <VisuallyHidden>loading</VisuallyHidden>
-
-  if (error) return <Alert>{error}</Alert>
 }

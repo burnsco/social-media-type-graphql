@@ -22,6 +22,7 @@ import { useRouter } from "next/router"
 import { useRef } from "react"
 
 function LoginDrawer() {
+  const drawerBG = useColorModeValue("whitesmoke", "gray.900")
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
@@ -42,7 +43,7 @@ function LoginDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
+        <DrawerContent bg={drawerBG}>
           <DrawerCloseButton />
           <DrawerHeader>Login</DrawerHeader>
           <Formik

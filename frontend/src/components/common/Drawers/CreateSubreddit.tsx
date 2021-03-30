@@ -26,6 +26,7 @@ import { useRef } from "react"
 import { MdCreateNewFolder } from "react-icons/md"
 
 function CreateCategoryDrawer() {
+  const drawerBG = useColorModeValue("whitesmoke", "gray.900")
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
@@ -60,7 +61,7 @@ function CreateCategoryDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
+        <DrawerContent bg={drawerBG}>
           <DrawerCloseButton />
           <DrawerHeader>Create Subreddit</DrawerHeader>
           <Formik

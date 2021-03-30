@@ -35,7 +35,7 @@ const PostHeader: React.FC<{
 
   const renderPostCreatedOrEdited = () => (
     <Box ml="3" textDecoration="none">
-      Posted by
+      {createdAt === updatedAt ? `Posted by` : `Edited by`}
       <Menu>
         <Button ml={2} size="xs" variant="outline" as={MenuButton}>
           {author?.username}
@@ -64,9 +64,15 @@ const PostHeader: React.FC<{
           </MenuItem>
         </MenuList>
       </Menu>
-      <Box display="inline" ml="2">
-        {timeDifferenceForDate(createdAt)}
-      </Box>
+      {createdAt === updatedAt ? (
+        <Box display="inline" ml="2">
+          {timeDifferenceForDate(createdAt)}
+        </Box>
+      ) : (
+        <Box display="inline" ml="2">
+          {timeDifferenceForDate(updatedAt)}
+        </Box>
+      )}
     </Box>
   )
 

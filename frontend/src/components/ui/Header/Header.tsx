@@ -29,7 +29,6 @@ const HeaderContent = () => {
         aria-label={`Switch to ${text} mode`}
         variant="ghost"
         color="current"
-        ml="3"
         onClick={toggleMode}
         icon={<SwitchIcon />}
       />
@@ -67,7 +66,7 @@ const Header = () => {
       boxShadow={headerShadow}
       width="full"
     >
-      <chakra.div height="3.5rem" mx="auto" maxW="1200px">
+      <chakra.div height="3.5rem" maxW="1200px">
         <HeaderContent />
       </chakra.div>
     </chakra.header>

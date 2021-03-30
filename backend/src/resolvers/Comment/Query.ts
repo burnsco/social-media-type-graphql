@@ -11,7 +11,7 @@ export default class CommentQueryResolver {
     @Args() { postId }: PostArgs,
     @Ctx() { em }: ContextType
   ): Promise<Comment | null> {
-    return await em.findOneOrFail(Comment, { post: { id: postId } })
+    return await em.findOne(Comment, { post: { id: postId } })
   }
 
   @Query(() => [Comment], { nullable: true })

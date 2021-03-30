@@ -1,4 +1,4 @@
-import { useCategoriesQuery } from "@/generated/graphql"
+import { useCategoriesLazyQuery } from "@/generated/graphql"
 import {
   Button,
   Flex,
@@ -11,18 +11,20 @@ import {
   useColorModeValue
 } from "@chakra-ui/react"
 import { useRouter } from "next/router"
+import { useEffect } from "react"
 import { BsArrowDown, BsArrowLeft } from "react-icons/bs"
 import { FaHome } from "react-icons/fa"
 
-function NavigationMenu() {
+export default function NavigationMenu() {
   const router = useRouter()
 
-  const { loading, data } = useCategoriesQuery()
+  const [fetchCategories, { loading, data }] = useCategoriesLazyQuery()
+
+  useEffect(() => fetchCategories(), [fetchCategories])
 
   const bg = useColorModeValue("white", "#202020")
 
-  const renderPath = (isOpen: boolean) => {
-    if (isOpen) return "Browsing"
+  const renderPath = () => {
     if (router && router.pathname) {
       if (router.pathname === "/") {
         return "Home"
@@ -51,7 +53,7 @@ function NavigationMenu() {
               rightIcon={isOpen ? <BsArrowDown /> : <BsArrowLeft />}
               variant="outline"
             >
-              {renderPath(isOpen)}
+              {renderPath()}
             </MenuButton>
             {data && data.categories && (
               <MenuList minWidth="240px" opacity="0.7" bg={bg}>
@@ -79,5 +81,3 @@ function NavigationMenu() {
   }
   return <SkeletonText />
 }
-
-export default NavigationMenu

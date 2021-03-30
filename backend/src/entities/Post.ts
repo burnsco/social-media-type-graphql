@@ -7,7 +7,7 @@ import {
   PrimaryKey,
   Property
 } from "@mikro-orm/core"
-import { ID, ObjectType } from "type-graphql"
+import { ID, Int, ObjectType } from "type-graphql"
 import { Field } from "type-graphql/dist/decorators/Field"
 import { Category, Comment, User, Vote } from "."
 
@@ -41,13 +41,13 @@ export default class Post {
   @Property({ nullable: true })
   image?: string
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Int, { nullable: true })
   @Property({ nullable: true })
-  imageH?: string
+  imageH?: number
 
-  @Field(() => String, { nullable: true })
+  @Field(() => Int, { nullable: true })
   @Property({ nullable: true })
-  imageW?: string
+  imageW?: number
 
   @Field(() => User)
   @ManyToOne(() => User, { onDelete: "cascade" })

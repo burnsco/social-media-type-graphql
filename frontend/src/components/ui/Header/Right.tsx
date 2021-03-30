@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   ButtonGroup,
+  chakra,
   HStack,
   IconButton,
   Menu,
@@ -63,7 +64,7 @@ export default function HeaderMenu() {
   if (data && data?.me?.username && !loading) {
     return (
       <HStack spacing={2}>
-        <ButtonGroup spacing="4" mr="4">
+        <ButtonGroup>
           <DynamicChatRoomDrawer />
           <DynamicCreatePostDrawer />
           <DynamicCreateCategoryDrawer />
@@ -90,25 +91,24 @@ export default function HeaderMenu() {
               <MenuDivider />
               <MenuItem onClick={() => router.push("/user")}>
                 <FaUserCircle />
-                <Box ml={3}>Profile</Box>
+                <chakra.span>Profile</chakra.span>
               </MenuItem>
               <MenuItem onClick={() => router.push("/user/account")}>
                 <MdSettings />
-                <Box ml={3}>Account</Box>
+                <chakra.span>Profile</chakra.span>
               </MenuItem>
               <MenuItem onClick={() => router.push("/user/account")}>
                 <MdSettings />
-                <Box ml={3}>Friends</Box>
+                <chakra.span>Profile</chakra.span>
               </MenuItem>
               <MenuItem onClick={() => router.push("/user/account")}>
                 <MdSettings />
-                <Box ml={3}>Messages</Box>
+                <chakra.span>Profile</chakra.span>
               </MenuItem>
             </MenuGroup>
             <MenuDivider />
             <MenuGroup>
               <MenuItem
-                mr={2}
                 onClick={() => {
                   logout().then(() => {
                     client.resetStore().then(() => {
@@ -118,7 +118,7 @@ export default function HeaderMenu() {
                 }}
               >
                 <AiOutlineLogout />
-                <Box ml={3}>Logout</Box>
+                <Box>Logout</Box>
               </MenuItem>
             </MenuGroup>
           </MenuList>

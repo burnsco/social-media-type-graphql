@@ -44,12 +44,12 @@ import { MdLink } from "react-icons/md"
 import { RiPictureInPictureFill } from "react-icons/ri"
 import request from "superagent"
 
-function CreatePostDrawer() {
+export default function CreatePostDrawer() {
   const [uploadProgress, setUploadProgress] = useState(0)
 
-  const [imageUrl, setImageUrl] = useState(null)
-  const [imageH, setImageH] = useState(null)
-  const [imageW, setImageW] = useState(null)
+  const [imageUrl, setImageUrl] = useState<string>("")
+  const [imageH, setImageH] = useState<number>(0)
+  const [imageW, setImageW] = useState<number>(0)
 
   const router = useRouter()
   const toast = useToast()
@@ -158,6 +158,10 @@ function CreatePostDrawer() {
     maxFiles: 1
   })
 
+  console.log(imageUrl)
+  console.log(imageH)
+  console.log(imageW)
+
   return (
     <>
       <Tooltip
@@ -216,6 +220,7 @@ function CreatePostDrawer() {
                       </ChakraSelect>
 
                       <Tabs
+                        isLazy
                         variant="enclosed"
                         onChange={() => {
                           formik.handleReset()
@@ -224,16 +229,16 @@ function CreatePostDrawer() {
                         <TabList>
                           <Tab>
                             <BsPaperclip />
-                            Post
+                            <chakra.span ml={2}>Post</chakra.span>
                           </Tab>
                           <Tab>
                             <MdLink />
-                            Link
+                            <chakra.span ml={2}>Link</chakra.span>
                           </Tab>
 
                           <Tab>
                             <RiPictureInPictureFill />
-                            Image
+                            <chakra.span ml={2}>Image</chakra.span>
                           </Tab>
                         </TabList>
 
@@ -364,5 +369,3 @@ function CreatePostDrawer() {
     </>
   )
 }
-
-export default CreatePostDrawer
