@@ -15,8 +15,6 @@ export default function ChatDisplay() {
     variables: { categoryId: selectedCategoryId }
   })
 
-  console.log("chat display")
-  console.log(result)
   if (subscribeToMore !== undefined) {
     return (
       <ChatList

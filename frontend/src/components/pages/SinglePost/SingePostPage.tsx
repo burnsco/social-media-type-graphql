@@ -10,20 +10,14 @@ export default function SinglePostPage() {
   const router = useRouter()
 
   const postId = router.query.id
-  console.log("postId")
-  console.log(postId)
 
   const { data, loading, error } = usePostQuery({
     variables: { postId: Number(postId) }
   })
 
-  console.log("single post page data")
-  console.log(data)
-
   if (loading) return <VisuallyHidden>loading</VisuallyHidden>
 
   if (error) {
-    console.log(error)
     return <Alert>Error!</Alert>
   }
 

@@ -1,9 +1,9 @@
 import { Header } from "@/components/ui"
-import { useLoggedInUser } from "@/hooks/useLoggedInUser"
 import { Box, Stack } from "@chakra-ui/react"
 import dynamic from "next/dynamic"
 import Head from "next/head"
 import PropTypes from "prop-types"
+import { useMeQuery } from "../../../generated/graphql"
 
 const DynamicNoAuthSideMenu = dynamic(() => import("../SideMenu/SideMenu"))
 const DynamicAuthSideMenu = dynamic(
@@ -14,7 +14,9 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
   children,
   title
 }) => {
-  const [isUser] = useLoggedInUser()
+  const { data, loading } = useMeQuery({ ssr: false })
+
+  if (loading) return null
   return (
     <>
       <Head>
@@ -64,7 +66,11 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
             maxW="350px"
             display={["none", "none", "block", "block"]}
           >
-            {isUser ? <DynamicAuthSideMenu /> : <DynamicNoAuthSideMenu />}
+            {data && data.me ? (
+              <DynamicAuthSideMenu />
+            ) : (
+              <DynamicNoAuthSideMenu />
+            )}
           </Box>
         </Stack>
       </Box>

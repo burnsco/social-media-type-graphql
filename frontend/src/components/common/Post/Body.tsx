@@ -62,7 +62,7 @@ const PostBody: React.FC<PostBodyType> = ({
                     }
                   })
                 } catch (error) {
-                  console.log(error)
+                  throw new Error(error)
                 }
               }}
             >

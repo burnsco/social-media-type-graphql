@@ -16,13 +16,11 @@ function useCloudDrop() {
       .field("file", acceptedFile)
       .field("multiple", false)
       .on("progress", progress => {
-        console.log(progress)
         if (progress && progress.percent) {
           setUploadProgress(progress.percent)
         }
       })
       .end((error, response) => {
-        console.log(response)
         if (response.body.public_id) {
           setImageUrl(response.body.public_id)
         }
@@ -31,7 +29,7 @@ function useCloudDrop() {
         // add a srcSet in the image component
         // with jpg and webP
         if (error) {
-          console.log(error)
+          throw new Error(error)
         }
       })
   }, [])

@@ -79,7 +79,7 @@ export default function UserMenuDialog(username: string) {
             }
           })
         } catch (ex) {
-          console.log(ex)
+          throw new Error(ex)
         }
       }}
     >

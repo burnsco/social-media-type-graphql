@@ -50,7 +50,6 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
           height="100%"
         >
           <IconButton
-            onClick={() => console.log("upvote")}
             variant="ghost"
             color="current"
             aria-label="UpVote"
@@ -130,7 +129,7 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
                         }
                       })
                     } catch (ex) {
-                      console.log(ex)
+                      throw new Error(ex)
                     }
                   }}
                 >

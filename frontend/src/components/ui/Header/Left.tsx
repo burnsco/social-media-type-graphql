@@ -17,7 +17,7 @@ const LogoSection = () => {
       <Flex cursor="pointer" align="center" onClick={() => router.push("/")}>
         <Logo mr={2} />{" "}
         <Heading
-          mr={4}
+          mr={3}
           display={{ base: "none", sm: "none", md: "flex" }}
           size="md"
           fontWeight="600"

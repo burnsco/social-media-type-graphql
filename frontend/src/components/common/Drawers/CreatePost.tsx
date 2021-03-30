@@ -69,8 +69,7 @@ export default function CreatePostDrawer() {
     actions: FormikHelpers<CreatePostInput>
   ) => {
     actions.setSubmitting(false)
-    console.log("values")
-    console.log(values)
+
     try {
       const response = await submitPost({
         variables: {
@@ -103,7 +102,7 @@ export default function CreatePostDrawer() {
           })
         }
       })
-      console.log(response)
+
       if (response.data?.createPost.post) {
         toast({
           id: `success-${response.data?.createPost.post.title}`,
@@ -117,7 +116,7 @@ export default function CreatePostDrawer() {
         onClose()
       }
     } catch (error) {
-      console.log(error)
+      throw new Error(error)
     }
   }
 
@@ -131,7 +130,6 @@ export default function CreatePostDrawer() {
       .field("file", acceptedFile)
       .field("multiple", false)
       .on("progress", progress => {
-        console.log(progress)
         if (progress && progress.percent) {
           setUploadProgress(progress.percent)
         }
@@ -140,8 +138,7 @@ export default function CreatePostDrawer() {
         if (error) {
           throw new Error(error.message)
         }
-        console.log("image details")
-        console.log(response.body)
+
         setImageUrl(response.body.public_id)
         setImageH(response.body.height)
         setImageW(response.body.width)
@@ -157,10 +154,6 @@ export default function CreatePostDrawer() {
     onDrop,
     maxFiles: 1
   })
-
-  console.log(imageUrl)
-  console.log(imageH)
-  console.log(imageW)
 
   return (
     <>

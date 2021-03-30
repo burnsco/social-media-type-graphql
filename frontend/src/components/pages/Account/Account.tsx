@@ -61,7 +61,6 @@ const AccountContent = (): JSX.Element => {
       .field("file", acceptedFile)
       .field("multiple", false)
       .on("progress", progress => {
-        console.log(progress)
         if (progress && progress.percent) {
           setUploadProgress(progress.percent)
         }
@@ -70,8 +69,7 @@ const AccountContent = (): JSX.Element => {
         if (error) {
           throw new Error(error.message)
         }
-        console.log("image details")
-        console.log(response.body)
+
         setImageUrl(response.body.public_id)
       })
   }, [])
@@ -85,8 +83,6 @@ const AccountContent = (): JSX.Element => {
     onDrop,
     maxFiles: 1
   })
-
-  console.log(imageUrl)
 
   if (!meQueryLoading) {
     return (

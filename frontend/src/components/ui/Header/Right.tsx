@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   ButtonGroup,
-  chakra,
   HStack,
   IconButton,
   Menu,
@@ -64,14 +63,14 @@ export default function HeaderMenu() {
   if (data && data?.me?.username && !loading) {
     return (
       <HStack spacing={2}>
-        <ButtonGroup>
+        <ButtonGroup spacing="4">
           <DynamicChatRoomDrawer />
           <DynamicCreatePostDrawer />
           <DynamicCreateCategoryDrawer />
           <DynamicAddFriendDrawer />
         </ButtonGroup>
 
-        <Menu>
+        <Menu isLazy>
           <IconButton
             as={MenuButton}
             variant="ghost"
@@ -91,34 +90,33 @@ export default function HeaderMenu() {
               <MenuDivider />
               <MenuItem onClick={() => router.push("/user")}>
                 <FaUserCircle />
-                <chakra.span>Profile</chakra.span>
+                <Box ml={3}>Profile</Box>
               </MenuItem>
               <MenuItem onClick={() => router.push("/user/account")}>
                 <MdSettings />
-                <chakra.span>Profile</chakra.span>
+                <Box ml={3}>Account</Box>
               </MenuItem>
               <MenuItem onClick={() => router.push("/user/account")}>
                 <MdSettings />
-                <chakra.span>Profile</chakra.span>
+                <Box ml={3}>Friends</Box>
               </MenuItem>
               <MenuItem onClick={() => router.push("/user/account")}>
                 <MdSettings />
-                <chakra.span>Profile</chakra.span>
+                <Box ml={3}>Messages</Box>
               </MenuItem>
             </MenuGroup>
             <MenuDivider />
             <MenuGroup>
               <MenuItem
-                onClick={() => {
-                  logout().then(() => {
-                    client.resetStore().then(() => {
-                      router.push("/")
-                    })
-                  })
+                mr={2}
+                onClick={async () => {
+                  await logout()
+                  await client.resetStore()
+                  await router.push("/")
                 }}
               >
                 <AiOutlineLogout />
-                <Box>Logout</Box>
+                <Box ml={3}>Logout</Box>
               </MenuItem>
             </MenuGroup>
           </MenuList>
@@ -127,7 +125,7 @@ export default function HeaderMenu() {
     )
   }
   return (
-    <Stack spacing={4} direction="row" align="center">
+    <Stack spacing={4} mr={1} direction="row" align="center">
       <DynamicRegisterDrawer />
       <DynamicLoginDrawer />
     </Stack>

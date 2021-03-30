@@ -30,10 +30,6 @@ export default function ChatSelection() {
   useEffect(() => fetchCategories(), [fetchCategories])
 
   if (!categoriesError) {
-    console.log("selected chat room name")
-    console.log(chatName)
-    console.log("selected chat room id")
-    console.log(chatID)
     return (
       <Flex flexGrow={2}>
         <Menu closeOnSelect={true}>

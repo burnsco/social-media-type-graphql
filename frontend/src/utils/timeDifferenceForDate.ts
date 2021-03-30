@@ -49,6 +49,6 @@ export default function timeDifferenceForDate(date?: string | null | number) {
     const updated = new Date(conv).getTime()
     return timeDifference(now, updated)
   }
-  console.log("error")
+
   return null
 }

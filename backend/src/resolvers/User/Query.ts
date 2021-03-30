@@ -20,16 +20,19 @@ export default class UserQueryResolver {
     return await em.find(User, {}, { populate: ["friends"] })
   }
 
-  @Query(() => User)
-  async me(@Ctx() { req, em }: ContextType) {
-    return await em.findOneOrFail(
-      User,
-      { id: req.session.userId },
-      {
-        populate: ["friends", "privateMessages"],
-        strategy: LoadStrategy.JOINED
-      }
-    )
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req, em }: ContextType): Promise<User | null> {
+    if (req && req.session.userId) {
+      return await em.findOne(
+        User,
+        { id: req.session.userId },
+        {
+          populate: ["friends", "privateMessages"],
+          strategy: LoadStrategy.JOINED
+        }
+      )
+    }
+    return null
   }
 
   @FieldResolver(() => [PrivateMessage], { nullable: true })

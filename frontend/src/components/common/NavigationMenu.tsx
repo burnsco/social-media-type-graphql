@@ -6,7 +6,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  MenuOptionGroup,
   SkeletonText,
   useColorModeValue
 } from "@chakra-ui/react"
@@ -38,8 +37,8 @@ export default function NavigationMenu() {
   }
 
   const NavigationDisplay = () => (
-    <Flex flexGrow={2}>
-      <Menu closeOnSelect={true}>
+    <Flex flexGrow={2} mr={1}>
+      <Menu closeOnSelect={true} matchWidth>
         {({ isOpen }) => (
           <>
             <MenuButton
@@ -57,17 +56,15 @@ export default function NavigationMenu() {
             </MenuButton>
             {data && data.categories && (
               <MenuList minWidth="240px" opacity="0.7" bg={bg}>
-                <MenuOptionGroup title="subreddits">
-                  {data.categories.map((item, i) => (
-                    <MenuItem
-                      value={item.name}
-                      key={`subreddit-center-menu-${item.id}-${i}`}
-                      onClick={() => router.push(`/r/${item.name}`)}
-                    >
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </MenuOptionGroup>
+                {data.categories.map((item, i) => (
+                  <MenuItem
+                    value={item.name}
+                    key={`subreddit-center-menu-${item.id}-${i}`}
+                    onClick={() => router.push(`/r/${item.name}`)}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))}
               </MenuList>
             )}
           </>

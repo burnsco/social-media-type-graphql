@@ -24,11 +24,8 @@ function MediaPostPanel() {
       })
       .end((error, response) => {
         if (error) {
-          console.log(`error`)
-          console.log(error)
+          throw new Error(error)
         }
-        console.log("response")
-        console.log(response)
       })
   }, [])
 
@@ -41,13 +38,6 @@ function MediaPostPanel() {
     onDrop,
     maxFiles: 1
   })
-
-  console.log("acceptedfiles")
-  console.log(acceptedFiles)
-  console.log("ondrop")
-  console.log(onDrop)
-  console.log("input props")
-  console.log(getInputProps)
 
   return (
     <TabPanel>
