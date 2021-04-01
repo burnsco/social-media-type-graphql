@@ -51,9 +51,7 @@ export default class PrivateMessageMutationResolver {
       receipent.privateMessages.add(newmessage)
 
       await em.flush()
-
       await notifyAboutNewPrivateMessage(newmessage)
-
       return newmessage
     }
     return null

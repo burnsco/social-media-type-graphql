@@ -21,8 +21,7 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
-  useColorModeValue,
-  useToast
+  useColorModeValue
 } from "@chakra-ui/react"
 import React from "react"
 import { FaUserFriends } from "react-icons/fa"
@@ -43,12 +42,6 @@ const FooterContent = () => {
     }
     return null
   }
-
-  const newPrivateMessages = [
-    { id: 1, user: "Susan" },
-    { id: 2, user: "Randy" },
-    { id: 3, user: "Travis" }
-  ]
 
   const NewPrivateMessagePopOver = (message: any) => {
     const [isOpen, setIsOpen] = React.useState(false)
@@ -127,7 +120,6 @@ const FooterContent = () => {
 
 const Footer = () => {
   const bg = useColorModeValue("white", "#202020")
-  const toast = useToast()
 
   return (
     <chakra.header

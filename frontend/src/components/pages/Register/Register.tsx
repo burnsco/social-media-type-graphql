@@ -7,6 +7,7 @@ import { RegisterUserInputType } from "@/types/User/types"
 import {
   Box,
   Button,
+  Stack,
   useColorModeValue,
   useToast,
   VisuallyHidden
@@ -65,31 +66,31 @@ const RegisterPage: React.FC = (): JSX.Element => {
           >
             {({ isSubmitting }) => (
               <Form>
-                <ChakraField name="email" placeholder="email" label="Email" />
-                <Box my="4">
+                <Stack spacing={4}>
+                  <ChakraField name="email" placeholder="email" label="Email" />
                   <ChakraField
                     name="username"
                     placeholder="username"
                     label="Username"
                   />
-                </Box>
-                <Box my="4">
+
                   <ChakraField
                     name="password"
                     placeholder="password"
                     label="Password"
                     type="password"
                   />
-                </Box>
-                <Button
-                  mt={4}
-                  colorScheme="red"
-                  type="submit"
-                  isDisabled={isSubmitting}
-                  isLoading={isSubmitting}
-                >
-                  Submit
-                </Button>
+
+                  <Button
+                    mt={4}
+                    colorScheme="red"
+                    type="submit"
+                    isDisabled={isSubmitting}
+                    isLoading={isSubmitting}
+                  >
+                    Submit
+                  </Button>
+                </Stack>
               </Form>
             )}
           </Formik>

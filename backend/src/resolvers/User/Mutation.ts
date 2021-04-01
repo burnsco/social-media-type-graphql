@@ -127,6 +127,21 @@ export default class UserMutationResolver {
       { username: data.username },
       { populate: ["friends"], strategy: LoadStrategy.JOINED }
     )
+    if (me && friend && me.friends.contains(friend)) {
+      return {
+        errors: [
+          {
+            field: "username",
+            message: `${friend.username} is already a friend`
+          }
+        ]
+      }
+    }
+    if (friend === me) {
+      return {
+        errors: [{ field: "username", message: "Cannot add yourself" }]
+      }
+    }
     if (!friend || !me) {
       return {
         errors: [{ field: "username", message: "User Not Found" }]
@@ -137,7 +152,6 @@ export default class UserMutationResolver {
       friend.friends.add(me)
     }
     await em.flush()
-
     return {
       friend,
       me

@@ -3,6 +3,7 @@ import { MeDocument, useLoginMutation } from "@/generated/graphql"
 import { LoginSchema } from "@/types/User/schemas"
 import { LoginUserInputType } from "@/types/User/types"
 import { convertToErrorMap } from "@/utils/index"
+import { sleep } from "@/utils/sleepy"
 import {
   Button,
   Drawer,
@@ -21,19 +22,25 @@ import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { useRef } from "react"
 
-function LoginDrawer() {
-  const drawerBG = useColorModeValue("whitesmoke", "gray.900")
+export default function LoginDrawer() {
   const router = useRouter()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const toast = useToast()
-  const colorScheme = useColorModeValue("purple", "blue")
   const [login] = useLoginMutation()
-
+  const toast = useToast()
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
+  const colorScheme = useColorModeValue("purple", "blue")
+  const buttonScheme = useColorModeValue("purple", "orange")
+  const drawerBG = useColorModeValue("whitesmoke", "gray.900")
 
   return (
     <>
-      <Button variant="outline" size="md" ref={btnRef} onClick={onOpen}>
+      <Button
+        variant="outline"
+        size="md"
+        ref={btnRef}
+        colorScheme={buttonScheme}
+        onClick={onOpen}
+      >
         Login
       </Button>
       <Drawer
@@ -50,6 +57,7 @@ function LoginDrawer() {
             initialValues={LoginUserInputType}
             validationSchema={LoginSchema}
             onSubmit={async (values, { setErrors }) => {
+              await sleep(1000)
               const response = await login({
                 variables: {
                   data: {
@@ -67,7 +75,6 @@ function LoginDrawer() {
                   })
                 }
               })
-
               if (response?.data?.login?.errors) {
                 setErrors(convertToErrorMap(response?.data?.login?.errors))
               } else {
@@ -123,5 +130,3 @@ function LoginDrawer() {
     </>
   )
 }
-
-export default LoginDrawer

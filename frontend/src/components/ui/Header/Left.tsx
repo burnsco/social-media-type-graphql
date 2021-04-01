@@ -9,10 +9,10 @@ const LogoSection = () => {
     <Flex
       aria-label="Home"
       align="center"
-      h="100%"
+      h="full"
       px={4}
       flexGrow={1}
-      display={{ base: "none", sm: "flex" }}
+      display={{ base: "flex" }}
     >
       <Flex cursor="pointer" align="center" onClick={() => router.push("/")}>
         <Logo mr={2} />{" "}

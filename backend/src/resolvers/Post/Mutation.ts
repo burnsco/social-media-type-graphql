@@ -1,16 +1,5 @@
-import {
-  Arg,
-  Ctx,
-  Mutation,
-  Publisher,
-  PubSub,
-  Resolver,
-  Root,
-  Subscription,
-  UseMiddleware
-} from "type-graphql"
-import { Topic } from "../../common/topics"
-import { Category, Comment, Post, User, Vote } from "../../entities"
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql"
+import { Category, Post, User, Vote } from "../../entities"
 import { CreatePostInput, EditPostInput, VoteInput } from "../../inputs"
 import { isAuth } from "../../lib/isAuth"
 import { PostMutationResponse, VoteMutationResponse } from "../../responses"
@@ -76,7 +65,6 @@ export default class PostMutationResolver {
       if (link) {
         post.link = link
       }
-
       await em.flush()
 
       return {
@@ -125,29 +113,19 @@ export default class PostMutationResolver {
   @UseMiddleware(isAuth)
   async vote(
     @Arg("data") { postId, value }: VoteInput,
-    @PubSub(Topic.NewVote)
-    notifyAboutNewVote: Publisher<Partial<Vote>>,
+
     @Ctx() { em, req }: ContextType
   ): Promise<VoteMutationResponse | null> {
     const post = await em.findOne(Post, postId, {
       populate: ["votes"]
     })
-
     if (post && req.session.userId) {
       const vote = em.create(Vote, {
         post,
         value,
         castBy: em.getReference(User, req.session.userId)
       })
-
       post.votes.add(vote)
-
-      await notifyAboutNewVote({
-        id: vote.id,
-        post: vote.post,
-        value: vote.value,
-        castBy: vote.castBy
-      })
 
       await em.flush()
 
@@ -157,23 +135,5 @@ export default class PostMutationResolver {
       }
     }
     return null
-  }
-
-  //******************* \\
-  // SUBSCRIPTION STUFF \\
-  // ****************** \\
-
-  @Subscription(() => Comment, {
-    topics: Topic.NewComment
-  })
-  newComments(@Root() newComment: Comment): Comment {
-    return newComment
-  }
-
-  @Subscription(() => Vote, {
-    topics: Topic.NewVote
-  })
-  newVotes(@Root() newVote: Vote): Vote {
-    return newVote
   }
 }

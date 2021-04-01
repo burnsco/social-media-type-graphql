@@ -1,4 +1,5 @@
 import { useAddFriendMutation } from "@/generated/graphql"
+import { useLoggedInUser } from "@/hooks/useLoggedInUser"
 import { gql } from "@apollo/client"
 import {
   Box,
@@ -14,9 +15,9 @@ import {
 import { useRouter } from "next/router"
 import React from "react"
 import { FaUserCircle } from "react-icons/fa"
+import { ImSpinner } from "react-icons/im"
 import { IoAddCircle } from "react-icons/io5"
 import { MdEmail } from "react-icons/md"
-import { useLoggedInUser } from "../../hooks/useLoggedInUser"
 
 export default function UserMenuDialog(username: string) {
   const bg = useColorModeValue("white", "#202020")
@@ -92,6 +93,7 @@ export default function UserMenuDialog(username: string) {
     <Menu>
       <ListItem ml={2} size="xs" variant="outline" as={MenuButton}>
         {username}
+        {loading ? <ImSpinner /> : null}
       </ListItem>
 
       <MenuList opacity="0.7" bg={bg}>

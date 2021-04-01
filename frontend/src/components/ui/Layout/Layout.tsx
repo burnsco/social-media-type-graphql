@@ -14,7 +14,10 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
   children,
   title
 }) => {
-  const { data, loading } = useMeQuery({ ssr: false })
+  const { data, loading } = useMeQuery({
+    ssr: false,
+    fetchPolicy: "network-only"
+  })
 
   if (loading) return null
   return (

@@ -273,7 +273,7 @@ export type Query = {
   privateMessage?: Maybe<PrivateMessage>;
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
-  me: User;
+  me?: Maybe<User>;
 };
 
 
@@ -361,8 +361,6 @@ export type Subscription = {
   __typename?: 'Subscription';
   newCategory: Category;
   newMessage: Message;
-  newComments: Comment;
-  newVotes: Vote;
   newPrivateMessage: PrivateMessage;
   newUser: User;
 };
@@ -907,10 +905,10 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = (
   { __typename?: 'Query' }
-  & { me: (
+  & { me?: Maybe<(
     { __typename?: 'User' }
     & UserMeDetailsFragment
-  ) }
+  )> }
 );
 
 export type MyFriendsAndMessagesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -918,7 +916,7 @@ export type MyFriendsAndMessagesQueryVariables = Exact<{ [key: string]: never; }
 
 export type MyFriendsAndMessagesQuery = (
   { __typename?: 'Query' }
-  & { me: (
+  & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
     & { friends: Array<(
@@ -935,7 +933,7 @@ export type MyFriendsAndMessagesQuery = (
         & Pick<User, 'id' | 'username'>
       ) }
     )> }
-  ) }
+  )> }
 );
 
 export type UserQueryVariables = Exact<{

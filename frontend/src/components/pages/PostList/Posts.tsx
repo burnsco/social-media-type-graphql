@@ -6,7 +6,7 @@ import { Box, Text, VisuallyHidden, VStack } from "@chakra-ui/react"
 import { useEffect } from "react"
 import ShowMorePosts from "./showMore"
 
-const Posts = (): JSX.Element => {
+export default function Posts() {
   const [
     fetchPosts,
     { loading, data, fetchMore, networkStatus }
@@ -61,5 +61,3 @@ const Posts = (): JSX.Element => {
     </Box>
   )
 }
-
-export default Posts

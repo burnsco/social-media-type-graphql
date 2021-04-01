@@ -62,6 +62,11 @@ export default function FriendsAndMessagesAccordion() {
     return null
   }
 
+  console.log("friends")
+  console.log(data?.me?.friends)
+  console.log("private messages")
+  console.log(data?.me?.privateMessages)
+
   return (
     <AccordionItem>
       <h2>
@@ -97,7 +102,8 @@ export default function FriendsAndMessagesAccordion() {
                             {data.me.privateMessages.map(message => {
                               if (
                                 (message.sentBy.username ||
-                                  message.sentTo.username) === data.me.username
+                                  message.sentTo.username) ===
+                                data?.me?.username
                               )
                                 return (
                                   <ListItem key={`messages-list-${message.id}`}>

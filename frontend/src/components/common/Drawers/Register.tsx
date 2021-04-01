@@ -3,6 +3,7 @@ import { MeDocument, useRegisterMutation } from "@/generated/graphql"
 import { RegisterSchema } from "@/types/User/schemas"
 import { RegisterUserInputType } from "@/types/User/types"
 import { convertToErrorMap } from "@/utils/index"
+import { sleep } from "@/utils/sleepy"
 import {
   Button,
   Drawer,
@@ -14,27 +15,27 @@ import {
   DrawerOverlay,
   Stack,
   useColorModeValue,
-  useDisclosure,
-  useToast
+  useDisclosure
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import { useRef } from "react"
 
-function RegisterDrawer() {
+export default function RegisterDrawer() {
   const router = useRouter()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const toast = useToast()
-  const colorScheme = useColorModeValue("purple", "blue")
   const [register] = useRegisterMutation()
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
+  const colorScheme = useColorModeValue("purple", "blue")
+  const buttonScheme = useColorModeValue("purple", "orange")
+  const colorbg = useColorModeValue("whitesmoke", "gray.900")
 
   return (
     <>
       <Button
         ref={btnRef}
         size="md"
-        colorScheme={useColorModeValue("purple", "orange")}
+        colorScheme={buttonScheme}
         onClick={onOpen}
       >
         Register
@@ -47,13 +48,14 @@ function RegisterDrawer() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent bg={useColorModeValue("whitesmoke", "gray.900")}>
+        <DrawerContent bg={colorbg}>
           <DrawerCloseButton />
           <DrawerHeader>Join the Community!</DrawerHeader>
           <Formik
             initialValues={RegisterUserInputType}
             validationSchema={RegisterSchema}
             onSubmit={async (values, { setErrors }) => {
+              await sleep(1000)
               const response = await register({
                 variables: {
                   data: {
@@ -72,18 +74,9 @@ function RegisterDrawer() {
                   })
                 }
               })
-
               if (response?.data?.register?.errors) {
                 setErrors(convertToErrorMap(response?.data?.register?.errors))
               } else {
-                toast({
-                  id: `${response?.data?.register?.user?.username}-toast`,
-                  title: `Welcome ${response?.data?.register?.user?.username}!`,
-                  description: "Your account was created successfully.",
-                  status: "success",
-                  duration: 9000,
-                  isClosable: true
-                })
                 router.push("/")
               }
             }}
@@ -105,7 +98,6 @@ function RegisterDrawer() {
                         name="username"
                         type="text"
                         label="Username"
-                        helperText="Must be 8-20 characters and cannot contain special characters."
                       />
 
                       <PasswordField
@@ -139,5 +131,3 @@ function RegisterDrawer() {
     </>
   )
 }
-
-export default RegisterDrawer

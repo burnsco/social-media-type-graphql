@@ -1,6 +1,7 @@
 import { Layout } from "@/components/ui/index"
 import { useMeQuery } from "@/generated/graphql"
 import {
+  Avatar,
   Box,
   Heading,
   Text,
@@ -8,7 +9,7 @@ import {
   VisuallyHidden
 } from "@chakra-ui/react"
 
-const MePage = (): JSX.Element => {
+export default function MePage() {
   const { data, loading } = useMeQuery()
   const bg = useColorModeValue("white", "#1A1A1B")
 
@@ -21,9 +22,12 @@ const MePage = (): JSX.Element => {
         <Text>Username: {data?.me?.username} </Text>
         <Text>Email: {data?.me?.email}</Text>
         <Text>About Me: {data?.me?.about}</Text>
+        {data && data.me.avatar ? (
+          <Avatar src={data?.me.avatar} />
+        ) : (
+          <Text>No Avatar Yet</Text>
+        )}
       </Box>
     </Layout>
   )
 }
-
-export default MePage

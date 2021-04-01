@@ -20,6 +20,7 @@ import { useRouter } from "next/router"
 import { AiOutlineLogout } from "react-icons/ai"
 import { FaUserCircle } from "react-icons/fa"
 import { MdSettings } from "react-icons/md"
+import AddFriendPopOver from "../../common/MessagePopOver"
 
 const DynamicChatRoomDrawer = dynamic(
   () => import("@/components/common/Drawers/Chat"),
@@ -67,7 +68,7 @@ export default function HeaderMenu() {
           <DynamicChatRoomDrawer />
           <DynamicCreatePostDrawer />
           <DynamicCreateCategoryDrawer />
-          <DynamicAddFriendDrawer />
+          <AddFriendPopOver />
         </ButtonGroup>
 
         <Menu isLazy>

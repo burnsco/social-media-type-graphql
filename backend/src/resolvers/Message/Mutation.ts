@@ -40,7 +40,6 @@ export default class MessageMutationResolver {
     if (!category) {
       return null
     }
-
     if (category && req.session.userId) {
       const message = em.create(Message, {
         category: em.getReference(Category, category.id),

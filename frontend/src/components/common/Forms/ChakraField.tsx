@@ -51,7 +51,6 @@ const ChakraField: React.FC<ChakraFieldProps> = ({
       {textarea ? (
         <Textarea
           {...field}
-          focusBorderColor="red.300"
           aria-describedby={`${props.id}-feedback ${props.id}-help`}
           type={type}
           onFocus={handleFocus}
@@ -62,7 +61,6 @@ const ChakraField: React.FC<ChakraFieldProps> = ({
         <Input
           {...field}
           {...props}
-          focusBorderColor="red.300"
           aria-describedby={`${props.id}-feedback ${props.id}-help`}
           type={type}
           onFocus={handleFocus}
