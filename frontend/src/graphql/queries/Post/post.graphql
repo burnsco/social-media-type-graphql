@@ -10,6 +10,10 @@ query Post($postId: Int!) {
       ...UserDetails
     }
 
+    comments {
+      ...CommentDetails
+    }
+
     totalComments {
       count
     }

@@ -10,7 +10,7 @@ const LogoSection = () => {
       aria-label="Home"
       align="center"
       h="full"
-      px={4}
+      px={2}
       flexGrow={1}
       display={{ base: "flex" }}
     >

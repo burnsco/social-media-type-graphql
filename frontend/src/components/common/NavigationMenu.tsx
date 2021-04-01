@@ -6,7 +6,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  SkeletonText,
   useColorModeValue
 } from "@chakra-ui/react"
 import { useRouter } from "next/router"
@@ -76,5 +75,5 @@ export default function NavigationMenu() {
   if (!loading) {
     return <NavigationDisplay />
   }
-  return <SkeletonText />
+  return null
 }

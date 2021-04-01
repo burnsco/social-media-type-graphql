@@ -40,7 +40,7 @@
     "deepmerge": "^4.2.2",
     "faker": "^5.5.2",
     "formik": "^2.2.6",
-    "framer-motion": "^4.0.3",
+    "framer-motion": "^4.1.1",
     "graphql": "^15.5.0",
     "lodash": "^4.17.21",
     "memoize-one": "^5.1.1",

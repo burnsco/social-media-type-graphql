@@ -34,36 +34,28 @@ export default function NoAuthSideMenu() {
   return (
     <>
       {data && data.categories && data.categories.length > 0 ? (
-        <Box
-          bg={bg}
-          minW="200px"
-          borderWidth="1px"
-          overflow="hidden"
-          boxShadow="xs"
-        >
-          <Box h="100%" w="100%">
-            <List minH="100%" spacing={3} fontSize="md" p={2}>
-              {data?.categories?.map((subreddit, i) => (
-                <ListItem key={`subreddit-${subreddit.id}-${i}`}>
-                  <NextChakraLink
-                    p={1}
-                    bg={category === subreddit.name ? linkbg : linkbg2}
-                    fontWeight={category === subreddit.name ? "500" : "400"}
-                    color={category === subreddit.name ? hover : color}
-                    _hover={{
-                      color: hover,
-                      bg: linkbg,
-                      marginLeft: 1
-                    }}
-                    href="/r/[category]"
-                    as={`/r/${subreddit.name}`}
-                  >
-                    {subreddit.name}
-                  </NextChakraLink>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
+        <Box h="100%" w="100%">
+          <List minH="100%" spacing={3} fontSize="md" p={2}>
+            {data?.categories?.map((subreddit, i) => (
+              <ListItem key={`subreddit-${subreddit.id}-${i}`}>
+                <NextChakraLink
+                  p={1}
+                  bg={category === subreddit.name ? linkbg : linkbg2}
+                  fontWeight={category === subreddit.name ? "500" : "400"}
+                  color={category === subreddit.name ? hover : color}
+                  _hover={{
+                    color: hover,
+                    bg: linkbg,
+                    marginLeft: 1
+                  }}
+                  href="/r/[category]"
+                  as={`/r/${subreddit.name}`}
+                >
+                  {subreddit.name}
+                </NextChakraLink>
+              </ListItem>
+            ))}
+          </List>
         </Box>
       ) : (
         <Text>No Categories Created.</Text>

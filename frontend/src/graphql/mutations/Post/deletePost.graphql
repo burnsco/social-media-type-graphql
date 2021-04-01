@@ -1,5 +1,5 @@
-mutation DeletePost($data: EditPostInput!) {
-  deletePost(data: $data) {
+mutation DeletePost($postId: Int) {
+  deletePost(postId: $postId) {
     post {
       id
     }

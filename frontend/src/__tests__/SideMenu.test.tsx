@@ -1,4 +1,4 @@
-import SideMenu from "@/components/ui/SideMenu/SideMenu"
+import SideMenu from "@/components/ui/SideMenu/NoAuth"
 import { CategoriesDocument } from "@/generated/graphql"
 import { render, waitForElementToBeRemoved } from "@/utils/test-utils"
 import { MockedProvider } from "@apollo/client/testing"

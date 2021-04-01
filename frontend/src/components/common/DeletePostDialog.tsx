@@ -18,7 +18,7 @@ import { AiFillDelete } from "react-icons/ai"
 export const DeletePostDialog: React.FC<{
   postId?: string | null
 }> = ({ postId }) => {
-  const [deletePost, { client }] = useDeletePostMutation()
+  const [deletePost] = useDeletePostMutation()
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = useRef<null | HTMLButtonElement>(null)
@@ -72,18 +72,25 @@ export const DeletePostDialog: React.FC<{
                     sleep(1000)
                     await deletePost({
                       variables: {
-                        data: {
-                          postId: Number(postId)
-                        }
+                        postId: Number(postId)
                       },
                       update(cache, { data }) {
                         if (data?.deletePost) {
-                          cache.evict({ id: "Post:" + postId })
+                          cache.modify({
+                            fields: {
+                              posts(existingPostRefs, { readField }) {
+                                return existingPostRefs.filter(
+                                  (postRef: any) =>
+                                    data.deletePost.post?.id !==
+                                    readField("id", postRef)
+                                )
+                              }
+                            }
+                          })
                         }
                         return null
                       }
                     })
-                    client.resetStore()
                     onClose()
                   }}
                   colorScheme="red"

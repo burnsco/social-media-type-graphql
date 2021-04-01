@@ -180,7 +180,12 @@ export type MutationEditPostArgs = {
 
 
 export type MutationDeletePostArgs = {
-  data: EditPostInput;
+  first?: Maybe<Scalars['Int']>;
+  postId?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Scalars['String']>;
+  category?: Maybe<Scalars['String']>;
+  skip?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 
@@ -573,7 +578,7 @@ export type CreatePostMutation = (
 );
 
 export type DeletePostMutationVariables = Exact<{
-  data: EditPostInput;
+  postId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -854,7 +859,10 @@ export type PostQuery = (
     ), author: (
       { __typename?: 'User' }
       & UserDetailsFragment
-    ), totalComments?: Maybe<(
+    ), comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & CommentDetailsFragment
+    )>>, totalComments?: Maybe<(
       { __typename?: '_QueryMeta' }
       & Pick<_QueryMeta, 'count'>
     )>, totalVotes?: Maybe<(
@@ -883,7 +891,10 @@ export type PostsQuery = (
     ), author: (
       { __typename?: 'User' }
       & UserDetailsFragment
-    ), totalComments?: Maybe<(
+    ), comments?: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & CommentDetailsFragment
+    )>>, totalComments?: Maybe<(
       { __typename?: '_QueryMeta' }
       & Pick<_QueryMeta, 'count'>
     )>, totalVotes?: Maybe<(
@@ -1251,8 +1262,8 @@ export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutati
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const DeletePostDocument = gql`
-    mutation DeletePost($data: EditPostInput!) {
-  deletePost(data: $data) {
+    mutation DeletePost($postId: Int) {
+  deletePost(postId: $postId) {
     post {
       id
     }
@@ -1274,7 +1285,7 @@ export type DeletePostMutationFn = Apollo.MutationFunction<DeletePostMutation, D
  * @example
  * const [deletePostMutation, { data, loading, error }] = useDeletePostMutation({
  *   variables: {
- *      data: // value for 'data'
+ *      postId: // value for 'postId'
  *   },
  * });
  */
@@ -1849,6 +1860,9 @@ export const PostDocument = gql`
     author {
       ...UserDetails
     }
+    comments {
+      ...CommentDetails
+    }
     totalComments {
       count
     }
@@ -1860,7 +1874,8 @@ export const PostDocument = gql`
 }
     ${PostDetailsFragmentDoc}
 ${CategoryDetailsFragmentDoc}
-${UserDetailsFragmentDoc}`;
+${UserDetailsFragmentDoc}
+${CommentDetailsFragmentDoc}`;
 
 /**
  * __usePostQuery__
@@ -1902,6 +1917,9 @@ export const PostsDocument = gql`
     author {
       ...UserDetails
     }
+    comments {
+      ...CommentDetails
+    }
     totalComments {
       count
     }
@@ -1919,7 +1937,8 @@ export const PostsDocument = gql`
 }
     ${PostDetailsFragmentDoc}
 ${CategoryDetailsFragmentDoc}
-${UserDetailsFragmentDoc}`;
+${UserDetailsFragmentDoc}
+${CommentDetailsFragmentDoc}`;
 
 /**
  * __usePostsQuery__

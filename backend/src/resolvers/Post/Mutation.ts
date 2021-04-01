@@ -1,4 +1,5 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql"
+import { Arg, Args, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql"
+import PostArgs from "../../args/post-args"
 import { Category, Post, User, Vote } from "../../entities"
 import { CreatePostInput, EditPostInput, VoteInput } from "../../inputs"
 import { isAuth } from "../../lib/isAuth"
@@ -83,7 +84,7 @@ export default class PostMutationResolver {
   @Mutation(() => PostMutationResponse)
   @UseMiddleware(isAuth)
   async deletePost(
-    @Arg("data") { postId }: EditPostInput,
+    @Args() { postId }: PostArgs,
     @Ctx() { em, req }: ContextType
   ): Promise<PostMutationResponse | boolean> {
     const post = await em.findOneOrFail(

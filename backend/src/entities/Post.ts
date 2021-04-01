@@ -25,6 +25,7 @@ export default class Post {
   @Field(() => String)
   @Property({ onUpdate: () => new Date().toISOString() })
   updatedAt: string = new Date().toISOString()
+
   @Field(() => String)
   @Property()
   title!: string

@@ -1,25 +1,13 @@
 import { Header } from "@/components/ui"
 import { Box, Stack } from "@chakra-ui/react"
-import dynamic from "next/dynamic"
 import Head from "next/head"
 import PropTypes from "prop-types"
-import { useMeQuery } from "../../../generated/graphql"
-
-const DynamicNoAuthSideMenu = dynamic(() => import("../SideMenu/SideMenu"))
-const DynamicAuthSideMenu = dynamic(
-  () => import("../SideMenu/SideMenuContainer")
-)
+import SideMenuContainer from "../SideMenu/SideMenuContainer"
 
 const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
   children,
   title
 }) => {
-  const { data, loading } = useMeQuery({
-    ssr: false,
-    fetchPolicy: "network-only"
-  })
-
-  if (loading) return null
   return (
     <>
       <Head>
@@ -69,11 +57,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
             maxW="350px"
             display={["none", "none", "block", "block"]}
           >
-            {data && data.me ? (
-              <DynamicAuthSideMenu />
-            ) : (
-              <DynamicNoAuthSideMenu />
-            )}
+            <SideMenuContainer />
           </Box>
         </Stack>
       </Box>

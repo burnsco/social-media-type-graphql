@@ -17,6 +17,12 @@ export const cacheOptions = new InMemoryCache({
           }
         },
         posts: concatPagination(),
+        post(_, { args, toReference }) {
+          return toReference({
+            __typename: "Post",
+            id: args?.postId
+          })
+        },
         selectedChatRoomId: {
           read() {
             return selectedChatRoomId()

@@ -63,3 +63,13 @@
 {"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
 {"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
 {"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"Cannot determine GraphQL input type for argument named 'data' of 'deletePost' of 'PostMutationResolver' class. Is the value, that is used as its TS type or explicit type, decorated with a proper decorator or is it a proper input value?","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}

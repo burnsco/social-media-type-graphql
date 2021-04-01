@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  HStack,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -20,6 +21,7 @@ import {
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import React from "react"
+import { FaUserFriends } from "react-icons/fa"
 
 export default function AddFriendPopOver() {
   const [loggedInUser] = useLoggedInUser()
@@ -38,7 +40,9 @@ export default function AddFriendPopOver() {
         {({ isOpen, onClose }) => (
           <>
             <PopoverTrigger>
-              <Button>Trigger</Button>
+              <HStack>
+                <FaUserFriends size="1.5em" />
+              </HStack>
             </PopoverTrigger>
             <PopoverContent bg={bg}>
               <PopoverHeader pt={4} fontWeight="bold" border="0">

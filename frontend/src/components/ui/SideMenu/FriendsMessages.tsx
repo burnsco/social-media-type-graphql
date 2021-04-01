@@ -62,11 +62,6 @@ export default function FriendsAndMessagesAccordion() {
     return null
   }
 
-  console.log("friends")
-  console.log(data?.me?.friends)
-  console.log("private messages")
-  console.log(data?.me?.privateMessages)
-
   return (
     <AccordionItem>
       <h2>
