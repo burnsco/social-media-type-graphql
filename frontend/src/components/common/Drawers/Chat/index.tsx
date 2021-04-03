@@ -8,15 +8,21 @@ import {
   DrawerHeader,
   DrawerOverlay,
   IconButton,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Tooltip,
   useColorModeValue,
   useDisclosure
 } from "@chakra-ui/react"
-import { useRef } from "react"
+import React, { useRef } from "react"
 import { IoChatboxEllipsesOutline } from "react-icons/io5"
 import ChatDisplay from "./ChatDisplay"
 import ChatInput from "./ChatInput"
 import ChatSelection from "./ChatSelect"
+import ChatUsers from "./ChatUsers"
 
 export default function ChatDrawerPage() {
   const drawerbg = useColorModeValue("whitesmoke", "gray.900")
@@ -44,7 +50,7 @@ export default function ChatDrawerPage() {
       </Tooltip>
       <Drawer
         scrollBehavior="inside"
-        size="xl"
+        size="full"
         isOpen={isOpen}
         placement="left"
         onClose={onClose}
@@ -55,6 +61,20 @@ export default function ChatDrawerPage() {
           <DrawerCloseButton />
           <DrawerHeader>
             <ChatSelection />
+            <Tabs isFitted variant="enclosed">
+              <TabList mb="1em">
+                <Tab> </Tab>
+                <Tab>Two</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <ChatUsers />
+                </TabPanel>
+                <TabPanel>
+                  <p>two!</p>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </DrawerHeader>
 
           <DrawerBody>

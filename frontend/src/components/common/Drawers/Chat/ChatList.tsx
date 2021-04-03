@@ -29,28 +29,9 @@ export default function ChatList(props: any) {
     scrollToBottom()
   }, [data])
 
-  const colorSchemes = [
-    "blue",
-    "cyan",
-    "gray",
-    "green",
-    "orange",
-    "pink",
-    "purple",
-    "red",
-    "teal",
-    "yellow",
-    "linkedin",
-    "facebook",
-    "messenger",
-    "whatsapp",
-    "twitter",
-    "telegram"
-  ]
-
   if (!loading && data && data.messages) {
     return (
-      <Box overflowY="auto" fontFamily="monospace">
+      <Box overflowY="auto">
         <List mt={2} spacing={3}>
           {data.messages.map((message: any) => (
             <ListItem key={message.id}>
@@ -61,13 +42,7 @@ export default function ChatList(props: any) {
                   src="https://bit.ly/ryan-florence"
                   mr={3}
                 />
-                <Code
-                  colorScheme={
-                    colorSchemes[Math.floor(Math.random() * (14 - 1) + 1)]
-                  }
-                >
-                  {message.sentBy.username}
-                </Code>
+                <Code>{message.sentBy.username}</Code>
                 <Divider orientation="vertical" colorScheme="orange" />
                 <Text>{message.content}</Text>
                 <Spacer />

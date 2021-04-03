@@ -134,6 +134,8 @@ export type MessageMutationResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   createCategory: CategoryMutationResponse;
+  joinChatRoom: CategoryMutationResponse;
+  leaveChatRoom: CategoryMutationResponse;
   createComment: CommentMutationResponse;
   editComment: CommentMutationResponse;
   createMessage: MessageMutationResponse;
@@ -152,6 +154,16 @@ export type Mutation = {
 
 
 export type MutationCreateCategoryArgs = {
+  data: CategoryInput;
+};
+
+
+export type MutationJoinChatRoomArgs = {
+  data: CategoryInput;
+};
+
+
+export type MutationLeaveChatRoomArgs = {
   data: CategoryInput;
 };
 
@@ -281,6 +293,9 @@ export type Query = {
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   me?: Maybe<User>;
+  myChatRooms?: Maybe<Array<Category>>;
+  myPrivateMessages?: Maybe<Array<PrivateMessage>>;
+  myFriends?: Maybe<Array<User>>;
 };
 
 
@@ -367,9 +382,21 @@ export type RegisterInput = {
 export type Subscription = {
   __typename?: 'Subscription';
   newCategory: Category;
+  userJoinedChannel: User;
+  userLeftChannel: User;
   newMessage: Message;
   newPrivateMessage: PrivateMessage;
   newUser: User;
+};
+
+
+export type SubscriptionUserJoinedChannelArgs = {
+  categoryId: Scalars['Int'];
+};
+
+
+export type SubscriptionUserLeftChannelArgs = {
+  categoryId: Scalars['Int'];
 };
 
 
@@ -478,6 +505,26 @@ export type CreateSubredditMutation = (
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
     )>> }
+  ) }
+);
+
+export type JoinChatRoomMutationVariables = Exact<{
+  data: CategoryInput;
+}>;
+
+
+export type JoinChatRoomMutation = (
+  { __typename?: 'Mutation' }
+  & { joinChatRoom: (
+    { __typename?: 'CategoryMutationResponse' }
+    & { category?: Maybe<(
+      { __typename?: 'Category' }
+      & Pick<Category, 'id' | 'name'>
+      & { chatUsers?: Maybe<Array<(
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'username'>
+      )>> }
+    )> }
   ) }
 );
 
@@ -766,6 +813,23 @@ export type CategoriesQuery = (
     { __typename?: 'Category' }
     & CategoryDetailsFragment
   )>> }
+);
+
+export type CategoryQueryVariables = Exact<{
+  categoryId: Scalars['Int'];
+}>;
+
+
+export type CategoryQuery = (
+  { __typename?: 'Query' }
+  & { category?: Maybe<(
+    { __typename?: 'Category' }
+    & Pick<Category, 'id' | 'name'>
+    & { chatUsers?: Maybe<Array<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'online'>
+    )>> }
+  )> }
 );
 
 export type CommentQueryVariables = Exact<{
@@ -1104,6 +1168,46 @@ export function useCreateSubredditMutation(baseOptions?: Apollo.MutationHookOpti
 export type CreateSubredditMutationHookResult = ReturnType<typeof useCreateSubredditMutation>;
 export type CreateSubredditMutationResult = Apollo.MutationResult<CreateSubredditMutation>;
 export type CreateSubredditMutationOptions = Apollo.BaseMutationOptions<CreateSubredditMutation, CreateSubredditMutationVariables>;
+export const JoinChatRoomDocument = gql`
+    mutation JoinChatRoom($data: CategoryInput!) {
+  joinChatRoom(data: $data) {
+    category {
+      id
+      name
+      chatUsers {
+        id
+        username
+      }
+    }
+  }
+}
+    `;
+export type JoinChatRoomMutationFn = Apollo.MutationFunction<JoinChatRoomMutation, JoinChatRoomMutationVariables>;
+
+/**
+ * __useJoinChatRoomMutation__
+ *
+ * To run a mutation, you first call `useJoinChatRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinChatRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinChatRoomMutation, { data, loading, error }] = useJoinChatRoomMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useJoinChatRoomMutation(baseOptions?: Apollo.MutationHookOptions<JoinChatRoomMutation, JoinChatRoomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<JoinChatRoomMutation, JoinChatRoomMutationVariables>(JoinChatRoomDocument, options);
+      }
+export type JoinChatRoomMutationHookResult = ReturnType<typeof useJoinChatRoomMutation>;
+export type JoinChatRoomMutationResult = Apollo.MutationResult<JoinChatRoomMutation>;
+export type JoinChatRoomMutationOptions = Apollo.BaseMutationOptions<JoinChatRoomMutation, JoinChatRoomMutationVariables>;
 export const CreateCommentDocument = gql`
     mutation createComment($data: CommentInput!) {
   createComment(data: $data) {
@@ -1671,6 +1775,50 @@ export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQ
 export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
 export function refetchCategoriesQuery(variables?: CategoriesQueryVariables) {
       return { query: CategoriesDocument, variables: variables }
+    }
+export const CategoryDocument = gql`
+    query Category($categoryId: Int!) {
+  category(categoryId: $categoryId) {
+    id
+    name
+    chatUsers {
+      id
+      username
+      online
+    }
+  }
+}
+    `;
+
+/**
+ * __useCategoryQuery__
+ *
+ * To run a query within a React component, call `useCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCategoryQuery({
+ *   variables: {
+ *      categoryId: // value for 'categoryId'
+ *   },
+ * });
+ */
+export function useCategoryQuery(baseOptions: Apollo.QueryHookOptions<CategoryQuery, CategoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CategoryQuery, CategoryQueryVariables>(CategoryDocument, options);
+      }
+export function useCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CategoryQuery, CategoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CategoryQuery, CategoryQueryVariables>(CategoryDocument, options);
+        }
+export type CategoryQueryHookResult = ReturnType<typeof useCategoryQuery>;
+export type CategoryLazyQueryHookResult = ReturnType<typeof useCategoryLazyQuery>;
+export type CategoryQueryResult = Apollo.QueryResult<CategoryQuery, CategoryQueryVariables>;
+export function refetchCategoryQuery(variables?: CategoryQueryVariables) {
+      return { query: CategoryDocument, variables: variables }
     }
 export const CommentDocument = gql`
     query Comment($postId: Int) {

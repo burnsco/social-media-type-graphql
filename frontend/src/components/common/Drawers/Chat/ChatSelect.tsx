@@ -1,4 +1,7 @@
-import { useCategoriesLazyQuery } from "@/generated/graphql"
+import {
+  useCategoriesLazyQuery,
+  useJoinChatRoomMutation
+} from "@/generated/graphql"
 import { selectedChatRoomId, selectedChatRoomName } from "@/lib/apolloClient"
 import { useReactiveVar } from "@apollo/client"
 import {
@@ -26,6 +29,8 @@ export default function ChatSelection() {
     fetchCategories,
     { data: categoriesData, loading: loadingCategories, error: categoriesError }
   ] = useCategoriesLazyQuery()
+
+  const [joinChatRoom] = useJoinChatRoomMutation()
 
   useEffect(() => fetchCategories(), [fetchCategories])
 
@@ -55,10 +60,17 @@ export default function ChatSelection() {
                       <MenuItem
                         value={item.name}
                         key={`chat-selection-${item.id}}`}
-                        onClick={() => {
+                        onClick={async () => {
                           if (item && item.name && item.id) {
                             selectedChatRoomId(Number(item.id))
                             selectedChatRoomName(item.name)
+                            await joinChatRoom({
+                              variables: {
+                                data: {
+                                  name: item.name
+                                }
+                              }
+                            })
                           }
                         }}
                       >
