@@ -2,8 +2,8 @@ import CommentsPageWithData from "@/components/common/Comment/Data"
 import SubmitCommentForm from "@/components/common/Comment/Form"
 import NewPost from "@/components/common/Post"
 import Layout from "@/components/ui/Layout"
-import { usePostQuery } from "@/generated/graphql"
-import { Alert, Skeleton, Stack, VisuallyHidden } from "@chakra-ui/react"
+import { useMeQuery, usePostQuery } from "@/generated/graphql"
+import { Alert, Box, Skeleton, Stack, VisuallyHidden } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 
 export default function SinglePostPage() {
@@ -14,6 +14,8 @@ export default function SinglePostPage() {
   const { data, loading, error } = usePostQuery({
     variables: { postId: Number(postId) }
   })
+
+  const { data: userData } = useMeQuery({ ssr: false })
 
   if (loading) return <VisuallyHidden>loading</VisuallyHidden>
 
@@ -33,8 +35,12 @@ export default function SinglePostPage() {
           ) : (
             <Alert>Post Not Found</Alert>
           )}
+          {userData && userData.me ? (
+            <SubmitCommentForm />
+          ) : (
+            <Box>Login/Register to comment</Box>
+          )}
 
-          <SubmitCommentForm />
           <CommentsPageWithData />
         </Stack>
       </Skeleton>

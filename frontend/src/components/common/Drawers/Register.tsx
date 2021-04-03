@@ -13,6 +13,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Heading,
   Stack,
   useColorModeValue,
   useDisclosure
@@ -50,7 +51,9 @@ export default function RegisterDrawer() {
         <DrawerOverlay />
         <DrawerContent bg={colorbg}>
           <DrawerCloseButton />
-          <DrawerHeader>Join the Community!</DrawerHeader>
+          <DrawerHeader>
+            <Heading>Join the Community!</Heading>
+          </DrawerHeader>
           <Formik
             initialValues={RegisterUserInputType}
             validationSchema={RegisterSchema}
@@ -85,7 +88,7 @@ export default function RegisterDrawer() {
               return (
                 <Form>
                   <DrawerBody>
-                    <Stack spacing={4}>
+                    <Stack spacing={6}>
                       <ChakraField
                         id="email"
                         name="email"

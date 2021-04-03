@@ -7,6 +7,7 @@ import {
 } from "@mikro-orm/core"
 import { GraphQLEmail } from "graphql-custom-types"
 import { Field, ID, ObjectType } from "type-graphql"
+import Category from "./Category"
 import PrivateMessage from "./PrivateMessage"
 
 @Entity()
@@ -54,14 +55,8 @@ export default class User {
   @Field(() => [PrivateMessage])
   @ManyToMany(() => PrivateMessage)
   privateMessages = new Collection<PrivateMessage>(this)
-}
 
-export enum UserRole {
-  ADMIN = "admin",
-  USER = "user"
-}
-
-export const enum UserStatus {
-  ONLINE,
-  OFFLINE
+  @Field(() => [Category])
+  @ManyToMany(() => Category)
+  chatRooms = new Collection<Category>(this)
 }

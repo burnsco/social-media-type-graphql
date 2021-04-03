@@ -1,5 +1,6 @@
 import { InputField } from "@/components/common/index"
 import { useCreateCommentMutation } from "@/generated/graphql"
+import { useLoggedInUser } from "@/hooks/useLoggedInUser"
 import CreateCommentSchema from "@/types/Comment/schemas"
 import { gql } from "@apollo/client"
 import { Box, Button, useColorModeValue, useToast } from "@chakra-ui/react"
@@ -11,7 +12,7 @@ const SubmitCommentForm = () => {
   const bg = useColorModeValue("white", "#202020")
   const hoverBc = useColorModeValue("gray.200", "gray.600")
   const toast = useToast()
-
+  const loggedInUser = useLoggedInUser()
   const router = useRouter()
   const postId = router.query.id
 

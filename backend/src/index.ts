@@ -61,7 +61,7 @@ async function main(): Promise<void> {
           await orm.em.flush()
 
           console.log(
-            `User - ${connectedUser.username} has connected to subscription server`
+            `${connectedUser.username} has connected to subscription server`
           )
         } catch (ex) {
           return ex
@@ -81,7 +81,7 @@ async function main(): Promise<void> {
           await orm.em.flush()
 
           console.log(
-            `User - ${connectedUser.username} has disconnected from subscription server`
+            `${connectedUser.username} has disconnected from subscription server`
           )
         } catch (ex) {
           return ex

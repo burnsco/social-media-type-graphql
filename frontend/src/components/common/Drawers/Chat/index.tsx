@@ -36,7 +36,7 @@ export default function ChatDrawerPage() {
           <IconButton
             onClick={onOpen}
             variant="ghost"
-            aria-label="Create a Subreddit"
+            aria-label="Open Chat Menu"
             icon={<IoChatboxEllipsesOutline size="1.5em" />}
             size="md"
           />

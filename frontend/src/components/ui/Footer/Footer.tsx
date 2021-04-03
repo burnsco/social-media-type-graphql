@@ -21,13 +21,16 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
+  Spacer,
   useColorModeValue
 } from "@chakra-ui/react"
 import React from "react"
 import { FaUserFriends } from "react-icons/fa"
 import { ImSpinner } from "react-icons/im"
 
-const FooterContent = () => {
+export default function Footer() {
+  const bg = useColorModeValue("white", "#202020")
+
   const { data, loading, refetch } = useMyFriendsAndMessagesQuery()
 
   const FriendsCount = () => {
@@ -75,17 +78,8 @@ const FooterContent = () => {
     )
   }
 
-  return (
-    <Flex w="100%" h="100%" justifyContent="flex-end">
-      <Flex w="full" justifyContent="space-evenly">
-        {data && data.me && data.me.privateMessages ? (
-          <>
-            {data.me.privateMessages.map(message => (
-              <NewPrivateMessagePopOver key={message.id} {...message} />
-            ))}
-          </>
-        ) : null}
-      </Flex>
+  const FriendsMenu = () => (
+    <>
       {data && data.me ? (
         <Menu>
           <MenuButton
@@ -114,12 +108,49 @@ const FooterContent = () => {
       ) : (
         <Heading>No Friends</Heading>
       )}
+    </>
+  )
+
+  const ChatMenu = () => (
+    <>
+      {data && data.me ? (
+        <Menu>
+          <MenuButton
+            onClick={() => refetch()}
+            as={Button}
+            rightIcon={!loading ? <FaUserFriends /> : <ImSpinner />}
+          >
+            <FriendsCount />
+            CHAT
+          </MenuButton>
+          <MenuList>
+            {data?.me?.friends.map(user => (
+              <MenuItem key={`friend-${user.id}`}>
+                <Avatar
+                  size="xs"
+                  name="Ryan Florence"
+                  src="https://bit.ly/ryan-florence"
+                  mr={3}
+                />
+                {user.username} {user && <MessageUser {...user} />}
+                {user.online ? <OnlineCircle /> : <OfflineCircle />}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+      ) : (
+        <Heading>No Friends</Heading>
+      )}
+    </>
+  )
+
+  const FooterContent = () => (
+    <Flex w="100%" h="100%">
+      <ChatMenu />
+      <Spacer />
+      <FriendsMenu />
     </Flex>
   )
-}
-
-const Footer = () => {
-  const bg = useColorModeValue("white", "#202020")
 
   return (
     <chakra.header
@@ -131,11 +162,9 @@ const Footer = () => {
       right="0"
       width="full"
     >
-      <chakra.div height="2.5rem" mx="auto" maxW="1200px">
+      <chakra.div height="2.5rem" mx="auto" maxW="1200px" px={1}>
         <FooterContent />
       </chakra.div>
     </chakra.header>
   )
 }
-
-export default Footer

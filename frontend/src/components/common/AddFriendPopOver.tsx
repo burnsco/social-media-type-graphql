@@ -25,17 +25,20 @@ import { FaUserFriends } from "react-icons/fa"
 
 export default function AddFriendPopOver() {
   const [loggedInUser] = useLoggedInUser()
+
   const bg = useColorModeValue("whitesmoke", "gray.900")
   const toast = useToast()
   const buttonColor = useColorModeValue("purple", "blue")
+
   const [addFriend, { loading }] = useAddFriendMutation()
+
   const initialFocusRef = React.useRef<HTMLButtonElement | null>(null)
   return (
     <>
       <Popover
         initialFocusRef={initialFocusRef}
         placement="bottom"
-        closeOnBlur={false}
+        closeOnBlur={true}
       >
         {({ isOpen, onClose }) => (
           <>
@@ -44,7 +47,7 @@ export default function AddFriendPopOver() {
                 <FaUserFriends size="1.5em" />
               </HStack>
             </PopoverTrigger>
-            <PopoverContent bg={bg}>
+            <PopoverContent bg={bg} h="37.5rem" w="40rem">
               <PopoverHeader pt={4} fontWeight="bold" border="0">
                 Add Friend
               </PopoverHeader>

@@ -2,6 +2,7 @@ import { Header } from "@/components/ui"
 import { Box, Stack } from "@chakra-ui/react"
 import Head from "next/head"
 import PropTypes from "prop-types"
+import Footer from "../Footer/Footer"
 import SideMenuContainer from "../SideMenu/SideMenuContainer"
 
 const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
@@ -46,7 +47,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
       </Head>
 
       <Header />
-      <Box px={["0em", "1em", "3em", "6em"]} py="6em">
+      <Box px={["0em", "1em", "3em", "4em"]} py="6em">
         <Stack isInline spacing={14}>
           <Box as="main" width="full">
             {children}
@@ -61,6 +62,7 @@ const Layout: React.FC<{ children: React.ReactNode; title: string }> = ({
           </Box>
         </Stack>
       </Box>
+      <Footer />
     </>
   )
 }

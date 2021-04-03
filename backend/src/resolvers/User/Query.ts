@@ -1,6 +1,6 @@
-import { LoadStrategy } from "@mikro-orm/core"
-import { Arg, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
-import { User } from "../../entities"
+import { Collection, LoadedCollection, LoadStrategy } from "@mikro-orm/core"
+import { Arg, Ctx, Query, Resolver } from "type-graphql"
+import { Category, User } from "../../entities"
 import PrivateMessage from "../../entities/PrivateMessage"
 import { EditUserInput } from "../../inputs"
 import { ContextType } from "../../types"
@@ -17,31 +17,86 @@ export default class UserQueryResolver {
 
   @Query(() => [User], { nullable: true })
   async users(@Ctx() { em }: ContextType): Promise<User[] | null> {
-    return await em.find(User, {}, { populate: ["friends"] })
+    return await em.find(User, {})
   }
 
   @Query(() => User, { nullable: true })
   async me(@Ctx() { req, em }: ContextType): Promise<User | null> {
     if (req && req.session.userId) {
-      return await em.findOne(
-        User,
-        { id: req.session.userId },
-        {
-          populate: ["friends", "privateMessages"],
-          strategy: LoadStrategy.JOINED
-        }
-      )
+      return await em.findOne(User, { id: req.session.userId })
     }
     return null
   }
 
-  @FieldResolver(() => [PrivateMessage], { nullable: true })
-  privateMessages(@Root() user: User) {
-    return user.privateMessages
+  @Query(() => [Category], { nullable: true })
+  async myChatRooms(
+    @Ctx() { req, em }: ContextType
+  ): Promise<
+    | (Collection<Category, unknown> & LoadedCollection<Category, Category>)
+    | null
+  > {
+    if (req && req.session.userId) {
+      const user = await em.findOne(
+        User,
+        { id: req.session.userId },
+        {
+          populate: ["chatRooms"],
+          strategy: LoadStrategy.JOINED
+        }
+      )
+      if (user && user.chatRooms) {
+        const chatRooms = user.chatRooms
+        return chatRooms
+      }
+    }
+    return null
   }
 
-  @FieldResolver(() => [User], { nullable: true })
-  friends(@Root() user: User) {
-    return user.friends
+  @Query(() => [PrivateMessage], { nullable: true })
+  async myPrivateMessages(
+    @Ctx() { req, em }: ContextType
+  ): Promise<
+    | (Collection<PrivateMessage, unknown> &
+        LoadedCollection<PrivateMessage, PrivateMessage>)
+    | null
+  > {
+    if (req && req.session.userId) {
+      const user = await em.findOne(
+        User,
+        { id: req.session.userId },
+        {
+          populate: ["privateMessages"],
+          strategy: LoadStrategy.JOINED
+        }
+      )
+      if (user && user.privateMessages) {
+        const privateMessages = user.privateMessages
+        return privateMessages
+      }
+    }
+    return null
+  }
+
+  @Query(() => [User], { nullable: true })
+  async myFriends(
+    @Ctx() { req, em }: ContextType
+  ): Promise<
+    (Collection<User, unknown> & LoadedCollection<User, User>) | null
+  > {
+    if (req && req.session.userId) {
+      const user = await em.findOne(
+        User,
+        { id: req.session.userId },
+        {
+          populate: ["friends"],
+          strategy: LoadStrategy.JOINED
+        }
+      )
+      if (user && user.friends) {
+        const friends = user.friends
+        return friends
+      }
+    }
+    return null
   }
 }

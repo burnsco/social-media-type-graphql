@@ -32,7 +32,9 @@ export type Category = {
   id: Scalars['ID'];
   createdAt: Scalars['String'];
   name: Scalars['String'];
+  avatar?: Maybe<Scalars['String']>;
   messages?: Maybe<Array<Message>>;
+  chatUsers?: Maybe<Array<User>>;
 };
 
 export type CategoryInput = {
@@ -392,6 +394,7 @@ export type User = {
   about?: Maybe<Scalars['String']>;
   friends: Array<User>;
   privateMessages: Array<PrivateMessage>;
+  chatRooms: Array<Category>;
 };
 
 export type UserLogoutMutationResponse = {
