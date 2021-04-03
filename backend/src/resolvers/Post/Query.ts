@@ -99,8 +99,8 @@ export default class PostQueryResolver {
   }
 
   @FieldResolver({ nullable: true })
-  async votes(@Root() post: Post, @Ctx() { em }: ContextType) {
-    return await em.find(Vote, { post: { id: post.id } })
+  async votes(@Root() post: Post) {
+    return post.votes
   }
 
   @FieldResolver()

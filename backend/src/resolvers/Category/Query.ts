@@ -1,8 +1,8 @@
-import { LoadStrategy, QueryOrder } from "@mikro-orm/core"
+import { QueryOrder } from "@mikro-orm/core"
 import { Args, Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql"
 import CategoryArgs from "../../args/category-args"
 import NewMessageArgs from "../../args/message-args"
-import { Category, Message } from "../../entities"
+import { Category, Message, User } from "../../entities"
 import { ContextType } from "../../types"
 
 @Resolver(() => Category)
@@ -11,14 +11,14 @@ export default class CategoryQueryResolver {
   async category(
     @Args() { categoryId }: NewMessageArgs,
     @Ctx() { em }: ContextType
-  ) {
-    return await em.find(
-      Category,
-      { id: categoryId },
-      {
-        populate: { messages: LoadStrategy.JOINED }
-      }
-    )
+  ): Promise<Category | null> {
+    const category = em.findOne(Category, categoryId, {
+      populate: ["messages", "chatUsers"]
+    })
+    if (!category) {
+      return null
+    }
+    return category
   }
 
   @Query(() => [Category], { nullable: true })
@@ -61,5 +61,10 @@ export default class CategoryQueryResolver {
   @FieldResolver(() => [Message], { nullable: true })
   messages(@Root() category: Category, @Ctx() { em }: ContextType) {
     return em.find(Message, { category: { id: category.id } })
+  }
+
+  @FieldResolver(() => [User], { nullable: true })
+  chatUsers(@Root() category: Category) {
+    return category.chatUsers
   }
 }

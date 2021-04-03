@@ -88,15 +88,25 @@ export default class CategoryMutationResolver {
     notifyAboutUserLeavingChatRoom: Publisher<User>,
     @Ctx() { em, req }: ContextType
   ): Promise<CategoryMutationResponse | null> {
-    const user = await em.findOne(User, { id: req.session.userId })
+    const user = await em.findOne(
+      User,
+      { id: req.session.userId },
+      { populate: ["chatRooms"], strategy: LoadStrategy.JOINED }
+    )
     const category = await em.findOne(
       Category,
       { name: data.name },
       { populate: ["chatUsers"], strategy: LoadStrategy.JOINED }
     )
-    if (category && user && category.chatUsers.contains(user)) {
+    if (
+      category &&
+      user &&
+      category.chatUsers.contains(user) &&
+      user.chatRooms.contains(category)
+    ) {
       category.chatUsers.remove(user)
-      await em.persistAndFlush(category)
+      user.chatRooms.remove(category)
+      await em.flush()
       await notifyAboutUserLeavingChatRoom(user)
       return { category }
     } else {
