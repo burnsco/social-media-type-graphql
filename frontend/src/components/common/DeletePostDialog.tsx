@@ -15,9 +15,11 @@ import {
 import { useRef, useState } from "react"
 import { AiFillDelete } from "react-icons/ai"
 
-export const DeletePostDialog: React.FC<{
-  postId?: string | null
-}> = ({ postId }) => {
+type DeletePostProps = {
+  postId?: string | null | undefined
+}
+
+export default function DeletePostDialog({ postId }: DeletePostProps) {
   const [deletePost] = useDeletePostMutation()
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)

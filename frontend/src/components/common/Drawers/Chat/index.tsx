@@ -7,6 +7,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   IconButton,
   Tab,
   TabList,
@@ -17,8 +18,9 @@ import {
   useColorModeValue,
   useDisclosure
 } from "@chakra-ui/react"
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { IoChatboxEllipsesOutline } from "react-icons/io5"
+import { useMyChatRoomsLazyQuery } from "../../../../generated/graphql"
 import ChatDisplay from "./ChatDisplay"
 import ChatInput from "./ChatInput"
 import ChatSelection from "./ChatSelect"
@@ -28,6 +30,12 @@ export default function ChatDrawerPage() {
   const drawerbg = useColorModeValue("whitesmoke", "gray.900")
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
+
+  const [fetchMyChatRooms, { data, loading, error }] = useMyChatRoomsLazyQuery({
+    ssr: false
+  })
+
+  useEffect(() => fetchMyChatRooms(), [fetchMyChatRooms])
 
   return (
     <>
@@ -57,18 +65,25 @@ export default function ChatDrawerPage() {
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
-        <DrawerContent bg={drawerbg}>
+        <DrawerContent p={1} bg={drawerbg}>
           <DrawerCloseButton />
           <DrawerHeader>
             <ChatSelection />
             <Tabs isFitted variant="enclosed">
               <TabList mb="1em">
-                <Tab> </Tab>
-                <Tab>Two</Tab>
+                {data && data.myChatRooms ? (
+                  <>
+                    {data.myChatRooms.map(chatroom => (
+                      <Tab key={`My Joined Channel ${chatroom.name}`}>
+                        {chatroom.name}
+                      </Tab>
+                    ))}
+                  </>
+                ) : null}
               </TabList>
               <TabPanels>
                 <TabPanel>
-                  <ChatUsers />
+                  <p>users</p>
                 </TabPanel>
                 <TabPanel>
                   <p>two!</p>
@@ -77,11 +92,14 @@ export default function ChatDrawerPage() {
             </Tabs>
           </DrawerHeader>
 
-          <DrawerBody>
-            <ChatDisplay />
+          <DrawerBody p={1} m={0} border="1px solid yellow">
+            <Flex h="100%" w="100%">
+              <ChatDisplay />
+              <ChatUsers />
+            </Flex>
           </DrawerBody>
 
-          <DrawerFooter>
+          <DrawerFooter border="2px solid purple" p={0}>
             <ChatInput />
           </DrawerFooter>
         </DrawerContent>

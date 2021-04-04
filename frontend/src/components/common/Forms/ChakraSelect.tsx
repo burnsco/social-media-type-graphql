@@ -13,12 +13,12 @@ type ChakraFieldProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   size?: string
 }
 
-const ChakraSelect: React.FC<ChakraFieldProps> = ({
+export default function ChakraSelect({
   label,
   size,
   helperText,
   ...props
-}) => {
+}: ChakraFieldProps) {
   const [field, { error }] = useField(props)
 
   return (
@@ -35,5 +35,3 @@ const ChakraSelect: React.FC<ChakraFieldProps> = ({
     </FormControl>
   )
 }
-
-export default ChakraSelect

@@ -15,7 +15,7 @@ import {
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
 
-const LoginPage: React.FC = (): JSX.Element => {
+export default function LoginPage() {
   const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
   const toast = useToast()
@@ -90,5 +90,3 @@ const LoginPage: React.FC = (): JSX.Element => {
     </Layout>
   )
 }
-
-export default LoginPage

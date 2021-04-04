@@ -11,7 +11,6 @@ import {
   Text
 } from "@chakra-ui/react"
 import Image from "next/image"
-import { memo } from "react"
 
 type PostBodyType = {
   title?: string | null
@@ -24,7 +23,7 @@ type PostBodyType = {
   categoryId?: string | null | undefined
 }
 
-const PostBody: React.FC<PostBodyType> = ({
+export default function PostBody({
   title,
   text,
   postId,
@@ -33,7 +32,7 @@ const PostBody: React.FC<PostBodyType> = ({
   link,
   image,
   categoryId
-}): JSX.Element => {
+}: PostBodyType) {
   const [editPost, { loading: submittingEditedPost }] = useEditPostMutation()
 
   // #TODO optimize this so can use on title, text or link
@@ -113,5 +112,3 @@ const PostBody: React.FC<PostBodyType> = ({
     </Stack>
   )
 }
-
-export default memo(PostBody)

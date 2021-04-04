@@ -4,6 +4,7 @@ import Layout from "@/components/ui/Layout"
 import { MeDocument, MeQuery, useRegisterMutation } from "@/generated/graphql"
 import { RegisterSchema } from "@/types/User/schemas"
 import { RegisterUserInputType } from "@/types/User/types"
+import convertToErrorMap from "@/utils/toErrorMap"
 import {
   Box,
   Button,
@@ -14,9 +15,8 @@ import {
 } from "@chakra-ui/react"
 import { Form, Formik } from "formik"
 import { useRouter } from "next/router"
-import convertToErrorMap from "../../../utils/toErrorMap"
 
-const RegisterPage: React.FC = (): JSX.Element => {
+export default function RegisterPage() {
   const bg = useColorModeValue("white", "#1A1A1B")
   const router = useRouter()
   const toast = useToast()
@@ -99,5 +99,3 @@ const RegisterPage: React.FC = (): JSX.Element => {
     </Layout>
   )
 }
-
-export default RegisterPage

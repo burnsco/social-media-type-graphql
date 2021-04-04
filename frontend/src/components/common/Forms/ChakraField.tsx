@@ -18,14 +18,14 @@ type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   size?: string
 }
 
-const ChakraField: React.FC<ChakraFieldProps> = ({
+export default function ChakraField({
   label,
   type,
   size,
   textarea = false,
   helperText,
   ...props
-}) => {
+}: ChakraFieldProps) {
   const [field, { error, touched }] = useField(props)
   const [didFocus, setDidFocus] = useState(false)
   const handleFocus = () => setDidFocus(true)
@@ -75,5 +75,3 @@ const ChakraField: React.FC<ChakraFieldProps> = ({
     </FormControl>
   )
 }
-
-export default ChakraField

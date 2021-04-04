@@ -19,27 +19,30 @@ const AboutUserPage = () => {
 
   if (loading) return <VisuallyHidden>loading</VisuallyHidden>
 
-  return (
-    <Layout title={data?.user.username || "user"}>
-      <Container>
-        <Box
-          p={1}
-          maxW="sm"
-          borderWidth="1px"
-          borderRadius="lg"
-          overflow="hidden"
-        >
-          <Heading>User Details</Heading>
-          <List>
-            <ListItem>{data?.user.username} </ListItem>
-            <ListItem>{data?.user.email} </ListItem>
-            <ListItem>{data?.user.about} </ListItem>
-            <ListItem>{data?.user.online} </ListItem>
-          </List>
-        </Box>
-      </Container>
-    </Layout>
-  )
+  if (data && data.user) {
+    return (
+      <Layout title={data.user.username || "user"}>
+        <Container>
+          <Box
+            p={1}
+            maxW="sm"
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+          >
+            <Heading>User Details</Heading>
+            <List>
+              <ListItem>{data.user.username} </ListItem>
+              <ListItem>{data.user.email} </ListItem>
+              <ListItem>{data.user.about} </ListItem>
+              <ListItem>{data.user.online} </ListItem>
+            </List>
+          </Box>
+        </Container>
+      </Layout>
+    )
+  }
+  return null
 }
 
 export default AboutUserPage

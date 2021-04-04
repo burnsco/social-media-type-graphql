@@ -31,8 +31,8 @@ export default function ChatList(props: any) {
 
   if (!loading && data && data.messages) {
     return (
-      <Box overflowY="auto">
-        <List mt={2} spacing={3}>
+      <Box overflowY="auto" height="auto" w="85%" border="2px solid red" p={1}>
+        <List mt={2} spacing={4}>
           {data.messages.map((message: any) => (
             <ListItem key={message.id}>
               <Stack h="100%" direction="row">

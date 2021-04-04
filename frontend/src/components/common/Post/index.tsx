@@ -1,14 +1,13 @@
 import { PostQuery } from "@/generated/graphql"
 import { useLoggedInUser } from "@/hooks/useLoggedInUser"
 import { Alert, Flex, useColorModeValue } from "@chakra-ui/react"
-import { memo } from "react"
 import PostBody from "./Body"
 import PostContainer from "./Container"
 import PostFooter from "./Footer"
 import PostHeader from "./Header"
 import VoteBox from "./VoteBox"
 
-const NewPost: React.FC<PostQuery> = props => {
+export default function NewPost(props: PostQuery) {
   const bg = useColorModeValue("white", "#202020")
   const [loggedInUser] = useLoggedInUser()
 
@@ -91,5 +90,3 @@ const NewPost: React.FC<PostQuery> = props => {
   }
   return <Alert>Post Not Found</Alert>
 }
-
-export default memo(NewPost)

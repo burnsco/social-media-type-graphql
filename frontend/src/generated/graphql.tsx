@@ -989,29 +989,48 @@ export type MeQuery = (
   )> }
 );
 
-export type MyFriendsAndMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+export type MyChatRoomsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyFriendsAndMessagesQuery = (
+export type MyChatRoomsQuery = (
   { __typename?: 'Query' }
-  & { me?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
-    & { friends: Array<(
+  & { myChatRooms?: Maybe<Array<(
+    { __typename?: 'Category' }
+    & Pick<Category, 'id' | 'name'>
+    & { chatUsers?: Maybe<Array<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username' | 'online'>
-    )>, privateMessages: Array<(
-      { __typename?: 'PrivateMessage' }
-      & Pick<PrivateMessage, 'id' | 'body'>
-      & { sentBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-      ), sentTo: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-      ) }
-    )> }
-  )> }
+      & Pick<User, 'id' | 'username'>
+    )>> }
+  )>> }
+);
+
+export type MyFriendsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyFriendsQuery = (
+  { __typename?: 'Query' }
+  & { myFriends?: Maybe<Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'online'>
+  )>> }
+);
+
+export type MyPrivateMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyPrivateMessagesQuery = (
+  { __typename?: 'Query' }
+  & { myPrivateMessages?: Maybe<Array<(
+    { __typename?: 'PrivateMessage' }
+    & Pick<PrivateMessage, 'id' | 'createdAt' | 'body'>
+    & { sentBy: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ), sentTo: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )>> }
 );
 
 export type UserQueryVariables = Exact<{
@@ -2161,60 +2180,133 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export function refetchMeQuery(variables?: MeQueryVariables) {
       return { query: MeDocument, variables: variables }
     }
-export const MyFriendsAndMessagesDocument = gql`
-    query MyFriendsAndMessages {
-  me {
+export const MyChatRoomsDocument = gql`
+    query MyChatRooms {
+  myChatRooms {
     id
-    username
-    friends {
+    name
+    chatUsers {
       id
       username
-      online
-    }
-    privateMessages {
-      id
-      body
-      sentBy {
-        id
-        username
-      }
-      sentTo {
-        id
-        username
-      }
     }
   }
 }
     `;
 
 /**
- * __useMyFriendsAndMessagesQuery__
+ * __useMyChatRoomsQuery__
  *
- * To run a query within a React component, call `useMyFriendsAndMessagesQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyFriendsAndMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMyChatRoomsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyChatRoomsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMyFriendsAndMessagesQuery({
+ * const { data, loading, error } = useMyChatRoomsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useMyFriendsAndMessagesQuery(baseOptions?: Apollo.QueryHookOptions<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>) {
+export function useMyChatRoomsQuery(baseOptions?: Apollo.QueryHookOptions<MyChatRoomsQuery, MyChatRoomsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>(MyFriendsAndMessagesDocument, options);
+        return Apollo.useQuery<MyChatRoomsQuery, MyChatRoomsQueryVariables>(MyChatRoomsDocument, options);
       }
-export function useMyFriendsAndMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>) {
+export function useMyChatRoomsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyChatRoomsQuery, MyChatRoomsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>(MyFriendsAndMessagesDocument, options);
+          return Apollo.useLazyQuery<MyChatRoomsQuery, MyChatRoomsQueryVariables>(MyChatRoomsDocument, options);
         }
-export type MyFriendsAndMessagesQueryHookResult = ReturnType<typeof useMyFriendsAndMessagesQuery>;
-export type MyFriendsAndMessagesLazyQueryHookResult = ReturnType<typeof useMyFriendsAndMessagesLazyQuery>;
-export type MyFriendsAndMessagesQueryResult = Apollo.QueryResult<MyFriendsAndMessagesQuery, MyFriendsAndMessagesQueryVariables>;
-export function refetchMyFriendsAndMessagesQuery(variables?: MyFriendsAndMessagesQueryVariables) {
-      return { query: MyFriendsAndMessagesDocument, variables: variables }
+export type MyChatRoomsQueryHookResult = ReturnType<typeof useMyChatRoomsQuery>;
+export type MyChatRoomsLazyQueryHookResult = ReturnType<typeof useMyChatRoomsLazyQuery>;
+export type MyChatRoomsQueryResult = Apollo.QueryResult<MyChatRoomsQuery, MyChatRoomsQueryVariables>;
+export function refetchMyChatRoomsQuery(variables?: MyChatRoomsQueryVariables) {
+      return { query: MyChatRoomsDocument, variables: variables }
+    }
+export const MyFriendsDocument = gql`
+    query MyFriends {
+  myFriends {
+    id
+    username
+    online
+  }
+}
+    `;
+
+/**
+ * __useMyFriendsQuery__
+ *
+ * To run a query within a React component, call `useMyFriendsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyFriendsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyFriendsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyFriendsQuery(baseOptions?: Apollo.QueryHookOptions<MyFriendsQuery, MyFriendsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyFriendsQuery, MyFriendsQueryVariables>(MyFriendsDocument, options);
+      }
+export function useMyFriendsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyFriendsQuery, MyFriendsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyFriendsQuery, MyFriendsQueryVariables>(MyFriendsDocument, options);
+        }
+export type MyFriendsQueryHookResult = ReturnType<typeof useMyFriendsQuery>;
+export type MyFriendsLazyQueryHookResult = ReturnType<typeof useMyFriendsLazyQuery>;
+export type MyFriendsQueryResult = Apollo.QueryResult<MyFriendsQuery, MyFriendsQueryVariables>;
+export function refetchMyFriendsQuery(variables?: MyFriendsQueryVariables) {
+      return { query: MyFriendsDocument, variables: variables }
+    }
+export const MyPrivateMessagesDocument = gql`
+    query MyPrivateMessages {
+  myPrivateMessages {
+    id
+    createdAt
+    body
+    sentBy {
+      id
+      username
+    }
+    sentTo {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useMyPrivateMessagesQuery__
+ *
+ * To run a query within a React component, call `useMyPrivateMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyPrivateMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyPrivateMessagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyPrivateMessagesQuery(baseOptions?: Apollo.QueryHookOptions<MyPrivateMessagesQuery, MyPrivateMessagesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyPrivateMessagesQuery, MyPrivateMessagesQueryVariables>(MyPrivateMessagesDocument, options);
+      }
+export function useMyPrivateMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyPrivateMessagesQuery, MyPrivateMessagesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyPrivateMessagesQuery, MyPrivateMessagesQueryVariables>(MyPrivateMessagesDocument, options);
+        }
+export type MyPrivateMessagesQueryHookResult = ReturnType<typeof useMyPrivateMessagesQuery>;
+export type MyPrivateMessagesLazyQueryHookResult = ReturnType<typeof useMyPrivateMessagesLazyQuery>;
+export type MyPrivateMessagesQueryResult = Apollo.QueryResult<MyPrivateMessagesQuery, MyPrivateMessagesQueryVariables>;
+export function refetchMyPrivateMessagesQuery(variables?: MyPrivateMessagesQueryVariables) {
+      return { query: MyPrivateMessagesDocument, variables: variables }
     }
 export const UserDocument = gql`
     query User($data: EditUserInput!) {

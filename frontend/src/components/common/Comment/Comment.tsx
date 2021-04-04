@@ -25,7 +25,7 @@ import { IoAddCircle } from "react-icons/io5"
 import { MdEmail, MdMessage } from "react-icons/md"
 import { OfflineCircle, OnlineCircle } from "../OnlineOffline"
 
-const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
+export default function CommentPage({ comment }: CommentQuery) {
   const [loggedInUser] = useLoggedInUser()
   const [addFriend, { loading }] = useAddFriendMutation()
 
@@ -168,5 +168,3 @@ const CommentPage: React.FC<CommentQuery> = ({ comment }) => {
     </Flex>
   )
 }
-
-export default CommentPage

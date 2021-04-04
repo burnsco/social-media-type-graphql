@@ -1,4 +1,10 @@
-import { FormControl, FormLabel, Input, InputGroup } from "@chakra-ui/react"
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightAddon
+} from "@chakra-ui/react"
 import { useField } from "formik"
 
 type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -8,13 +14,13 @@ type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   size?: string
 }
 
-const ChatField: React.FC<ChakraFieldProps> = ({
+export default function ChatField({
   label,
   type,
   size,
   helperText,
   ...props
-}) => {
+}: ChakraFieldProps) {
   const [field] = useField(props)
 
   return (
@@ -22,19 +28,19 @@ const ChatField: React.FC<ChakraFieldProps> = ({
       <FormLabel fontSize={`${size}` || "sm"} htmlFor={props.name || props.id}>
         {label}
       </FormLabel>
-      <InputGroup size="sm">
+      <InputGroup size="lg">
         <Input
           {...field}
           {...props}
-          variant="unstyled"
-          focusBorderColor="red.300"
+          width="full"
+          variant="filled"
+          focusBorderColor="blue.300"
           aria-describedby={`${props.id}-feedback ${props.id}-help`}
           id={field.name}
           placeholder={props.placeholder}
         />
+        <InputRightAddon children="Submit" />
       </InputGroup>
     </FormControl>
   )
 }
-
-export default ChatField

@@ -13,11 +13,13 @@ import {
 import { useRef, useState } from "react"
 import { AiFillDelete } from "react-icons/ai"
 
-export const DeletePostDialog: React.FC<{
-  postId?: string | null
+type DeletePostType = {
+  postId: string
   post: Post
-}> = ({ postId, post }) => {
-  const [deletePost, { client }] = useDeletePostMutation()
+}
+
+export function DeletePostDialog({ postId, post }: DeletePostType) {
+  const [deletePost] = useDeletePostMutation()
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = useRef<null | HTMLButtonElement>(null)
@@ -58,31 +60,32 @@ export const DeletePostDialog: React.FC<{
                 </Button>
                 <Button
                   onClick={async () => {
-                    sleep(1000)
-                    await deletePost({
-                      variables: {
-                        data: {
-                          postId
-                        }
-                      },
-                      update(cache, { data }) {
-                        if (data?.deletePost) {
-                          cache.modify({
-                            id: cache.identify(post),
-                            fields: {
-                              comments(existingCommentRefs, { readField }) {
-                                return existingCommentRefs.filter(
-                                  (commentRef: any) =>
-                                    postId !== readField("id", commentRef)
-                                )
+                    if (postId) {
+                      sleep(1000)
+                      await deletePost({
+                        variables: {
+                          postId: Number(postId)
+                        },
+                        update(cache, { data }) {
+                          if (data?.deletePost) {
+                            cache.modify({
+                              id: cache.identify(post),
+                              fields: {
+                                comments(existingCommentRefs, { readField }) {
+                                  return existingCommentRefs.filter(
+                                    (commentRef: any) =>
+                                      postId !== readField("id", commentRef)
+                                  )
+                                }
                               }
-                            }
-                          })
+                            })
+                          }
+                          return null
                         }
-                        return null
-                      }
-                    })
-                    onClose()
+                      })
+                      onClose()
+                    }
+                    return
                   }}
                   colorScheme="red"
                   ml={3}

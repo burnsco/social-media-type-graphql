@@ -12,10 +12,6 @@ const DynamicSinglePostPage = dynamic(
   () => import("@/components/pages/SinglePost/SingePostPage")
 )
 
-const PostAndCommentsPage: React.FC = () => {
-  return <DynamicSinglePostPage />
-}
-
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo()
 
@@ -53,4 +49,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-export default PostAndCommentsPage
+export default function PostAndCommentsPage() {
+  return <DynamicSinglePostPage />
+}

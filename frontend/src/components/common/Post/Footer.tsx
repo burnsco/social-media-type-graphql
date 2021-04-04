@@ -2,11 +2,17 @@ import { Box, Button, Flex, HStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import { RiMessage2Fill } from "react-icons/ri"
 
-const PostFooter: React.FC<{
+type PostFooterType = {
   category?: string | null
   id?: string | null
   commentsCount?: number
-}> = ({ category, id, commentsCount }): JSX.Element => {
+}
+
+export default function PostFooter({
+  category,
+  id,
+  commentsCount
+}: PostFooterType) {
   const router = useRouter()
   return (
     <Flex width="100%" fontSize="sm" fontWeight="500" p={1}>
@@ -24,5 +30,3 @@ const PostFooter: React.FC<{
     </Flex>
   )
 }
-
-export default PostFooter

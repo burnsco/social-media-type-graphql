@@ -1,8 +1,16 @@
+import { useCategoryLazyQuery } from "@/generated/graphql"
+import { selectedChatRoomId } from "@/lib/apolloClient"
 import { useReactiveVar } from "@apollo/client"
-import { Avatar, Box, Code, List, ListItem, Stack } from "@chakra-ui/react"
+import {
+  Avatar,
+  Box,
+  Code,
+  List,
+  ListItem,
+  Skeleton,
+  Stack
+} from "@chakra-ui/react"
 import React, { useEffect } from "react"
-import { useCategoryLazyQuery } from "../../../../generated/graphql"
-import { selectedChatRoomId } from "../../../../lib/apolloClient"
 
 export default function ChatUsers() {
   const chatId = useReactiveVar(selectedChatRoomId)
@@ -13,26 +21,32 @@ export default function ChatUsers() {
     [getChatRoomUsers, chatId]
   )
 
-  if (loading) return null
-
   if (data && data.category && data.category.chatUsers) {
     return (
-      <Box overflowY="auto">
-        <List mt={2} spacing={3}>
-          {data.category.chatUsers.map((user: any) => (
-            <ListItem key={`chat user ${user.username}`}>
-              <Stack h="100%" direction="row">
-                <Avatar
-                  size="xs"
-                  name="Ryan Florence"
-                  src="https://bit.ly/ryan-florence"
-                  mr={3}
-                />
-                <Code>{user.username}</Code>
-              </Stack>
-            </ListItem>
-          ))}
-        </List>
+      <Box
+        overflowY="auto"
+        height="auto"
+        w="15%"
+        p={3}
+        border="2px solid white"
+      >
+        <Skeleton isLoaded={!loading}>
+          <List mt={2} spacing={4}>
+            {data.category.chatUsers.map((user: any) => (
+              <ListItem key={`chat user ${user.username}`}>
+                <Stack h="100%" direction="row">
+                  <Avatar
+                    size="xs"
+                    name="Ryan Florence"
+                    src="https://bit.ly/ryan-florence"
+                    mr={3}
+                  />
+                  <Code>{user.username}</Code>
+                </Stack>
+              </ListItem>
+            ))}
+          </List>
+        </Skeleton>
       </Box>
     )
   }

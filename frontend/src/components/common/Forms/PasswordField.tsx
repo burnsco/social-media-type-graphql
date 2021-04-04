@@ -19,13 +19,13 @@ type ChakraFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   size?: string
 }
 
-const PasswordField: React.FC<ChakraFieldProps> = ({
+export default function PasswordField({
   label,
   type,
   size,
   helperText,
   ...props
-}) => {
+}: ChakraFieldProps) {
   const [field, { error, touched }] = useField(props)
 
   const [didFocus, setDidFocus] = useState(false)
@@ -75,5 +75,3 @@ const PasswordField: React.FC<ChakraFieldProps> = ({
     </FormControl>
   )
 }
-
-export default PasswordField

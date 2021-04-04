@@ -1,4 +1,4 @@
-import { DeletePostDialog } from "@/components/common/DeletePostDialog"
+import DeletePostDialog from "@/components/common/DeletePostDialog"
 import { useAddFriendMutation, User } from "@/generated/graphql"
 import { useLoggedInUser } from "@/hooks/useLoggedInUser"
 import { timeDifferenceForDate } from "@/utils/index"
@@ -25,13 +25,21 @@ import { IoAddCircle } from "react-icons/io5"
 import { MdEmail, MdMessage } from "react-icons/md"
 import { OfflineCircle, OnlineCircle } from "../OnlineOffline"
 
-const PostHeader: React.FC<{
+type PostHeaderType = {
   category?: string | null
   author?: Partial<User>
   createdAt?: string | null
   updatedAt?: string | null
   postId?: string | null | undefined
-}> = ({ category, author, createdAt, postId, updatedAt }) => {
+}
+
+export default function PostHeader({
+  category,
+  author,
+  createdAt,
+  postId,
+  updatedAt
+}: PostHeaderType) {
   const [loggedInUser] = useLoggedInUser()
   const fontColor = useColorModeValue("#1A1A1B", "gray.200")
   const bg = useColorModeValue("white", "#202020")
@@ -200,5 +208,3 @@ const PostHeader: React.FC<{
     </HStack>
   )
 }
-
-export default PostHeader

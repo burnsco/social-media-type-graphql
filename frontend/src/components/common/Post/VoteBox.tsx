@@ -2,11 +2,17 @@ import { useCreateVoteMutation } from "@/generated/graphql"
 import { Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/react"
 import { ImArrowDown, ImArrowUp } from "react-icons/im"
 
-const VoteBox: React.FC<{
+type VoteBoxType = {
   postId?: string
   postScore?: number
   isLoggedIn?: boolean
-}> = ({ postId, postScore, isLoggedIn }) => {
+}
+
+export default function VoteBox({
+  postId,
+  postScore,
+  isLoggedIn
+}: VoteBoxType) {
   const bg = useColorModeValue("gray.50", "#313131")
   const [vote, { loading }] = useCreateVoteMutation()
 
@@ -55,5 +61,3 @@ const VoteBox: React.FC<{
   }
   return null
 }
-
-export default VoteBox

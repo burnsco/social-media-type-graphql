@@ -1,6 +1,6 @@
 import MessageUser from "@/components/common/MessageUser"
 import { OfflineCircle, OnlineCircle } from "@/components/common/OnlineOffline"
-import { useMyFriendsAndMessagesQuery } from "@/generated/graphql"
+import { useMyFriendsLazyQuery } from "@/generated/graphql"
 import {
   Avatar,
   Badge,
@@ -8,34 +8,29 @@ import {
   chakra,
   Flex,
   Heading,
-  Input,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
-  PopoverTrigger,
   Spacer,
   useColorModeValue
 } from "@chakra-ui/react"
-import React from "react"
+import React, { useEffect } from "react"
 import { FaUserFriends } from "react-icons/fa"
 import { ImSpinner } from "react-icons/im"
 
 export default function Footer() {
   const bg = useColorModeValue("white", "#202020")
 
-  const { data, loading, refetch } = useMyFriendsAndMessagesQuery()
+  const [fetchFriends, { data, loading, refetch }] = useMyFriendsLazyQuery({
+    ssr: false
+  })
+
+  useEffect(() => fetchFriends(), [fetchFriends])
 
   const FriendsCount = () => {
-    if (data && data.me && data.me.friends.length > 0) {
-      const onlineFriends = data.me.friends.map(friend => friend.online).length
+    if (data && data.myFriends && data.myFriends.length > 0) {
+      const onlineFriends = data.myFriends.map(friend => friend.online).length
 
       return (
         <Badge mr={2} colorScheme="green">
@@ -46,41 +41,9 @@ export default function Footer() {
     return null
   }
 
-  const NewPrivateMessagePopOver = (message: any) => {
-    const [isOpen, setIsOpen] = React.useState(false)
-    const open = () => setIsOpen(!isOpen)
-    const close = () => setIsOpen(false)
-    const ref = React.useRef<HTMLInputElement | null>(null)
-    return (
-      <>
-        <Popover initialFocusRef={ref} placement="bottom" closeOnBlur={false}>
-          <PopoverTrigger>
-            <Button onClick={open}>
-              {message.sentBy.username !== data?.me?.username
-                ? message.sentBy.username
-                : message.sentTo.username}
-            </Button>
-          </PopoverTrigger>
-
-          <PopoverContent>
-            <PopoverHeader fontWeight="semibold">Confirmation</PopoverHeader>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverBody minH="100px">
-              Bob: so what's up today man!?
-            </PopoverBody>
-            <PopoverFooter d="flex" justifyContent="flex-end">
-              <Input ref={ref} />
-            </PopoverFooter>
-          </PopoverContent>
-        </Popover>
-      </>
-    )
-  }
-
   const FriendsMenu = () => (
     <>
-      {data && data.me ? (
+      {data && data.myFriends && refetch ? (
         <Menu>
           <MenuButton
             onClick={() => refetch()}
@@ -91,7 +54,7 @@ export default function Footer() {
             FRIENDS
           </MenuButton>
           <MenuList>
-            {data?.me?.friends.map(user => (
+            {data.myFriends.map(user => (
               <MenuItem key={`friend-${user.id}`}>
                 <Avatar
                   size="xs"
@@ -113,7 +76,7 @@ export default function Footer() {
 
   const ChatMenu = () => (
     <>
-      {data && data.me ? (
+      {data && data.myFriends && refetch ? (
         <Menu>
           <MenuButton
             onClick={() => refetch()}
@@ -121,10 +84,10 @@ export default function Footer() {
             rightIcon={!loading ? <FaUserFriends /> : <ImSpinner />}
           >
             <FriendsCount />
-            CHAT
+            FRIENDS
           </MenuButton>
           <MenuList>
-            {data?.me?.friends.map(user => (
+            {data.myFriends.map(user => (
               <MenuItem key={`friend-${user.id}`}>
                 <Avatar
                   size="xs"
