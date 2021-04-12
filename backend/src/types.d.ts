@@ -12,7 +12,7 @@ type CustomSessionRequest = Request & {
   sessionID: string
 }
 
-export interface ContextType2 {
+export interface ApolloContextType {
   em: EntityManager<any> & EntityManager<IDatabaseDriver<Connection>>
   req: CustomSessionRequest & Express.Request
   res: Response

@@ -17,8 +17,7 @@
     "prettier",
     "plugin:prettier/recommended",
     "plugin:testing-library/react",
-    "plugin:jest-dom/recommended",
-    "plugin:testing-library/recommended"
+    "plugin:jest-dom/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

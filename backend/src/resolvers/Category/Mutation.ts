@@ -123,7 +123,7 @@ export default class CategoryMutationResolver {
   @Subscription(() => User, {
     topics: Topic.UserJoinedChannel,
     filter: ({ payload, args }) => {
-      return payload.category === args.categoryId
+      return payload.chatRooms.find((el: any) => el.id === args.categoryId)
     }
   })
   userJoinedChannel(

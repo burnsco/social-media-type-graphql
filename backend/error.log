@@ -280,3 +280,4 @@
 {"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
 {"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
 {"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}
+{"level":"error","message":"EIO: i/o error, write","service":"reddit-clone-db"}

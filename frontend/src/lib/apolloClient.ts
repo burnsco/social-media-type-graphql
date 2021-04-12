@@ -31,7 +31,6 @@ function createApolloClient() {
     return new ApolloClient({
       ssrMode,
       link: httpLink,
-      ssrForceFetchDelay: 100,
       cache: cacheOptions
     })
   }

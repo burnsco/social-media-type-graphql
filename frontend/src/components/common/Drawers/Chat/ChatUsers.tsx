@@ -14,10 +14,16 @@ import React, { useEffect } from "react"
 
 export default function ChatUsers() {
   const chatId = useReactiveVar(selectedChatRoomId)
-  const [getChatRoomUsers, { data, loading }] = useCategoryLazyQuery()
+  const [getChatRoomUsers, { data, loading }] = useCategoryLazyQuery({
+    ssr: false,
+    pollInterval: 500
+  })
 
   useEffect(
-    () => getChatRoomUsers({ variables: { categoryId: Number(chatId) } }),
+    () =>
+      getChatRoomUsers({
+        variables: { categoryId: Number(chatId) }
+      }),
     [getChatRoomUsers, chatId]
   )
 

@@ -1,3 +1,4 @@
+import { useMyChatRoomsLazyQuery } from "@/generated/graphql"
 import {
   chakra,
   Drawer,
@@ -20,7 +21,6 @@ import {
 } from "@chakra-ui/react"
 import React, { useEffect, useRef } from "react"
 import { IoChatboxEllipsesOutline } from "react-icons/io5"
-import { useMyChatRoomsLazyQuery } from "../../../../generated/graphql"
 import ChatDisplay from "./ChatDisplay"
 import ChatInput from "./ChatInput"
 import ChatSelection from "./ChatSelect"
@@ -57,7 +57,6 @@ export default function ChatDrawerPage() {
         </chakra.span>
       </Tooltip>
       <Drawer
-        scrollBehavior="inside"
         size="full"
         isOpen={isOpen}
         placement="left"

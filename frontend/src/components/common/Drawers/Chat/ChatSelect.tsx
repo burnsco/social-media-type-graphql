@@ -31,7 +31,10 @@ export default function ChatSelection() {
     { data: categoriesData, loading: loadingCategories, error: categoriesError }
   ] = useCategoriesLazyQuery()
 
-  const [fetchMyChatRooms, { data: myChatRooms }] = useMyChatRoomsLazyQuery({
+  const [
+    fetchMyChatRooms,
+    { data: myChatRooms, loading: loadingMyChatRooms }
+  ] = useMyChatRoomsLazyQuery({
     ssr: false
   })
   const [joinChatRoom] = useJoinChatRoomMutation()
@@ -42,7 +45,7 @@ export default function ChatSelection() {
   console.log("my chat rooms")
   console.log(myChatRooms)
 
-  if (!categoriesError) {
+  if (!categoriesError && !loadingMyChatRooms) {
     return (
       <Flex flexGrow={2}>
         <Menu closeOnSelect={true}>
@@ -72,14 +75,23 @@ export default function ChatSelection() {
                           if (item && item.name && item.id) {
                             selectedChatRoomId(Number(item.id))
                             selectedChatRoomName(item.name)
+                            if (myChatRooms && myChatRooms.myChatRooms) {
+                              const joined = myChatRooms.myChatRooms.find(
+                                el => el.id == item.id
+                              )
 
-                            await joinChatRoom({
-                              variables: {
-                                data: {
-                                  name: item.name
-                                }
+                              console.log("isjoined")
+                              console.log(joined)
+                              if (joined === undefined) {
+                                await joinChatRoom({
+                                  variables: {
+                                    data: {
+                                      name: item.name
+                                    }
+                                  }
+                                })
                               }
-                            })
+                            }
                           }
                         }}
                       >

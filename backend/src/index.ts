@@ -11,7 +11,7 @@ import {
 } from "./config"
 import { User } from "./entities"
 import { resolversArray } from "./resolvers/resolvers"
-import { ContextType2 } from "./types"
+import { ApolloContextType } from "./types"
 import { wipeDatabase } from "./utils"
 
 async function main(): Promise<void> {
@@ -28,7 +28,7 @@ async function main(): Promise<void> {
       validate: false,
       pubSub
     }),
-    context: async ({ req, res }: ContextType2) => {
+    context: async ({ req, res }: ApolloContextType) => {
       if (req && req.session && req.session.userId) {
         userId = req.session.userId
         return {
