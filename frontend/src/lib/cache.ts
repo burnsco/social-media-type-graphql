@@ -16,6 +16,7 @@ export const cacheOptions = new InMemoryCache({
             return existing ? [...incoming, ...existing] : [...incoming]
           }
         },
+
         posts: concatPagination(),
         post(_, { args, toReference }) {
           return toReference({
@@ -53,7 +54,7 @@ export const cacheOptions = new InMemoryCache({
       fields: {
         messages: {
           merge(existing, incoming) {
-            return { ...existing, ...incoming }
+            return [...existing, ...incoming]
           }
         }
       }

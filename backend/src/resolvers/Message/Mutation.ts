@@ -16,19 +16,18 @@ import { Topic } from "../../common/topics"
 import { Category, Message, User } from "../../entities"
 import MessageInput from "../../inputs/message-input"
 import { isAuth } from "../../lib/isAuth"
-import MessageMutationResponse from "../../responses/mutation/message-mutation-response"
 import { ContextType } from "../../types"
 
 @Resolver(() => Message)
 export default class MessageMutationResolver {
-  @Mutation(() => MessageMutationResponse)
+  @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async createMessage(
     @Arg("data") { content, categoryId }: MessageInput,
     @PubSub(Topic.NewMessage)
     notifyAboutNewMessage: Publisher<Message>,
     @Ctx() { em, req }: ContextType
-  ): Promise<MessageMutationResponse | null | boolean> {
+  ): Promise<boolean> {
     const category = await em.findOne(
       Category,
       { id: categoryId },
@@ -38,7 +37,7 @@ export default class MessageMutationResolver {
       }
     )
     if (!category) {
-      return null
+      return false
     }
     if (category && req.session.userId) {
       const message = em.create(Message, {
@@ -53,12 +52,9 @@ export default class MessageMutationResolver {
       await em.flush()
       await notifyAboutNewMessage(message)
 
-      return {
-        message,
-        category
-      }
+      return true
     }
-    return null
+    return false
   }
 
   // *** SUBSCRIPTION *** \\

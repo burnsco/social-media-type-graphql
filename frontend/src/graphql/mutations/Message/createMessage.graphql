@@ -1,16 +1,3 @@
 mutation CreateMessage($data: MessageInput!) {
-  createMessage(data: $data) {
-    message {
-      id
-      content
-      category {
-        id
-        name
-      }
-      sentBy {
-        id
-        username
-      }
-    }
-  }
+  createMessage(data: $data)
 }

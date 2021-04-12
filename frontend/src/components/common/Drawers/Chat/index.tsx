@@ -1,4 +1,5 @@
 import { useMyChatRoomsLazyQuery } from "@/generated/graphql"
+import { selectedChatRoomId, selectedChatRoomName } from "@/lib/apolloClient"
 import {
   chakra,
   Drawer,
@@ -12,8 +13,6 @@ import {
   IconButton,
   Tab,
   TabList,
-  TabPanel,
-  TabPanels,
   Tabs,
   Tooltip,
   useColorModeValue,
@@ -68,33 +67,33 @@ export default function ChatDrawerPage() {
           <DrawerCloseButton />
           <DrawerHeader>
             <ChatSelection />
-            <Tabs isFitted variant="enclosed">
-              <TabList mb="1em">
-                {data && data.myChatRooms ? (
-                  <>
-                    {data.myChatRooms.map(chatroom => (
-                      <Tab key={`My Joined Channel ${chatroom.name}`}>
-                        {chatroom.name}
-                      </Tab>
-                    ))}
-                  </>
-                ) : null}
-              </TabList>
-              <TabPanels>
-                <TabPanel>
-                  <p>users</p>
-                </TabPanel>
-                <TabPanel>
-                  <p>two!</p>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
           </DrawerHeader>
 
           <DrawerBody p={1} m={0} border="1px solid yellow">
-            <Flex h="100%" w="100%">
-              <ChatDisplay />
-              <ChatUsers />
+            <Flex w="100%" flexDir="column" h="full">
+              <Tabs isFitted variant="enclosed">
+                <TabList mb="1em">
+                  {data && data.myChatRooms ? (
+                    <>
+                      {data.myChatRooms.map(chatroom => (
+                        <Tab
+                          key={`My Joined Channel ${chatroom.name}`}
+                          onClick={() => {
+                            selectedChatRoomId(Number(chatroom.id))
+                            selectedChatRoomName(chatroom.name)
+                          }}
+                        >
+                          {chatroom.name}
+                        </Tab>
+                      ))}
+                    </>
+                  ) : null}
+                </TabList>
+              </Tabs>
+              <Flex w="full" h="full">
+                <ChatDisplay />
+                <ChatUsers />
+              </Flex>
             </Flex>
           </DrawerBody>
 

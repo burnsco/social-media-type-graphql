@@ -124,13 +124,6 @@ export type MessageInput = {
   categoryId: Scalars['Int'];
 };
 
-export type MessageMutationResponse = {
-  __typename?: 'MessageMutationResponse';
-  errors?: Maybe<Array<FieldError>>;
-  message: Message;
-  category: Category;
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   createCategory: CategoryMutationResponse;
@@ -138,7 +131,7 @@ export type Mutation = {
   leaveChatRoom: CategoryMutationResponse;
   createComment: CommentMutationResponse;
   editComment: CommentMutationResponse;
-  createMessage: MessageMutationResponse;
+  createMessage: Scalars['Boolean'];
   createPost: PostMutationResponse;
   editPost: PostMutationResponse;
   deletePost: PostMutationResponse;
@@ -575,20 +568,7 @@ export type CreateMessageMutationVariables = Exact<{
 
 export type CreateMessageMutation = (
   { __typename?: 'Mutation' }
-  & { createMessage: (
-    { __typename?: 'MessageMutationResponse' }
-    & { message: (
-      { __typename?: 'Message' }
-      & Pick<Message, 'id' | 'content'>
-      & { category: (
-        { __typename?: 'Category' }
-        & Pick<Category, 'id' | 'name'>
-      ), sentBy: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'username'>
-      ) }
-    ) }
-  ) }
+  & Pick<Mutation, 'createMessage'>
 );
 
 export type CreatePostMutationVariables = Exact<{
@@ -1288,20 +1268,7 @@ export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMut
 export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
 export const CreateMessageDocument = gql`
     mutation CreateMessage($data: MessageInput!) {
-  createMessage(data: $data) {
-    message {
-      id
-      content
-      category {
-        id
-        name
-      }
-      sentBy {
-        id
-        username
-      }
-    }
-  }
+  createMessage(data: $data)
 }
     `;
 export type CreateMessageMutationFn = Apollo.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;

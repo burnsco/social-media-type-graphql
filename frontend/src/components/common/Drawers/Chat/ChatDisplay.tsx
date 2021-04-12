@@ -26,6 +26,7 @@ export default function ChatDisplay() {
             updateQuery: (prev, { subscriptionData }) => {
               if (!subscriptionData.data) return prev
               const newFeedItem = subscriptionData.data.newMessage
+
               return {
                 ...prev,
                 messages: [newFeedItem, { ...prev.messages }]
